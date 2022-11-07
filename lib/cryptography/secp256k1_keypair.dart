@@ -111,4 +111,9 @@ class Secp256k1Keypair with Keypair {
     final key = BIP32.fromSeed(mnemonicToSeed(mnemonics)).derivePath(path);
     return Secp256k1Keypair(Secp256k1KeypairData(key.publicKey, key.privateKey!));
   }
+
+  static bool verify(Base64DataBuffer data, Uint8List signature, Uint8List publicKey) {
+    final msgHash = sha256(data.getData());
+    return verifySignature(msgHash, SignatureData.fromBytes(signature), publicKey);
+  }
 }

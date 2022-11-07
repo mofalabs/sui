@@ -117,4 +117,9 @@ class Ed25519Keypair with Keypair {
 
     return Ed25519Keypair(Uint8List.fromList(fullPrivateKey));
   }
+
+  static bool verify(Base64DataBuffer data, Uint8List signature, Uint8List publicKey) {
+    return ed25519.verify(ed25519.PublicKey(publicKey), data.getData(), signature);
+  }
+
 }

@@ -100,7 +100,7 @@ Uint8List padLeftUint8List(Uint8List data, [int len = 32]) {
 /// Given an arbitrary message hash and an Ethereum message signature encoded in bytes, returns
 /// the public key that was used to sign it.
 /// https://github.com/web3j/web3j/blob/c0b7b9c2769a466215d416696021aa75127c2ff1/crypto/src/main/java/org/web3j/crypto/Sign.java#L241
-Uint8List ecRecover(Uint8List messageHash, SignatureData signature) {
+Uint8List ecRecover(Uint8List messageHash, SignatureData signature, [bool isCompressed = false]) {
 
   Uint8List r = padLeftUint8List(encodeBigIntAsUnsigned(signature.r));
   Uint8List s = padLeftUint8List(encodeBigIntAsUnsigned(signature.s));
@@ -115,11 +115,11 @@ Uint8List ecRecover(Uint8List messageHash, SignatureData signature) {
   final sig = ECSignature(signature.r, signature.s);
 
   int recId = header - 27;
-  BigInt? pubKey = recoverFromSignature(recId, sig, messageHash);
+  Uint8List? pubKey = recoverFromSignature(recId, sig, messageHash, isCompressed);
   if (pubKey == null) {
     throw Exception('Could not recover public key from signature');
   }
-  return encodeBigIntAsUnsigned(pubKey);
+  return isCompressed ? pubKey : pubKey.sublist(1);
 }
 
 bool verifySignature(
@@ -127,7 +127,7 @@ bool verifySignature(
   SignatureData signature,
   Uint8List publicKey,
 ) {
-  final recoveredPublicKey = ecRecover(messageHash, signature);
+  final recoveredPublicKey = ecRecover(messageHash, signature, publicKey.length == 33);
   return Hex.encode(publicKey) == Hex.encode(recoveredPublicKey);
 }
 
@@ -144,8 +144,8 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey) {
 
   int recId = -1;
   for (int i = 0; i < 4; i++) {
-    BigInt? k = recoverFromSignature(i, signature, messageHash);
-    if (k != null && k == publicKey) {
+    Uint8List? k = recoverFromSignature(i, signature, messageHash, false);
+    if (k != null && decodeBigIntToUnsigned(k.sublist(1)) == publicKey) {
       recId = i;
       break;
     }
@@ -160,7 +160,7 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey) {
   return SignatureData(signature.r, signature.s, recId + 27);
 }
 
-BigInt? recoverFromSignature(int recId, ECSignature sig, Uint8List msg) {
+Uint8List? recoverFromSignature(int recId, ECSignature sig, Uint8List msg, [bool encoded = false]) {
   final n = curveParams.n;
   final i = BigInt.from(recId ~/ 2);
   final x = sig.r + (i * n);
@@ -183,8 +183,8 @@ BigInt? recoverFromSignature(int recId, ECSignature sig, Uint8List msg) {
 
   final q = (curveParams.G * eInvrInv)! + (R * srInv);
 
-  final bytes = q!.getEncoded(false);
-  return decodeBigIntToUnsigned(bytes.sublist(1));
+  final bytes = q!.getEncoded(encoded);
+  return bytes;
 }
 
 ECPoint _decompressKey(BigInt xBN, bool yBit) {
