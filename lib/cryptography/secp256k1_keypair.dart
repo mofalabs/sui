@@ -81,7 +81,7 @@ class Secp256k1Keypair with Keypair {
 
   /// Generate a keypair from [mnemonics] string.
   static Secp256k1Keypair fromMnemonics(String mnemonics) {
-    return deriveKeypair(DEFAULT_SECP256K1_DERIVATION_PATH, mnemonics);
+    return Secp256k1Keypair.deriveKeypair(DEFAULT_SECP256K1_DERIVATION_PATH, mnemonics);
   }
 
   Uint8List secretKeyBytes() {

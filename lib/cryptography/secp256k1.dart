@@ -2,6 +2,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:pointycastle/digests/sha256.dart';
 import 'package:pointycastle/ecc/curves/secp256k1.dart';
 import 'package:pointycastle/key_generators/ec_key_generator.dart';
@@ -13,6 +14,8 @@ import 'package:pointycastle/src/utils.dart' as utils;
 import 'package:sui/utils/hex.dart';
 
 final curveParams = ECCurve_secp256k1();
+
+const magicNum = 27;
 
 class SignatureData extends ECSignature {
   final int v;
@@ -34,7 +37,7 @@ class SignatureData extends ECSignature {
     final buffer = Uint8List(65);
     buffer.setAll(0, padLeftUint8List(encodeBigIntAsUnsigned(r)));
     buffer.setAll(32, padLeftUint8List(encodeBigIntAsUnsigned(s)));
-    buffer[64] = v;
+    buffer[64] = v - 27;
     return buffer;
   }
 }
@@ -108,13 +111,13 @@ Uint8List ecRecover(Uint8List messageHash, SignatureData signature, [bool isComp
   final header = signature.v & 0xFF;
   // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
   //                  0x1D = second key with even y, 0x1E = second key with odd y
-  if (header < 27 || header > 34) {
+  if (header < magicNum || header > 34) {
     throw Exception('Header byte out of range: $header');
   }
 
   final sig = ECSignature(signature.r, signature.s);
 
-  int recId = header - 27;
+  int recId = header - magicNum;
   Uint8List? pubKey = recoverFromSignature(recId, sig, messageHash, isCompressed);
   if (pubKey == null) {
     throw Exception('Could not recover public key from signature');
@@ -159,7 +162,7 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey) {
     );
   }
 
-  return SignatureData(signature.r, signature.s, recId + 27);
+  return SignatureData(signature.r, signature.s, recId + magicNum);
 }
 
 Uint8List? recoverFromSignature(int recId, ECSignature sig, Uint8List msg, [bool encoded = false]) {

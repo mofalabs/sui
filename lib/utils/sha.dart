@@ -3,17 +3,18 @@ import 'dart:typed_data';
 
 import 'package:pointycastle/export.dart';
 
+final sha256Hash = SHA256Digest();
 final sha3Hash = SHA3Digest(256);
 
 Uint8List sha256(List<int> data) {
-  sha3Hash.reset();
-  return sha3Hash.process(Uint8List.fromList(data));
+  sha256Hash.reset();
+  return sha256Hash.process(Uint8List.fromList(data));
 }
 
 Uint8List sha256FromString(String str) {
-  sha3Hash.reset();
+  sha256Hash.reset();
   final data = Uint8List.fromList(utf8.encode(str));
-  return sha3Hash.process(data);
+  return sha256Hash.process(data);
 }
 
 Uint8List hmacSha256Sync(Uint8List hmacKey, Uint8List data) {
@@ -21,4 +22,15 @@ Uint8List hmacSha256Sync(Uint8List hmacKey, Uint8List data) {
     ..init(KeyParameter(hmacKey));
 
   return hmac.process(data);
+}
+
+Uint8List sha3256(List<int> data) {
+  sha3Hash.reset();
+  return sha3Hash.process(Uint8List.fromList(data));
+}
+
+Uint8List sha3256FromString(String str) {
+  sha3Hash.reset();
+  final data = Uint8List.fromList(utf8.encode(str));
+  return sha3Hash.process(data);
 }

@@ -81,7 +81,7 @@ class Ed25519Keypair with Keypair {
   /// The public key for this Ed25519 keypair
   @override
   Ed25519PublicKey getPublicKey() {
-    return Ed25519PublicKey(decodeBigIntToUnsigned(_signingKeypair.publicKey.bytes));
+    return Ed25519PublicKey.fromBytes(_signingKeypair.publicKey.bytes);
   }
 
   /// Return the signature for the provided data using Ed25519.
