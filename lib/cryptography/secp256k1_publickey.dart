@@ -77,6 +77,6 @@ class Secp256k1PublicKey with PublicKey {
     tmp[0] = SIGNATURE_SCHEME_TO_FLAG.Secp256k1;
     tmp.setAll(1, toBytes());
     final publicKey = Hex.encode(sha256(tmp));
-    return publicKey.substring(0, 40);
+    return "0x" + publicKey.substring(0, 40);
   }
 }

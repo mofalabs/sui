@@ -136,7 +136,9 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey) {
   final key = ECPrivateKey(decodeBigIntToUnsigned(privateKey), curveParams);
   signer.init(true, PrivateKeyParameter(key));
   var signature = signer.generateSignature(messageHash) as ECSignature;
-  signature = signature.normalize(curveParams);
+  if(!signature.isNormalized(curveParams)) {
+    signature = signature.normalize(curveParams);
+  }
 
   BigInt privateKeyNum = decodeBigIntToUnsigned(privateKey);
   final publicKeyBytes = Uint8List.view(getPublicKey(privateKeyNum, false).buffer, 1);

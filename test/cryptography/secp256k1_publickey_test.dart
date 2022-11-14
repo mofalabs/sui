@@ -27,19 +27,19 @@ void main() {
   final SECP_TEST_CASES = [
     [
       'AwTC3jVFRxXc3RJIFgoQcv486QdqwYa8vBp4bgSq0gsI',
-      '35057079b5dfc60d650768e2f4f92318f4ea5a77'
+      '0x35057079b5dfc60d650768e2f4f92318f4ea5a77'
     ],
     [
       'A1F2CtldIGolO92Pm9yuxWXs5E07aX+6ZEHAnSuKOhii',
-      '0187cf4234ff80862d5a1665d840df400fef29a0'
+      '0x0187cf4234ff80862d5a1665d840df400fef29a0'
     ],
     [
       'Ak5rsa5Od4T6YFN/V3VIhZ/azMMYPkUilKQwc+RiaId+',
-      '70eaff6b7973c57842c2272f00aa19af9f20dc1b'
+      '0x70eaff6b7973c57842c2272f00aa19af9f20dc1b'
     ],
     [
       'A4XbJ3fLvV/8ONsnLHAW1nORKsoCYsHaXv9FK1beMtvY',
-      'deb28f733d9f59910cb210d56a46614f9dd28360'
+      '0xdeb28f733d9f59910cb210d56a46614f9dd28360'
     ],
   ];
 

@@ -96,7 +96,7 @@ void main() {
         'A+NxdDVYKrM9LjFdIem8ThlQCh/EyM3HOhU2WJF3SxMf', 
         true);
       expect(keypair.getPublicKey().toSuiAddress() ==
-        'ed17b3f435c03ff69c2cdc6d394932e68375f20f',
+        '0xed17b3f435c03ff69c2cdc6d394932e68375f20f',
         true
       );
     });

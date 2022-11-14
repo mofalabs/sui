@@ -61,10 +61,10 @@ void main() {
     });
 
     test('derive ed25519 keypair from path and mnemonics', () {
-      final keypair = Ed25519Keypair.deriveKeypair(TEST_MNEMONIC);
+      final keypair = Ed25519Keypair.fromMnemonics(TEST_MNEMONIC);
       final publicKey = base64Encode(keypair.publicKeyBytes());
       expect(publicKey == 'aFstb5h4TddjJJryHJL1iMob6AxAqYxVv3yRt05aweI=', true);
-      expect(keypair.getPublicKey().toSuiAddress() == '1a4623343cd42be47d67314fce0ad042f3c82685', true);
+      expect(keypair.getPublicKey().toSuiAddress() == '0x1a4623343cd42be47d67314fce0ad042f3c82685', true);
     });
 
     test('incorrect coin type node for ed25519 derivation path', () {
@@ -81,7 +81,7 @@ void main() {
 
     test('invalid mnemonics to derive ed25519 keypair', () {
       expect(() {
-        Ed25519Keypair.deriveKeypair('aaa');
+        Ed25519Keypair.fromMnemonics('aaa');
       }, throwsArgumentError);
     });
 

@@ -73,6 +73,11 @@ class Ed25519Keypair with Keypair {
     return Ed25519Keypair(Uint8List.fromList(privateKey.bytes));
   }
 
+  /// Generate a keypair from [mnemonics] string.
+  static Ed25519Keypair fromMnemonics(String mnemonics) {
+    return deriveKeypair(DEFAULT_ED25519_DERIVATION_PATH, mnemonics);
+  }
+
   /// The public key for this Ed25519 keypair
   @override
   Ed25519PublicKey getPublicKey() {
@@ -91,8 +96,7 @@ class Ed25519Keypair with Keypair {
   ///
   /// If path is none, it will default to m/44'/784'/0'/0'/0', otherwise the path must
   /// be compliant to SLIP-0010 in form m/44'/784'/{account_index}'/{change_index}'/{address_index}'.
-  static Ed25519Keypair deriveKeypair(String mnemonics, [String? path]) {
-    path ??= DEFAULT_ED25519_DERIVATION_PATH;
+  static Ed25519Keypair deriveKeypair(String path, String mnemonics) {
 
     if (!isValidHardenedPath(path)) {
       throw ArgumentError('Invalid derivation path');

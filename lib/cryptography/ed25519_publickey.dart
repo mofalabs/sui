@@ -77,6 +77,6 @@ class Ed25519PublicKey with PublicKey {
     tmp[0] = SIGNATURE_SCHEME_TO_FLAG.ED25519;
     tmp.setAll(1, toBytes());
     final publicKey = Hex.encode(sha256(tmp));
-    return publicKey.substring(0, 40);
+    return "0x" + publicKey.substring(0, 40);
   }
 }
