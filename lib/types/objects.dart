@@ -10,11 +10,19 @@ class SuiObjectRef {
   int version;
 
   SuiObjectRef(this.digest, this.objectId, this.version);
+
+  factory SuiObjectRef.fromJson(dynamic data) {
+    return SuiObjectRef(
+      data['digest'],
+      data['objectId'], 
+      data['version']
+    );
+  }
 }
 
 class SuiObjectInfo extends SuiObjectRef {
   String type;
-  ObjectOwner owner;
+  String owner;
   TransactionDigest previousTransaction;
 
   SuiObjectInfo(
@@ -29,7 +37,7 @@ class SuiObjectInfo extends SuiObjectRef {
   factory SuiObjectInfo.fromJson(dynamic data) {
     return SuiObjectInfo(
       data['type'], 
-      data['owner'],
+      data['owner']['AddressOwner'],
       data['previousTransaction'],
       data['digest'],
       data['objectId'],
@@ -76,6 +84,12 @@ class SuiMovePackage {
   /// A mapping from module name to disassembled Move bytecode
   MovePackageContent disassembled;
   SuiMovePackage(this.disassembled);
+
+  factory SuiMovePackage.fromJson(dynamic data) {
+    return SuiMovePackage(
+      data['disassembled']
+    );
+  }
 }
 
 typedef SuiMoveFunctionArgTypesResponse = List<SuiMoveFunctionArgType>;
@@ -186,7 +200,23 @@ class SuiObject {
   int storageRebate;
   SuiObjectRef reference;
 
-  SuiObject(this.data, this.owner, this.previousTransaction, this.storageRebate, this.reference);
+  SuiObject(
+    this.data, 
+    this.owner, 
+    this.previousTransaction, 
+    this.storageRebate, 
+    this.reference
+  );
+
+  factory SuiObject.fromJson(dynamic data) {
+    return SuiObject(
+      data['data'],
+      ObjectOwner.fromJson(data['owner']),
+      data['previousTransaction'],
+      data['storageRebate'],
+      SuiObjectRef.fromJson(data['reference'])
+    );
+  }
 }
 
 enum ObjectStatus {
@@ -199,11 +229,97 @@ enum ObjectType {
 
 typedef GetOwnedObjectsResponse = List<SuiObjectInfo>;
 
+class Id {
+  String id;
+  Id(this.id);
+
+  factory Id.fromJson(dynamic data) {
+    return Id(data['id']);
+  }
+}
+
+class SuiObjectDataFields {
+  int balance;
+  Id id;
+
+  SuiObjectDataFields(this.balance, this.id);
+
+  factory SuiObjectDataFields.fromJson(dynamic data) {
+    return SuiObjectDataFields(data['balance'], Id.fromJson(data['id']));
+  }
+}
+
+class SuiObjectData {
+  String dataType;
+  String type;
+  bool hasPublicTransfer;
+  SuiObjectDataFields fields;
+
+  SuiObjectData(
+    this.dataType, 
+    this.type, 
+    this.hasPublicTransfer, 
+    this.fields
+  );
+
+  factory SuiObjectData.fromJson(dynamic data) {
+    return SuiObjectData(
+      data['dataType'],
+      data['type'],
+      data['has_public_transfer'],
+      SuiObjectDataFields.fromJson(data['fields'])
+    );
+  }
+}
+
+class AddressOwner {
+  String addressOwner;
+
+  AddressOwner(this.addressOwner);
+
+  factory AddressOwner.fromJson(dynamic data) {
+    return AddressOwner(data['AddressOwner']);
+  }
+}
+
+class GetObjectDataDetails {
+  SuiObjectData data;
+  AddressOwner owner;
+  String previousTransaction;
+  int storageRebate;
+  SuiObjectRef objectRef;
+
+  GetObjectDataDetails(
+    this.data,
+    this.owner,
+    this.previousTransaction,
+    this.storageRebate,
+    this.objectRef
+  );
+
+  factory GetObjectDataDetails.fromJson(dynamic data) {
+    return GetObjectDataDetails(
+      SuiObjectData.fromJson(data['data']),
+      AddressOwner.fromJson(data['owner']),
+      data['previousTransaction'],
+      data['storageRebate'],
+      SuiObjectRef.fromJson(data['reference'])
+    );
+  }
+}
+
 class GetObjectDataResponse {
   String status;
-  dynamic details; // SuiObject | ObjectId | SuiObjectRef
+  GetObjectDataDetails details;
 
   GetObjectDataResponse(this.status, this.details);
+
+  factory GetObjectDataResponse.fromJson(dynamic data) {
+    return GetObjectDataResponse(
+      data['status'],
+      GetObjectDataDetails.fromJson(data['details'])
+    );
+  }
 }
 
 typedef ObjectDigest = String;
@@ -224,27 +340,12 @@ SuiObjectRef? getObjectDeletedResponse(GetObjectDataResponse resp) {
   return resp.status != ObjectStatus.Deleted.name ? null : (resp.details as SuiObjectRef);
 }
 
-String getObjectNotExistsResponse(GetObjectDataResponse resp) {
-  return resp.status != ObjectStatus.NotExists.name ? null : resp.details;
-}
-
 SuiObjectRef? getObjectReference(GetObjectDataResponse resp) {
   if (getObjectExistsResponse(resp) != null) {
     getObjectExistsResponse(resp)?.reference;
   } else {
     return getObjectDeletedResponse(resp);
   }
-}
-
-/* ------------------------------ SuiObjectRef ------------------------------ */
-
-String getObjectId(
-  dynamic data // GetObjectDataResponse | SuiObjectRef
-) {
-  if (data is SuiObjectRef) {
-    return data.objectId;
-  }
-  return getObjectReference(data)?.objectId ?? getObjectNotExistsResponse(data);
 }
 
 int? getObjectVersion(
@@ -280,22 +381,12 @@ int? getSharedObjectInitialVersion(
   GetObjectDataResponse resp
 ) {
   final owner = getObjectOwner(resp);
-  if (owner is Map && owner['Shared'] != null) {
-    return owner['Shared'].initial_shared_version;
-  } else {
-    return null;
-  }
+  return owner?.shared?.initialSharedVersion;
 }
 
 bool isSharedObject(GetObjectDataResponse resp) {
   final owner = getObjectOwner(resp);
-  if (owner == 'Shared') {
-    return true;
-  } else if (owner is Map){
-    return owner.containsKey('Shared');
-  } else {
-    throw ArgumentError('');
-  }
+  return owner?.shared != null;
 }
 
 bool isImmutableObject(GetObjectDataResponse resp) {

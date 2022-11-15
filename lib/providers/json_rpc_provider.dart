@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/types/common.dart';
@@ -32,7 +31,7 @@ class JsonRpcProvider {
       [],
       skipDataValidation
     );
-    final rpcApiVersion = parseVersionFromString(resp['info']['version']);
+    final rpcApiVersion = RpcApiVersion.parseVersion(resp['info']['version']);
     return rpcApiVersion;
   }
 
@@ -129,13 +128,14 @@ class JsonRpcProvider {
   // }
 
   /// Objects
-  Future<dynamic> getObjectsOwnedByAddress(String address) async {
+  Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {
     try {
-      return await client.request(
+      final resp = await client.request(
         'sui_getObjectsOwnedByAddress',
-        [address],
-        skipDataValidation
+        [address]
       );
+      final objectsInfo = (resp as List).map((obj) => SuiObjectInfo.fromJson(obj)).toList();
+      return objectsInfo;
     } catch (err) {
       throw ArgumentError(
         'Error fetching owned object: $err for address $address'
@@ -231,13 +231,13 @@ class JsonRpcProvider {
   //   }
   // }
 
-  Future<dynamic> getObject(String objectId) async {
+  Future<GetObjectDataResponse> getObject(String objectId) async {
     try {
-      return await client.request(
+      final data = await client.request(
         'sui_getObject',
-        [objectId],
-        skipDataValidation
+        [objectId]
       );
+      return GetObjectDataResponse.fromJson(data);
     } catch (err) {
       throw ArgumentError('Error fetching object info: $err for id $objectId');
     }
@@ -248,39 +248,42 @@ class JsonRpcProvider {
   //   return getObjectReference(resp);
   // }
 
-  Future<dynamic> getObjectBatch(List<String> objectIds) async {
+  Future<List<GetObjectDataResponse>> getObjectBatch(List<String> objectIds) async {
     final requests = objectIds.map((id) => ({
       'method': 'sui_getObject',
       'args': [id],
     }));
     try {
-      return await client.batchRequest(
+      final dataList = await client.batchRequest(
         requests,
         skipDataValidation
       );
+
+      final result = (dataList as List)
+        .map((data) => GetObjectDataResponse.fromJson(data))
+        .toList();
+      return result;
     } catch (err) {
       throw ArgumentError('Error fetching object info: $err for id $objectIds');
     }
   }
 
-  // Transactions
-  Future<dynamic> getTransactions(
+  /// Query Transactions Hash
+  Future<List<String>> getTransactions(
     String address,
     {TransactionDigest? cursor,
     int? limit,
-    Ordering order = Ordering.Descending}
+    bool descendingOrder = true}
   ) async {
     final query = { 'ToAddress': address };
     try {
       final filterFromAddress = await client.request(
         'sui_getTransactions',
-        [{ 'FromAddress': address }, cursor, limit, order.name],
-        skipDataValidation
+        [{ 'FromAddress': address }, cursor, limit, descendingOrder]
       );
       final filterToAddress = await client.request(
         'sui_getTransactions',
-        [{ 'ToAddress': address }, cursor, limit, order.name],
-        skipDataValidation
+        [{ 'ToAddress': address }, cursor, limit, descendingOrder]
       );
       
       final txIds = <String>{};
@@ -360,16 +363,17 @@ class JsonRpcProvider {
   //   }
   // }
 
-  Future<dynamic> getTransactionWithEffects(
+  Future<SuiTransactionResponse> getTransactionWithEffects(
     TransactionDigest digest
   ) async {
     try {
-      final resp = await client.request(
+      final data = await client.request(
         'sui_getTransaction',
         [digest],
         skipDataValidation
       );
-      return resp;
+      final result = SuiTransactionResponse.fromJson(data);
+      return result;
     } catch (err) {
       throw ArgumentError(
         'Error getting transaction with effects: $err for digest $digest'

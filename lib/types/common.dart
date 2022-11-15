@@ -5,7 +5,32 @@ import 'package:sui/serialization/base64_buffer.dart';
 /// Base64 string representing the object digest
 typedef TransactionDigest = String;
 typedef SuiAddress = String;
-typedef ObjectOwner = dynamic;
+
+class Shared {
+  int initialSharedVersion;
+
+  Shared(this.initialSharedVersion);
+
+  factory Shared.fromJson(dynamic data) {
+    return Shared(data['initial_shared_version']);
+  }
+}
+
+class ObjectOwner {
+  SuiAddress? addressOwner;
+  SuiAddress? objectOwner;
+  Shared? shared;
+
+  ObjectOwner(this.addressOwner, this.objectOwner, this.shared);
+
+  factory ObjectOwner.fromJson(dynamic data) {
+    return ObjectOwner(
+      data['AddressOwner'],
+      data['ObjectOwner'],
+      data['shared'] != null ? Shared.fromJson(data['shared']) : null
+    );
+  }
+}
 
 // source of truth is
 // https://github.com/MystenLabs/sui/blob/acb2b97ae21f47600e05b0d28127d88d0725561d/crates/sui-types/src/base_types.rs#L171
