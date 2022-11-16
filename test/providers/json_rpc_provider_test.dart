@@ -49,7 +49,21 @@ void main() {
     final objectsID = await provider.getObjectsOwnedByAddress(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getObject(objectId);
-    expect(resp.details.data.fields.id.id == objectId, true);
+    expect(resp.details.data.fields?.id.id == objectId, true);
+  });
+
+  test('test getRawObject by objectId', () async {
+    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectId = objectsID[0].objectId;
+    final resp = await provider.getRawObject(objectId);
+    expect(resp.details.data.bcsBytes!.isNotEmpty, true);
+  });
+
+  test('test getObjectRef by objectId', () async {
+    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectId = objectsID[0].objectId;
+    final resp = await provider.getObjectRef(objectId);
+    expect(resp?.digest.isNotEmpty ?? false, true);
   });
 
   test('test getObjectBatch', () async {
@@ -57,6 +71,44 @@ void main() {
     final ids = objectsID.map((obj) => obj.objectId).toList();
     final resp = await provider.getObjectBatch(ids);
     expect(resp.length == ids.length, true);
+  });
+
+  test('test getTotalTransactionNumber', () async {
+    final txNum = await provider.getTotalTransactionNumber();
+    expect(txNum > 0, true);
+  });
+
+  test('test getTotalTransactionNumber', () async {
+    int start = 1;
+    int end = 10;
+    final txns = await provider.getTransactionDigestsInRange(1, 10);
+    expect(txns.length == end - start, true);
+  });
+
+  test('test getTransactionsForObject', () async {
+    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectId = objectsID[0].objectId;
+    final txns = await provider.getTransactionsForObject(objectId);
+    expect(txns.isNotEmpty, true);
+  });
+
+  test('test getCoinBalancesOwnedByAddress', () async {
+    final result = await provider.getCoinBalancesOwnedByAddress(address);
+    expect(result.isNotEmpty, true);
+  });
+
+  test('test getObjectsOwnedByObject', () async {
+    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectId = objectsID[0].objectId;
+    final result = await provider.getObjectsOwnedByObject(objectId);
+    expect(result.length >= 0, true);
+  });
+
+  test('test getEventsByTransaction', () async {
+    const txn = 'AWsJPVBcugYHB1qwa7hKhDQ89oImX5lOxphXHphlud8=';
+    final result = await provider.getEvents(txn);
+    expect(result.data.isNotEmpty, true);
+    expect(result.data.first.txDigest == txn, true);
   });
 
 }

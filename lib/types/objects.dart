@@ -51,11 +51,17 @@ class SuiObjectInfo extends SuiObjectRef {
 typedef ObjectContentFields = dynamic;
 typedef MovePackageContent = dynamic;
 
-typedef SuiData = dynamic;
-// typedef SuiData = { dataType: ObjectType } & (
-//   | SuiMoveObject
-//   | SuiMovePackage
-// );
+class SuiData {
+  ObjectType dataType;
+  SuiMoveObject moveObject;
+  SuiMovePackage movePackage;
+
+  SuiData(
+    this.dataType, 
+    this.moveObject, 
+    this.movePackage
+  );
+}
 
 class SuiMoveObject {
   /// Move type (e.g., "0x2::coin::Coin<0x2::sui::SUI>")
@@ -186,39 +192,6 @@ class SuiMoveNormalizedStructType {
   SuiMoveNormalizedStructType(this.Struct);
 }
 
-class SuiObject {
-  /// The meat of the object
-  SuiData data;
-  /// The owner of the object
-  ObjectOwner owner;
-  /// The digest of the transaction that created or last mutated this object
-  TransactionDigest previousTransaction;
-
-  /// The amount of SUI we would rebate if this object gets deleted.
-  /// This number is re-calculated each time the object is mutated based on
-  /// the present storage gas price.
-  int storageRebate;
-  SuiObjectRef reference;
-
-  SuiObject(
-    this.data, 
-    this.owner, 
-    this.previousTransaction, 
-    this.storageRebate, 
-    this.reference
-  );
-
-  factory SuiObject.fromJson(dynamic data) {
-    return SuiObject(
-      data['data'],
-      ObjectOwner.fromJson(data['owner']),
-      data['previousTransaction'],
-      data['storageRebate'],
-      SuiObjectRef.fromJson(data['reference'])
-    );
-  }
-}
-
 enum ObjectStatus {
   Exists, NotExists, Deleted
 }
@@ -253,13 +226,19 @@ class SuiObjectData {
   String dataType;
   String type;
   bool hasPublicTransfer;
-  SuiObjectDataFields fields;
+  SuiObjectDataFields? fields;
+
+  // raw object
+  int? version;
+  String? bcsBytes;
 
   SuiObjectData(
     this.dataType, 
     this.type, 
     this.hasPublicTransfer, 
-    this.fields
+    this.fields,
+    this.version,
+    this.bcsBytes
   );
 
   factory SuiObjectData.fromJson(dynamic data) {
@@ -267,7 +246,9 @@ class SuiObjectData {
       data['dataType'],
       data['type'],
       data['has_public_transfer'],
-      SuiObjectDataFields.fromJson(data['fields'])
+      data['fields'] != null ? SuiObjectDataFields.fromJson(data['fields']) : null,
+      data['version'],
+      data['bcs_bytes']
     );
   }
 }
@@ -282,25 +263,28 @@ class AddressOwner {
   }
 }
 
-class GetObjectDataDetails {
+class SuiObject {
   SuiObjectData data;
-  AddressOwner owner;
-  String previousTransaction;
+  ObjectOwner owner;
+  TransactionDigest previousTransaction;
+  /// The amount of SUI we would rebate if this object gets deleted.
+  /// This number is re-calculated each time the object is mutated based on
+  /// the present storage gas price.
   int storageRebate;
-  SuiObjectRef objectRef;
+  SuiObjectRef reference;
 
-  GetObjectDataDetails(
-    this.data,
-    this.owner,
-    this.previousTransaction,
-    this.storageRebate,
-    this.objectRef
+  SuiObject(
+    this.data, 
+    this.owner, 
+    this.previousTransaction, 
+    this.storageRebate, 
+    this.reference
   );
 
-  factory GetObjectDataDetails.fromJson(dynamic data) {
-    return GetObjectDataDetails(
+  factory SuiObject.fromJson(dynamic data) {
+    return SuiObject(
       SuiObjectData.fromJson(data['data']),
-      AddressOwner.fromJson(data['owner']),
+      ObjectOwner.fromJson(data['owner']),
       data['previousTransaction'],
       data['storageRebate'],
       SuiObjectRef.fromJson(data['reference'])
@@ -310,14 +294,14 @@ class GetObjectDataDetails {
 
 class GetObjectDataResponse {
   String status;
-  GetObjectDataDetails details;
+  SuiObject details;
 
   GetObjectDataResponse(this.status, this.details);
 
   factory GetObjectDataResponse.fromJson(dynamic data) {
     return GetObjectDataResponse(
       data['status'],
-      GetObjectDataDetails.fromJson(data['details'])
+      SuiObject.fromJson(data['details'])
     );
   }
 }
@@ -333,7 +317,7 @@ typedef SequenceNumber = int;
 /* -------------------------- GetObjectDataResponse ------------------------- */
 
 SuiObject? getObjectExistsResponse(GetObjectDataResponse resp) {
-  return resp.status != ObjectStatus.Exists.name ? null : (resp.details as SuiObject);
+  return resp.status != ObjectStatus.Exists.name ? null : resp.details;
 }
 
 SuiObjectRef? getObjectDeletedResponse(GetObjectDataResponse resp) {
@@ -341,8 +325,9 @@ SuiObjectRef? getObjectDeletedResponse(GetObjectDataResponse resp) {
 }
 
 SuiObjectRef? getObjectReference(GetObjectDataResponse resp) {
-  if (getObjectExistsResponse(resp) != null) {
-    getObjectExistsResponse(resp)?.reference;
+  final objectExistsResponse = getObjectExistsResponse(resp);
+  if (objectExistsResponse != null) {
+    return objectExistsResponse.reference;
   } else {
     return getObjectDeletedResponse(resp);
   }
@@ -359,7 +344,7 @@ int? getObjectVersion(
 
 /* -------------------------------- SuiObject ------------------------------- */
 
-ObjectType? getObjectType(
+String? getObjectType(
   GetObjectDataResponse resp
 ) {
   return getObjectExistsResponse(resp)?.data.dataType;
@@ -415,7 +400,7 @@ SuiMoveObject? getMoveObject(
 ) {
 
   var suiObject = data is SuiObject ? data : getObjectExistsResponse(data);
-  if (suiObject?.data['dataType'] != 'moveObject') {
+  if (suiObject?.data.dataType != 'moveObject') {
     return null;
   }
   return suiObject?.data as SuiMoveObject;
@@ -435,7 +420,7 @@ MovePackageContent? getMovePackageContent(
   }
 
   final suiObject = getObjectExistsResponse(data);
-  if (suiObject == null || suiObject.data['dataType'] != 'package') {
+  if (suiObject == null || suiObject.data.dataType != 'package') {
     return null;
   }
   return (suiObject.data as SuiMovePackage).disassembled;

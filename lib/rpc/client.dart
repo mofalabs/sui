@@ -50,7 +50,7 @@ class JsonRpcClient {
 
   Future batchRequest(
     Iterable<Map<String, dynamic>> requests,
-    [bool skipDataValidation = false]
+    [bool skipDataValidation = true]
   ) async {
     final batchResp = <dynamic>[];
     for (var item in requests) {

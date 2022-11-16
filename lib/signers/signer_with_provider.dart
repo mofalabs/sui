@@ -33,10 +33,10 @@ abstract class SignerWithProvider {
   /// Sign a transaction and submit to the Fullnode for execution. Only exists on Fullnode
   Future<SuiExecuteTransactionResponse> signAndExecuteTransaction(
     Base64DataBuffer transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
       final sig = signData(transaction);
-      return await provider.executeTransactionWithRequestType(
+      return await provider.executeTransaction(
         transaction.toString(),
         sig.signatureScheme,
         sig.signature.toString(),
@@ -48,7 +48,7 @@ abstract class SignerWithProvider {
   /// Sign a transaction and submit to the Fullnode for execution. Only exists on Fullnode
   Future<SuiExecuteTransactionResponse> signAndExecuteTransactionWithRequestType(
     SignableTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     switch (transaction.kind) {
       case UnserializedSignableTransaction.bytes:
@@ -87,7 +87,7 @@ abstract class SignerWithProvider {
   /// Serialize and sign a `TransferObject` transaction and submit to the Fullnode for execution
   Future<SuiExecuteTransactionResponse> transferObjectWithRequestType(
     TransferObjectTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newTransferObject(
@@ -103,7 +103,7 @@ abstract class SignerWithProvider {
   /// Serialize and sign a `TransferSui` transaction and submit to the Fullnode for execution
   Future<SuiExecuteTransactionResponse> transferSuiWithRequestType(
     TransferSuiTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newTransferSui(
@@ -119,7 +119,7 @@ abstract class SignerWithProvider {
   /// Serialize and Sign a `Pay` transaction and submit to the fullnode for execution
   Future<SuiExecuteTransactionResponse> payWithRequestType(
     PayTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newPay(signerAddress, transaction);
@@ -132,7 +132,7 @@ abstract class SignerWithProvider {
   /// Serialize and Sign a `PaySui` transaction and submit to the fullnode for execution
   Future<SuiExecuteTransactionResponse> paySuiWithRequestType(
     PaySuiTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newPaySui(signerAddress, transaction);
@@ -145,7 +145,7 @@ abstract class SignerWithProvider {
   /// Serialize and Sign a `PayAllSui` transaction and submit to the fullnode for execution
   Future<SuiExecuteTransactionResponse> payAllSuiWithRequestType(
     PayAllSuiTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newPayAllSui(
@@ -161,7 +161,7 @@ abstract class SignerWithProvider {
   /// Serialize and sign a `MergeCoin` transaction and submit to the Fullnode for execution
   Future<SuiExecuteTransactionResponse> mergeCoinWithRequestType(
     MergeCoinTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newMergeCoin(
@@ -177,7 +177,7 @@ abstract class SignerWithProvider {
   /// Serialize and sign a `SplitCoin` transaction and submit to the Fullnode for execution
   Future<SuiExecuteTransactionResponse> splitCoinWithRequestType(
     SplitCoinTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newSplitCoin(
@@ -193,7 +193,7 @@ abstract class SignerWithProvider {
   /// Serialize and sign a `MoveCall` transaction and submit to the Fullnode for execution
   Future<SuiExecuteTransactionResponse> executeMoveCallWithRequestType(
     MoveCallTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newMoveCall(
@@ -209,7 +209,7 @@ abstract class SignerWithProvider {
   /// Serialize and sign a `Publish` transaction and submit to the Fullnode for execution
   Future<SuiExecuteTransactionResponse> publishWithRequestType(
     PublishTransaction transaction,
-    [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForLocalExecution]
+    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newPublish(

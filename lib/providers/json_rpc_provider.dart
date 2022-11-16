@@ -6,6 +6,7 @@ import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/events.dart';
+import 'package:sui/types/framework.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 import 'package:sui/types/version.dart';
@@ -114,11 +115,9 @@ class JsonRpcProvider {
   //   String structName
   // ) async {
   //   try {
-  //     return await this.client.requestWithType(
+  //     return await client.request(
   //       'sui_getNormalizedMoveStruct',
-  //       [packageId, moduleName, structName],
-  //       isSuiMoveNormalizedStruct,
-  //       this.skipDataValidation
+  //       [packageId, moduleName, structName]
   //     );
   //   } catch (err) {
   //     throw ArgumentError(
@@ -172,21 +171,19 @@ class JsonRpcProvider {
   //   );
   // }
 
-  // Future<List<GetObjectDataResponse>> getCoinBalancesOwnedByAddress(
-  //   String address,
-  //   String? typeArg
-  // ) async {
-  //   final objects = await this.getObjectsOwnedByAddress(address);
-  //   final coinIds = objects
-  //     .filter(
-  //       (SuiObjectInfo obj) =>
-  //         Coin.isCoin(obj) &&
-  //         (typeArg == null || typeArg == Coin.getCoinTypeArg(obj))
-  //     )
-  //     .map((c) => c.objectId);
+  Future<List<GetObjectDataResponse>> getCoinBalancesOwnedByAddress(
+    String address,
+    {String? typeArg}
+  ) async {
+    final objects = await getObjectsOwnedByAddress(address);
+    final coinIds = objects
+      .where((x) => Coin.isCoin(ObjectData(objectInfo: x)) 
+                && (typeArg == null || typeArg == Coin.getCoinTypeArg(ObjectData(objectInfo: x))))
+      .map((y) => y.objectId);
 
-  //   return await this.getObjectBatch(coinIds);
-  // }
+    final result = await getObjectBatch(coinIds.toList());
+    return result;
+  }
 
   // Future<GetObjectDataResponse> selectCoinsWithBalanceGreaterThanOrEqual(
   //   String address,
@@ -216,20 +213,19 @@ class JsonRpcProvider {
   //   )) as GetObjectDataResponse[];
   // }
 
-  // async getObjectsOwnedByObject(objectId: string): Promise<SuiObjectInfo[]> {
-  //   try {
-  //     return await this.client.requestWithType(
-  //       'sui_getObjectsOwnedByObject',
-  //       [objectId],
-  //       isGetOwnedObjectsResponse,
-  //       this.skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw new Error(
-  //       `Error fetching owned object: ${err} for objectId ${objectId}`
-  //     );
-  //   }
-  // }
+  Future<List<SuiObjectInfo>> getObjectsOwnedByObject(String objectId) async {
+    try {
+      final data = await client.request(
+        'sui_getObjectsOwnedByObject',
+        [objectId]
+      );
+      return (data as List).map((e) => SuiObjectInfo.fromJson(e)).toList();
+    } catch (err) {
+      throw ArgumentError(
+        'Error fetching owned object: $err for objectId $objectId'
+      );
+    }
+  }
 
   Future<GetObjectDataResponse> getObject(String objectId) async {
     try {
@@ -243,10 +239,22 @@ class JsonRpcProvider {
     }
   }
 
-  // async getObjectRef(objectId: string): Promise<SuiObjectRef | undefined> {
-  //   const resp = await this.getObject(objectId);
-  //   return getObjectReference(resp);
-  // }
+  Future<GetObjectDataResponse> getRawObject(String objectId) async {
+    try {
+      final data = await client.request(
+        'sui_getRawObject',
+        [objectId]
+      );
+      return GetObjectDataResponse.fromJson(data);
+    } catch (err) {
+      throw ArgumentError('Error fetching object info: $err for id $objectId');
+    }
+  }
+
+  Future<SuiObjectRef?> getObjectRef(String objectId) async {
+    final data = await getObject(objectId);
+    return getObjectReference(data);
+  }
 
   Future<List<GetObjectDataResponse>> getObjectBatch(List<String> objectIds) async {
     final requests = objectIds.map((id) => ({
@@ -306,62 +314,32 @@ class JsonRpcProvider {
     }
   }
 
-  // Future<GetTxnDigestsResponse> getTransactionsForObject(
-  //   String objectID: string,
-  //   Ordering ordering = 'Descending'
-  // ) async {
-  //   final requests = [
-  //     {
-  //       method: 'sui_getTransactions',
-  //       args: [{ InputObject: objectID }, null, null, ordering],
-  //     },
-  //     {
-  //       method: 'sui_getTransactions',
-  //       args: [{ MutatedObject: objectID }, null, null, ordering],
-  //     },
-  //   ];
+  Future<List<String>> getTransactionsForObject(
+    String objectID,
+    {bool descendingOrder = true}
+  ) async {
+    final requests = [
+      {
+        'method': 'sui_getTransactions',
+        'args': [{ 'InputObject': objectID }, null, null, descendingOrder],
+      },
+      {
+        'method': 'sui_getTransactions',
+        'args': [{ 'MutatedObject': objectID }, null, null, descendingOrder],
+      },
+    ];
 
-  //   try {
-  //     final results = await client.batchRequestWithType(
-  //       requests,
-  //       isPaginatedTransactionDigests,
-  //       this.skipDataValidation
-  //     );
-  //     return [...results[0].data, ...results[1].data];
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting transactions for object: ${err} for id ${objectID}'
-  //     );
-  //   }
-  // }
-
-  // Future<GetTxnDigestsResponse> getTransactionsForAddress(
-  //   String addressID,
-  //   Ordering ordering = 'Descending'
-  // ) async {
-  //   final requests = [
-  //     {
-  //       method: 'sui_getTransactions',
-  //       args: [{ ToAddress: addressID }, null, null, ordering],
-  //     },
-  //     {
-  //       method: 'sui_getTransactions',
-  //       args: [{ FromAddress: addressID }, null, null, ordering],
-  //     },
-  //   ];
-  //   try {
-  //     final results = await client.batchRequestWithType(
-  //       requests,
-  //       isPaginatedTransactionDigests,
-  //       this.skipDataValidation
-  //     );
-  //     return [...results[0].data, ...results[1].data];
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting transactions for address: ${err} for id ${addressID}'
-  //     );
-  //   }
-  // }
+    try {
+      final results = await client.batchRequest(
+        requests
+      );
+      return [...results[0]['data'], ...results[1]['data']];
+    } catch (err) {
+      throw ArgumentError(
+        'Error getting transactions for object: $err for id $objectID'
+      );
+    }
+  }
 
   Future<SuiTransactionResponse> getTransactionWithEffects(
     TransactionDigest digest
@@ -401,12 +379,12 @@ class JsonRpcProvider {
     }
   }
 
-  Future<SuiExecuteTransactionResponse> executeTransactionWithRequestType(
+  Future<SuiExecuteTransactionResponse> executeTransaction(
     String txnBytes,
     SignatureScheme signatureScheme,
     String signature,
     String pubkey,
-   [ExecuteTransactionRequestType requestType = ExecuteTransactionRequestType.WaitForEffectsCert]
+   [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
   ) async {
     final resp = await client.request(
       'sui_executeTransaction',
@@ -416,303 +394,60 @@ class JsonRpcProvider {
     return resp;
   }
 
-  // Future<int> getTotalTransactionNumber() async {
-  //   try {
-  //     final resp = await client.requestWithType(
-  //       'sui_getTotalTransactionNumber',
-  //       [],
-  //       skipDataValidation
-  //     );
-  //     return resp;
-  //   } catch (err) {
-  //     throw ArgumentError('Error fetching total transaction number: ${err}');
-  //   }
-  // }
-
-  // Future<GetTxnDigestsResponse> getTransactionDigestsInRange(
-  //   int start,
-  //   int end
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getTransactionsInRange',
-  //       [start, end],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error fetching transaction digests in range: ${err} for range ${start}-${end}'
-  //     );
-  //   }
-  // }
-
-  // // Events
-
-  // Future<SuiEvents> getEventsByTransaction(
-  //   TransactionDigest digest,
-  //   int count
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getEventsByTransaction',
-  //       [digest, count],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting events by transaction: ${digest}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  // Future<SuiEvents> getEventsByModule(
-  //   String package_,
-  //   String module,
-  //   int count,
-  //   int startTime,
-  //   int endTime
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getEventsByModule',
-  //       [package_, module, count, startTime, endTime],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw  ArgumentError(
-  //       'Error getting events by transaction module: ${package_}::${module}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  // Future<SuiEvents> getEventsByMoveEventStructName(
-  //   String moveEventStructName,
-  //   int count,
-  //   int startTime,
-  //   int endTime
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getEventsByMoveEventStructName',
-  //       [moveEventStructName, count, startTime, endTime],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting events by move event struct name: ${moveEventStructName}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  // Future<SuiEvents> getEventsBySender(
-  //   SuiAddress sender,
-  //   int count,
-  //   int startTime,
-  //   int endTime
-  // ) async {
-  //   try {
-  //     return await this.client.requestWithType(
-  //       'sui_getEventsBySender',
-  //       [sender, count, startTime, endTime],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting events by sender: ${sender}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  // Future<SuiEvents> getEventsByRecipient(
-  //   ObjectOwner recipient,
-  //   int count,
-  //   int startTime,
-  //   int endTime
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getEventsByRecipient',
-  //       [recipient, count, startTime, endTime],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting events by receipient: ${recipient}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  // Future<SuiEvents> getEventsByObject(
-  //   ObjectId object,
-  //   int count,
-  //   int startTime,
-  //   int endTime
-  // ) async {
-  //   try {
-  //     return await this.client.requestWithType(
-  //       'sui_getEventsByObject',
-  //       [object, count, startTime, endTime],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting events by object: ${object}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  // Future<SuiEvents> getEventsByTimeRange(
-  //   int count,
-  //   int startTime,
-  //   int endTime
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getEventsByTimeRange',
-  //       [count, startTime, endTime],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error getting events by time range: ${startTime} thru ${endTime}, with error: ${err}'
-  //     );
-  //   }
-  // }
-
-  @override
-  Future<SuiObjectRef?> getObjectRef(String objectId) {
-    // TODO: implement getObjectRef
-    throw UnimplementedError();
+  Future<int> getTotalTransactionNumber() async {
+    try {
+      final resp = await client.request(
+        'sui_getTotalTransactionNumber',
+        []
+      );
+      return resp;
+    } catch (err) {
+      throw ArgumentError('Error fetching total transaction number: ${err}');
+    }
   }
 
-  @override
-  Future<List<GetObjectDataResponse>> selectCoinSetWithCombinedBalanceGreaterThanOrEqual(String address, BigInt amount, String typeArg, List<ObjectId> exclude) {
-    // TODO: implement selectCoinSetWithCombinedBalanceGreaterThanOrEqual
-    throw UnimplementedError();
+  Future<List<String>> getTransactionDigestsInRange(
+    int start,
+    int end
+  ) async {
+    try {
+      final data = await client.request(
+        'sui_getTransactionsInRange',
+        [start, end]
+      );
+      return (data as List).cast<String>();
+    } catch (err) {
+      throw ArgumentError(
+        'Error fetching transaction digests in range: $err for range $start-$end'
+      );
+    }
   }
 
-  @override
-  Future<SubscriptionId> subscribeEvent(filter, Function(SuiEventEnvelope event) onMessage) {
-    // TODO: implement subscribeEvent
-    throw UnimplementedError();
+  /// Events
+
+  Future<PaginatedEvents> getEvents(
+    TransactionDigest digest,
+    {int limit = 1,
+    bool descendingOrder = true,
+    String? cursor}
+  ) async {
+    try {
+      final result = await client.request(
+        'sui_getEvents',
+        [
+          { "Transaction": digest },
+          cursor,
+          limit,
+          descendingOrder
+        ]
+      );
+
+      return PaginatedEvents.fromJson(result);
+
+    } catch (err) {
+      throw ArgumentError(
+        'Error getting events by transaction: $digest, with error: $err'
+      );
+    }
   }
-
-  @override
-  Future<bool> unsubscribeEvent(SubscriptionId id) {
-    // TODO: implement unsubscribeEvent
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<GetObjectDataResponse>> getCoinBalancesOwnedByAddress(String address, String? typeArg) {
-    // TODO: implement getCoinBalancesOwnedByAddress
-    throw UnimplementedError();
-  }
-
-  @override
-  CoinDenominationInfoResponse getCoinDenominationInfo(String coinType) {
-    // TODO: implement getCoinDenominationInfo
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsByModule(ObjectId packageId, String module, int count, int startTime, int endTime) {
-    // TODO: implement getEventsByModule
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsByMoveEventStructName(String moveEventStructName, int count, int startTime, int endTime) {
-    // TODO: implement getEventsByMoveEventStructName
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsByObject(ObjectId object, int count, int startTime, int endTime) {
-    // TODO: implement getEventsByObject
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsByRecipient(recipient, int count, int startTime, int endTime) {
-    // TODO: implement getEventsByRecipient
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsBySender(SuiAddress sender, int count, int startTime, int endTime) {
-    // TODO: implement getEventsBySender
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsByTimeRange(int count, int startTime, int endTime) {
-    // TODO: implement getEventsByTimeRange
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiEvents> getEventsByTransaction(TransactionDigest digest, int count) {
-    // TODO: implement getEventsByTransaction
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiMoveFunctionArgTypes> getMoveFunctionArgTypes(String objectId, String moduleName, String functionName) {
-    // TODO: implement getMoveFunctionArgTypes
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(String objectId, String moduleName, String functionName) {
-    // TODO: implement getNormalizedMoveFunction
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiMoveNormalizedModule> getNormalizedMoveModule(String objectId, String moduleName) {
-    // TODO: implement getNormalizedMoveModule
-    throw UnimplementedError();
-  }
-
-  @override
-  Future getNormalizedMoveModulesByPackage(String objectId) {
-    // TODO: implement getNormalizedMoveModulesByPackage
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<SuiMoveNormalizedStruct> getNormalizedMoveStruct(String objectId, String moduleName, String structName) {
-    // TODO: implement getNormalizedMoveStruct
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<int> getTotalTransactionNumber() {
-    // TODO: implement getTotalTransactionNumber
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<TransactionDigest>> getTransactionDigestsInRange(int start, int end) {
-    // TODO: implement getTransactionDigestsInRange
-    throw UnimplementedError();
-  }
-
-  @override
-  List<GetObjectDataResponse> selectCoinsWithBalanceGreaterThanOrEqual(String address, BigInt amount, String typeArg, List<ObjectId> exclude) {
-    // TODO: implement selectCoinsWithBalanceGreaterThanOrEqual
-    throw UnimplementedError();
-  }
-
-  // async subscribeEvent(
-  //   filter: SuiEventFilter,
-  //   onMessage: (event: SuiEventEnvelope) => void
-  // ): Promise<SubscriptionId> {
-  //   return this.wsClient.subscribeEvent(filter, onMessage);
-  // }
-
-  // async unsubscribeEvent(id: SubscriptionId): Promise<boolean> {
-  //   return this.wsClient.unsubscribeEvent(id);
-  // }
 }

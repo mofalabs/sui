@@ -6,7 +6,7 @@ enum Ordering {
   Ascending, Descending
 }
 
-enum ExecuteTransactionRequestType {
+enum ExecuteTransaction {
   ImmediateReturn,
   WaitForTxCert,
   WaitForEffectsCert,

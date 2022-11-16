@@ -127,17 +127,6 @@ class NewObjectEvent {
   );
 }
 
-// export type SuiEvent =
-//   | { moveEvent: MoveEvent }
-//   | { publish: PublishEvent }
-//   | { coinBalanceChange: CoinBalanceChangeEvent }
-//   | { transferObject: TransferObjectEvent }
-//   | { mutateObject: MutateObjectEvent }
-//   | { deleteObject: DeleteObjectEvent }
-//   | { newObject: NewObjectEvent }
-//   | { epochChange: bigint }
-//   | { checkpoint: bigint };
-
 class MoveEventField {
   String path;
   SuiJsonValue value;
@@ -161,36 +150,56 @@ enum BalanceChangeType {
   Gas, Pay, Receive
 }
 
-// mirrors sui_json_rpc_types::SuiEventFilter
-// export type SuiEventFilter =
-//   | { Package: ObjectId }
-//   | { Module: string }
-//   | { MoveEventType: string }
-//   | { MoveEventField: MoveEventField }
-//   | { SenderAddress: SuiAddress }
-//   | { EventType: EventType }
-//   | { All: SuiEventFilter[] }
-//   | { Any: SuiEventFilter[] }
-//   | { And: [SuiEventFilter, SuiEventFilter] }
-//   | { Or: [SuiEventFilter, SuiEventFilter] };
-
 class SuiEventEnvelope {
   int timestamp;
   TransactionDigest txDigest;
   dynamic event;
 
   SuiEventEnvelope(this.timestamp, this.txDigest, this.event);
+
+  factory SuiEventEnvelope.fromJson(dynamic data) {
+    return SuiEventEnvelope(
+      data['timestamp'],
+      data['txDigest'],
+      data['event']
+    );
+  }
 }
 
 typedef SuiEvents = List<SuiEventEnvelope>;
 
 typedef SubscriptionId = int;
 
-class SubscriptionEvent {
-  SubscriptionId subscription;
-  SuiEventEnvelope result;
+class EventId {
+  int txSeq;
+  int eventSeq;
 
-  SubscriptionEvent(this.subscription, this.result);
+  EventId(this.txSeq, this.eventSeq);
+
+  factory EventId.fromJson(dynamic data) {
+    return EventId(
+      data['txSeq'],
+      data['eventSeq']
+    );
+  }
+}
+
+class PaginatedEvents {
+  List<SuiEventEnvelope> data;
+  EventId? nextCursor;
+
+  PaginatedEvents(this.data, this.nextCursor);
+
+  factory PaginatedEvents.fromJson(dynamic data) {
+    final eventsData = (data['data'] as List)
+      .map((e) => SuiEventEnvelope.fromJson(e))
+      .toList();
+
+    return PaginatedEvents(
+      eventsData,
+      EventId.fromJson(data['nextCursor'])
+    );
+  }
 }
 
 // mirrors the value defined in https://github.com/MystenLabs/sui/blob/e12f8c58ef7ba17205c4caf5ad2c350cbb01656c/crates/sui-json-rpc/src/api.rs#L27
