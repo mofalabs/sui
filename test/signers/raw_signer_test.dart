@@ -37,12 +37,10 @@ void main() {
   setUp(() {
     final secretKey = Uint8List.fromList(VALID_SECP256K1_SECRET_KEY);
     final pubKey = Uint8List.fromList(VALID_SECP256K1_PUBLIC_KEY);
-    final pubKeyBase64 = base64Encode(pubKey);
     secp256k1Keypair = Secp256k1Keypair.fromSecretKey(secretKey);
 
     ed25519Keypair = Ed25519Keypair.fromSecretKey(
-      base64Decode(VALID_Ed25519_SECRET_KEY), 
-      skipValidation: false
+      base64Decode(VALID_Ed25519_SECRET_KEY)
     );
   });
 
@@ -69,7 +67,7 @@ void main() {
     final signer = RawSigner(ed25519Keypair, endpoint: Constants.devnetAPI);
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
-    final resp = await signer.transferSuiWithRequestType(txn);
+    final resp = await signer.transferSui(txn);
     expect(resp['EffectsCert']['certificate']['transactionDigest'] != null, true);
   });
 
@@ -77,7 +75,7 @@ void main() {
     final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
-    final resp = await signer.transferSuiWithRequestType(txn);
+    final resp = await signer.transferSui(txn);
     expect(resp['EffectsCert']['certificate']['transactionDigest'] != null, true);
   });
 

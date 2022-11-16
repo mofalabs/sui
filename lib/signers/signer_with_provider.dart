@@ -46,7 +46,7 @@ abstract class SignerWithProvider {
   }
 
   /// Sign a transaction and submit to the Fullnode for execution. Only exists on Fullnode
-  Future<SuiExecuteTransactionResponse> signAndExecuteTransactionWithRequestType(
+  Future<SuiExecuteTransactionResponse> signAndExecuteSignableTransaction(
     SignableTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -54,29 +54,29 @@ abstract class SignerWithProvider {
       case UnserializedSignableTransaction.bytes:
         return await signAndExecuteTransaction(transaction.data);
       case UnserializedSignableTransaction.moveCall:
-        return executeMoveCallWithRequestType(
+        return executeMoveCall(
           transaction.data,
           requestType
         );
       case UnserializedSignableTransaction.transferSui:
-        return transferSuiWithRequestType(transaction.data, requestType);
+        return transferSui(transaction.data, requestType);
       case UnserializedSignableTransaction.transferObject:
-        return transferObjectWithRequestType(
+        return transferObject(
           transaction.data,
           requestType
         );
       case UnserializedSignableTransaction.mergeCoin:
-        return mergeCoinWithRequestType(transaction.data, requestType);
+        return mergeCoin(transaction.data, requestType);
       case UnserializedSignableTransaction.splitCoin:
-        return splitCoinWithRequestType(transaction.data, requestType);
+        return splitCoin(transaction.data, requestType);
       case UnserializedSignableTransaction.pay:
-        return payWithRequestType(transaction.data, requestType);
+        return pay(transaction.data, requestType);
       case UnserializedSignableTransaction.paySui:
-        return paySuiWithRequestType(transaction.data, requestType);
+        return paySui(transaction.data, requestType);
       case UnserializedSignableTransaction.payAllSui:
-        return payAllSuiWithRequestType(transaction.data, requestType);
+        return payAllSui(transaction.data, requestType);
       case UnserializedSignableTransaction.publish:
-        return publishWithRequestType(transaction.data, requestType);
+        return publish(transaction.data, requestType);
       default:
         throw ArgumentError(
           'Unknown transaction kind: "${transaction.kind}"'
@@ -85,7 +85,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and sign a `TransferObject` transaction and submit to the Fullnode for execution
-  Future<SuiExecuteTransactionResponse> transferObjectWithRequestType(
+  Future<SuiExecuteTransactionResponse> transferObject(
     TransferObjectTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -101,7 +101,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and sign a `TransferSui` transaction and submit to the Fullnode for execution
-  Future<SuiExecuteTransactionResponse> transferSuiWithRequestType(
+  Future<SuiExecuteTransactionResponse> transferSui(
     TransferSuiTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -117,7 +117,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and Sign a `Pay` transaction and submit to the fullnode for execution
-  Future<SuiExecuteTransactionResponse> payWithRequestType(
+  Future<SuiExecuteTransactionResponse> pay(
     PayTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -130,7 +130,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and Sign a `PaySui` transaction and submit to the fullnode for execution
-  Future<SuiExecuteTransactionResponse> paySuiWithRequestType(
+  Future<SuiExecuteTransactionResponse> paySui(
     PaySuiTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -143,7 +143,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and Sign a `PayAllSui` transaction and submit to the fullnode for execution
-  Future<SuiExecuteTransactionResponse> payAllSuiWithRequestType(
+  Future<SuiExecuteTransactionResponse> payAllSui(
     PayAllSuiTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -159,7 +159,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and sign a `MergeCoin` transaction and submit to the Fullnode for execution
-  Future<SuiExecuteTransactionResponse> mergeCoinWithRequestType(
+  Future<SuiExecuteTransactionResponse> mergeCoin(
     MergeCoinTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -175,7 +175,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and sign a `SplitCoin` transaction and submit to the Fullnode for execution
-  Future<SuiExecuteTransactionResponse> splitCoinWithRequestType(
+  Future<SuiExecuteTransactionResponse> splitCoin(
     SplitCoinTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -191,7 +191,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and sign a `MoveCall` transaction and submit to the Fullnode for execution
-  Future<SuiExecuteTransactionResponse> executeMoveCallWithRequestType(
+  Future<SuiExecuteTransactionResponse> executeMoveCall(
     MoveCallTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
@@ -207,7 +207,7 @@ abstract class SignerWithProvider {
   }
 
   /// Serialize and sign a `Publish` transaction and submit to the Fullnode for execution
-  Future<SuiExecuteTransactionResponse> publishWithRequestType(
+  Future<SuiExecuteTransactionResponse> publish(
     PublishTransaction transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {

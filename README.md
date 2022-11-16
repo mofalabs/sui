@@ -6,7 +6,7 @@ final keypair = Ed25519Keypair.fromMnemonics('mnemonics');
 final signer = RawSigner(keypair, endpoint: Constants.devnetAPI);
 final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
 final txn = TransferSuiTransaction(coins[0].objectId, 100, 'receipt address', 100);
-final resp = await signer.transferSuiWithRequestType(txn);
+final resp = await signer.transferSui(txn);
 ```
 
 ```dart
@@ -15,5 +15,5 @@ final keypair = Secp256k1Keypair.fromMnemonics('mnemonics');
 final signer = RawSigner(keypair, endpoint: Constants.devnetAPI);
 final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
 final txn = TransferSuiTransaction(coins[0].objectId, 100, 'receipt address', 100);
-final resp = await signer.transferSuiWithRequestType(txn);
+final resp = await signer.transferSui(txn);
 ```
