@@ -34,7 +34,8 @@ class Coin {
   }
 
   static String? getCoinType(String type) {
-    return COIN_TYPE_ARG_REGEX.stringMatch(type);
+    final match = COIN_TYPE_ARG_REGEX.firstMatch(type);
+    return match?.group(1);
   }
 
   static String? getCoinTypeArg(ObjectData obj) {

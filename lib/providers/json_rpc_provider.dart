@@ -144,9 +144,8 @@ class JsonRpcProvider {
 
   Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
     final objects = await getObjectsOwnedByAddress(address);
-    final result = (objects as List)
-      .where((obj) => obj['type'] == '0x2::coin::Coin<0x2::sui::SUI>')
-      .map((obj) => SuiObjectInfo.fromJson(obj));
+    final result = objects
+      .where((obj) => Coin.isSUI(ObjectData(objectInfo: obj)));
     return result.toList();
   }
 
@@ -386,12 +385,12 @@ class JsonRpcProvider {
     String pubkey,
    [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
   ) async {
-    final resp = await client.request(
+    final result = await client.request(
       'sui_executeTransaction',
       [txnBytes, signatureScheme.name, signature, pubkey, requestType.name],
       skipDataValidation
     );
-    return resp;
+    return SuiExecuteTransactionResponse.fromJson(result);
   }
 
   Future<int> getTotalTransactionNumber() async {

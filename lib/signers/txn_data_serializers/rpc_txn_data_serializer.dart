@@ -36,24 +36,6 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   }
 
   @override
-  Future<Base64DataBuffer> newPay(SuiAddress signerAddress, PayTransaction txn) {
-    // TODO: implement newPay
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Base64DataBuffer> newPayAllSui(SuiAddress signerAddress, PayAllSuiTransaction txn) {
-    // TODO: implement newPayAllSui
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Base64DataBuffer> newPaySui(SuiAddress signerAddress, PaySuiTransaction txn) {
-    // TODO: implement newPaySui
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Base64DataBuffer> newPublish(SuiAddress signerAddress, PublishTransaction txn) {
     // TODO: implement newPublish
     throw UnimplementedError();
@@ -84,9 +66,74 @@ class RpcTxnDataSerializer with TxnDataSerializer {
       );
       return Base64DataBuffer.fromBase64String(resp['txBytes']);
     } catch (err) {
-      throw ArgumentError(
-        'Error transferring Sui coin: $err with args ${jsonEncode(txn)}'
+      throw ArgumentError('Error transferring Sui coin: $err');
+    }
+  }
+
+  @override
+  Future<Base64DataBuffer> newPay(
+    SuiAddress signerAddress, 
+    PayTransaction txn
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_pay',
+        [
+          signerAddress,
+          txn.inputCoins,
+          txn.recipients,
+          txn.amounts,
+          txn.gasPayment,
+          txn.gasBudget,
+        ],
       );
+      return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    } catch (err) {
+      throw ArgumentError('Error executing Pay transaction: $err}');
+    }
+  }
+
+  @override
+  Future<Base64DataBuffer> newPaySui(
+    SuiAddress signerAddress, 
+    PaySuiTransaction txn
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_paySui',
+        [
+          signerAddress, 
+          txn.inputCoins, 
+          txn.recipients, 
+          txn.amounts, 
+          txn.gasBudget
+        ]
+      );
+      return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    } catch (err) {
+      throw ArgumentError('Error executing PaySui transaction: $err');
+    }
+  }
+
+
+  @override
+  Future<Base64DataBuffer> newPayAllSui(
+    SuiAddress signerAddress, 
+    PayAllSuiTransaction txn
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_payAllSui',
+        [
+          signerAddress, 
+          txn.inputCoins, 
+          txn.recipient, 
+          txn.gasBudget
+        ]
+      );
+      return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    } catch (err) {
+      throw ArgumentError('Error executing PayAllSui transaction: $err');
     }
   }
     

@@ -10,6 +10,7 @@ import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/raw_signer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
+import 'package:sui/types/transactions.dart';
 
 void main() {
 
@@ -68,7 +69,7 @@ void main() {
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
-    expect(resp['EffectsCert']['certificate']['transactionDigest'] != null, true);
+    expect(resp.effectsCert!.certificate.transactionDigest.isNotEmpty, true);
   });
 
   test('transfer sui with secp256k1 keypair', () async {
@@ -76,7 +77,58 @@ void main() {
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
-    expect(resp['EffectsCert']['certificate']['transactionDigest'] != null, true);
+    expect(resp.effectsCert!.certificate.transactionDigest.isNotEmpty, true);
+  });
+
+  test('pay with secp256k1 keypair', () async {
+    final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
+    final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
+    final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+    final txn = PayTransaction(
+      inputObjectIds,
+      [DEFAULT_RECIPIENT],
+      [1000],
+      coins[2].objectId,
+      DEFAULT_GAS_BUDGET
+    );
+
+    final waitForLocalExecutionTx = await signer.pay(txn);
+    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+
+    final immediateReturnTx = await signer.pay(txn, ExecuteTransaction.ImmediateReturn);
+    expect(immediateReturnTx.immediateReturn!.txDigest.isNotEmpty, true);
+
+    final waitForTxCertTx = await signer.pay(txn, ExecuteTransaction.WaitForTxCert);
+    expect(waitForTxCertTx.txCert!.certificate.transactionDigest.isNotEmpty, true);
+  });
+
+  test('pay sui with secp256k1 keypair', () async {
+    final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
+    final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
+    final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+    final txn = PaySuiTransaction(
+      inputObjectIds, 
+      [DEFAULT_RECIPIENT],
+      [1000], 
+      DEFAULT_GAS_BUDGET
+    );
+
+    final waitForLocalExecutionTx = await signer.paySui(txn);
+    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+  });
+
+  test('pay all sui with secp256k1 keypair', () async {
+    final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
+    final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
+    final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+    final txn = PayAllSuiTransaction(
+      inputObjectIds, 
+      DEFAULT_RECIPIENT,
+      DEFAULT_GAS_BUDGET
+    );
+
+    final waitForLocalExecutionTx = await signer.payAllSui(txn);
+    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
   });
 
 }

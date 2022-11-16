@@ -25,7 +25,77 @@ enum TransactionKindName {
 
 typedef SuiJsonValue = dynamic;
 
-typedef SuiExecuteTransactionResponse = dynamic;
+class ImmediateReturn {
+  String txDigest;
+
+  ImmediateReturn(this.txDigest);
+
+  factory ImmediateReturn.fromJson(dynamic data) {
+    return ImmediateReturn(
+      data['tx_digest']
+    );
+  }
+}
+
+ class TxCert {
+   CertifiedTransaction certificate;
+
+   TxCert(this.certificate);
+
+   factory TxCert.fromJson(dynamic data) {
+    return TxCert(
+      CertifiedTransaction.fromJson(data['certificate'])
+    );
+   }
+}
+
+class SuiCertifiedTransactionEffects {
+  TransactionEffects effects;
+
+  SuiCertifiedTransactionEffects(this.effects);
+
+  factory SuiCertifiedTransactionEffects.fromJson(dynamic data) {
+    return SuiCertifiedTransactionEffects(
+      TransactionEffects.fromJson(data['effects'])
+    );
+  }
+}
+
+class EffectsCert {
+  CertifiedTransaction certificate;
+  SuiCertifiedTransactionEffects effects;
+  bool confirmedLocalExecution;
+
+  EffectsCert(this.certificate, this.effects, this.confirmedLocalExecution);
+
+  factory EffectsCert.fromJson(dynamic data) {
+    return EffectsCert(
+      CertifiedTransaction.fromJson(data['certificate']),
+      SuiCertifiedTransactionEffects.fromJson(data['effects']),
+      data['confirmed_local_execution']
+    );
+  }
+}
+
+class SuiExecuteTransactionResponse {
+  ImmediateReturn? immediateReturn;
+  TxCert? txCert;
+  EffectsCert? effectsCert;
+
+  SuiExecuteTransactionResponse(
+    this.immediateReturn,
+    this.txCert,
+    this.effectsCert
+  );
+
+  factory SuiExecuteTransactionResponse.fromJson(dynamic data) {
+    return SuiExecuteTransactionResponse(
+      data['ImmediateReturn'] != null ? ImmediateReturn.fromJson(data['ImmediateReturn']) : null,
+      data['TxCert'] != null ? TxCert.fromJson(data['TxCert']) : data['TxCert'],
+      data['EffectsCert'] != null ? EffectsCert.fromJson(data['EffectsCert']) : null
+    );
+  }
+}
 
 
 class AuthorityQuorumSignInfo {
@@ -104,10 +174,13 @@ class Pay {
   Pay(this.coins, this.recipients, this.amounts);
 
   factory Pay.fromJson(dynamic data) {
+    final coinsList = (data['coins'] as List).map((e) => SuiObjectRef.fromJson(e)).toList();
+    final recipientsList = data['recipients'].cast<String>();
+    final amountsList = data['amounts'].cast<int>();
     return Pay(
-      data['coins'],
-      data['recipients'],
-      data['amounts']
+      coinsList,
+      recipientsList,
+      amountsList
     );
   }
 }
@@ -153,8 +226,12 @@ class PayAllSui {
   PayAllSui(this.coins, this.recipient);
 
   factory PayAllSui.fromJson(dynamic data) {
+    final coinsList = (data['coins'] as List)
+      .map((x) => SuiObjectRef.fromJson(x))
+      .toList();
+
     return PayAllSui(
-      data['coins'],
+      coinsList,
       data['recipient']
     );
   }
