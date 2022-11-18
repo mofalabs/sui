@@ -37,7 +37,7 @@ class SignatureData extends ECSignature {
     final buffer = Uint8List(65);
     buffer.setAll(0, padLeftUint8List(encodeBigIntAsUnsigned(r)));
     buffer.setAll(32, padLeftUint8List(encodeBigIntAsUnsigned(s)));
-    buffer[64] = v - 27;
+    buffer[64] = v;
     return buffer;
   }
 }
@@ -103,14 +103,20 @@ Uint8List padLeftUint8List(Uint8List data, [int len = 32]) {
 /// Given an arbitrary message hash and an Ethereum message signature encoded in bytes, returns
 /// the public key that was used to sign it.
 /// https://github.com/web3j/web3j/blob/c0b7b9c2769a466215d416696021aa75127c2ff1/crypto/src/main/java/org/web3j/crypto/Sign.java#L241
-Uint8List ecRecover(Uint8List messageHash, SignatureData signature, [bool isCompressed = false]) {
+Uint8List ecRecover(
+  Uint8List messageHash, 
+  SignatureData signature, 
+  [bool isCompressed = false, 
+   bool isEthereum = false]
+) {
 
   Uint8List r = padLeftUint8List(encodeBigIntAsUnsigned(signature.r));
   Uint8List s = padLeftUint8List(encodeBigIntAsUnsigned(signature.s));
 
-  final header = signature.v & 0xFF;
+  var header = signature.v & 0xFF;
   // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
   //                  0x1D = second key with even y, 0x1E = second key with odd y
+  header = isEthereum ? header : header + magicNum;
   if (header < magicNum || header > 34) {
     throw Exception('Header byte out of range: $header');
   }
@@ -134,7 +140,7 @@ bool verifySignature(
   return Hex.encode(publicKey) == Hex.encode(recoveredPublicKey);
 }
 
-SignatureData sign(Uint8List messageHash, Uint8List privateKey) {
+SignatureData sign(Uint8List messageHash, Uint8List privateKey, [bool isEthereum = false]) {
   final signer = ECDSASigner(null, HMac(SHA256Digest(), 64));
   final key = ECPrivateKey(decodeBigIntToUnsigned(privateKey), curveParams);
   signer.init(true, PrivateKeyParameter(key));
@@ -162,7 +168,7 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey) {
     );
   }
 
-  return SignatureData(signature.r, signature.s, recId + magicNum);
+  return SignatureData(signature.r, signature.s, recId + (isEthereum ? magicNum : 0));
 }
 
 Uint8List? recoverFromSignature(int recId, ECSignature sig, Uint8List msg, [bool encoded = false]) {

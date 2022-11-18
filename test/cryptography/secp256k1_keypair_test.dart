@@ -1,11 +1,9 @@
 
 
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pointycastle/pointycastle.dart';
 import 'package:sui/cryptography/secp256k1.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/serialization/base64_buffer.dart';

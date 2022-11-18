@@ -50,7 +50,7 @@ void main() {
     final signData = Base64DataBuffer(Uint8List.fromList(utf8.encode('hello world')));
     final signer = RawSigner(keypair);
     final signature = signer.signData(signData);
-    final isValid = Ed25519Keypair.verify(signData, signature.signature.getData(), signature.pubKey.toBytes());
+    final isValid = Ed25519Keypair.verify(signData, signature.signature, signature.pubKey.toBytes());
     expect(isValid, true);
     
   });
