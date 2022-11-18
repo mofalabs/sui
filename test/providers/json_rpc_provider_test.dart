@@ -19,7 +19,7 @@ void main() {
     final resp = await provider.getRpcApiVersion();
     expect(resp.major >= 0, true);
     expect(resp.minor >= 15, true);
-    expect(resp.patch >= 2, true);
+    expect(resp.patch >= 0, true);
   });
 
   test('test getTransactions', () async {

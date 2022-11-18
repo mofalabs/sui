@@ -449,4 +449,17 @@ class JsonRpcProvider {
       );
     }
   }
+
+
+  Future<TransactionEffects> dryRunTransaction(String txBytes) async {
+    try {
+      final resp = await client.request(
+        'sui_dryRunTransaction',
+        [txBytes],
+      );
+      return TransactionEffects.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError('Error dry running transaction with request type: $err');
+    }
+  }
 }

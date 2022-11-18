@@ -88,8 +88,8 @@ void main() {
       inputObjectIds,
       [DEFAULT_RECIPIENT],
       [1000],
-      coins[2].objectId,
-      DEFAULT_GAS_BUDGET
+      DEFAULT_GAS_BUDGET,
+      coins[2].objectId
     );
 
     final waitForLocalExecutionTx = await signer.pay(txn);
@@ -128,6 +128,25 @@ void main() {
     );
 
     final waitForLocalExecutionTx = await signer.payAllSui(txn);
+    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+  });
+
+  test('test getGasCostEstimation', () async {
+    final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
+    final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
+    final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+
+    var txn = PaySuiTransaction(
+      inputObjectIds, 
+      [DEFAULT_RECIPIENT],
+      [1000], 
+      DEFAULT_GAS_BUDGET
+    );
+
+    final gasBudget = await signer.getGasCostEstimation(txn);
+    txn.gasBudget = gasBudget;
+
+    final waitForLocalExecutionTx = await signer.paySui(txn);
     expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
   });
 

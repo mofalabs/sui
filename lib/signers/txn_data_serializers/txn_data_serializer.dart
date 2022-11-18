@@ -29,10 +29,10 @@ class PayTransaction {
   List<ObjectId> inputCoins;
   List<SuiAddress> recipients;
   List<int> amounts;
-  ObjectId? gasPayment;
   int gasBudget;
+  ObjectId? gasPayment;
 
-  PayTransaction(this.inputCoins, this.recipients, this.amounts, this.gasPayment, this.gasBudget);
+  PayTransaction(this.inputCoins, this.recipients, this.amounts, this.gasBudget, [this.gasPayment]);
 }
 
 /// Send SUI coins to a list of addresses, following a list of amounts.
