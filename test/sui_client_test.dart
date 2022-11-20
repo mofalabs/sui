@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
+import 'package:sui/rpc/faucet_client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
@@ -47,7 +48,11 @@ void main() {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
     final client = SuiClient(account, Constants.devnetAPI);
     final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-    expect(coins.isNotEmpty, true);
+    if (coins.isEmpty) {
+      final faucet = FaucetClient(Constants.faucetDevAPI);
+      final resp = await faucet.requestSui(account.getAddress());
+      assert(resp.transferredGasObjects.isNotEmpty);
+    }
 
     final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
     final txn = PaySuiTransaction(
@@ -68,7 +73,11 @@ void main() {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(account, Constants.devnetAPI);
     final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-    expect(coins.isNotEmpty, true);
+    if (coins.isEmpty) {
+      final faucet = FaucetClient(Constants.faucetDevAPI);
+      final resp = await faucet.requestSui(account.getAddress());
+      assert(resp.transferredGasObjects.isNotEmpty);
+    }
 
     final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
     final txn = PaySuiTransaction(
