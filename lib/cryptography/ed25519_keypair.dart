@@ -35,7 +35,8 @@ class Ed25519Keypair with Keypair {
     return SignatureScheme.ED25519;
   }
 
-  Uint8List secretKeyBytes() {
+  @override
+  Uint8List getSecretKey() {
     return Uint8List.fromList(_signingKeypair.privateKey.bytes);
   }
 
@@ -122,7 +123,8 @@ class Ed25519Keypair with Keypair {
     return Ed25519Keypair(Uint8List.fromList(fullPrivateKey));
   }
 
-  static bool verify(Base64DataBuffer data, Base64DataBuffer signature, Uint8List publicKey) {
+  @override
+  bool verify(Base64DataBuffer data, Base64DataBuffer signature, Uint8List publicKey) {
     return ed25519.verify(ed25519.PublicKey(publicKey), data.getData(), signature.getData());
   }
 

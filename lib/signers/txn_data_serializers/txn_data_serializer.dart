@@ -68,24 +68,6 @@ class PayAllSuiTransaction {
   PayAllSuiTransaction(this.inputCoins, this.recipient, this.gasBudget);
 }
 
-class MergeCoinTransaction {
-  ObjectId primaryCoin;
-  ObjectId coinToMerge;
-  ObjectId? gasPayment;
-  int gasBudget;
-
-  MergeCoinTransaction(this.primaryCoin, this.coinToMerge, this.gasPayment, this.gasBudget);
-}
-
-class SplitCoinTransaction {
-  ObjectId coinObjectId;
-  List<int> splitAmounts;
-  ObjectId? gasPayment;
-  int gasBudget;
-
-  SplitCoinTransaction(this.coinObjectId, this.splitAmounts, this.gasPayment, this.gasBudget);
-}
-
 class MoveCallTransaction {
   ObjectId packageObjectId;
   String module;
@@ -110,8 +92,6 @@ enum UnserializedSignableTransaction {
   moveCall,  // MoveCallTransaction
   transferSui,  // TransferSuiTransaction
   transferObject,  // TransferObjectTransaction
-  mergeCoin,  // MergeCoinTransaction
-  splitCoin,  // SplitCoinTransaction
   pay,  // PayTransaction
   paySui,  // PaySuiTransaction
   payAllSui,  // PayAllSuiTransaction
@@ -163,16 +143,6 @@ mixin TxnDataSerializer {
   Future<Base64DataBuffer> newMoveCall(
     SuiAddress signerAddress,
     MoveCallTransaction txn
-  );
-
-  Future<Base64DataBuffer> newMergeCoin(
-    SuiAddress signerAddress,
-    MergeCoinTransaction txn
-  );
-
-  Future<Base64DataBuffer> newSplitCoin(
-    SuiAddress signerAddress,
-    SplitCoinTransaction txn
   );
 
   Future<Base64DataBuffer> newPublish(

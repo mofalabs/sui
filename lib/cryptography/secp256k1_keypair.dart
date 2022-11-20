@@ -46,14 +46,6 @@ class Secp256k1Keypair with Keypair {
     return SignatureScheme.Secp256k1;
   }
 
-  /// Generate a new random keypair
-  static Secp256k1Keypair generate() {
-    Uint8List secretKey = generatePrivateKeyBytes();
-    Uint8List publicKey = getPublicKeyFromPrivateKeyBytes(secretKey);
-
-    return Secp256k1Keypair(Secp256k1KeypairData(publicKey, secretKey));
-  }
-
   /// Create a keypair from a raw secret key byte array.
   ///
   /// Throw error if the provided secret key is invalid and validation is not skipped.
@@ -84,7 +76,8 @@ class Secp256k1Keypair with Keypair {
     return Secp256k1Keypair.deriveKeypair(DEFAULT_SECP256K1_DERIVATION_PATH, mnemonics);
   }
 
-  Uint8List secretKeyBytes() {
+  @override
+  Uint8List getSecretKey() {
     return _keypair.secretKey;
   }
 
@@ -117,8 +110,9 @@ class Secp256k1Keypair with Keypair {
     return Secp256k1Keypair(Secp256k1KeypairData(key.publicKey, key.privateKey!));
   }
 
-  static bool verify(Base64DataBuffer data, Uint8List signature, Uint8List publicKey) {
+  @override
+  bool verify(Base64DataBuffer data, Base64DataBuffer signature, Uint8List publicKey) {
     final msgHash = sha256(data.getData());
-    return verifySignature(msgHash, SignatureData.fromBytes(signature), publicKey);
+    return verifySignature(msgHash, SignatureData.fromBytes(signature.getData()), publicKey);
   }
 }

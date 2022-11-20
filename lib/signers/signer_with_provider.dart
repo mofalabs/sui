@@ -7,6 +7,7 @@ import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/types/common.dart';
+import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 
 /// Pair of signature and corresponding public key
@@ -69,10 +70,6 @@ abstract class SignerWithProvider {
           transaction.data,
           requestType
         );
-      case UnserializedSignableTransaction.mergeCoin:
-        return mergeCoin(transaction.data, requestType);
-      case UnserializedSignableTransaction.splitCoin:
-        return splitCoin(transaction.data, requestType);
       case UnserializedSignableTransaction.pay:
         return pay(transaction.data, requestType);
       case UnserializedSignableTransaction.paySui:
@@ -93,8 +90,6 @@ abstract class SignerWithProvider {
     Base64DataBuffer dryRunTxBytes;
     if (tx is Uint8List) {
       dryRunTxBytes = Base64DataBuffer(tx);
-    } else if (tx is MergeCoinTransaction) {
-      dryRunTxBytes = await serializer.newMergeCoin(address, tx);
     } else if (tx is MoveCallTransaction) {
       dryRunTxBytes = await serializer.newMoveCall(address, tx);
     } else if (tx is PayTransaction) {
@@ -105,8 +100,6 @@ abstract class SignerWithProvider {
       dryRunTxBytes = await serializer.newPaySui(address, tx);
     } else if (tx is PublishTransaction) {
       dryRunTxBytes = await serializer.newPublish(address, tx);
-    } else if (tx is SplitCoinTransaction) {
-      dryRunTxBytes = await serializer.newSplitCoin(address, tx);
     } else if (tx is TransferObjectTransaction) {
       dryRunTxBytes = await serializer.newTransferObject(address, tx);
     } else if (tx is TransferSuiTransaction) {
@@ -115,6 +108,14 @@ abstract class SignerWithProvider {
       throw ArgumentError("Error, unknown transaction kind ${tx.runtimeType}. Can't dry run transaction.");
     }
     return provider.dryRunTransaction(dryRunTxBytes.toString());
+  }
+
+  Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {
+    return await provider.getObjectsOwnedByAddress(address);
+  }
+
+  Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
+    return await provider.getGasObjectsOwnedByAddress(address);
   }
 
   Future<SuiExecuteTransactionResponse> transferObject(
@@ -177,36 +178,6 @@ abstract class SignerWithProvider {
   ) async {
     final signerAddress = getAddress();
     final txBytes = await serializer.newPayAllSui(
-      signerAddress,
-      transaction
-    );
-    return await signAndExecuteTransaction(
-      txBytes,
-      requestType
-    );
-  }
-
-  Future<SuiExecuteTransactionResponse> mergeCoin(
-    MergeCoinTransaction transaction,
-    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
-  ) async {
-    final signerAddress = getAddress();
-    final txBytes = await serializer.newMergeCoin(
-      signerAddress,
-      transaction
-    );
-    return await signAndExecuteTransaction(
-      txBytes,
-      requestType
-    );
-  }
-
-  Future<SuiExecuteTransactionResponse> splitCoin(
-    SplitCoinTransaction transaction,
-    [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
-  ) async {
-    final signerAddress = getAddress();
-    final txBytes = await serializer.newSplitCoin(
       signerAddress,
       transaction
     );

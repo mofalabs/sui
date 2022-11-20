@@ -1,19 +1,43 @@
 ## Sui Dart SDK
 
 ```dart
-/// transfer sui with ed25519
-final keypair = Ed25519Keypair.fromMnemonics('mnemonics');
-final signer = RawSigner(keypair, endpoint: Constants.devnetAPI);
-final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
-final txn = TransferSuiTransaction(coins[0].objectId, 100, 'receipt address', 100);
-final resp = await signer.transferSui(txn);
+// transfer sui with ed25519
+final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+final client = SuiClient(account, Constants.devnetAPI);
+final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
+assert(coins.isNotEmpty, 'empty gas coin');
+
+final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+final txn = PaySuiTransaction(
+    inputObjectIds, 
+    [DEFAULT_RECIPIENT],
+    [1000],
+    DEFAULT_GAS_BUDGET
+);
+
+// update with estimate gas cost
+txn.gasBudget = await client.getGasCostEstimation(txn);
+
+final waitForLocalExecutionTx = await client.paySui(txn);
 ```
 
 ```dart
-/// transfer sui with secp256k1
-final keypair = Secp256k1Keypair.fromMnemonics('mnemonics');
-final signer = RawSigner(keypair, endpoint: Constants.devnetAPI);
-final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
-final txn = TransferSuiTransaction(coins[0].objectId, 100, 'receipt address', 100);
-final resp = await signer.transferSui(txn);
+// pay sui with secp256k1
+final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
+final client = SuiClient(account, Constants.devnetAPI);
+final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
+assert(coins.isNotEmpty, 'empty gas coin');
+
+final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+final txn = PaySuiTransaction(
+    inputObjectIds,
+    [DEFAULT_RECIPIENT],
+    [1000],
+    DEFAULT_GAS_BUDGET
+);
+
+// update with estimate gas cost
+txn.gasBudget = await client.getGasCostEstimation(txn);
+
+final waitForLocalExecutionTx = await client.paySui(txn);
 ```

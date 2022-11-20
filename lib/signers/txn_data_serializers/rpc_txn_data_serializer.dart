@@ -24,12 +24,6 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   }
 
   @override
-  Future<Base64DataBuffer> newMergeCoin(SuiAddress signerAddress, MergeCoinTransaction txn) {
-    // TODO: implement newMergeCoin
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Base64DataBuffer> newMoveCall(SuiAddress signerAddress, MoveCallTransaction txn) {
     // TODO: implement newMoveCall
     throw UnimplementedError();
@@ -38,12 +32,6 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   @override
   Future<Base64DataBuffer> newPublish(SuiAddress signerAddress, PublishTransaction txn) {
     // TODO: implement newPublish
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Base64DataBuffer> newSplitCoin(SuiAddress signerAddress, SplitCoinTransaction txn) {
-    // TODO: implement newSplitCoin
     throw UnimplementedError();
   }
 

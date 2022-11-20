@@ -30,4 +30,9 @@ class RawSigner extends SignerWithProvider {
       _keypair.getPublicKey()
     );
   }
+
+  bool verify(Base64DataBuffer data, SignaturePubkeyPair signature) {
+    bool success = _keypair.verify(data, signature.signature, signature.pubKey.toBytes());
+    return success;
+  }
 }
