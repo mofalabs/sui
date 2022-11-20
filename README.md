@@ -1,18 +1,28 @@
 ## Sui Dart SDK
 
 ```dart
+const gas_budget = 20000;
+final recipient = SuiAccount.ed25519Account();
+final defaultAddress = account.getAddress();
+```
+
+```dart
 // transfer sui with ed25519
-final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.ed25519Account();
 final client = SuiClient(account, Constants.devnetAPI);
 final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-assert(coins.isNotEmpty, 'empty gas coin');
+if (coins.isEmpty) {
+    final faucet = FaucetClient(Constants.faucetDevAPI);
+    final resp = await faucet.requestSui(account.getAddress());
+    assert(resp.transferredGasObjects.isNotEmpty);
+}
 
 final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
 final txn = PaySuiTransaction(
     inputObjectIds, 
-    [DEFAULT_RECIPIENT],
+    [recipient],
     [1000],
-    DEFAULT_GAS_BUDGET
+    gas_budget
 );
 
 // update with estimate gas cost
@@ -23,17 +33,21 @@ final waitForLocalExecutionTx = await client.paySui(txn);
 
 ```dart
 // pay sui with secp256k1
-final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
+final account = SuiAccount.secp256k1Account();
 final client = SuiClient(account, Constants.devnetAPI);
 final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-assert(coins.isNotEmpty, 'empty gas coin');
+if (coins.isEmpty) {
+    final faucet = FaucetClient(Constants.faucetDevAPI);
+    final resp = await faucet.requestSui(account.getAddress());
+    assert(resp.transferredGasObjects.isNotEmpty);
+}
 
 final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
 final txn = PaySuiTransaction(
     inputObjectIds,
-    [DEFAULT_RECIPIENT],
+    [recipient],
     [1000],
-    DEFAULT_GAS_BUDGET
+    gas_budget
 );
 
 // update with estimate gas cost
