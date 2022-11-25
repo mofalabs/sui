@@ -1,9 +1,9 @@
 ## Sui Dart SDK
 
 ```dart
-const gas_budget = 20000;
-final recipient = SuiAccount.ed25519Account();
-final defaultAddress = account.getAddress();
+const gas_budget = 10000;
+final recipientAccount = SuiAccount.ed25519Account();
+final recipient = account.getAddress();
 ```
 
 ```dart
