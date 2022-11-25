@@ -3,7 +3,7 @@
 ```dart
 const gas_budget = 10000;
 final recipientAccount = SuiAccount.ed25519Account();
-final recipient = account.getAddress();
+final recipient = recipientAccount.getAddress();
 ```
 
 ```dart
