@@ -16,29 +16,81 @@ import 'package:sui/types/common.dart';
 /// BCS bytes matches the input.
 class RpcTxnDataSerializer with TxnDataSerializer {
   late JsonRpcClient client;
-  late bool skipDataValidation;
 
-  RpcTxnDataSerializer(String endpoint, [bool skipDataValidation = false]) {
+  RpcTxnDataSerializer(String endpoint) {
     client = JsonRpcClient(endpoint);
-    this.skipDataValidation = skipDataValidation;
   }
 
   @override
-  Future<Base64DataBuffer> newMoveCall(SuiAddress signerAddress, MoveCallTransaction txn) {
-    // TODO: implement newMoveCall
-    throw UnimplementedError();
+  Future<Base64DataBuffer> newMoveCall(
+    SuiAddress signerAddress, 
+    MoveCallTransaction txn
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_moveCall',
+        [
+          signerAddress,
+          txn.packageObjectId,
+          txn.module,
+          txn.function,
+          txn.typeArguments,
+          txn.arguments,
+          txn.gasPayment,
+          txn.gasBudget,
+        ]
+      );
+      return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    } catch (err) {
+      throw ArgumentError(
+        'Error executing a move call: $err with args $txn'
+      );
+    }
   }
 
   @override
-  Future<Base64DataBuffer> newPublish(SuiAddress signerAddress, PublishTransaction txn) {
-    // TODO: implement newPublish
-    throw UnimplementedError();
+  Future<Base64DataBuffer> newPublish(
+    SuiAddress signerAddress, 
+    PublishTransaction txn
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_publish',
+        [
+          signerAddress, 
+          txn.compiledModules, 
+          txn.gasPayment, 
+          txn.gasBudget
+        ]
+      );
+      return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    } catch (err) {
+      throw ArgumentError('Error publishing package $err');
+    }
   }
 
   @override
-  Future<Base64DataBuffer> newTransferObject(SuiAddress signerAddress, TransferObjectTransaction txn) {
-    // TODO: implement newTransferObject
-    throw UnimplementedError();
+  Future<Base64DataBuffer> newTransferObject(
+    SuiAddress signerAddress, 
+    TransferObjectTransaction txn
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_transferObject',
+        [
+          signerAddress, 
+          txn.objectId, 
+          txn.gasPayment, 
+          txn.gasBudget, 
+          txn.recipient
+        ]
+      );
+      return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    } catch (err) {
+      throw ArgumentError(
+        'Error transferring object: $err with args $txn'
+      );
+    }
   }
 
   @override
@@ -49,8 +101,13 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     try {
       final resp = await client.request(
         'sui_transferSui',
-        [signerAddress, txn.suiObjectId, txn.gasBudget, txn.recipient, txn.amount],
-        skipDataValidation
+        [
+          signerAddress, 
+          txn.suiObjectId, 
+          txn.gasBudget, 
+          txn.recipient, 
+          txn.amount
+        ]
       );
       return Base64DataBuffer.fromBase64String(resp['txBytes']);
     } catch (err) {

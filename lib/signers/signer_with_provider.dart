@@ -23,10 +23,10 @@ abstract class SignerWithProvider {
   late final JsonRpcProvider provider;
   late final TxnDataSerializer serializer;
 
-  SignerWithProvider(String endpoint, [bool skipDataValidation = true, TxnDataSerializer? serializer]) {
+  SignerWithProvider(String endpoint, [TxnDataSerializer? serializer]) {
     provider = JsonRpcProvider(endpoint);
     this.serializer =
-      serializer ?? RpcTxnDataSerializer(provider.endpoint, provider.skipDataValidation);
+      serializer ?? RpcTxnDataSerializer(provider.endpoint);
   }
 
   SuiAddress getAddress();

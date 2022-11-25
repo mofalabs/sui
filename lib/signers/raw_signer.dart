@@ -11,9 +11,8 @@ class RawSigner extends SignerWithProvider {
   RawSigner(
     Keypair keypair,
     {String? endpoint,
-    bool? skipDataValidation,
     TxnDataSerializer? serializer}
-  ): super(endpoint ?? "", skipDataValidation ?? true, serializer) {
+  ): super(endpoint ?? "", serializer) {
     _keypair = keypair;
   }
 
