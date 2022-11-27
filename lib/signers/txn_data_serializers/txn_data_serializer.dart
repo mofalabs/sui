@@ -74,17 +74,17 @@ class MoveCallTransaction {
   String function;
   List<dynamic> typeArguments;
   List<dynamic> arguments;
-  ObjectId? gasPayment;
   int gasBudget;
+  ObjectId? gasPayment;
 
   MoveCallTransaction(
-    this.packageObjectId, 
-    this.module, 
-    this.function, 
-    this.typeArguments, 
-    this.arguments, 
-    this.gasPayment, 
-    this.gasBudget
+    this.packageObjectId,
+    this.module,
+    this.function,
+    this.typeArguments,
+    this.arguments,
+    this.gasBudget,
+    [this.gasPayment]
   );
 }
 
@@ -108,10 +108,10 @@ class SignableTransaction {
 
 class PublishTransaction {
   List<String> compiledModules;
-  ObjectId? gasPayment;
   int gasBudget;
+  ObjectId? gasPayment;
 
-  PublishTransaction(this.compiledModules, this.gasPayment, this.gasBudget);
+  PublishTransaction(this.compiledModules, this.gasBudget, [this.gasPayment]);
 }
 
 mixin TxnDataSerializer {

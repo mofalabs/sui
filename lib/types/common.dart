@@ -20,14 +20,20 @@ class ObjectOwner {
   SuiAddress? addressOwner;
   SuiAddress? objectOwner;
   Shared? shared;
+  bool? immutable;
 
-  ObjectOwner(this.addressOwner, this.objectOwner, this.shared);
+  ObjectOwner(this.addressOwner, this.objectOwner, this.shared, this.immutable);
 
   factory ObjectOwner.fromJson(dynamic data) {
+    if (data is String && data == 'Immutable') {
+      return ObjectOwner(null, null, null, true);
+    }
+    
     return ObjectOwner(
       data['AddressOwner'],
       data['ObjectOwner'],
-      data['shared'] != null ? Shared.fromJson(data['shared']) : null
+      data['shared'] != null ? Shared.fromJson(data['shared']) : null,
+      null
     );
   }
 }

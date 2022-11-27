@@ -44,6 +44,63 @@ void main() {
     expect(success, true);
   });
 
+  test('test publish package', () async {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
+    final client = SuiClient(account, Constants.devnetAPI);
+    final bytecodes = ['oRzrCwYAAAAKAQAIAggMAxQuBEICBUQrB2+IAQj3ASgKnwIKDKkCkwENvAMEAAABAQECAQMABAgAAwYCAAENBAAABQABAAAHAgEAAAgDAQAACQQFAAAKBgEAAAsEBwABDgIIAAMPCQUAAhALAQEICAoCBggAAwABBwgBAQcIAAEGCAABBQMHCAADBwgBAQMBCAIBBggBAQgAAQkAB2NvdW50ZXIGb2JqZWN0CHRyYW5zZmVyCnR4X2NvbnRleHQHQ291bnRlcgxhc3NlcnRfdmFsdWUJVHhDb250ZXh0BmNyZWF0ZQlpbmNyZW1lbnQFb3duZXIJc2V0X3ZhbHVlBXZhbHVlAmlkA1VJRANuZXcGc2VuZGVyDHNoYXJlX29iamVjdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgMMCAIJBQsDAAEEAAEJCwAQABQLASEDCAYAAAAAAAAAACcCAQEEAAEJCgARBgsALhEHBgAAAAAAAAAAEgA4AAICAQQAAQkKABAAFAYBAAAAAAAAABYLAA8AFQIDAQAAAQQLABABFAIEAQQAAREKABABFAsCLhEHIQMMCwABBgAAAAAAAAAAJwsBCwAPABUCBQEAAAEECwAQABQCAAIAAQA='];
+    final txn = PublishTransaction(bytecodes, 10000);
+    final waitForLocalExecutionTx = await client.publish(txn);
+    final creates = waitForLocalExecutionTx.effectsCert!.effects.effects.events!;
+    expect(creates.isNotEmpty, true);
+    final publishMap = creates.firstWhere((e) => e['publish'] != null);
+    final packageId = publishMap['publish']['packageId'].toString();
+    expect(packageId.isNotEmpty, true);
+  });
+
+  test('test move contract call', () async {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
+    final client = SuiClient(account, Constants.devnetAPI);
+    final createSharedCounter = MoveCallTransaction(
+      '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
+      'counter',
+      'create',
+      [],
+      [],
+      1000
+    );
+    final createCounterResp = await client.executeMoveCall(createSharedCounter);
+    final shareObj = createCounterResp.effectsCert!.effects.effects.created![0];
+    final shareObjId = shareObj.reference.objectId;
+
+    final assertValueCall = MoveCallTransaction(
+      '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
+      'counter',
+      'assert_value',
+      [],
+      [shareObjId, 0],
+      1000
+    );
+    var assertValueResp = await client.executeMoveCall(assertValueCall);
+    var error = assertValueResp.effectsCert!.effects.effects.status.error;
+    expect(error == null, true);
+
+    final incrementValueCall = MoveCallTransaction(
+      '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
+      'counter',
+      'increment',
+      [],
+      [shareObjId],
+      1000
+    );
+    final incrementValueResp = await client.executeMoveCall(incrementValueCall);
+    error = incrementValueResp.effectsCert!.effects.effects.status.error;
+    expect(error == null, true);
+    
+    assertValueResp = await client.executeMoveCall(assertValueCall);
+    error = assertValueResp.effectsCert!.effects.effects.status.error;
+    expect(error != null, true);
+  });
+
   test('test pay sui with secp256k1', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
     final client = SuiClient(account, Constants.devnetAPI);

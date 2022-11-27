@@ -254,7 +254,7 @@ class MoveCall {
 
   factory MoveCall.fromJson(dynamic data) {
     return MoveCall(
-      data['package'],
+      SuiObjectRef.fromJson(data['package']),
       data['module'],
       data['function'],
       data['typeArguments'],
