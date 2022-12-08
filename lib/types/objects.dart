@@ -126,30 +126,65 @@ class SuiMoveModuleId {
 
 class SuiMoveNormalizedStruct {
   SuiMoveAbilitySet abilities;
-  List<SuiMoveStructTypeParameter> type_parameters;
+  List<SuiMoveStructTypeParameter> typeParameters;
   List<SuiMoveNormalizedField> fields;
-  SuiMoveNormalizedStruct(this.abilities, this.type_parameters, this.fields);
+  SuiMoveNormalizedStruct(this.abilities, this.typeParameters, this.fields);
+
+  factory SuiMoveNormalizedStruct.fromJson(dynamic data) {
+    final paramsList = (data['type_parameters'] as List).map((x) => SuiMoveStructTypeParameter.fromJson(x)).toList();
+    final fieldsList = (data['fields'] as List).map((x) => SuiMoveNormalizedField.fromJson(x)).toList();
+    return SuiMoveNormalizedStruct(
+      SuiMoveAbilitySet.fromJson(data['abilities']), 
+      paramsList, 
+      fieldsList
+    );
+  }
 }
 
 class SuiMoveStructTypeParameter {
   SuiMoveAbilitySet constraints;
-  bool is_phantom;
-  SuiMoveStructTypeParameter(this.constraints, this.is_phantom);
+  bool isPhantom;
+  SuiMoveStructTypeParameter(this.constraints, this.isPhantom);
+
+  factory SuiMoveStructTypeParameter.fromJson(dynamic data) {
+    return SuiMoveStructTypeParameter(data['constraints'], data['is_phantom']);
+  }
 }
 
 class SuiMoveNormalizedField {
   String name;
-  SuiMoveNormalizedType type_;
-  SuiMoveNormalizedField(this.name, this.type_);
+  SuiMoveNormalizedType type;
+  SuiMoveNormalizedField(this.name, this.type);
+
+  factory SuiMoveNormalizedField.fromJson(dynamic data) {
+    return SuiMoveNormalizedField(data['name'], data['type_']);
+  }
 }
 
 class SuiMoveNormalizedFunction {
   SuiMoveVisibility visibility;
-  bool is_entry;
-  List<SuiMoveAbilitySet> type_parameters;
+  bool isEntry;
+  List<SuiMoveAbilitySet> typeParameters;
   List<SuiMoveNormalizedType> parameters;
-  List<SuiMoveNormalizedType> return_;
-  SuiMoveNormalizedFunction(this.visibility, this.is_entry, this.type_parameters, this.parameters, this.return_);
+  List<SuiMoveNormalizedType> returns;
+
+  SuiMoveNormalizedFunction(
+    this.visibility, 
+    this.isEntry, 
+    this.typeParameters, 
+    this.parameters, 
+    this.returns
+  );
+
+  factory SuiMoveNormalizedFunction.fromJson(dynamic data) {
+    return SuiMoveNormalizedFunction(
+      data['visibility'],
+      data['is_entry'],
+      data['type_parameters'],
+      data['parameters'],
+      data['return_']
+    );
+  }
 }
 
 enum SuiMoveVisibility {
@@ -161,6 +196,10 @@ typedef SuiMoveTypeParameterIndex = int;
 class SuiMoveAbilitySet {
   List<String> abilities;
   SuiMoveAbilitySet(this.abilities);
+
+  factory SuiMoveAbilitySet.fromJson(dynamic data) {
+    return SuiMoveAbilitySet((data['abilities'] as List).cast<String>());
+  }
 }
 
 typedef SuiMoveNormalizedType = dynamic;

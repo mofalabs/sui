@@ -36,95 +36,91 @@ class JsonRpcProvider {
     return rpcApiVersion;
   }
 
-  // Future<SuiMoveFunctionArgTypes> getMoveFunctionArgTypes(
-  //   String packageId,
-  //   String moduleName,
-  //   String functionName
-  // ) async {
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getMoveFunctionArgTypes',
-  //       [packageId, moduleName, functionName],
-  //       isSuiMoveFunctionArgTypes,
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error fetching Move function arg types with package object ID: $packageId, module name: $moduleName, function name: $functionName'
-  //     );
-  //   }
-  // }
+  Future<dynamic> getMoveFunctionArgTypes(
+    String packageId,
+    String moduleName,
+    String functionName
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_getMoveFunctionArgTypes',
+        [packageId, moduleName, functionName]
+      );
+      return resp;
+    } catch (err) {
+      throw ArgumentError(
+        'Error fetching Move function arg types with package object ID: $packageId, module name: $moduleName, function name: $functionName'
+      );
+    }
+  }
 
-  // Future<SuiMoveNormalizedModules> getNormalizedMoveModulesByPackage(
-  //   String packageId
-  // ) async {
-  //   // TODO: Add caching since package object does not change
-  //   try {
-  //     return await this.client.requestWithType(
-  //       'sui_getNormalizedMoveModulesByPackage',
-  //       [packageId],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error fetching package: ${err} for package ${packageId}'
-  //     );
-  //   }
-  // }
+  Future<dynamic> getNormalizedMoveModulesByPackage(
+    String packageId
+  ) async {
+    try {
+      return await client.request(
+        'sui_getNormalizedMoveModulesByPackage',
+        [packageId]
+      );
+    } catch (err) {
+      throw ArgumentError(
+        'Error fetching package: $err for package $packageId'
+      );
+    }
+  }
 
-  // Future<SuiMoveNormalizedModule> getNormalizedMoveModule(
-  //   String packageId,
-  //   String moduleName
-  // ) async {
-  //   // TODO: Add caching since package object does not change
-  //   try {
-  //     return await this.client.requestWithType(
-  //       'sui_getNormalizedMoveModule',
-  //       [packageId, moduleName],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw  ArgumentError(
-  //       'Error fetching module: ${err} for package ${packageId}, module ${moduleName}}'
-  //     );
-  //   }
-  // }
+  Future<dynamic> getNormalizedMoveModule(
+    String packageId,
+    String moduleName
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_getNormalizedMoveModule',
+        [packageId, moduleName]
+      );
+      return resp;
+    } catch (err) {
+      throw  ArgumentError(
+        'Error fetching module: $err for package $packageId, module $moduleName'
+      );
+    }
+  }
 
-  // Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
-  //   String packageId,
-  //   String moduleName,
-  //   String functionName
-  // ) async {
-  //   // TODO: Add caching since package object does not change
-  //   try {
-  //     return await client.requestWithType(
-  //       'sui_getNormalizedMoveFunction',
-  //       [packageId, moduleName, functionName],
-  //       skipDataValidation
-  //     );
-  //   } catch (err) {
-  //     throw ArguemntError(
-  //       'Error fetching function: ${err} for package ${packageId}, module ${moduleName} and function ${functionName}}'
-  //     );
-  //   }
-  // }
+  Future<dynamic> getNormalizedMoveFunction(
+    String packageId,
+    String moduleName,
+    String functionName
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_getNormalizedMoveFunction',
+        [packageId, moduleName, functionName]
+      );
+      return resp;
+    } catch (err) {
+      throw ArgumentError(
+        'Error fetching function: $err for package $packageId, module $moduleName and function $functionName'
+      );
+    }
+  }
 
-  // Future<SuiMoveNormalizedStruct> getNormalizedMoveStruct(
-  //   String packageId,
-  //   String moduleName,
-  //   String structName
-  // ) async {
-  //   try {
-  //     return await client.request(
-  //       'sui_getNormalizedMoveStruct',
-  //       [packageId, moduleName, structName]
-  //     );
-  //   } catch (err) {
-  //     throw ArgumentError(
-  //       'Error fetching struct: ${err} for package ${packageId}, module ${moduleName} and struct ${structName}}'
-  //     );
-  //   }
-  // }
+  Future<SuiMoveNormalizedStruct> getNormalizedMoveStruct(
+    String packageId,
+    String moduleName,
+    String structName
+  ) async {
+    try {
+      final resp = await client.request(
+        'sui_getNormalizedMoveStruct',
+        [packageId, moduleName, structName]
+      );
+      return SuiMoveNormalizedStruct.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+        'Error fetching struct: $err for package $packageId, module $moduleName and struct $structName'
+      );
+    }
+  }
 
   /// Objects
   Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {

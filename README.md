@@ -9,7 +9,7 @@ final recipient = recipientAccount.getAddress();
 ```dart
 // transfer sui with ed25519
 final account = SuiAccount.ed25519Account();
-final client = SuiClient(account, Constants.devnetAPI);
+final client = SuiClient(Constants.devnetAPI, account: account);
 final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
 if (coins.isEmpty) {
     final faucet = FaucetClient(Constants.faucetDevAPI);
@@ -34,7 +34,7 @@ final waitForLocalExecutionTx = await client.paySui(txn);
 ```dart
 // pay sui with secp256k1
 final account = SuiAccount.secp256k1Account();
-final client = SuiClient(account, Constants.devnetAPI);
+final client = SuiClient(Constants.devnetAPI, account: account);
 final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
 if (coins.isEmpty) {
     final faucet = FaucetClient(Constants.faucetDevAPI);

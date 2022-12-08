@@ -20,7 +20,7 @@ class Http extends DioForNative {
     options.connectTimeout = 5000;
     options.receiveTimeout = 10000;
 
-    options.headers["Content-Type"] = "application/json";
+    options.headers["Content-Type"] = "application/json; charset=UTF-8";
 
     (transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
     interceptors.add(ApiInterceptor());

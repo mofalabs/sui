@@ -2,7 +2,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/publickey.dart';
-import 'package:sui/providers/json_rpc_provider.dart';
 import 'package:sui/rpc/faucet_client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
@@ -46,7 +45,7 @@ void main() {
 
   test('test publish package', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
-    final client = SuiClient(account, Constants.devnetAPI);
+    final client = SuiClient(Constants.devnetAPI, account: account);
     final bytecodes = ['oRzrCwYAAAAKAQAIAggMAxQuBEICBUQrB2+IAQj3ASgKnwIKDKkCkwENvAMEAAABAQECAQMABAgAAwYCAAENBAAABQABAAAHAgEAAAgDAQAACQQFAAAKBgEAAAsEBwABDgIIAAMPCQUAAhALAQEICAoCBggAAwABBwgBAQcIAAEGCAABBQMHCAADBwgBAQMBCAIBBggBAQgAAQkAB2NvdW50ZXIGb2JqZWN0CHRyYW5zZmVyCnR4X2NvbnRleHQHQ291bnRlcgxhc3NlcnRfdmFsdWUJVHhDb250ZXh0BmNyZWF0ZQlpbmNyZW1lbnQFb3duZXIJc2V0X3ZhbHVlBXZhbHVlAmlkA1VJRANuZXcGc2VuZGVyDHNoYXJlX29iamVjdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgMMCAIJBQsDAAEEAAEJCwAQABQLASEDCAYAAAAAAAAAACcCAQEEAAEJCgARBgsALhEHBgAAAAAAAAAAEgA4AAICAQQAAQkKABAAFAYBAAAAAAAAABYLAA8AFQIDAQAAAQQLABABFAIEAQQAAREKABABFAsCLhEHIQMMCwABBgAAAAAAAAAAJwsBCwAPABUCBQEAAAEECwAQABQCAAIAAQA='];
     final txn = PublishTransaction(bytecodes, 10000);
     final waitForLocalExecutionTx = await client.publish(txn);
@@ -59,7 +58,7 @@ void main() {
 
   test('test move contract call', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
-    final client = SuiClient(account, Constants.devnetAPI);
+    final client = SuiClient(Constants.devnetAPI, account: account);
     final createSharedCounter = MoveCallTransaction(
       '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
       'counter',
@@ -103,7 +102,7 @@ void main() {
 
   test('test pay sui with secp256k1', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
-    final client = SuiClient(account, Constants.devnetAPI);
+    final client = SuiClient(Constants.devnetAPI, account: account);
     final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
     if (coins.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
@@ -128,7 +127,7 @@ void main() {
 
   test('test pay sui with ed25519', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
-    final client = SuiClient(account, Constants.devnetAPI);
+    final client = SuiClient(Constants.devnetAPI, account: account);
     final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
     if (coins.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
@@ -149,6 +148,56 @@ void main() {
 
     final waitForLocalExecutionTx = await client.paySui(txn);
     expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+  });
+
+  test('test getNormalizedMoveModulesByPackage', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final moveModules = await client.provider.getNormalizedMoveModulesByPackage(
+      '0x15297be265fda4ed4776a7752a433802bd64da8d'
+    );
+    expect(moveModules['counter']['name'] == 'counter', true);
+    expect(moveModules['counter']['structs']["Counter"].length > 0, true);
+  });
+
+  test('test getNormalizedMoveModule', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final moveModule = await client.provider.getNormalizedMoveModule(
+      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
+      'counter'
+    );
+    expect(moveModule['name'] == 'counter', true);
+  });
+
+  test('test getNormalizedMoveStruct', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final moveStruct = await client.provider.getNormalizedMoveStruct(
+      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
+      'counter', 
+      'Counter'
+    );
+    expect(moveStruct.fields[0].name == "id", true);
+    expect(moveStruct.fields[1].name == "owner", true);
+    expect(moveStruct.fields[2].name == "value", true);
+  });
+
+  test('test getNormalizedMoveFunction', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final moveFunction = await client.provider.getNormalizedMoveFunction(
+      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
+      'counter', 
+      'increment'
+    );
+    expect(moveFunction['is_entry'], true);
+  });
+
+  test('test getMoveFunctionArgTypes', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final functionArgTypes = await client.provider.getMoveFunctionArgTypes(
+      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
+      'counter', 
+      'set_value'
+    );
+    expect(functionArgTypes.length >= 3, true);
   });
 
 }

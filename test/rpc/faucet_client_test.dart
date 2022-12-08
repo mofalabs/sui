@@ -7,7 +7,7 @@ void main() {
   
   test('request sui faucet', () async {
     final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSui('0xd95533b6c8c9c7e4a06fbc0a4def0110782e7d28');
+    final resp = await faucet.requestSui('0xed17b3f435c03ff69c2cdc6d394932e68375f20f');
     expect(resp.transferredGasObjects.isNotEmpty, true);
   });
 
