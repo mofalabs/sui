@@ -19,6 +19,12 @@ void main() {
 
   final data = Base64DataBuffer.fromString('hello world');
 
+  test('test mnemonic generate', (){
+    final mnemonics = SuiAccount.generateMnemonic();
+    final isValid = SuiAccount.isValidMnemonics(mnemonics);
+    expect(isValid, true);
+  });
+
   test('test secp256k1 account generate from mnemonics', () {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
     expect(account.getAddress() == '0xed17b3f435c03ff69c2cdc6d394932e68375f20f', true);
