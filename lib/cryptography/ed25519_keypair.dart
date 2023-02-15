@@ -55,6 +55,9 @@ class Ed25519Keypair with Keypair {
     Uint8List secretKey,
     { bool? skipValidation }
   ) {
+    if (secretKey.length == 32) throw ArgumentError("Wrong secretKey size. Expected 64 bytes, got 32. Similar function exists: fromSeed(Uint8List seed)");
+    if (secretKey.length != 64) throw ArgumentError("Wrong secretKey size. Expected 64 bytes, got ${secretKey.length}.");
+
     final privateKey = ed25519.PrivateKey(secretKey);
     final publicKey = ed25519.public(privateKey);
 
@@ -70,6 +73,8 @@ class Ed25519Keypair with Keypair {
 
   /// Generate a Ed25519 keypair from a 32 byte seed.
   factory Ed25519Keypair.fromSeed(Uint8List seed) {
+    if (seed.length != 32) throw ArgumentError("Wrong secretKey size. Expected 32 bytes, got ${seed.length}.");
+
     final privateKey = ed25519.newKeyFromSeed(seed);
     return Ed25519Keypair(Uint8List.fromList(privateKey.bytes));
   }
