@@ -19,6 +19,9 @@ class SignaturePubkeyPair {
   SignaturePubkeyPair(this.signatureScheme, this.signature, this.pubKey);
 }
 
+// This is currently hardcoded with [IntentScope::TransactionData = 0, Version::V0 = 0, AppId::Sui = 0]
+const INTENT_BYTES = [0, 0, 0];
+
 abstract class SignerWithProvider {
   late final JsonRpcProvider provider;
   late final TxnDataSerializer serializer;
@@ -38,12 +41,17 @@ abstract class SignerWithProvider {
     Base64DataBuffer transaction,
     [ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution]
   ) async {
-      final sig = signData(transaction);
+      final intentMessage = <int>[];
+      intentMessage.addAll(INTENT_BYTES);
+      intentMessage.addAll(transaction.getData());
+      final dataToSign = Base64DataBuffer(intentMessage);
+
+      final sig = signData(dataToSign);
       return await provider.executeTransaction(
-        transaction.toString(),
+        transaction,
         sig.signatureScheme,
-        sig.signature.toString(),
-        sig.pubKey.toString(),
+        sig.signature,
+        sig.pubKey,
         requestType
       );
   }

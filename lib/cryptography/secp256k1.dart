@@ -18,28 +18,26 @@ final curveParams = ECCurve_secp256k1();
 const magicNum = 27;
 
 class SignatureData extends ECSignature {
-  final int v;
   
-  SignatureData(BigInt r, BigInt s, this.v): super(r, s);
+  SignatureData(BigInt r, BigInt s): super(r, s);
 
   factory SignatureData.fromBytes(Uint8List data) {
-    if (data.length != 65) {
+    if (data.length != 64) {
       throw ArgumentError("Invalid bytes length ${data.length}");
     }
 
     final r = decodeBigIntToUnsigned(data.sublist(0, 32));
     final s = decodeBigIntToUnsigned(data.sublist(32, 64));
-    final v = data[64];
-    return SignatureData(r, s, v);
+    return SignatureData(r, s);
   }
 
   Uint8List toBytes() {
-    final buffer = Uint8List(65);
+    final buffer = Uint8List(64);
     buffer.setAll(0, padLeftUint8List(encodeBigIntAsUnsigned(r)));
     buffer.setAll(32, padLeftUint8List(encodeBigIntAsUnsigned(s)));
-    buffer[64] = v;
     return buffer;
   }
+
 }
 
 Uint8List encodeBigInt(BigInt? number) => utils.encodeBigInt(number);
@@ -104,6 +102,7 @@ Uint8List padLeftUint8List(Uint8List data, [int len = 32]) {
 /// the public key that was used to sign it.
 /// https://github.com/web3j/web3j/blob/c0b7b9c2769a466215d416696021aa75127c2ff1/crypto/src/main/java/org/web3j/crypto/Sign.java#L241
 Uint8List ecRecover(
+  int recId,
   Uint8List messageHash, 
   SignatureData signature, 
   [bool isCompressed = false, 
@@ -113,7 +112,7 @@ Uint8List ecRecover(
   Uint8List r = padLeftUint8List(encodeBigIntAsUnsigned(signature.r));
   Uint8List s = padLeftUint8List(encodeBigIntAsUnsigned(signature.s));
 
-  var header = signature.v & 0xFF;
+  var header = recId & 0xFF;
   // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
   //                  0x1D = second key with even y, 0x1E = second key with odd y
   header = isEthereum ? header : header + magicNum;
@@ -123,7 +122,7 @@ Uint8List ecRecover(
 
   final sig = ECSignature(signature.r, signature.s);
 
-  int recId = header - magicNum;
+  recId = header - magicNum;
   Uint8List? pubKey = recoverFromSignature(recId, sig, messageHash, isCompressed);
   if (pubKey == null) {
     throw Exception('Could not recover public key from signature');
@@ -136,7 +135,8 @@ bool verifySignature(
   SignatureData signature,
   Uint8List publicKey,
 ) {
-  final recoveredPublicKey = ecRecover(messageHash, signature, publicKey.length == 33);
+  int recId = recoveryId(signature, messageHash, publicKey);
+  final recoveredPublicKey = ecRecover(recId, messageHash, signature, publicKey.length == 33);
   return Hex.encode(publicKey) == Hex.encode(recoveredPublicKey);
 }
 
@@ -149,8 +149,10 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey, [bool isEthereum
     signature = signature.normalize(curveParams);
   }
 
-  BigInt privateKeyNum = decodeBigIntToUnsigned(privateKey);
-  final publicKeyBytes = Uint8List.view(getPublicKey(privateKeyNum, false).buffer, 1);
+  return SignatureData(signature.r, signature.s);
+}
+
+int recoveryId(ECSignature signature, Uint8List messageHash, Uint8List publicKeyBytes) {
   BigInt publicKey = decodeBigIntToUnsigned(publicKeyBytes);
 
   int recId = -1;
@@ -168,7 +170,7 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey, [bool isEthereum
     );
   }
 
-  return SignatureData(signature.r, signature.s, recId + (isEthereum ? magicNum : 0));
+  return recId;
 }
 
 Uint8List? recoverFromSignature(int recId, ECSignature sig, Uint8List msg, [bool encoded = false]) {

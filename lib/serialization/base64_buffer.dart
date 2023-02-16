@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class Base64DataBuffer {
-  late Uint8List _data;
+  late List<int> _data;
 
-  Base64DataBuffer(Uint8List data) {
+  Base64DataBuffer(List<int> data) {
     _data = data;
   }
 
   factory Base64DataBuffer.fromString(String data) {
-    return Base64DataBuffer(Uint8List.fromList(utf8.encode(data)));
+    return Base64DataBuffer(utf8.encode(data));
   }
 
   factory Base64DataBuffer.fromBase64String(String data) {
@@ -18,15 +18,19 @@ class Base64DataBuffer {
   }
 
   Uint8List getData() {
-    return _data;
+    return Uint8List.fromList(_data);
   }
 
   int getLength() {
     return _data.length;
   }
 
+  String toBase64() {
+    return base64Encode(_data);
+  }
+
   @override
   String toString() {
-    return base64Encode(_data);
+    return toBase64();
   }
 }

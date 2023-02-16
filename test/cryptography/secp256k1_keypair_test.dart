@@ -73,7 +73,8 @@ void main() {
       final msgHash = sha256(signData.getData());
       final sig = keypair.signData(signData);
       final signature = SignatureData.fromBytes(sig.getData());
-      final publicKey = ecRecover(msgHash, signature);
+      int recId = recoveryId(signature, msgHash, keypair.publicKeyBytes(false));
+      final publicKey = ecRecover(recId, msgHash, signature);
 
       expect(base64Encode(publicKey) == base64Encode(keypair.publicKeyBytes(false)), true);
     });

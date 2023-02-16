@@ -4,6 +4,8 @@ import 'dart:typed_data';
 
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/rpc/client.dart';
+import 'package:sui/serialization/base64_buffer.dart';
+import 'package:sui/serialization/hex_buffer.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/events.dart';
 import 'package:sui/types/framework.dart';
@@ -374,16 +376,36 @@ class JsonRpcProvider {
     }
   }
 
+  // Future<SuiExecuteTransactionResponse> executeTransaction(
+  //   String txnBytes,
+  //   SignatureScheme signatureScheme,
+  //   String signature,
+  //   String pubkey,
+  //  [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
+  // ) async {
+  //   final result = await client.request(
+  //     'sui_executeTransaction',
+  //     [txnBytes, signatureScheme.name, signature, pubkey, requestType.name],
+  //     skipDataValidation
+  //   );
+  //   return SuiExecuteTransactionResponse.fromJson(result);
+  // }
+
   Future<SuiExecuteTransactionResponse> executeTransaction(
-    String txnBytes,
+    Base64DataBuffer txnBytes,
     SignatureScheme signatureScheme,
-    String signature,
-    String pubkey,
+    Base64DataBuffer signature,
+    PublicKey pubkey,
    [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
   ) async {
+    final serializedSig = <int>[];
+    serializedSig.add(SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme));
+    serializedSig.addAll(signature.getData());
+    serializedSig.addAll(pubkey.toBytes());
+
     final result = await client.request(
-      'sui_executeTransaction',
-      [txnBytes, signatureScheme.name, signature, pubkey, requestType.name],
+      'sui_executeTransactionSerializedSig',
+      [txnBytes.toBase64(), Base64DataBuffer(serializedSig).toBase64(), requestType.name],
       skipDataValidation
     );
     return SuiExecuteTransactionResponse.fromJson(result);

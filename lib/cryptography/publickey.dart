@@ -9,6 +9,17 @@ enum SignatureScheme {
 abstract class SIGNATURE_SCHEME_TO_FLAG {
   static const int ED25519 = 0x00;
   static const int Secp256k1 = 0x01;
+
+  static int schemeToFlag(SignatureScheme scheme) {
+    switch (scheme) {
+      case SignatureScheme.ED25519:
+        return ED25519;
+      case SignatureScheme.Secp256k1:
+        return Secp256k1;
+      default:
+        throw ArgumentError("Undefined Signature Scheme $scheme");
+    }
+  }
 }
 
 /// A public key

@@ -7,8 +7,6 @@ enum Ordering {
 }
 
 enum ExecuteTransaction {
-  ImmediateReturn,
-  WaitForTxCert,
   WaitForEffectsCert,
   WaitForLocalExecution
 }
@@ -25,74 +23,62 @@ enum TransactionKindName {
 
 typedef SuiJsonValue = dynamic;
 
-class ImmediateReturn {
-  String txDigest;
+//  class TxCert {
+//    CertifiedTransaction certificate;
 
-  ImmediateReturn(this.txDigest);
+//    TxCert(this.certificate);
 
-  factory ImmediateReturn.fromJson(dynamic data) {
-    return ImmediateReturn(
-      data['tx_digest']
-    );
-  }
-}
+//    factory TxCert.fromJson(dynamic data) {
+//     return TxCert(
+//       CertifiedTransaction.fromJson(data['certificate'])
+//     );
+//    }
+// }
 
- class TxCert {
-   CertifiedTransaction certificate;
+// class SuiCertifiedTransactionEffects {
+//   TransactionEffects effects;
 
-   TxCert(this.certificate);
+//   SuiCertifiedTransactionEffects(this.effects);
 
-   factory TxCert.fromJson(dynamic data) {
-    return TxCert(
-      CertifiedTransaction.fromJson(data['certificate'])
-    );
-   }
-}
-
-class SuiCertifiedTransactionEffects {
-  TransactionEffects effects;
-
-  SuiCertifiedTransactionEffects(this.effects);
-
-  factory SuiCertifiedTransactionEffects.fromJson(dynamic data) {
-    return SuiCertifiedTransactionEffects(
-      TransactionEffects.fromJson(data['effects'])
-    );
-  }
-}
+//   factory SuiCertifiedTransactionEffects.fromJson(dynamic data) {
+//     return SuiCertifiedTransactionEffects(
+//       TransactionEffects.fromJson(data['effects'])
+//     );
+//   }
+// }
 
 class EffectsCert {
-  CertifiedTransaction certificate;
-  SuiCertifiedTransactionEffects effects;
-  bool confirmedLocalExecution;
+  String transactionEffectsDigest;
+  TransactionEffects effects;
+  dynamic finalityInfo;
 
-  EffectsCert(this.certificate, this.effects, this.confirmedLocalExecution);
+  EffectsCert(this.transactionEffectsDigest, this.effects, this.finalityInfo);
 
   factory EffectsCert.fromJson(dynamic data) {
     return EffectsCert(
-      CertifiedTransaction.fromJson(data['certificate']),
-      SuiCertifiedTransactionEffects.fromJson(data['effects']),
-      data['confirmed_local_execution']
+      data['transactionEffectsDigest'],
+      TransactionEffects.fromJson(data['effects']),
+      data['finalityInfo']
     );
   }
 }
 
 class SuiExecuteTransactionResponse {
-  ImmediateReturn? immediateReturn;
-  TxCert? txCert;
+  CertifiedTransaction? certificate;
   EffectsCert? effectsCert;
+  bool? confirmedLocalExecution;
 
   SuiExecuteTransactionResponse(
-    this.immediateReturn,
-    this.txCert,
-    this.effectsCert
+    this.certificate,
+    this.effectsCert,
+    this.confirmedLocalExecution
   );
 
   factory SuiExecuteTransactionResponse.fromJson(dynamic data) {
     return SuiExecuteTransactionResponse(
-      data['ImmediateReturn'] != null ? ImmediateReturn.fromJson(data['ImmediateReturn']) : null,
-      data['TxCert'] != null ? TxCert.fromJson(data['TxCert']) : data['TxCert'],
-      data['EffectsCert'] != null ? EffectsCert.fromJson(data['EffectsCert']) : null
+      data['certificate'] != null ? CertifiedTransaction.fromJson(data['certificate']) : data['certificate'],
+      data['effects'] != null ? EffectsCert.fromJson(data['effects']) : null,
+      data['confirmed_local_execution']
     );
   }
 }
@@ -101,8 +87,9 @@ class SuiExecuteTransactionResponse {
 class AuthorityQuorumSignInfo {
   int epoch;
   List<String> signature;
+  List<int> signersMap;
 
-  AuthorityQuorumSignInfo(this.epoch, this.signature);
+  AuthorityQuorumSignInfo(this.epoch, this.signature, this.signersMap);
 
   factory AuthorityQuorumSignInfo.fromJson(dynamic data) {
     final signatureData = data['signature'];
@@ -117,7 +104,8 @@ class AuthorityQuorumSignInfo {
 
     return AuthorityQuorumSignInfo(
       data['epoch'], 
-      signatureList
+      signatureList,
+      (data['signers_map'] as List).cast<int>()
     );
   }
 }
@@ -302,12 +290,14 @@ class SuiTransactionData {
   List<SuiTransactionKind> transactions;
   SuiAddress sender;
   SuiObjectRef gasPayment;
+  int gasPrice;
   int gasBudget;
 
   SuiTransactionData(
     this.transactions, 
     this.sender, 
     this.gasPayment, 
+    this.gasPrice,
     this.gasBudget
   );
 
@@ -323,6 +313,7 @@ class SuiTransactionData {
       txnsKind,
       data['sender'],
       SuiObjectRef.fromJson(data['gasPayment']),
+      data['gasPrice'],
       data['gasBudget']
     );
   }
