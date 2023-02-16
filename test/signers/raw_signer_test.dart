@@ -68,7 +68,7 @@ void main() {
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
-    expect(resp.effectsCert!.certificate.transactionDigest.isNotEmpty, true);
+    expect(resp.certificate?.transactionDigest != null, true);
   });
 
   test('transfer sui with secp256k1 keypair', () async {
@@ -76,7 +76,7 @@ void main() {
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
-    expect(resp.effectsCert!.certificate.transactionDigest.isNotEmpty, true);
+    expect(resp.certificate?.transactionDigest != null, true);
   });
 
   test('pay with secp256k1 keypair', () async {
@@ -92,13 +92,8 @@ void main() {
     );
 
     final waitForLocalExecutionTx = await signer.pay(txn);
-    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
 
-    final immediateReturnTx = await signer.pay(txn, ExecuteTransaction.ImmediateReturn);
-    expect(immediateReturnTx.immediateReturn!.txDigest.isNotEmpty, true);
-
-    final waitForTxCertTx = await signer.pay(txn, ExecuteTransaction.WaitForTxCert);
-    expect(waitForTxCertTx.txCert!.certificate.transactionDigest.isNotEmpty, true);
   });
 
   test('pay sui with secp256k1 keypair', () async {
@@ -113,7 +108,7 @@ void main() {
     );
 
     final waitForLocalExecutionTx = await signer.paySui(txn);
-    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
   });
 
   test('pay all sui with secp256k1 keypair', () async {
@@ -127,7 +122,7 @@ void main() {
     );
 
     final waitForLocalExecutionTx = await signer.payAllSui(txn);
-    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
   });
 
   test('test getGasCostEstimation', () async {
@@ -146,7 +141,7 @@ void main() {
     txn.gasBudget = gasBudget;
 
     final waitForLocalExecutionTx = await signer.paySui(txn);
-    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
   });
 
 }

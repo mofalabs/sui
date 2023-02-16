@@ -55,7 +55,7 @@ void main() {
     final bytecodes = ['oRzrCwYAAAAKAQAIAggMAxQuBEICBUQrB2+IAQj3ASgKnwIKDKkCkwENvAMEAAABAQECAQMABAgAAwYCAAENBAAABQABAAAHAgEAAAgDAQAACQQFAAAKBgEAAAsEBwABDgIIAAMPCQUAAhALAQEICAoCBggAAwABBwgBAQcIAAEGCAABBQMHCAADBwgBAQMBCAIBBggBAQgAAQkAB2NvdW50ZXIGb2JqZWN0CHRyYW5zZmVyCnR4X2NvbnRleHQHQ291bnRlcgxhc3NlcnRfdmFsdWUJVHhDb250ZXh0BmNyZWF0ZQlpbmNyZW1lbnQFb3duZXIJc2V0X3ZhbHVlBXZhbHVlAmlkA1VJRANuZXcGc2VuZGVyDHNoYXJlX29iamVjdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgMMCAIJBQsDAAEEAAEJCwAQABQLASEDCAYAAAAAAAAAACcCAQEEAAEJCgARBgsALhEHBgAAAAAAAAAAEgA4AAICAQQAAQkKABAAFAYBAAAAAAAAABYLAA8AFQIDAQAAAQQLABABFAIEAQQAAREKABABFAsCLhEHIQMMCwABBgAAAAAAAAAAJwsBCwAPABUCBQEAAAEECwAQABQCAAIAAQA='];
     final txn = PublishTransaction(bytecodes, 10000);
     final waitForLocalExecutionTx = await client.publish(txn);
-    final creates = waitForLocalExecutionTx.effectsCert!.effects.effects.events!;
+    final creates = waitForLocalExecutionTx.effectsCert!.effects.events!;
     expect(creates.isNotEmpty, true);
     final publishMap = creates.firstWhere((e) => e['publish'] != null);
     final packageId = publishMap['publish']['packageId'].toString();
@@ -74,7 +74,7 @@ void main() {
       1000
     );
     final createCounterResp = await client.executeMoveCall(createSharedCounter);
-    final shareObj = createCounterResp.effectsCert!.effects.effects.created![0];
+    final shareObj = createCounterResp.effectsCert!.effects.created![0];
     final shareObjId = shareObj.reference.objectId;
 
     final assertValueCall = MoveCallTransaction(
@@ -86,7 +86,7 @@ void main() {
       1000
     );
     var assertValueResp = await client.executeMoveCall(assertValueCall);
-    var error = assertValueResp.effectsCert!.effects.effects.status.error;
+    var error = assertValueResp.effectsCert!.effects.status.error;
     expect(error == null, true);
 
     final incrementValueCall = MoveCallTransaction(
@@ -98,11 +98,11 @@ void main() {
       1000
     );
     final incrementValueResp = await client.executeMoveCall(incrementValueCall);
-    error = incrementValueResp.effectsCert!.effects.effects.status.error;
+    error = incrementValueResp.effectsCert!.effects.status.error;
     expect(error == null, true);
     
     assertValueResp = await client.executeMoveCall(assertValueCall);
-    error = assertValueResp.effectsCert!.effects.effects.status.error;
+    error = assertValueResp.effectsCert!.effects.status.error;
     expect(error != null, true);
   });
 
@@ -128,7 +128,7 @@ void main() {
     txn.gasBudget = gasBudget;
 
     final waitForLocalExecutionTx = await client.paySui(txn);
-    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
   });
 
   test('test pay sui with ed25519', () async {
@@ -153,7 +153,7 @@ void main() {
     txn.gasBudget = gasBudget;
 
     final waitForLocalExecutionTx = await client.paySui(txn);
-    expect(waitForLocalExecutionTx.effectsCert!.confirmedLocalExecution, true);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
   });
 
   test('test getNormalizedMoveModulesByPackage', () async {
