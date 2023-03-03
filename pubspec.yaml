@@ -15,8 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
   pointycastle: ^3.6.2
-  bcs:
-    path: ../bcs/
+  bcs: ^0.0.1
 
 dev_dependencies:
   flutter_test:
