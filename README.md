@@ -11,7 +11,7 @@ Installation
 -
 
 ```
-aptos:
+sui:
     git:
       url: https://github.com/0xmove/sui.git
       ref: main
