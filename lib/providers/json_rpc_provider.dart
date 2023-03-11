@@ -38,6 +38,20 @@ class JsonRpcProvider {
     return rpcApiVersion;
   }
 
+  Future<dynamic> getBalance(String owner, { String coinType = "0x2::sui::SUI" }) async {
+    try {
+      final resp = await client.request(
+        'sui_getBalance',
+        [owner, coinType]
+      );
+      return resp;
+    } catch (err) {
+      throw ArgumentError(
+        'Error getting balance for coin type $coinType for owner $owner: $err',
+      );
+    }
+  }
+
   Future<dynamic> getMoveFunctionArgTypes(
     String packageId,
     String moduleName,
