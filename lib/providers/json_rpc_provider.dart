@@ -52,6 +52,20 @@ class JsonRpcProvider {
     }
   }
 
+  Future<dynamic> getAllBalance(String owner) async {
+    try {
+      final resp = await client.request(
+        'sui_getBalance',
+        [owner]
+      );
+      return resp;
+    } catch (err) {
+      throw ArgumentError(
+       'Error getting all balances for owner $owner: $err'
+      );
+    }
+  }
+
   Future<dynamic> getMoveFunctionArgTypes(
     String packageId,
     String moduleName,

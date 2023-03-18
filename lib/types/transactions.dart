@@ -226,7 +226,7 @@ class PayAllSui {
 }
 
 class MoveCall {
-  SuiObjectRef package;
+  dynamic package;
   String module;
   String function;
   List<String>? typeArguments;
@@ -241,8 +241,14 @@ class MoveCall {
   );
 
   factory MoveCall.fromJson(dynamic data) {
+    dynamic pkg;
+    if (data['package'] is String) {
+      pkg = data['package'];
+    } else {
+      pkg = SuiObjectRef.fromJson(data['package']);
+    }
     return MoveCall(
-      SuiObjectRef.fromJson(data['package']),
+      pkg,
       data['module'],
       data['function'],
       data['typeArguments'],
@@ -286,19 +292,31 @@ class SuiTransactionKind {
   }
 }
 
+class SuiGasData {
+  SuiObjectRef payment;
+  int price;
+  int budget;
+
+  SuiGasData(this.payment, this.price, this.budget);
+
+  factory SuiGasData.fromJson(dynamic data) {
+    return SuiGasData(
+      SuiObjectRef.fromJson(data['payment']),
+      data['price'],
+      data['budget']
+    );
+  }
+}
+
 class SuiTransactionData {
   List<SuiTransactionKind> transactions;
   SuiAddress sender;
-  SuiObjectRef gasPayment;
-  int gasPrice;
-  int gasBudget;
+  SuiGasData gasData;
 
   SuiTransactionData(
     this.transactions, 
     this.sender, 
-    this.gasPayment, 
-    this.gasPrice,
-    this.gasBudget
+    this.gasData
   );
 
   factory SuiTransactionData.fromJson(dynamic data) {
@@ -312,9 +330,7 @@ class SuiTransactionData {
     return SuiTransactionData(
       txnsKind,
       data['sender'],
-      SuiObjectRef.fromJson(data['gasPayment']),
-      data['gasPrice'],
-      data['gasBudget']
+      SuiGasData.fromJson(data['gasData'])
     );
   }
 }
@@ -322,13 +338,13 @@ class SuiTransactionData {
 class CertifiedTransaction {
   TransactionDigest transactionDigest;
   SuiTransactionData data;
-  String txSignature;
+  List<String> txSignatures;
   AuthorityQuorumSignInfo authSignInfo;
 
   CertifiedTransaction(
-    this.transactionDigest, 
-    this.data, 
-    this.txSignature, 
+    this.transactionDigest,
+    this.data,
+    this.txSignatures,
     this.authSignInfo
   );
 
@@ -336,7 +352,7 @@ class CertifiedTransaction {
     return CertifiedTransaction(
       data['transactionDigest'],
       SuiTransactionData.fromJson(data['data']), 
-      data['txSignature'], 
+      List<String>.from(data['txSignatures']),
       AuthorityQuorumSignInfo.fromJson(data['authSignInfo'])
     );
   }

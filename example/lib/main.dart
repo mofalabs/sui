@@ -1,3 +1,4 @@
+import 'package:example/pages/managed_token.dart';
 import 'package:flutter/material.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/publickey.dart';
@@ -15,11 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Sui Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Sui Example'),
     );
   }
 }
@@ -36,16 +37,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String mnemonics ="hat amused night mixed update exhibit elephant ticket trophy diagram monitor oval";
-
   int _balance = 0;
+  late SuiAccount account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+  late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
 
   void _requestFaucet() async {
-
-    debugPrint(mnemonics); 
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
-
-    final client = SuiClient(Constants.devnetAPI);
-    final resp = await client.provider.getBalance(account.getAddress());
+    final resp = await suiClient.provider.getBalance(account.getAddress());
     _balance = resp['totalBalance'];
     if (_balance <= 0) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
@@ -56,6 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _balance = _balance;
     });
+  }
+
+  void _navigateToTokenManage() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ManagedToken(client: suiClient)));
   }
 
   @override
@@ -73,19 +74,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 '${_balance.toString()} SUI',
                 style: const TextStyle(fontSize: 20),
               ),
-              Text(
-                '',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: _requestFaucet, child: const Text("Faucet")),
+              const SizedBox(height: 20),
+              SelectableText(account.getAddress())
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _requestFaucet,
-        tooltip: 'Faucet',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: _balance != 0 ? FloatingActionButton(
+        onPressed: _navigateToTokenManage,
+        tooltip: 'TokenManager',
+        child: const Icon(Icons.menu),
+      ) : null,
     );
   }
 }
