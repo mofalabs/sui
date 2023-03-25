@@ -40,6 +40,12 @@ class _ManagedTokenState extends State<ManagedToken> {
         child: CustomScrollView(
           slivers:[
             sliverListButtons(),
+            if (suiObjects != null) const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Text("Token List:", style: TextStyle(fontSize: 16)),
+              )
+            ),
             if (suiObjects != null) SliverFixedExtentList(delegate: 
               SliverChildBuilderDelegate(
                   (context1, index) => GestureDetector(
@@ -58,7 +64,7 @@ class _ManagedTokenState extends State<ManagedToken> {
                       if (burnResp.confirmedLocalExecution == true) {
                         debugPrint(burnResp.certificate?.transactionDigest);
       
-                        showSnackBar(context1, "Burned token object tx ${burnResp.certificate?.transactionDigest}");
+                        showSnackBar(context1, "Burned token object txn ${burnResp.certificate?.transactionDigest}");
       
                         final coinObjects = await queryCoinObjects();
                         setState(() {
@@ -81,7 +87,8 @@ class _ManagedTokenState extends State<ManagedToken> {
   SliverList sliverListButtons() {
     return SliverList(
       delegate: SliverChildListDelegate([
-          ElevatedButton(onPressed: () async {
+          /// Pulish Package
+          if (packageId == null) ElevatedButton(onPressed: () async {
             final pulishTx = PublishTransaction([ContractBytes.managedTokenBytes], 10000);
             final resp = await widget.client.publish(pulishTx);
             if (resp.confirmedLocalExecution == true) {
@@ -94,14 +101,22 @@ class _ManagedTokenState extends State<ManagedToken> {
               transactionModule = obj["transactionModule"];
             }
             setState(() {});
-          }, 
-          child: Text("Publish Managed Token Package"),
+          },
           style: ElevatedButton.styleFrom(
-            minimumSize: Size.fromHeight(50)
-          )),
-          if(packageId != null) TextField(
-            controller: mintTextController,
+            minimumSize: const Size.fromHeight(50)
+          ), 
+          child: const Text("Publish Managed Token Package")),
+          if(packageId != null) Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: TextField(
+              controller: mintTextController,
+              decoration: const InputDecoration(
+                hintText: "Token Amount",
+                border: OutlineInputBorder(),
+              )
+            ),
           ),
+          /// Mint
           if (packageId != null) ElevatedButton(onPressed: () async {
             final amount = mintTextController.text;
             if (int.tryParse(amount) == null) return;
