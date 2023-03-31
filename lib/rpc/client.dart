@@ -76,7 +76,8 @@ class JsonRpcClient {
     try {
       var data = (await http.post(url, data: message)).data;
       if (data is String) {
-        data = jsonDecode(data.trim());
+        if (data.isEmpty) return data;
+        data = jsonDecode(data);
       }
       if (data.containsKey("error") && data["error"] != null) {
         throw Exception(data["error"]);

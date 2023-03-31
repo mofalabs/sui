@@ -13,7 +13,7 @@ class FaucetCoinInfo {
     return FaucetCoinInfo(
       data['amount'],
       data['id'],
-      data['transfer_tx_digest']
+      data['transferTxDigest']
     );
   }
 }
@@ -25,7 +25,7 @@ class FaucetResponse {
   FaucetResponse(this.transferredGasObjects, this.error);
 
   factory FaucetResponse.fromJson(dynamic data) {
-    final gasObjects = (data['transferred_gas_objects'] as List)
+    final gasObjects = (data['transferredGasObjects'] as List)
       .map((x) => FaucetCoinInfo.fromJson(x))
       .toList();
       

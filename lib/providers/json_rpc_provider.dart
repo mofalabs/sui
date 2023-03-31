@@ -41,7 +41,7 @@ class JsonRpcProvider {
   Future<dynamic> getBalance(String owner, { String coinType = "0x2::sui::SUI" }) async {
     try {
       final resp = await client.request(
-        'sui_getBalance',
+        'suix_getBalance',
         [owner, coinType]
       );
       return resp;
@@ -55,7 +55,7 @@ class JsonRpcProvider {
   Future<dynamic> getAllBalance(String owner) async {
     try {
       final resp = await client.request(
-        'sui_getBalance',
+        'suix_getBalance',
         [owner]
       );
       return resp;
@@ -156,7 +156,7 @@ class JsonRpcProvider {
   Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {
     try {
       final resp = await client.request(
-        'sui_getObjectsOwnedByAddress',
+        'suix_getObjectsOwnedByAddress',
         [address]
       );
       final objectsInfo = (resp as List).map((obj) => SuiObjectInfo.fromJson(obj)).toList();
@@ -267,7 +267,7 @@ class JsonRpcProvider {
   Future<GetObjectDataResponse> getRawObject(String objectId) async {
     try {
       final data = await client.request(
-        'sui_getRawObject',
+        'suix_getRawObject',
         [objectId]
       );
       return GetObjectDataResponse.fromJson(data);
@@ -311,11 +311,11 @@ class JsonRpcProvider {
     final query = { 'ToAddress': address };
     try {
       final filterFromAddress = await client.request(
-        'sui_getTransactions',
+        'suix_getTransactions',
         [{ 'FromAddress': address }, cursor, limit, descendingOrder]
       );
       final filterToAddress = await client.request(
-        'sui_getTransactions',
+        'suix_getTransactions',
         [{ 'ToAddress': address }, cursor, limit, descendingOrder]
       );
       
@@ -345,11 +345,11 @@ class JsonRpcProvider {
   ) async {
     final requests = [
       {
-        'method': 'sui_getTransactions',
+        'method': 'suix_getTransactions',
         'args': [{ 'InputObject': objectID }, null, null, descendingOrder],
       },
       {
-        'method': 'sui_getTransactions',
+        'method': 'suix_getTransactions',
         'args': [{ 'MutatedObject': objectID }, null, null, descendingOrder],
       },
     ];
@@ -371,7 +371,7 @@ class JsonRpcProvider {
   ) async {
     try {
       final data = await client.request(
-        'sui_getTransaction',
+        'suix_getTransaction',
         [digest],
         skipDataValidation
       );
@@ -388,7 +388,7 @@ class JsonRpcProvider {
     List<TransactionDigest> digests
   ) async {
     final requests = digests.map((d) => ({
-      'method': 'sui_getTransaction',
+      'method': 'suix_getTransaction',
       'args': [d],
     }));
     try {
@@ -412,7 +412,7 @@ class JsonRpcProvider {
   //  [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
   // ) async {
   //   final result = await client.request(
-  //     'sui_executeTransaction',
+  //     'suix_executeTransaction',
   //     [txnBytes, signatureScheme.name, signature, pubkey, requestType.name],
   //     skipDataValidation
   //   );
@@ -432,7 +432,7 @@ class JsonRpcProvider {
     serializedSig.addAll(pubkey.toBytes());
 
     final result = await client.request(
-      'sui_executeTransactionSerializedSig',
+      'suix_executeTransactionSerializedSig',
       [txnBytes.toBase64(), Base64DataBuffer(serializedSig).toBase64(), requestType.name],
       skipDataValidation
     );
@@ -442,7 +442,7 @@ class JsonRpcProvider {
   Future<int> getTotalTransactionNumber() async {
     try {
       final resp = await client.request(
-        'sui_getTotalTransactionNumber',
+        'suix_getTotalTransactionNumber',
         []
       );
       return resp;
@@ -457,7 +457,7 @@ class JsonRpcProvider {
   ) async {
     try {
       final data = await client.request(
-        'sui_getTransactionsInRange',
+        'suix_getTransactionsInRange',
         [start, end]
       );
       return (data as List).cast<String>();
@@ -478,7 +478,7 @@ class JsonRpcProvider {
   ) async {
     try {
       final result = await client.request(
-        'sui_getEvents',
+        'suix_getEvents',
         [
           { "Transaction": digest },
           cursor,
@@ -500,7 +500,7 @@ class JsonRpcProvider {
   Future<TransactionEffects> dryRunTransaction(String txBytes) async {
     try {
       final resp = await client.request(
-        'sui_dryRunTransaction',
+        'suix_dryRunTransaction',
         [txBytes],
       );
       return TransactionEffects.fromJson(resp);

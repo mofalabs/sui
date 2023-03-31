@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/cryptography/secp256k1.dart';
+import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
 
@@ -76,7 +77,7 @@ class Ed25519PublicKey with PublicKey {
     final tmp = Uint8List(PUBLIC_KEY_SIZE + 1);
     tmp[0] = SIGNATURE_SCHEME_TO_FLAG.ED25519;
     tmp.setAll(1, toBytes());
-    final publicKey = Hex.encode(sha3256(tmp));
-    return "0x" + publicKey.substring(0, 40);
+    final publicKey = Hex.encode(blake2b(tmp));
+    return normalizeSuiAddress(publicKey.substring(0, SUI_ADDRESS_LENGTH * 2));
   }
 }

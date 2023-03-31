@@ -60,7 +60,7 @@ bool isValidTransactionDigest(
 // which uses the Move account address length
 // https://github.com/move-language/move/blob/67ec40dc50c66c34fd73512fcc412f3b68d67235/language/move-core/types/src/account_address.rs#L23 .
 
-const SUI_ADDRESS_LENGTH = 20;
+const SUI_ADDRESS_LENGTH = 32;
 
 bool isValidSuiAddress(String value) {
   return isHex(value) && getHexByteLength(value) == SUI_ADDRESS_LENGTH;

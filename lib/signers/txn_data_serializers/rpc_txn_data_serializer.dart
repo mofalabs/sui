@@ -28,7 +28,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_moveCall',
+        'unsafe_moveCall',
         [
           signerAddress,
           txn.packageObjectId,
@@ -55,10 +55,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_publish',
+        'unsafe_publish',
         [
           signerAddress, 
-          txn.compiledModules, 
+          txn.compiledModules,
+          [],
           txn.gasPayment, 
           txn.gasBudget
         ]
@@ -76,7 +77,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_transferObject',
+        'unsafe_transferObject',
         [
           signerAddress, 
           txn.objectId, 
@@ -100,7 +101,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_transferSui',
+        'unsafe_transferSui',
         [
           signerAddress, 
           txn.suiObjectId, 
@@ -122,7 +123,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_pay',
+        'unsafe_pay',
         [
           signerAddress,
           txn.inputCoins,
@@ -145,7 +146,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_paySui',
+        'unsafe_paySui',
         [
           signerAddress, 
           txn.inputCoins, 
@@ -168,7 +169,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   ) async {
     try {
       final resp = await client.request(
-        'sui_payAllSui',
+        'unsafe_payAllSui',
         [
           signerAddress, 
           txn.inputCoins, 

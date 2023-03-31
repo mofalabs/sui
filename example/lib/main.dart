@@ -77,7 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 20),
               ElevatedButton(onPressed: _requestFaucet, child: const Text("Faucet")),
               const SizedBox(height: 20),
-              SelectableText(account.getAddress())
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: SelectableText(account.getAddress()),
+              )
             ],
           ),
         ),

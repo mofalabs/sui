@@ -14,24 +14,16 @@ void main() {
   final TEST_CASES = [
     [
       'UdGRWooy48vGTs0HBokIis5NK+DUjiWc9ENUlcfCCBE=',
-      '0x3415400a4bfdf924aefa55446e5f4cd6e9a9399f',
+      '0xd77a6cd55073e98d4029b1b0b8bd8d88f45f343dad2732fc9a7965094e635c55',
     ],
     [
       '0PTAfQmNiabgbak9U/stWZzKc5nsRqokda2qnV2DTfg=',
-      '0x2e6dad710b343b8655825bc420783aaa5ade08c2',
+      '0x7e8fd489c3d3cd9cc7cbcc577dc5d6de831e654edd9997d95c412d013e6eea23',
     ],
     [
       '6L/l0uhGt//9cf6nLQ0+24Uv2qanX/R6tn7lWUJX1Xk=',
-      '0x607a2403069d547c3fbba4b9e22793c7d78abb1f',
-    ],
-    [
-      '6qZ88i8NJjaD+qZety3qXi4pLptGKS3wwO8bfDmUD+Y=',
-      '0x7a4b0fd76cce17ef014d64ec5e073117bfc0b4de',
-    ],
-    [
-      'RgdFhZXGe21x48rhe9X+Kh/WyFCo9ft6e9nQKZYHpi0=',
-      '0xecd7ef15f92a26bc8f22a88a7786fe1aae1051c6',
-    ],
+      '0x3a1b4410ebe9c3386a429c349ba7929aafab739c277f97f32622b971972a14a2',
+    ]
   ];
 
   const VALID_KEY_BASE64 = 'Uz39UFseB/B38iBwjesIU1JZxY6y+TRL9P84JFw41W4=';
@@ -82,7 +74,7 @@ void main() {
 
     test('toSuiAddress', () {
       final key = Ed25519PublicKey.fromBytes(BASE64_KEY_BYTES);
-      expect(key.toSuiAddress() == '0x98fc1c8179b95274327069cf3b0ed051fb14e0bc', true);
+      expect(key.toSuiAddress() == '0xc148b7b3e42129e236fb603dceb142de8695f1a276c9cab8a7daff8442b7b421', true);
     });
 
     TEST_CASES.forEach((data) {
