@@ -23,7 +23,7 @@ class Ed25519Keypair with Keypair {
   Ed25519Keypair([Uint8List? secretKey]) {
     if (secretKey != null) {
       final privateKey = ed25519.PrivateKey(secretKey);
-      final publicKey = ed25519.public(privateKey);
+      final publicKey = ed25519.PublicKey(privateKey.bytes.sublist(32));
       _signingKeypair = ed25519.KeyPair(privateKey, publicKey);
     } else {
       _signingKeypair = ed25519.generateKey();

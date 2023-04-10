@@ -24,7 +24,7 @@ void main() {
 
     test('create keypair from secret key', () {
       Uint8List secretKey = base64Decode(VALID_SECRET_KEY);
-      final keypair = Ed25519Keypair.fromSecretKey(secretKey, skipValidation: false);
+      final keypair = Ed25519Keypair.fromSecretKey(secretKey);
       final publicKey = base64Encode(keypair.publicKeyBytes());
       expect(publicKey == 'Gy9JCW4+Xb0Pz6nAwM2S2as7IVRLNNXdSmXZi4eLmSI=', true);
     });
@@ -64,7 +64,7 @@ void main() {
       final keypair = Ed25519Keypair.fromMnemonics(TEST_MNEMONIC);
       final publicKey = base64Encode(keypair.publicKeyBytes());
       expect(publicKey == 'aFstb5h4TddjJJryHJL1iMob6AxAqYxVv3yRt05aweI=', true);
-      expect(keypair.getPublicKey().toSuiAddress() == '0x1a4623343cd42be47d67314fce0ad042f3c82685', true);
+      expect(keypair.getPublicKey().toSuiAddress() == '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973', true);
     });
 
     test('incorrect coin type node for ed25519 derivation path', () {
