@@ -194,7 +194,7 @@ class Coin {
     }
 
     if (data.dataResponse != null) {
-      return data.dataResponse?.details.data.type;
+      return data.dataResponse?.data?.data.type ?? '';
     }
   }
 }

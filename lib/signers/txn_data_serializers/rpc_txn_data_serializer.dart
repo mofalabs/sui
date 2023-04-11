@@ -105,9 +105,9 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         [
           signerAddress, 
           txn.suiObjectId, 
-          txn.gasBudget, 
+          txn.gasBudget.toString(),
           txn.recipient, 
-          txn.amount
+          txn.amount.toString()
         ]
       );
       return Base64DataBuffer.fromBase64String(resp['txBytes']);
@@ -151,8 +151,8 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           signerAddress, 
           txn.inputCoins, 
           txn.recipients, 
-          txn.amounts, 
-          txn.gasBudget
+          txn.amountsStr,
+          txn.gasBudget.toString()
         ]
       );
       return Base64DataBuffer.fromBase64String(resp['txBytes']);
@@ -174,7 +174,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           signerAddress, 
           txn.inputCoins, 
           txn.recipient, 
-          txn.gasBudget
+          txn.gasBudget.toString()
         ]
       );
       return Base64DataBuffer.fromBase64String(resp['txBytes']);

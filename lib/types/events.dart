@@ -22,6 +22,39 @@ class MoveEvent {
   );
 }
 
+class SuiEvent {
+  ObjectId packageId;
+  String transactionModule;
+  SuiAddress sender;
+  String type;
+
+  Map<String, dynamic>? parsedJson;
+  String? bcs;
+  int? timestampMs;
+
+  SuiEvent(
+    this.packageId,
+    this.transactionModule,
+    this.sender,
+    this.type,
+    this.parsedJson,
+    this.bcs,
+    this.timestampMs,
+  );
+
+  factory SuiEvent.fromJson(dynamic data) {
+    return SuiEvent(
+      data['packageId'],
+      data['transactionModule'],
+      data['sender'],
+      data['type'],
+      data['parsedJson'],
+      data['bcs'],
+      data['timestampMs'],
+    );
+  }
+}
+
 class PublishEvent {
   SuiAddress sender;
   ObjectId packageId;

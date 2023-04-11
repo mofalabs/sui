@@ -62,9 +62,9 @@ class _ManagedTokenState extends State<ManagedToken> {
 
                       final burnResp = await widget.client.executeMoveCall(txCall);
                       if (burnResp.confirmedLocalExecution == true) {
-                        debugPrint(burnResp.certificate?.transactionDigest);
+                        debugPrint(burnResp.digest);
       
-                        showSnackBar(context1, "Burned token object txn ${burnResp.certificate?.transactionDigest}");
+                        showSnackBar(context1, "Burned token object txn ${burnResp.digest}");
       
                         final coinObjects = await queryCoinObjects();
                         setState(() {
@@ -92,8 +92,8 @@ class _ManagedTokenState extends State<ManagedToken> {
             final pulishTx = PublishTransaction([ContractBytes.managedTokenBytes], 10000);
             final resp = await widget.client.publish(pulishTx);
             if (resp.confirmedLocalExecution == true) {
-              debugPrint(resp.certificate!.transactionDigest);
-              final events = resp.effectsCert!.effects.events ?? [];
+              debugPrint(resp.digest);
+              final events = resp.effects?.events ?? [];
               final event = events.firstWhere((e) => e["newObject"] != null && e["newObject"]["objectType"].toString().startsWith("0x2::coin::TreasuryCap"));
               final obj = event["newObject"];
               packageId = obj["packageId"];

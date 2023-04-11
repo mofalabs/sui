@@ -28,8 +28,8 @@ void main() {
   const VALID_Ed25519_SECRET_KEY =
     'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIg==';
 
-  const DEFAULT_RECIPIENT = '0x36096be6a0314052931babed39f53c0666a6b0df';
-  const DEFAULT_RECIPIENT_2 = '0x46096be6a0314052931babed39f53c0666a6b0da';
+  const DEFAULT_RECIPIENT = '0x8113a0a7b6247da6c6535b51a10b439cc5d9899bdb2c52d5fa66d81ed4ac7fb7';
+  const DEFAULT_RECIPIENT_2 = '0x9fd5a804ed6b46d36949ff7434247f0fd594673973ece24aede6b86a7b5dae01';
   const DEFAULT_GAS_BUDGET = 20000;
 
   late Secp256k1Keypair secp256k1Keypair;
@@ -68,7 +68,7 @@ void main() {
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
-    expect(resp.certificate?.transactionDigest != null, true);
+    expect(resp.digest.isNotEmpty, true);
   });
 
   test('transfer sui with secp256k1 keypair', () async {
@@ -76,7 +76,7 @@ void main() {
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final txn = TransferSuiTransaction(coins[0].objectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
-    expect(resp.certificate?.transactionDigest != null, true);
+    expect(resp.digest.isNotEmpty, true);
   });
 
   test('pay with secp256k1 keypair', () async {

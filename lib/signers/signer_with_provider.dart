@@ -9,6 +9,7 @@ import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
+import 'package:sui/utils/sha.dart';
 
 /// Pair of signature and corresponding public key
 class SignaturePubkeyPair {
@@ -44,8 +45,8 @@ abstract class SignerWithProvider {
       final intentMessage = <int>[];
       intentMessage.addAll(INTENT_BYTES);
       intentMessage.addAll(transaction.getData());
-      final dataToSign = Base64DataBuffer(intentMessage);
-
+      final digest = blake2b(intentMessage);
+      final dataToSign = Base64DataBuffer(digest);
       final sig = signData(dataToSign);
       return await provider.executeTransaction(
         transaction,
@@ -93,7 +94,7 @@ abstract class SignerWithProvider {
     }
   }
 
-  Future<TransactionEffects> dryRunTransaction<T>(T tx) async {
+  Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx) async {
     final address = getAddress();
     Base64DataBuffer dryRunTxBytes;
     if (tx is Uint8List) {
@@ -229,7 +230,7 @@ abstract class SignerWithProvider {
   /// throw whens fails to estimate the gas cost.
   Future<int> getGasCostEstimation<T>(T tx) async {
     final txEffects = await dryRunTransaction(tx);
-    final gasUsed = txEffects.gasUsed;
+    final gasUsed = txEffects.effects.gasUsed;
     final gasEstimation = gasUsed.computationCost + gasUsed.storageCost;
     return gasEstimation;
   }

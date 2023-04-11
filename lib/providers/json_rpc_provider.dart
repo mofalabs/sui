@@ -155,11 +155,23 @@ class JsonRpcProvider {
   /// Objects
   Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {
     try {
-      final resp = await client.request(
-        'suix_getObjectsOwnedByAddress',
-        [address]
-      );
-      final objectsInfo = (resp as List).map((obj) => SuiObjectInfo.fromJson(obj)).toList();
+      final resp = await client.request('suix_getOwnedObjects', [
+        address,
+        {
+          "options": {
+            "showType": true,
+            "showContent": true,
+            "showBcs": true,
+            "showOwner": true,
+            "showPreviousTransaction": true,
+            "showStorageRebate": true,
+            "showDisplay": true
+          }
+        },
+      ]);
+      final objectsInfo = (resp['data'] as List).map((obj) {
+        return SuiObjectInfo.fromJson(obj['data']);
+      }).toList();
       return objectsInfo;
     } catch (err) {
       throw ArgumentError(
@@ -202,7 +214,7 @@ class JsonRpcProvider {
   ) async {
     final objects = await getObjectsOwnedByAddress(address);
     final coinIds = objects
-      .where((x) => Coin.isCoin(ObjectData(objectInfo: x)) 
+      .where((x) => Coin.isCoin(ObjectData(objectInfo: x))
                 && (typeArg == null || typeArg == Coin.getCoinTypeArg(ObjectData(objectInfo: x))))
       .map((y) => y.objectId);
 
@@ -254,10 +266,18 @@ class JsonRpcProvider {
 
   Future<GetObjectDataResponse> getObject(String objectId) async {
     try {
-      final data = await client.request(
-        'sui_getObject',
-        [objectId]
-      );
+      final data = await client.request('sui_getObject', [
+        objectId,
+        {
+          "showType": true,
+          "showOwner": true,
+          "showPreviousTransaction": true,
+          "showDisplay": true,
+          "showContent": true,
+          "showBcs": true,
+          "showStorageRebate": true
+        }
+      ]);
       return GetObjectDataResponse.fromJson(data);
     } catch (err) {
       throw ArgumentError('Error fetching object info: $err for id $objectId');
@@ -302,7 +322,7 @@ class JsonRpcProvider {
   }
 
   /// Query Transactions Hash
-  Future<List<String>> getTransactions(
+  Future<List<dynamic>> getTransactions(
     String address,
     {TransactionDigest? cursor,
     int? limit,
@@ -310,16 +330,26 @@ class JsonRpcProvider {
   ) async {
     final query = { 'ToAddress': address };
     try {
-      final filterFromAddress = await client.request(
-        'suix_getTransactions',
-        [{ 'FromAddress': address }, cursor, limit, descendingOrder]
-      );
-      final filterToAddress = await client.request(
-        'suix_getTransactions',
-        [{ 'ToAddress': address }, cursor, limit, descendingOrder]
-      );
-      
-      final txIds = <String>{};
+      final filterFromAddress =
+          await client.request('suix_queryTransactionBlocks', [
+        {
+          "filter": {'FromAddress': address}
+        },
+        cursor,
+        limit,
+        descendingOrder
+      ]);
+      final filterToAddress =
+          await client.request('suix_queryTransactionBlocks', [
+        {
+          "filter": {'ToAddress': address}
+        },
+        cursor,
+        limit,
+        descendingOrder
+      ]);
+
+      final txIds = <dynamic>{};
       if (filterFromAddress != null && filterFromAddress['data'] is Iterable) {
         for (var item in filterFromAddress['data']) {
           txIds.add(item);
@@ -371,7 +401,7 @@ class JsonRpcProvider {
   ) async {
     try {
       final data = await client.request(
-        'suix_getTransaction',
+        'sui_getTransactionBlock',
         [digest],
         skipDataValidation
       );
@@ -388,7 +418,7 @@ class JsonRpcProvider {
     List<TransactionDigest> digests
   ) async {
     final requests = digests.map((d) => ({
-      'method': 'suix_getTransaction',
+      'method': 'sui_getTransactionBlock',
       'args': [d],
     }));
     try {
@@ -404,21 +434,6 @@ class JsonRpcProvider {
     }
   }
 
-  // Future<SuiExecuteTransactionResponse> executeTransaction(
-  //   String txnBytes,
-  //   SignatureScheme signatureScheme,
-  //   String signature,
-  //   String pubkey,
-  //  [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
-  // ) async {
-  //   final result = await client.request(
-  //     'suix_executeTransaction',
-  //     [txnBytes, signatureScheme.name, signature, pubkey, requestType.name],
-  //     skipDataValidation
-  //   );
-  //   return SuiExecuteTransactionResponse.fromJson(result);
-  // }
-
   Future<SuiExecuteTransactionResponse> executeTransaction(
     Base64DataBuffer txnBytes,
     SignatureScheme signatureScheme,
@@ -430,11 +445,24 @@ class JsonRpcProvider {
     serializedSig.add(SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme));
     serializedSig.addAll(signature.getData());
     serializedSig.addAll(pubkey.toBytes());
-
+    var params = [
+      txnBytes.toBase64(),
+      [Base64DataBuffer(serializedSig).toBase64()],
+      {
+        "showInput": true,
+        "showRawInput": true,
+        "showEffects": true,
+        "showEvents": true,
+        "showObjectChanges": true,
+        "showBalanceChanges": true,
+        "skipDataValidation": skipDataValidation
+      },
+      requestType.name
+    ];
     final result = await client.request(
-      'suix_executeTransactionSerializedSig',
-      [txnBytes.toBase64(), Base64DataBuffer(serializedSig).toBase64(), requestType.name],
-      skipDataValidation
+        'sui_executeTransactionBlock',
+        params,
+        skipDataValidation
     );
     return SuiExecuteTransactionResponse.fromJson(result);
   }
@@ -497,13 +525,13 @@ class JsonRpcProvider {
   }
 
 
-  Future<TransactionEffects> dryRunTransaction(String txBytes) async {
+  Future<DryRunTransactionBlockResponse> dryRunTransaction(String txBytes) async {
     try {
       final resp = await client.request(
-        'suix_dryRunTransaction',
+        'sui_dryRunTransactionBlock',
         [txBytes],
       );
-      return TransactionEffects.fromJson(resp);
+      return DryRunTransactionBlockResponse.fromJson(resp);
     } catch (err) {
       throw ArgumentError('Error dry running transaction with request type: $err');
     }

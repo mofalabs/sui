@@ -12,7 +12,7 @@ void main() {
   const mnemonics = "describe beyond repair shuffle pluck during still prefer gravity film green master";
 
   test('test ed25519 transfer sui', () async {
-    const gasBudget = 10000;
+    const gasBudget = 200000;
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
@@ -39,7 +39,7 @@ void main() {
     txn.gasBudget = await client.getGasCostEstimation(txn);
 
     final waitForLocalExecutionTx = await client.paySui(txn);
-    debugPrint(waitForLocalExecutionTx.certificate?.transactionDigest);
+    debugPrint(waitForLocalExecutionTx.digest);
   });
 
   test('test secp256k1 transfer sui', () async {
@@ -70,6 +70,6 @@ void main() {
     txn.gasBudget = await client.getGasCostEstimation(txn);
 
     final waitForLocalExecutionTx = await client.paySui(txn);
-    debugPrint(waitForLocalExecutionTx.certificate?.transactionDigest);
+    debugPrint(waitForLocalExecutionTx.digest);
   });
 }

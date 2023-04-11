@@ -7,7 +7,7 @@ import 'package:sui/providers/json_rpc_provider.dart';
 
 void main() {
 
-  const address = '0x8b97863daa9e05bc41adad8f909fc14ca9370780';
+  const address = '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973';
 
   late JsonRpcProvider provider;
 
@@ -30,13 +30,17 @@ void main() {
   test('test getTransactionWithEffects', () async {
     final txns = await provider.getTransactions(address);
     expect(txns.isNotEmpty, true);
-    final resp = await provider.getTransactionWithEffects(txns[0]);
+    final resp = await provider.getTransactionWithEffects(txns[0]['digest']);
     expect(resp.certificate.transactionDigest == txns[0], true);
   });
 
   test('test getTransactionWithEffectsBatch', () async {
     final txs = await provider.getTransactions(address);
-    final resp = await provider.getTransactionWithEffectsBatch(txs);
+    List<String> txDigests= [];
+    for (var element in txs) {
+      txDigests.add(element['digest']);
+    }
+    final resp = await provider.getTransactionWithEffectsBatch(txDigests);
     expect(txs.length == resp.length, true);
   });
 
@@ -49,14 +53,14 @@ void main() {
     final objectsID = await provider.getObjectsOwnedByAddress(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getObject(objectId);
-    expect(resp.details.data.fields?.id.id == objectId, true);
+    expect(resp.data?.data.fields?.id.id == objectId, true);
   });
 
   test('test getRawObject by objectId', () async {
     final objectsID = await provider.getObjectsOwnedByAddress(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getRawObject(objectId);
-    expect(resp.details.data.bcsBytes!.isNotEmpty, true);
+    expect(resp.data?.data.bcsBytes!.isNotEmpty, true);
   });
 
   test('test getObjectRef by objectId', () async {

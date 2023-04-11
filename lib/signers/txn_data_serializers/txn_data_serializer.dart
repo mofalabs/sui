@@ -51,6 +51,8 @@ class PaySuiTransaction {
   int gasBudget;
 
   PaySuiTransaction(this.inputCoins, this.recipients, this.amounts, this.gasBudget);
+
+  List<String> get amountsStr => amounts.map((e) => e.toString()).toList();
 }
 
 /// Send all SUI coins to one recipient.
