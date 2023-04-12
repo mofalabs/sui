@@ -3,8 +3,10 @@ import 'package:sui/types/common.dart';
 class SuiObjectRef {
   /// Base64 string representing the object digest
   TransactionDigest digest;
+
   /// Hex code as string representing the object id
   String objectId;
+
   /// Object version
   int version;
 
@@ -12,9 +14,9 @@ class SuiObjectRef {
 
   factory SuiObjectRef.fromJson(dynamic data) {
     return SuiObjectRef(
-      data['digest'],
-      data['objectId'],
-      data['version']
+        data['digest'],
+        data['objectId'],
+        data['version']
     );
   }
 }
@@ -32,7 +34,8 @@ class SuiObjectError {
   String? error;
   String code;
 
-  SuiObjectError(this.code, this.digest, this.objectId, this.version, this.error);
+  SuiObjectError(this.code, this.digest, this.objectId, this.version,
+      this.error);
 
   factory SuiObjectError.fromJson(dynamic data) {
     return SuiObjectError(
@@ -87,12 +90,50 @@ class SuiData {
 class SuiMoveObject {
   /// Move type (e.g., "0x2::coin::Coin<0x2::sui::SUI>")
   String type;
+  String dataType;
 
   /// Fields and values stored inside the Move object
   ObjectContentFields fields;
-  bool? has_public_transfer;
+  bool? hasPublicTransfer;
 
-  SuiMoveObject(this.type, this.fields, this.has_public_transfer);
+  SuiMoveObject(this.dataType, this.type, this.fields, this.hasPublicTransfer);
+
+  factory SuiMoveObject.fromJson(dynamic data) {
+    return SuiMoveObject(
+      data['dataType'] ?? "",
+      data['type'] ?? "",
+      data['fields'],
+      data['hasPublicTransfer'],
+    );
+  }
+}
+
+class SuiRawMoveObject {
+  String type;
+  String dataType;
+  String hasPublicTransfer;
+
+  /// Fields and values stored inside the Move object
+  int version;
+  dynamic bcsBytes;
+
+  SuiRawMoveObject(
+    this.dataType,
+    this.type,
+    this.hasPublicTransfer,
+    this.version,
+    this.bcsBytes,
+  );
+
+  factory SuiRawMoveObject.fromJson(dynamic data) {
+    return SuiRawMoveObject(
+      data['dataType'] ?? "",
+      data['type'] ?? "",
+      data['hasPublicTransfer'],
+      data['version'],
+      data['bcsBytes'],
+    );
+  }
 }
 
 final MIST_PER_SUI = BigInt.from(1000000000);
@@ -122,149 +163,6 @@ class SuiMovePackage {
         data['disassembled']
     );
   }
-}
-
-typedef SuiMoveFunctionArgTypesResponse = List<SuiMoveFunctionArgType>;
-
-typedef SuiMoveFunctionArgType = String;
-
-typedef SuiMoveFunctionArgTypes = List<SuiMoveFunctionArgType>;
-
-// typedef SuiMoveNormalizedModules = Record<String, SuiMoveNormalizedModule>;
-typedef SuiMoveNormalizedModules = dynamic;
-
-class SuiMoveNormalizedModule {
-  int file_format_version;
-  String address;
-  String name;
-  List<SuiMoveModuleId> friends;
-  Map<String, SuiMoveNormalizedStruct> structs;
-  Map<String, SuiMoveNormalizedFunction> exposed_functions;
-
-  SuiMoveNormalizedModule(this.file_format_version, this.address, this.name,
-      this.friends, this.structs, this.exposed_functions);
-}
-
-class SuiMoveModuleId {
-  String address;
-  String name;
-
-  SuiMoveModuleId(this.address, this.name);
-}
-
-class SuiMoveNormalizedStruct {
-  SuiMoveAbilitySet abilities;
-  List<SuiMoveStructTypeParameter> typeParameters;
-  List<SuiMoveNormalizedField> fields;
-
-  SuiMoveNormalizedStruct(this.abilities, this.typeParameters, this.fields);
-
-  factory SuiMoveNormalizedStruct.fromJson(dynamic data) {
-    final paramsList = (data['type_parameters'] as List).map((x) =>
-        SuiMoveStructTypeParameter.fromJson(x)).toList();
-    final fieldsList = (data['fields'] as List).map((x) =>
-        SuiMoveNormalizedField.fromJson(x)).toList();
-    return SuiMoveNormalizedStruct(
-        SuiMoveAbilitySet.fromJson(data['abilities']),
-        paramsList,
-        fieldsList
-    );
-  }
-}
-
-class SuiMoveStructTypeParameter {
-  SuiMoveAbilitySet constraints;
-  bool isPhantom;
-
-  SuiMoveStructTypeParameter(this.constraints, this.isPhantom);
-
-  factory SuiMoveStructTypeParameter.fromJson(dynamic data) {
-    return SuiMoveStructTypeParameter(data['constraints'], data['is_phantom']);
-  }
-}
-
-class SuiMoveNormalizedField {
-  String name;
-  SuiMoveNormalizedType type;
-
-  SuiMoveNormalizedField(this.name, this.type);
-
-  factory SuiMoveNormalizedField.fromJson(dynamic data) {
-    return SuiMoveNormalizedField(data['name'], data['type_']);
-  }
-}
-
-class SuiMoveNormalizedFunction {
-  SuiMoveVisibility visibility;
-  bool isEntry;
-  List<SuiMoveAbilitySet> typeParameters;
-  List<SuiMoveNormalizedType> parameters;
-  List<SuiMoveNormalizedType> returns;
-
-  SuiMoveNormalizedFunction(this.visibility,
-      this.isEntry,
-      this.typeParameters,
-      this.parameters,
-      this.returns);
-
-  factory SuiMoveNormalizedFunction.fromJson(dynamic data) {
-    return SuiMoveNormalizedFunction(
-        data['visibility'],
-        data['is_entry'],
-        data['type_parameters'],
-        data['parameters'],
-        data['return_']
-    );
-  }
-}
-
-enum SuiMoveVisibility {
-  Private,
-  Public,
-  Friend
-}
-
-typedef SuiMoveTypeParameterIndex = int;
-
-class SuiMoveAbilitySet {
-  List<String> abilities;
-
-  SuiMoveAbilitySet(this.abilities);
-
-  factory SuiMoveAbilitySet.fromJson(dynamic data) {
-    return SuiMoveAbilitySet((data['abilities'] as List).cast<String>());
-  }
-}
-
-typedef SuiMoveNormalizedType = dynamic;
-
-// export type SuiMoveNormalizedType =
-//   | string
-//   | SuiMoveNormalizedTypeParameterType
-//   | { Reference: SuiMoveNormalizedType }
-//   | { MutableReference: SuiMoveNormalizedType }
-//   | { Vector: SuiMoveNormalizedType }
-//   | SuiMoveNormalizedStructType;
-
-class SuiMoveNormalizedTypeParameterType {
-  SuiMoveTypeParameterIndex TypeParameter;
-
-  SuiMoveNormalizedTypeParameterType(this.TypeParameter);
-}
-
-class SuiStruct {
-  String address;
-  String module;
-  String name;
-  List<SuiMoveNormalizedType> type_arguments;
-
-  SuiStruct(this.address, this.module, this.name, this.type_arguments);
-}
-
-class SuiMoveNormalizedStructType {
-  SuiStruct Struct;
-
-  SuiMoveNormalizedStructType(this.Struct);
 }
 
 enum ObjectStatus {
@@ -346,42 +244,86 @@ class AddressOwner {
 }
 
 class SuiObject {
-  SuiObjectData data;
-  ObjectOwner owner;
-  TransactionDigest previousTransaction;
+  ObjectId id;
+  ObjectDigest digest;
+  String version;
 
-  /// The amount of SUI we would rebate if this object gets deleted.
-  /// This number is re-calculated each time the object is mutated based on
-  /// the present storage gas price.
-  int storageRebate;
-  SuiObjectRef? reference;
+  /// Type of the object, default to be undefined unless SuiObjectDataOptions.showType is set to true
+  String? type;
+  /// Move object content or package content, default to be undefined unless SuiObjectDataOptions.showContent is set to true
+  SuiMoveObject? content;
+  /// Move object content or package content in BCS bytes, default to be undefined unless SuiObjectDataOptions.showBcs is set to true
+  SuiRawMoveObject? bcs;
+  /// The owner of this object. Default to be undefined unless SuiObjectDataOptions.showOwner is set to true
+  ObjectOwner? owner;
+  /// The digest of the transaction that created or last mutated this object.
+  /// Default to be undefined unless SuiObjectDataOptions.showPreviousTransaction is set to true
+  TransactionDigest? previousTransaction;
+  /*
+   * The amount of SUI we would rebate if this object gets deleted.
+   * This number is re-calculated each time the object is mutated based on
+   * the present storage gas price.
+   * Default to be undefined unless SuiObjectDataOptions.showStorageRebate is set to true
+   */
+  String? storageRebate;
 
-  SuiObject(this.data,
-      this.owner,
-      this.previousTransaction,
-      this.storageRebate,
-      this.reference);
+  /*
+   * Display metadata for this object, default to be undefined unless SuiObjectDataOptions.showDisplay is set to true
+   * This can also be None if the struct type does not have Display defined
+   * See more details in https://forums.sui.io/t/nft-object-display-proposal/4872
+   */
+  dynamic display;
+
+  SuiObject(
+    this.id,
+    this.digest,
+    this.version,
+    this.type,
+    this.content,
+    this.bcs,
+    this.owner,
+    this.previousTransaction,
+    this.storageRebate,
+    this.display,
+  );
 
   factory SuiObject.fromJson(dynamic data) {
+    SuiMoveObject? content;
+    if(data['content']!=null){
+      content = SuiMoveObject.fromJson(data['content']);
+    }
+
+    SuiRawMoveObject? bcs;
+    if(data['bcs']!=null){
+      bcs = SuiRawMoveObject.fromJson(data['bcs']);
+    }
+
+    ObjectOwner? owner;
+    if(data['owner']!=null){
+      owner = ObjectOwner.fromJson(data['owner']);
+    }
     return SuiObject(
-        SuiObjectData.fromJson(data['content']),
-        ObjectOwner.fromJson(data['owner']),
-        data['previousTransaction'],
-        int.parse(data['storageRebate'].toString()),
-        data['reference'] == null
-            ? null
-            : SuiObjectRef.fromJson(data['reference']),
+      data['id'],
+      data['digest'],
+      data['version'],
+      data['type'],
+      content,
+      bcs,
+      owner,
+      data['previousTransaction'],
+      data['storageRebate'],
+      data['display'],
     );
   }
 }
 
-class GetObjectDataResponse {
+class SuiObjectResponse {
   SuiObject? data;
   SuiObjectError? error;
 
-  GetObjectDataResponse(this.data,this.error);
+  SuiObjectResponse(this.data, this.error);
 
-  factory GetObjectDataResponse.fromJson(dynamic data) {
+  factory SuiObjectResponse.fromJson(dynamic data) {
     SuiObject? object;
     SuiObjectError? error;
     if (data['data'] != null) {
@@ -390,7 +332,7 @@ class GetObjectDataResponse {
     if (data['error'] != null) {
       error = SuiObjectError.fromJson(data['error']);
     }
-    return GetObjectDataResponse(object, error);
+    return SuiObjectResponse(object, error);
   }
 }
 
@@ -402,17 +344,17 @@ typedef SequenceNumber = int;
 /*                              Helper functions                              */
 /* -------------------------------------------------------------------------- */
 
-/* -------------------------- GetObjectDataResponse ------------------------- */
+/* -------------------------- SuiObjectResponse ------------------------- */
 
-SuiObject? getSuiObjectData(GetObjectDataResponse resp) {
+SuiObject? getSuiObjectData(SuiObjectResponse resp) {
   return resp.data;
 }
 
-bool isSuiObjectResponse(GetObjectDataResponse resp) {
+bool isSuiObjectResponse(SuiObjectResponse resp) {
   return resp.data != null;
 }
 
-SuiObjectRef? getObjectDeletedResponse(GetObjectDataResponse resp) {
+SuiObjectRef? getObjectDeletedResponse(SuiObjectResponse resp) {
   if (resp.error != null &&
       resp.error!.objectId != null &&
       resp.error!.version != null &&
@@ -426,18 +368,21 @@ SuiObjectRef? getObjectDeletedResponse(GetObjectDataResponse resp) {
   return null;
 }
 
-SuiObjectRef? getObjectReference(GetObjectDataResponse resp) {
+SuiObjectRef? getObjectReference(SuiObjectResponse resp) {
   final objectExistsResponse = getSuiObjectData(resp);
   if (objectExistsResponse != null) {
-    return objectExistsResponse.reference;
+    return SuiObjectRef(
+      objectExistsResponse.digest,
+      objectExistsResponse.id,
+      int.parse(objectExistsResponse.version),
+    );
   } else {
     return getObjectDeletedResponse(resp);
   }
 }
 
-int? getObjectVersion(
-  dynamic data // GetObjectDataResponse | SuiObjectRef
-) {
+int? getObjectVersion(dynamic data // SuiObjectResponse | SuiObjectRef
+    ) {
   if (data is SuiObjectRef) {
     return data.version;
   }
@@ -446,40 +391,40 @@ int? getObjectVersion(
 
 /* -------------------------------- SuiObject ------------------------------- */
 
-String? getObjectType(GetObjectDataResponse resp) {
-  return getSuiObjectData(resp)?.data.dataType;
+String? getObjectType(SuiObjectResponse resp) {
+  return getSuiObjectData(resp)?.content?.dataType;
 }
 
 TransactionDigest? getObjectPreviousTransactionDigest(
-    GetObjectDataResponse resp) {
+    SuiObjectResponse resp) {
   return getSuiObjectData(resp)?.previousTransaction;
 }
 
-ObjectOwner? getObjectOwner(GetObjectDataResponse resp) {
+ObjectOwner? getObjectOwner(SuiObjectResponse resp) {
   return getSuiObjectData(resp)?.owner;
 }
 
-int? getSharedObjectInitialVersion(GetObjectDataResponse resp) {
+int? getSharedObjectInitialVersion(SuiObjectResponse resp) {
   final owner = getObjectOwner(resp);
   return owner?.shared?.initialSharedVersion;
 }
 
-bool isSharedObject(GetObjectDataResponse resp) {
+bool isSharedObject(SuiObjectResponse resp) {
   final owner = getObjectOwner(resp);
   return owner?.shared != null;
 }
 
-bool isImmutableObject(GetObjectDataResponse resp) {
+bool isImmutableObject(SuiObjectResponse resp) {
   final owner = getObjectOwner(resp);
   return owner == 'Immutable';
 }
 
-String? getMoveObjectType(GetObjectDataResponse resp) {
+String? getMoveObjectType(SuiObjectResponse resp) {
   return getMoveObject(resp)?.type;
 }
 
 ObjectContentFields? getObjectFields(dynamic resp
-    // GetObjectDataResponse | SuiMoveObject
+    // SuiObjectResponse | SuiMoveObject
     ) {
   if (resp is SuiMoveObject) {
     return resp.fields;
@@ -488,65 +433,64 @@ ObjectContentFields? getObjectFields(dynamic resp
   return getMoveObject(resp)?.fields;
 }
 
-SuiMoveObject? getMoveObject(dynamic data // GetObjectDataResponse | SuiObject
+SuiMoveObject? getMoveObject(dynamic data // SuiObjectResponse | SuiObject
     ) {
   var suiObject = data is SuiObject ? data : getSuiObjectData(data);
-  if (suiObject?.data.dataType != 'moveObject') {
+  if (suiObject?.content?.dataType != 'moveObject') {
     return null;
   }
-  return suiObject?.data as SuiMoveObject;
+  return suiObject?.content as SuiMoveObject;
 }
 
-bool hasPublicTransfer(dynamic data // GetObjectDataResponse | SuiObject
+bool hasPublicTransfer(dynamic data // SuiObjectResponse | SuiObject
     ) {
-  return getMoveObject(data)?.has_public_transfer ?? false;
+  return getMoveObject(data)?.hasPublicTransfer ?? false;
 }
 
 MovePackageContent? getMovePackageContent(dynamic data
-    // GetObjectDataResponse | SuiMovePackage
+    // SuiObjectResponse | SuiMovePackage
     ) {
   if (data is SuiMovePackage) {
     return data.disassembled;
   }
 
   final suiObject = getSuiObjectData(data);
-  if (suiObject == null || suiObject.data.dataType != 'package') {
+  if (suiObject == null || suiObject.content?.dataType != 'package') {
     return null;
   }
-  return (suiObject.data as SuiMovePackage).disassembled;
+  return (suiObject.content as SuiMovePackage).disassembled;
 }
 
-SuiMoveNormalizedType? extractMutableReference(
-    SuiMoveNormalizedType normalizedType) {
-  if (normalizedType is Map && normalizedType.containsKey('MutableReference')) {
-    return normalizedType['MutableReference'];
-  }
-  return null;
-}
 
-SuiMoveNormalizedType? extractReference(SuiMoveNormalizedType normalizedType) {
-  if (normalizedType is Map && normalizedType.containsKey('Reference')) {
-    return normalizedType['Reference'];
-  }
-  return null;
-}
+class SuiObjectDataOptions {
+  /* Whether to fetch the object type, default to be true */
+  bool? showType;
 
-SuiMoveNormalizedStructType? extractStructTag(
-    SuiMoveNormalizedType normalizedType) {
-  if (normalizedType is Map && normalizedType.containsKey('Struct')) {
-    return normalizedType['Struct'];
-  }
+  /* Whether to fetch the object content, default to be false */
+  bool? showContent;
 
-  final ref = extractReference(normalizedType);
-  final mutRef = extractMutableReference(normalizedType);
+  /* Whether to fetch the object content in BCS bytes, default to be false */
+  bool? showBcs;
 
-  if (ref is SuiMoveNormalizedStructType) {
-    return ref;
-  }
+  /* Whether to fetch the object owner, default to be false */
+  bool? showOwner;
 
-  if (mutRef is SuiMoveNormalizedStructType) {
-    return mutRef;
-  }
+  /* Whether to fetch the previous transaction digest, default to be false */
+  bool? showPreviousTransaction;
 
-  return null;
+  /* Whether to fetch the storage rebate, default to be false */
+  bool? showStorageRebate;
+
+  /* Whether to fetch the display metadata, default to be false */
+  bool? showDisplay;
+
+  SuiObjectDataOptions({
+    this.showType,
+    this.showContent,
+    this.showBcs,
+    this.showOwner,
+    this.showPreviousTransaction,
+    this.showStorageRebate,
+    this.showDisplay,
+  });
 }

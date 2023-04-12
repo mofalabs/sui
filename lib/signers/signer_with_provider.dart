@@ -121,8 +121,8 @@ abstract class SignerWithProvider {
     return provider.dryRunTransaction(dryRunTxBytes.toString());
   }
 
-  Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {
-    return await provider.getObjectsOwnedByAddress(address);
+  Future<List<SuiObjectInfo>> getOwnedObjects(String address) async {
+    return await provider.getOwnedObjects(address);
   }
 
   Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {

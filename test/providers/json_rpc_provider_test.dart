@@ -1,6 +1,3 @@
-
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
@@ -44,34 +41,27 @@ void main() {
     expect(txs.length == resp.length, true);
   });
 
-  test('test getObjectsOwnedByAddress', () async {
-    final resp = await provider.getObjectsOwnedByAddress(address);
+  test('test getOwnedObjects', () async {
+    final resp = await provider.getOwnedObjects(address);
     expect(resp.isNotEmpty, true);
   });
 
   test('test getObject by objectId', () async {
-    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getObject(objectId);
-    expect(resp.data?.data.fields?.id.id == objectId, true);
-  });
-
-  test('test getRawObject by objectId', () async {
-    final objectsID = await provider.getObjectsOwnedByAddress(address);
-    final objectId = objectsID[0].objectId;
-    final resp = await provider.getRawObject(objectId);
-    expect(resp.data?.data.bcsBytes!.isNotEmpty, true);
+    expect(resp.data?.content?.fields?.id.id == objectId, true);
   });
 
   test('test getObjectRef by objectId', () async {
-    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getObjectRef(objectId);
     expect(resp?.digest.isNotEmpty ?? false, true);
   });
 
   test('test getObjectBatch', () async {
-    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectsID = await provider.getOwnedObjects(address);
     final ids = objectsID.map((obj) => obj.objectId).toList();
     final resp = await provider.getObjectBatch(ids);
     expect(resp.length == ids.length, true);
@@ -90,7 +80,7 @@ void main() {
   });
 
   test('test getTransactionsForObject', () async {
-    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
     final txns = await provider.getTransactionsForObject(objectId);
     expect(txns.isNotEmpty, true);
@@ -102,7 +92,7 @@ void main() {
   });
 
   test('test getObjectsOwnedByObject', () async {
-    final objectsID = await provider.getObjectsOwnedByAddress(address);
+    final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
     final result = await provider.getObjectsOwnedByObject(objectId);
     expect(result.length >= 0, true);

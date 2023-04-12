@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/publickey.dart';
@@ -11,7 +10,7 @@ import 'package:sui/sui_client.dart';
 void main() {
 
   const test_mnemonics =
-  'result crisp session latin must fruit genuine question prevent start coconut brave speak student dismiss';
+      'result crisp session latin must fruit genuine question prevent start coconut brave speak student dismiss';
 
   const DEFAULT_RECIPIENT = '0x32fa9903c31428579456cc5edcb76f8c09c02a0b5a3b3e94f6fe05bd99405741';
 
@@ -66,41 +65,41 @@ void main() {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
     final client = SuiClient(Constants.devnetAPI, account: account);
     final createSharedCounter = MoveCallTransaction(
-      '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
-      'counter',
-      'create',
-      [],
-      [],
-      1000
+        '0xa1a985ed4ce15503f36625c5996817337dc9e551',
+        'counter',
+        'create',
+        [],
+        [],
+        1000
     );
     final createCounterResp = await client.executeMoveCall(createSharedCounter);
     final shareObj = createCounterResp.objectChanges?[0]?['objectId'];
     final shareObjId = shareObj.reference.objectId;
 
     final assertValueCall = MoveCallTransaction(
-      '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
-      'counter',
-      'assert_value',
-      [],
-      [shareObjId, 0],
-      1000
+        '0xa1a985ed4ce15503f36625c5996817337dc9e551',
+        'counter',
+        'assert_value',
+        [],
+        [shareObjId, 0],
+        1000
     );
     var assertValueResp = await client.executeMoveCall(assertValueCall);
     var error = assertValueResp.errors;
     expect(error == null, true);
 
     final incrementValueCall = MoveCallTransaction(
-      '0xa1a985ed4ce15503f36625c5996817337dc9e551', 
-      'counter',
-      'increment',
-      [],
-      [shareObjId],
-      1000
+        '0xa1a985ed4ce15503f36625c5996817337dc9e551',
+        'counter',
+        'increment',
+        [],
+        [shareObjId],
+        1000
     );
     final incrementValueResp = await client.executeMoveCall(incrementValueCall);
     error = incrementValueResp.errors;
     expect(error == null, true);
-    
+
     assertValueResp = await client.executeMoveCall(assertValueCall);
     error = assertValueResp.errors;
     expect(error != null, true);
@@ -109,19 +108,19 @@ void main() {
   test('test pay sui with secp256k1', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
     final client = SuiClient(Constants.devnetAPI, account: account);
-    final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-    if (coins.isEmpty) {
+    final coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
       final resp = await faucet.requestSui(account.getAddress());
       assert(resp.transferredGasObjects.isNotEmpty);
     }
 
-    final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+    final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PaySuiTransaction(
-      inputObjectIds,
-      [DEFAULT_RECIPIENT],
-      [1000],
-      DEFAULT_GAS_BUDGET
+        inputObjectIds,
+        [DEFAULT_RECIPIENT],
+        [1000],
+        DEFAULT_GAS_BUDGET
     );
 
     final gasBudget = await client.getGasCostEstimation(txn);
@@ -134,19 +133,19 @@ void main() {
   test('test pay sui with ed25519', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
-    final coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-    if (coins.isEmpty) {
+    final coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
       final resp = await faucet.requestSui(account.getAddress());
       assert(resp.transferredGasObjects.isNotEmpty);
     }
 
-    final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
+    final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PaySuiTransaction(
-      inputObjectIds, 
-      [DEFAULT_RECIPIENT],
-      [1000],
-      DEFAULT_GAS_BUDGET
+        inputObjectIds,
+        [DEFAULT_RECIPIENT],
+        [1000],
+        DEFAULT_GAS_BUDGET
     );
 
     final gasBudget = await client.getGasCostEstimation(txn);
@@ -156,52 +155,25 @@ void main() {
     expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
   });
 
-  test('test getNormalizedMoveModulesByPackage', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveModules = await client.provider.getNormalizedMoveModulesByPackage(
-      '0x15297be265fda4ed4776a7752a433802bd64da8d'
-    );
-    expect(moveModules['counter']['name'] == 'counter', true);
-    expect(moveModules['counter']['structs']["Counter"].length > 0, true);
-  });
-
-  test('test getNormalizedMoveModule', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveModule = await client.provider.getNormalizedMoveModule(
-      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
-      'counter'
-    );
-    expect(moveModule['name'] == 'counter', true);
-  });
-
   test('test getNormalizedMoveStruct', () async {
     final client = SuiClient(Constants.devnetAPI);
     final moveStruct = await client.provider.getNormalizedMoveStruct(
-      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
-      'counter', 
-      'Counter'
+        '0x15297be265fda4ed4776a7752a433802bd64da8d',
+        'counter',
+        'Counter'
     );
     expect(moveStruct.fields[0].name == "id", true);
     expect(moveStruct.fields[1].name == "owner", true);
     expect(moveStruct.fields[2].name == "value", true);
   });
 
-  test('test getNormalizedMoveFunction', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveFunction = await client.provider.getNormalizedMoveFunction(
-      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
-      'counter', 
-      'increment'
-    );
-    expect(moveFunction['is_entry'], true);
-  });
 
   test('test getMoveFunctionArgTypes', () async {
     final client = SuiClient(Constants.devnetAPI);
     final functionArgTypes = await client.provider.getMoveFunctionArgTypes(
-      '0x15297be265fda4ed4776a7752a433802bd64da8d', 
-      'counter', 
-      'set_value'
+        '0x15297be265fda4ed4776a7752a433802bd64da8d',
+        'counter',
+        'set_value'
     );
     expect(functionArgTypes.length >= 3, true);
   });

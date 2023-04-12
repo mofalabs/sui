@@ -18,7 +18,7 @@ final COIN_TYPE_ARG_REGEX = RegExp(r'^0x2::coin::Coin<(.+)>$');
 
 class ObjectData {
   SuiObjectInfo? objectInfo;
-  GetObjectDataResponse? dataResponse;
+  SuiObjectResponse? dataResponse;
   SuiMoveObject? moveObject;
 
   ObjectData({this.objectInfo, this.dataResponse, this.moveObject});
@@ -194,7 +194,7 @@ class Coin {
     }
 
     if (data.dataResponse != null) {
-      return data.dataResponse?.data?.data.type ?? '';
+      return data.dataResponse?.data?.content?.type ?? '';
     }
   }
 }

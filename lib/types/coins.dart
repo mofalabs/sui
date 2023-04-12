@@ -48,7 +48,7 @@ class PaginatedCoins {
   factory PaginatedCoins.fromJson(dynamic data) {
     List<CoinStruct> list = [];
     if (data['data'] != null) {
-      for (var coin in list) {
+      for (var coin in data['data']) {
         list.add(CoinStruct.fromJson(coin));
       }
     }
@@ -81,5 +81,15 @@ class CoinBalance {
       BigInt.parse((data['totalBalance'] ?? '0').toString()),
       data['lockedBalance'],
     );
+  }
+}
+
+class CoinSupply {
+  BigInt value;
+
+  CoinSupply(this.value);
+
+  factory CoinSupply.fromJson(dynamic data) {
+    return CoinSupply(BigInt.parse((data['coinType'] ?? '0').toString()));
   }
 }

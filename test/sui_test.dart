@@ -19,15 +19,15 @@ void main() {
     // transfer sui with ed25519
     final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
-    var coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-    if (coins.isEmpty) {
+    var coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
         final faucet = FaucetClient(Constants.faucetDevAPI);
         final resp = await faucet.requestSui(account.getAddress());
         assert(resp.transferredGasObjects.isNotEmpty);
-        coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
+        coins = await client.getCoins(account.getAddress());
     }
 
-    final inputObjectIds = [coins.first.objectId];
+    final inputObjectIds = [coins.data.first.coinObjectId];
     final txn = PaySuiTransaction(
         inputObjectIds, 
         [recipient],
@@ -50,15 +50,15 @@ void main() {
     // transfer sui with secp256k1
     final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
     final client = SuiClient(Constants.devnetAPI, account: account);
-    var coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-    if (coins.isEmpty) {
+    var coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
         final faucet = FaucetClient(Constants.faucetDevAPI);
         final resp = await faucet.requestSui(account.getAddress());
         assert(resp.transferredGasObjects.isNotEmpty);
-        coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
+        coins = await client.getCoins(account.getAddress());
     }
 
-    final inputObjectIds = [coins.first.objectId];
+    final inputObjectIds = [coins.data.first.coinObjectId];
     final txn = PaySuiTransaction(
         inputObjectIds, 
         [recipient],

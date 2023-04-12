@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
@@ -9,6 +10,7 @@ import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/events.dart';
 import 'package:sui/types/framework.dart';
+import 'package:sui/types/normalized.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 import 'package:sui/types/version.dart';
@@ -113,12 +115,26 @@ class JsonRpcProvider {
       return CoinMetadataStruct.fromJson(resp);
     } catch (err) {
       throw ArgumentError(
-        'Error getting oinMetadata for coinType $coinType: $err',
+        'Error getting coinMetadata for coinType $coinType: $err',
       );
     }
   }
 
-  Future<dynamic> getMoveFunctionArgTypes(
+  Future<CoinSupply> getTotalSupply(String coinType) async {
+    try {
+      final resp = await client.request(
+          'suix_getTotalSupply',
+          [coinType]
+      );
+      return CoinSupply.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+        'Error getTotalSupply for coinType $coinType: $err',
+      );
+    }
+  }
+
+  Future<SuiMoveFunctionArgTypes> getMoveFunctionArgTypes(
     String packageId,
     String moduleName,
     String functionName
@@ -136,14 +152,21 @@ class JsonRpcProvider {
     }
   }
 
-  Future<dynamic> getNormalizedMoveModulesByPackage(
+  Future<SuiMoveNormalizedModules> getNormalizedMoveModulesByPackage(
     String packageId
   ) async {
     try {
-      return await client.request(
+      var resp = await client.request(
         'sui_getNormalizedMoveModulesByPackage',
         [packageId]
       );
+      SuiMoveNormalizedModules modules = <String, SuiMoveNormalizedModule>{};
+      if(resp is Map) {
+        for(var key in resp.keys){
+          modules[key] = SuiMoveNormalizedModule.fromJson(resp[key]);
+        }
+      }
+      return modules;
     } catch (err) {
       throw ArgumentError(
         'Error fetching package: $err for package $packageId'
@@ -151,7 +174,7 @@ class JsonRpcProvider {
     }
   }
 
-  Future<dynamic> getNormalizedMoveModule(
+  Future<SuiMoveNormalizedModule> getNormalizedMoveModule(
     String packageId,
     String moduleName
   ) async {
@@ -160,7 +183,7 @@ class JsonRpcProvider {
         'sui_getNormalizedMoveModule',
         [packageId, moduleName]
       );
-      return resp;
+      return SuiMoveNormalizedModule.fromJson(resp);
     } catch (err) {
       throw  ArgumentError(
         'Error fetching module: $err for package $packageId, module $moduleName'
@@ -168,7 +191,7 @@ class JsonRpcProvider {
     }
   }
 
-  Future<dynamic> getNormalizedMoveFunction(
+  Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
     String packageId,
     String moduleName,
     String functionName
@@ -178,7 +201,7 @@ class JsonRpcProvider {
         'sui_getNormalizedMoveFunction',
         [packageId, moduleName, functionName]
       );
-      return resp;
+      return SuiMoveNormalizedFunction.fromJson(resp);
     } catch (err) {
       throw ArgumentError(
         'Error fetching function: $err for package $packageId, module $moduleName and function $functionName'
@@ -205,7 +228,7 @@ class JsonRpcProvider {
   }
 
   /// Objects
-  Future<List<SuiObjectInfo>> getObjectsOwnedByAddress(String address) async {
+  Future<List<SuiObjectInfo>> getOwnedObjects(String address) async {
     try {
       final resp = await client.request('suix_getOwnedObjects', [
         address,
@@ -233,7 +256,7 @@ class JsonRpcProvider {
   }
 
   Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
-    final objects = await getObjectsOwnedByAddress(address);
+    final objects = await getOwnedObjects(address);
     final result = objects
       .where((obj) => Coin.isSUI(ObjectData(objectInfo: obj)));
     return result.toList();
@@ -260,11 +283,11 @@ class JsonRpcProvider {
   //   );
   // }
 
-  Future<List<GetObjectDataResponse>> getCoinBalancesOwnedByAddress(
+  Future<List<SuiObjectResponse>> getCoinBalancesOwnedByAddress(
     String address,
     {String? typeArg}
   ) async {
-    final objects = await getObjectsOwnedByAddress(address);
+    final objects = await getOwnedObjects(address);
     final coinIds = objects
       .where((x) => Coin.isCoin(ObjectData(objectInfo: x))
                 && (typeArg == null || typeArg == Coin.getCoinTypeArg(ObjectData(objectInfo: x))))
@@ -316,35 +339,28 @@ class JsonRpcProvider {
     }
   }
 
-  Future<GetObjectDataResponse> getObject(String objectId) async {
+  Future<SuiObjectResponse> getObject(String objectId,
+      {SuiObjectDataOptions? options}) async {
     try {
-      final data = await client.request('sui_getObject', [
-        objectId,
-        {
-          "showType": true,
-          "showOwner": true,
-          "showPreviousTransaction": true,
-          "showDisplay": true,
-          "showContent": true,
-          "showBcs": true,
-          "showStorageRebate": true
-        }
-      ]);
-      return GetObjectDataResponse.fromJson(data);
+      final data = await client.request('sui_getObject', [objectId, options]);
+      return SuiObjectResponse.fromJson(data);
     } catch (err) {
       throw ArgumentError('Error fetching object info: $err for id $objectId');
     }
   }
 
-  Future<GetObjectDataResponse> getRawObject(String objectId) async {
+  Future<List<SuiObjectResponse>> multiGetObjects(List<String> objectIds,
+      {SuiObjectDataOptions? options}) async {
     try {
-      final data = await client.request(
-        'suix_getRawObject',
-        [objectId]
-      );
-      return GetObjectDataResponse.fromJson(data);
+      final data =
+          await client.request('sui_multiGetObjects', [objectIds, options]);
+      List<SuiObjectResponse> list = [];
+      for(var response in data){
+        list.add(SuiObjectResponse.fromJson(response));
+      }
+      return list;
     } catch (err) {
-      throw ArgumentError('Error fetching object info: $err for id $objectId');
+      throw ArgumentError('Error fetching objects info: $err for id $objectIds');
     }
   }
 
@@ -353,7 +369,7 @@ class JsonRpcProvider {
     return getObjectReference(data);
   }
 
-  Future<List<GetObjectDataResponse>> getObjectBatch(List<String> objectIds) async {
+  Future<List<SuiObjectResponse>> getObjectBatch(List<String> objectIds) async {
     final requests = objectIds.map((id) => ({
       'method': 'sui_getObject',
       'args': [id],
@@ -365,7 +381,7 @@ class JsonRpcProvider {
       );
 
       final result = (dataList as List)
-        .map((data) => GetObjectDataResponse.fromJson(data))
+        .map((data) => SuiObjectResponse.fromJson(data))
         .toList();
       return result;
     } catch (err) {

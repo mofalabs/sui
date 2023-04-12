@@ -155,7 +155,7 @@ class _ManagedTokenState extends State<ManagedToken> {
   }
 
   Future<List<SuiObjectInfo>> queryCoinObjects() async {
-      final objects = await widget.client.getObjectsOwnedByAddress(widget.client.getAddress());
+      final objects = await widget.client.getOwnedObjects(widget.client.getAddress());
       final coinObjects = objects.where((obj) => obj.type == "0x2::coin::Coin<$coinType>").toList();
       return coinObjects;
   }
