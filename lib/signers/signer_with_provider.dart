@@ -6,7 +6,9 @@ import 'package:sui/providers/json_rpc_provider.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
+import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
+import 'package:sui/types/framework.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 import 'package:sui/utils/sha.dart';
@@ -125,6 +127,26 @@ abstract class SignerWithProvider {
 
   Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
     return await provider.getGasObjectsOwnedByAddress(address);
+  }
+
+  Future<CoinBalance> getBalance(String address) async {
+    return await provider.getBalance(address);
+  }
+
+  Future<List<CoinBalance>> getAllBalance(String address) async {
+    return await provider.getAllBalance(address);
+  }
+
+  Future<PaginatedCoins> getCoins(String address) async {
+    return await provider.getCoins(address);
+  }
+
+  Future<PaginatedCoins> getAllCoins(String address) async {
+    return await provider.getAllCoins(address);
+  }
+
+  Future<CoinMetadataStruct> getCoinMetadata(String coinType) async {
+    return await provider.getCoinMetadata(coinType);
   }
 
   Future<SuiExecuteTransactionResponse> transferObject(

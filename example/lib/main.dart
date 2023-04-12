@@ -37,14 +37,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String mnemonics ="hat amused night mixed update exhibit elephant ticket trophy diagram monitor oval";
-  int _balance = 0;
+  BigInt _balance = BigInt.zero;
   late SuiAccount account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
   late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
 
   void _requestFaucet() async {
     final resp = await suiClient.provider.getBalance(account.getAddress());
-    _balance = resp['totalBalance'];
-    if (_balance <= 0) {
+    _balance = resp.totalBalance;
+    if (_balance <= BigInt.zero) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
       await faucet.requestSui(account.getAddress());
     }

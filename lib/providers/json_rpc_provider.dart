@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
-import 'package:sui/serialization/hex_buffer.dart';
+import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/events.dart';
 import 'package:sui/types/framework.dart';
@@ -38,13 +38,44 @@ class JsonRpcProvider {
     return rpcApiVersion;
   }
 
-  Future<dynamic> getBalance(String owner, { String coinType = "0x2::sui::SUI" }) async {
+  /// Get all Coin<`coin_type`> objects owned by an address.
+  Future<PaginatedCoins> getCoins(String owner,
+      { String coinType = "0x2::sui::SUI", ObjectId? cursor, int? limit,}) async {
     try {
       final resp = await client.request(
-        'suix_getBalance',
-        [owner, coinType]
+          'suix_getCoins',
+          [owner, coinType, cursor, limit]
       );
-      return resp;
+      return PaginatedCoins.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+        'Error getting coin for coin type $coinType for owner $owner: $err',
+      );
+    }
+  }
+
+  /// Get all Coin objects owned by an address.
+  Future<PaginatedCoins> getAllCoins(String owner,
+      { ObjectId? cursor, int? limit,}) async {
+    try {
+      final resp = await client.request(
+          'suix_getAllCoins',
+          [owner, cursor, limit]
+      );
+      return PaginatedCoins.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+        'Error getting all coins for owner $owner: $err',
+      );
+    }
+  }
+
+  /// Get the total coin balance for one coin type, owned by the address owner.
+  Future<CoinBalance> getBalance(String owner,
+      {String coinType = "0x2::sui::SUI"}) async {
+    try {
+      final resp = await client.request('suix_getBalance', [owner, coinType]);
+      return CoinBalance.fromJson(resp);
     } catch (err) {
       throw ArgumentError(
         'Error getting balance for coin type $coinType for owner $owner: $err',
@@ -52,16 +83,37 @@ class JsonRpcProvider {
     }
   }
 
-  Future<dynamic> getAllBalance(String owner) async {
+  /// Get the total coin balance for all coin type, owned by the address owner.
+  Future<List<CoinBalance>> getAllBalance(String owner) async {
     try {
       final resp = await client.request(
-        'suix_getBalance',
+        'suix_getAllBalances',
         [owner]
       );
-      return resp;
+      List<CoinBalance> list = [];
+      for (var coin in resp) {
+        list.add(CoinBalance.fromJson(coin));
+      }
+      return list;
     } catch (err) {
       throw ArgumentError(
        'Error getting all balances for owner $owner: $err'
+      );
+    }
+  }
+
+
+  /// Fetch CoinMetadata for a given coin type
+  Future<CoinMetadataStruct> getCoinMetadata(String coinType) async {
+    try {
+      final resp = await client.request(
+          'suix_getCoinMetadata',
+          [coinType]
+      );
+      return CoinMetadataStruct.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+        'Error getting oinMetadata for coinType $coinType: $err',
       );
     }
   }

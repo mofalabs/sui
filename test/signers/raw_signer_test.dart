@@ -30,7 +30,7 @@ void main() {
 
   const DEFAULT_RECIPIENT = '0x8113a0a7b6247da6c6535b51a10b439cc5d9899bdb2c52d5fa66d81ed4ac7fb7';
   const DEFAULT_RECIPIENT_2 = '0x9fd5a804ed6b46d36949ff7434247f0fd594673973ece24aede6b86a7b5dae01';
-  const DEFAULT_GAS_BUDGET = 20000;
+  const DEFAULT_GAS_BUDGET = 10000000;
 
   late Secp256k1Keypair secp256k1Keypair;
   late Ed25519Keypair ed25519Keypair;
@@ -126,14 +126,14 @@ void main() {
   });
 
   test('test getGasCostEstimation', () async {
-    final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
+    final signer = RawSigner(ed25519Keypair, endpoint: Constants.devnetAPI);
     final coins = await signer.provider.getGasObjectsOwnedByAddress(signer.getAddress());
     final inputObjectIds = coins.take(2).map((x) => x.objectId).toList();
 
     var txn = PaySuiTransaction(
       inputObjectIds, 
       [DEFAULT_RECIPIENT],
-      [1000], 
+      [1000],
       DEFAULT_GAS_BUDGET
     );
 

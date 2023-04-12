@@ -198,3 +198,32 @@ class Coin {
     }
   }
 }
+
+class CoinMetadataStruct {
+  int decimals;
+  String name;
+  String symbol;
+  String description;
+  String iconUrl;
+  ObjectId id;
+
+  CoinMetadataStruct(
+    this.decimals,
+    this.name,
+    this.symbol,
+    this.description,
+    this.iconUrl,
+    this.id,
+  );
+
+  factory CoinMetadataStruct.fromJson(dynamic data) {
+    return CoinMetadataStruct(
+      int.parse((data['decimals'] ?? "0").toString()),
+      data['name'] ?? '',
+      data['symbol'] ?? '',
+      data['description'] ?? '',
+      data['iconUrl'] ?? '',
+      data['id'] ?? '',
+    );
+  }
+}

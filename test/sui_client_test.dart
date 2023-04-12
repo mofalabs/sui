@@ -15,7 +15,7 @@ void main() {
 
   const DEFAULT_RECIPIENT = '0x32fa9903c31428579456cc5edcb76f8c09c02a0b5a3b3e94f6fe05bd99405741';
 
-  const DEFAULT_GAS_BUDGET = 100000;
+  const DEFAULT_GAS_BUDGET = 10000000;
 
   final data = Base64DataBuffer.fromString('hello world');
 
