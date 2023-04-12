@@ -464,33 +464,33 @@ MovePackageContent? getMovePackageContent(dynamic data
 
 class SuiObjectDataOptions {
   /* Whether to fetch the object type, default to be true */
-  bool? showType;
+  bool showType;
 
   /* Whether to fetch the object content, default to be false */
-  bool? showContent;
+  bool showContent;
 
   /* Whether to fetch the object content in BCS bytes, default to be false */
-  bool? showBcs;
+  bool showBcs;
 
   /* Whether to fetch the object owner, default to be false */
-  bool? showOwner;
+  bool showOwner;
 
   /* Whether to fetch the previous transaction digest, default to be false */
-  bool? showPreviousTransaction;
+  bool showPreviousTransaction;
 
   /* Whether to fetch the storage rebate, default to be false */
-  bool? showStorageRebate;
+  bool showStorageRebate;
 
   /* Whether to fetch the display metadata, default to be false */
-  bool? showDisplay;
+  bool showDisplay;
 
   SuiObjectDataOptions({
-    this.showType,
-    this.showContent,
-    this.showBcs,
-    this.showOwner,
-    this.showPreviousTransaction,
-    this.showStorageRebate,
-    this.showDisplay,
+    this.showType = false,
+    this.showContent = false,
+    this.showBcs = false,
+    this.showOwner = false,
+    this.showPreviousTransaction = false,
+    this.showStorageRebate = false,
+    this.showDisplay = false,
   });
 }

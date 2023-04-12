@@ -364,6 +364,116 @@ class JsonRpcProvider {
     }
   }
 
+  /*
+   {
+      MoveFunction: {
+        package: ObjectId;
+        module: string | null;
+        function: string | null;
+      };
+    }
+  | { InputObject: ObjectId }
+  | { ChangedObject: ObjectId }
+  | { FromAddress: SuiAddress }
+  | { ToAddress: SuiAddress }
+   */
+  Future<PaginatedTransactionResponse> queryTransactionBlocks(
+      Map filter,
+      {SuiTransactionBlockResponseOptions? options,
+      int limit = 100,
+      String? cursor,
+      bool descendingOrder = true}) async {
+    try {
+      final data = await client.request('suix_queryTransactionBlocks', [
+        {
+          "filter": filter,
+          "options": options?.toJson()
+        },
+        cursor,
+        limit,
+        descendingOrder
+      ]);
+      return PaginatedTransactionResponse.fromJson(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching queryTransactionBlocks info: $err for filter $filter');
+    }
+  }
+
+  Future<SuiTransactionBlockResponse> getTransactionBlock(
+      TransactionDigest digest,
+      {SuiTransactionBlockResponseOptions? options}) async {
+    try {
+      final data = await client
+          .request('sui_getTransactionBlock', [digest, options?.toJson()]);
+      return SuiTransactionBlockResponse.fromJson(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching getTransactionBlock info: $err for digest $digest');
+    }
+  }
+
+  Future<List<SuiTransactionBlockResponse>> multiGetTransactionBlocks(
+      List<TransactionDigest> digests,
+      {SuiTransactionBlockResponseOptions? options}) async {
+    try {
+      final data = await client.request(
+          'sui_multiGetTransactionBlocks', [digests, options?.toJson()]);
+      List<SuiTransactionBlockResponse> list = [];
+      for (var response in data) {
+        list.add(SuiTransactionBlockResponse.fromJson(response));
+      }
+      return list;
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching multiGetTransactionBlocks info: $err for digests $digests');
+    }
+  }
+
+
+  /// transactionBlock is base64 string
+  Future<SuiTransactionBlockResponse> executeTransactionBlock(
+    String transactionBlock,
+    List<String> signature, {
+    SuiTransactionBlockResponseOptions? options,
+    ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
+  }) async {
+    try {
+      final data = await client.request('sui_executeTransactionBlock', [
+        transactionBlock,
+        signature,
+        options?.toJson(),
+        requestType.name,
+      ]);
+      return SuiTransactionBlockResponse.fromJson(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching executeTransactionBlock info: $err for transactionBlock $transactionBlock');
+    }
+  }
+
+  /// Get total number of transactions
+  Future<BigInt> getTotalTransactionBlocks() async {
+    try {
+      final data = await client.request('sui_getTotalTransactionBlocks', []);
+      return BigInt.parse(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching getTotalTransactionBlocks info: $err');
+    }
+  }
+
+  /// Getting the reference gas price for the network
+  Future<BigInt> getReferenceGasPrice() async {
+    try {
+      final data = await client.request('suix_getReferenceGasPrice', []);
+      return BigInt.parse(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching getTotalTransactionBlocks info: $err');
+    }
+  }
+
   Future<SuiObjectRef?> getObjectRef(String objectId) async {
     final data = await getObject(objectId);
     return getObjectReference(data);
@@ -506,33 +616,26 @@ class JsonRpcProvider {
     Base64DataBuffer txnBytes,
     SignatureScheme signatureScheme,
     Base64DataBuffer signature,
-    PublicKey pubkey,
-   [ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert]
-  ) async {
+    PublicKey pubkey, [
+    ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
+  ]) async {
     final serializedSig = <int>[];
     serializedSig.add(SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme));
     serializedSig.addAll(signature.getData());
     serializedSig.addAll(pubkey.toBytes());
-    var params = [
+    final result = await executeTransactionBlock(
       txnBytes.toBase64(),
       [Base64DataBuffer(serializedSig).toBase64()],
-      {
-        "showInput": true,
-        "showRawInput": true,
-        "showEffects": true,
-        "showEvents": true,
-        "showObjectChanges": true,
-        "showBalanceChanges": true,
-        "skipDataValidation": skipDataValidation
-      },
-      requestType.name
-    ];
-    final result = await client.request(
-        'sui_executeTransactionBlock',
-        params,
-        skipDataValidation
+      options: SuiTransactionBlockResponseOptions(
+        showInput: true,
+        showEffects: true,
+        showEvents: true,
+        showObjectChanges: true,
+        showBalanceChanges: true,
+      ),
+      requestType: requestType,
     );
-    return SuiExecuteTransactionResponse.fromJson(result);
+    return result;
   }
 
   Future<int> getTotalTransactionNumber() async {

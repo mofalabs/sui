@@ -25,6 +25,12 @@ enum TransactionKindName {
 
 typedef SuiJsonValue = dynamic;
 
+typedef TransactionEvents = List<SuiEvent>;
+
+dynamic getTransactionKind(SuiTransactionBlockResponse data){
+  return data.transaction?.data.transaction;
+}
+
 //  class TxCert {
 //    CertifiedTransaction certificate;
 
@@ -49,6 +55,117 @@ typedef SuiJsonValue = dynamic;
 //   }
 // }
 
+class PaginatedTransactionResponse {
+  List<SuiTransactionBlockResponse> data;
+  String nextCursor;
+  bool hasNextPage;
+
+  PaginatedTransactionResponse(
+    this.data,
+    this.nextCursor,
+    this.hasNextPage,
+  );
+
+  factory PaginatedTransactionResponse.fromJson(dynamic data) {
+    List<SuiTransactionBlockResponse> list = [];
+    for (var response in data['data']) {
+      list.add(SuiTransactionBlockResponse.fromJson(response));
+    }
+
+    return PaginatedTransactionResponse(
+      list,
+      data['nextCursor'],
+      data['hasNextPage'],
+    );
+  }
+}
+
+class SuiTransactionBlock {
+  List<dynamic> txSignatures;
+  SuiTransactionBlockData data;
+
+  SuiTransactionBlock(
+    this.data,
+    this.txSignatures,
+  );
+
+  factory SuiTransactionBlock.fromJson(dynamic data) {
+    return SuiTransactionBlock(
+      SuiTransactionBlockData.fromJson(data['data']),
+      data['txSignatures'],
+    );
+  }
+}
+
+typedef SuiTransactionBlockResponse = SuiExecuteTransactionResponse;
+
+class SuiExecuteTransactionResponse {
+  TransactionDigest digest;
+  TransactionEffects? effects;
+  String? timestampMs;
+  String? checkpoint;
+  TransactionEvents events;
+  SuiTransactionBlock? transaction;
+  bool? confirmedLocalExecution;
+  dynamic objectChanges;
+  List<BalanceChange> balanceChanges;
+  /* Errors that occurred in fetching/serializing the transaction. */
+  List<dynamic>? errors;
+
+  SuiExecuteTransactionResponse(
+    this.digest,
+    this.effects,
+    this.timestampMs,
+    this.checkpoint,
+    this.events,
+    this.transaction,
+    this.confirmedLocalExecution,
+    this.objectChanges,
+    this.balanceChanges,
+    this.errors,
+  );
+
+  factory SuiExecuteTransactionResponse.fromJson(dynamic data) {
+    TransactionEffects? effects;
+    if (data['effects'] != null) {
+      effects = TransactionEffects.fromJson(data['effects']);
+    }
+
+    final events = data['events'];
+    List<SuiEvent> eventsList = [];
+    if (events != null) {
+      for (var event in events) {
+        eventsList.add(SuiEvent.fromJson(event));
+      }
+    }
+    SuiTransactionBlock? transaction;
+    if (data['transaction'] != null) {
+      transaction = SuiTransactionBlock.fromJson(data['transaction']);
+    }
+
+    final balanceChanges = data['balanceChanges'];
+    List<BalanceChange> balanceChangesList = [];
+    if (balanceChanges != null) {
+      for (var balance in balanceChanges) {
+        balanceChangesList.add(BalanceChange.fromJson(balance));
+      }
+    }
+
+    return SuiTransactionBlockResponse(
+      data['digest'],
+      effects,
+      data['timestampMs'],
+      data['checkpoint'],
+      eventsList,
+      transaction,
+      data['confirmedLocalExecution'],
+      data['objectChanges'],
+      balanceChangesList,
+      data['errors'],
+    );
+  }
+}
+
 class EffectsCert {
   String transactionEffectsDigest;
   TransactionEffects effects;
@@ -61,71 +178,6 @@ class EffectsCert {
       data['transactionEffectsDigest'],
       TransactionEffects.fromJson(data['effects']),
       data['finalityInfo']
-    );
-  }
-}
-
-class SuiExecuteTransactionResponse {
-  String digest;
-  Map<String, dynamic>? transaction;
-  List<BalanceChange> balanceChanges;
-  TransactionEffects? effects;
-  bool? confirmedLocalExecution;
-  bool? errors;
-  int? timestampMs;
-  int? checkpoint;
-  List<dynamic> objectChanges;
-  List<SuiEvent> events;
-
-  SuiExecuteTransactionResponse(
-    this.digest,
-    this.transaction,
-    this.effects,
-    this.events,
-    this.timestampMs,
-    this.checkpoint,
-    this.confirmedLocalExecution,
-    this.objectChanges,
-    this.balanceChanges,
-    this.errors,
-  );
-
-  factory SuiExecuteTransactionResponse.fromJson(dynamic data) {
-    final events = data['events'];
-    final eventsList = <SuiEvent>[];
-    if (events != null) {
-      for (var event in events) {
-        eventsList.add(SuiEvent.fromJson(event));
-      }
-    }
-
-    final balanceChanges = data['balanceChanges'];
-    final balanceChangesList = <BalanceChange>[];
-    if (balanceChanges != null) {
-      for (var balanceChange in balanceChanges) {
-        balanceChangesList.add(BalanceChange.fromJson(balanceChange));
-      }
-    }
-
-    final objectChanges = data['objectChanges'];
-    final objectChangesList = <dynamic>[];
-    if (objectChanges != null) {
-      for (var objectChange in objectChanges) {
-        objectChangesList.add(objectChange);
-      }
-    }
-
-    return SuiExecuteTransactionResponse(
-      data['digest'] ?? '',
-      data['transaction'],
-      data['effects'] != null ? TransactionEffects.fromJson(data['effects']) : null,
-      eventsList,
-      data['timestampMs'],
-      data['checkpoint'],
-      data['confirmedLocalExecution'],
-      objectChangesList,
-      balanceChangesList,
-      data['errors'],
     );
   }
 }
@@ -768,5 +820,41 @@ class SuiTransactionResponse {
       data['timestamp_ms'],
       data['parsed_data'] != null ? SuiParsedTransactionResponse.fromJson(data['parsed_data']) : null
     );
+  }
+}
+
+
+class SuiTransactionBlockResponseOptions {
+  /* Whether to show transaction input data. Default to be false. */
+  bool showInput;
+
+  /* Whether to show transaction effects. Default to be false. */
+  bool showEffects;
+
+  /* Whether to show transaction events. Default to be false. */
+  bool showEvents;
+
+  /* Whether to show object changes. Default to be false. */
+  bool showObjectChanges;
+
+  /* Whether to show coin balance changes. Default to be false. */
+  bool showBalanceChanges;
+
+  SuiTransactionBlockResponseOptions({
+    this.showInput = false,
+    this.showEffects= false,
+    this.showEvents= false,
+    this.showObjectChanges= false,
+    this.showBalanceChanges= false,
+  });
+
+  Map<String, bool> toJson() {
+    return {
+      'showInput':showInput,
+      'showEffects':showEffects,
+      'showEvents':showEvents,
+      'showObjectChanges':showObjectChanges,
+      'showBalanceChanges':showBalanceChanges,
+    };
   }
 }
