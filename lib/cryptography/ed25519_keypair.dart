@@ -7,7 +7,6 @@ import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
-import 'package:sui/cryptography/secp256k1.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/ed25519_hd_key.dart' as ed25519HDKey;
 
@@ -80,8 +79,10 @@ class Ed25519Keypair with Keypair {
   }
 
   /// Generate a keypair from [mnemonics] string.
-  static Ed25519Keypair fromMnemonics(String mnemonics) {
-    return deriveKeypair(DEFAULT_ED25519_DERIVATION_PATH, mnemonics);
+  static Ed25519Keypair fromMnemonics(String mnemonics,
+      {int accountIndex = 0, int addressIndex = 0, int changeIndex = 0}) {
+    String path = "m/44'/784'/$accountIndex'/$changeIndex'/$addressIndex'";
+    return deriveKeypair(path, mnemonics);
   }
 
   /// The public key for this Ed25519 keypair

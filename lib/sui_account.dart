@@ -26,14 +26,25 @@ class SuiAccount {
     return SuiAccount(Ed25519Keypair());
   }
 
-  factory SuiAccount.fromMnemonics(String mnemonics, SignatureScheme scheme) {
+  factory SuiAccount.fromMnemonics(String mnemonics, SignatureScheme scheme,
+      {int accountIndex = 0, int addressIndex = 0, int changeIndex = 0}) {
     SuiAccount account;
-    switch(scheme) {
+    switch (scheme) {
       case SignatureScheme.Secp256k1:
-        account = SuiAccount(Secp256k1Keypair.fromMnemonics(mnemonics));
+        account = SuiAccount(Secp256k1Keypair.fromMnemonics(
+          mnemonics,
+          accountIndex: accountIndex,
+          addressIndex: addressIndex,
+          changeIndex: changeIndex,
+        ));
         break;
       case SignatureScheme.ED25519:
-        account = SuiAccount(Ed25519Keypair.fromMnemonics(mnemonics));
+        account = SuiAccount(Ed25519Keypair.fromMnemonics(
+          mnemonics,
+          accountIndex: accountIndex,
+          addressIndex: addressIndex,
+          changeIndex: changeIndex,
+        ));
         break;
       default:
         throw ArgumentError('Undefined SignatureScheme $scheme');

@@ -9,7 +9,7 @@ import 'package:pointycastle/export.dart';
 ///
 /// [path] string (e.g. `m/44'/784'/0'/0'/0'`).
 bool isValidHardenedPath(String path) {
-  if (!RegExp(r"^m/44'/784'/0'/[0-9]+'/[0-9]+'+$").hasMatch(path)) {
+  if (!RegExp(r"^m/44'/784'/[0-9]+'/[0-9]+'/[0-9]+'+$").hasMatch(path)) {
     return false;
   }
   return true;
