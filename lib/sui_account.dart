@@ -9,6 +9,7 @@ import 'package:sui/cryptography/mnemonics.dart' as mnemonic;
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/types/common.dart';
+import 'package:sui/utils/hex.dart';
 
 class SuiAccount {
   late final Keypair _keypair;
@@ -33,6 +34,27 @@ class SuiAccount {
         break;
       case SignatureScheme.ED25519:
         account = SuiAccount(Ed25519Keypair.fromMnemonics(mnemonics));
+        break;
+      default:
+        throw ArgumentError('Undefined SignatureScheme $scheme');
+    }
+    return account;
+  }
+
+  factory SuiAccount.fromPrivateKey(String privateKey, SignatureScheme scheme) {
+    final privateKeyHex = Hex.trimHex(Hex.prefixHex(privateKey));
+    if (privateKeyHex.length != 64 && privateKeyHex.length != 128) {
+      throw ArgumentError("Invalid private key length ${privateKeyHex.length}");
+    }
+    SuiAccount account;
+    switch (scheme) {
+      case SignatureScheme.Secp256k1:
+        account = SuiAccount(
+            Secp256k1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
+        break;
+      case SignatureScheme.ED25519:
+        account =
+            SuiAccount(Ed25519Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
         break;
       default:
         throw ArgumentError('Undefined SignatureScheme $scheme');
