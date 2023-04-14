@@ -152,13 +152,16 @@ SignatureData sign(Uint8List messageHash, Uint8List privateKey, [bool isEthereum
   return SignatureData(signature.r, signature.s);
 }
 
-int recoveryId(ECSignature signature, Uint8List messageHash, Uint8List publicKeyBytes) {
+int recoveryId(ECSignature signature, Uint8List messageHash, Uint8List publicKeyBytes, ) {
+  final isCompressed = publicKeyBytes.length == 33;
   BigInt publicKey = decodeBigIntToUnsigned(publicKeyBytes);
 
   int recId = -1;
   for (int i = 0; i < 4; i++) {
-    Uint8List? k = recoverFromSignature(i, signature, messageHash, false);
-    if (k != null && decodeBigIntToUnsigned(k.sublist(1)) == publicKey) {
+    Uint8List? k =
+        recoverFromSignature(i, signature, messageHash, isCompressed);
+    if (k != null &&
+        decodeBigIntToUnsigned(k.sublist(isCompressed ? 0 : 1)) == publicKey) {
       recId = i;
       break;
     }

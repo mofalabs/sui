@@ -593,7 +593,7 @@ class JsonRpcProvider {
   ) async {
     try {
       final result = await client.request(
-        'suix_getEvents',
+        'sui_getEvents',
         [
           { "Transaction": digest },
           cursor,
