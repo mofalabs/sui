@@ -102,8 +102,11 @@ class SuiAccount {
   }
 
   bool verify(Base64DataBuffer data, SignaturePubkeyPair signature) {
-    bool success = _keypair.verify(data, signature.signature, signature.pubKey.toBytes());
+    var pubKeyBytes = signature.pubKey.toBytes();
+    if (_keypair is Secp256k1Keypair) {
+      pubKeyBytes = (_keypair as Secp256k1Keypair).publicKeyBytes(false);
+    }
+    bool success = _keypair.verify(data, signature.signature, pubKeyBytes);
     return success;
   }
-
 }

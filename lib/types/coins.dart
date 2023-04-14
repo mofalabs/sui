@@ -36,7 +36,7 @@ class CoinStruct {
 
 class PaginatedCoins {
   List<CoinStruct> data;
-  String nextCursor;
+  String? nextCursor;
   bool hasNextPage;
 
   PaginatedCoins(

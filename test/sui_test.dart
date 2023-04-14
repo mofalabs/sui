@@ -43,7 +43,7 @@ void main() {
   });
 
   test('test secp256k1 transfer sui', () async {
-    const gasBudget = 10000;
+    const gasBudget = 10000000;
     final recipientAccount = SuiAccount.secp256k1Account();
     final recipient = recipientAccount.getAddress();
 

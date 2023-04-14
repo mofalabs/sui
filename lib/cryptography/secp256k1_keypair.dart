@@ -74,7 +74,7 @@ class Secp256k1Keypair with Keypair {
   /// Generate a keypair from [mnemonics] string.
   static Secp256k1Keypair fromMnemonics(String mnemonics,
       {int accountIndex = 0, int addressIndex = 0, int changeIndex = 0}) {
-    String path = "m/54'/784'/$accountIndex'/$changeIndex'/$addressIndex'";
+    String path = "m/54'/784'/$accountIndex'/$changeIndex/$addressIndex";
     return Secp256k1Keypair.deriveKeypair(path, mnemonics);
   }
 
