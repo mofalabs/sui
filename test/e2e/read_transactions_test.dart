@@ -57,7 +57,7 @@ void main() {
     final digest = resp.data[0].digest;
     final resp2 = await provider.getTransactionBlock(
       digest,
-      options: options,
+      options,
     );
     expect(resp.data[0].effects?.status.status == resp2.effects?.status.status,
         true);
@@ -77,7 +77,7 @@ void main() {
         limit: 1, descendingOrder: false);
     final resp = await provider.getTransactionBlock(
       allTransactions.data[0].digest,
-      options: SuiTransactionBlockResponseOptions(showInput: true),
+      SuiTransactionBlockResponseOptions(showInput: true),
     );
     final txKind = getTransactionKind(resp)!;
     expect(txKind['kind'] != null, true);

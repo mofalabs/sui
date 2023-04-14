@@ -244,7 +244,7 @@ class AddressOwner {
 }
 
 class SuiObject {
-  ObjectId id;
+  ObjectId objectId;
   ObjectDigest digest;
   String version;
 
@@ -275,7 +275,7 @@ class SuiObject {
   dynamic display;
 
   SuiObject(
-    this.id,
+    this.objectId,
     this.digest,
     this.version,
     this.type,
@@ -303,7 +303,7 @@ class SuiObject {
       owner = ObjectOwner.fromJson(data['owner']);
     }
     return SuiObject(
-      data['id'],
+      data['objectId'],
       data['digest'],
       data['version'],
       data['type'],
@@ -373,7 +373,7 @@ SuiObjectRef? getObjectReference(SuiObjectResponse resp) {
   if (objectExistsResponse != null) {
     return SuiObjectRef(
       objectExistsResponse.digest,
-      objectExistsResponse.id,
+      objectExistsResponse.objectId,
       int.parse(objectExistsResponse.version),
     );
   } else {
@@ -493,4 +493,29 @@ class SuiObjectDataOptions {
     this.showStorageRebate = false,
     this.showDisplay = false,
   });
+}
+
+class PaginatedObjectsResponse {
+  List<SuiObjectResponse> data;
+  String nextCursor;
+  bool hasNextPage;
+
+  PaginatedObjectsResponse(
+      this.data,
+      this.nextCursor,
+      this.hasNextPage,
+      );
+
+  factory PaginatedObjectsResponse.fromJson(dynamic data) {
+    List<SuiObjectResponse> list = [];
+    for (var response in data['data']) {
+      list.add(SuiObjectResponse.fromJson(response));
+    }
+
+    return PaginatedObjectsResponse(
+      list,
+      data['nextCursor']??"",
+      data['hasNextPage'],
+    );
+  }
 }

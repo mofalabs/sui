@@ -22,7 +22,7 @@ void main() {
     final client = SuiClient(Constants.devnetAPI);
     final moveModules = await client.provider
         .getNormalizedMoveModulesByPackage(DEFAULT_PACKAGE);
-    expect(moveModules.keys.contains(DEFAULT_PACKAGE), true);
+    expect(moveModules.keys.contains(DEFAULT_MODULE), true);
     expect(moveModules.keys.isNotEmpty, true);
   });
 

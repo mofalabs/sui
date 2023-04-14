@@ -27,17 +27,17 @@ void main() {
   test('test getTransactionWithEffects', () async {
     final txns = await provider.getTransactions(address);
     expect(txns.isNotEmpty, true);
-    final resp = await provider.getTransactionWithEffects(txns[0]['digest']);
-    expect(resp.certificate.transactionDigest == txns[0], true);
+    final resp = await provider.getTransactionBlock(txns[0].digest);
+    expect(txns[0].digest == resp.digest, true);
   });
 
   test('test getTransactionWithEffectsBatch', () async {
     final txs = await provider.getTransactions(address);
     List<String> txDigests= [];
     for (var element in txs) {
-      txDigests.add(element['digest']);
+      txDigests.add(element.digest);
     }
-    final resp = await provider.getTransactionWithEffectsBatch(txDigests);
+    final resp = await provider.getTransactionBlockBatch(txDigests);
     expect(txs.length == resp.length, true);
   });
 
@@ -50,14 +50,14 @@ void main() {
     final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getObject(objectId);
-    expect(resp.data?.content?.fields?.id.id == objectId, true);
+    expect(resp.data?.objectId == objectId, true);
   });
 
   test('test getObjectRef by objectId', () async {
     final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
     final resp = await provider.getObjectRef(objectId);
-    expect(resp?.digest.isNotEmpty ?? false, true);
+    expect(resp?.objectId == objectId, true);
   });
 
   test('test getObjectBatch', () async {
@@ -67,23 +67,9 @@ void main() {
     expect(resp.length == ids.length, true);
   });
 
-  test('test getTotalTransactionNumber', () async {
-    final txNum = await provider.getTotalTransactionNumber();
-    expect(txNum > 0, true);
-  });
-
-  test('test getTotalTransactionNumber', () async {
-    int start = 1;
-    int end = 10;
-    final txns = await provider.getTransactionDigestsInRange(1, 10);
-    expect(txns.length == end - start, true);
-  });
-
-  test('test getTransactionsForObject', () async {
-    final objectsID = await provider.getOwnedObjects(address);
-    final objectId = objectsID[0].objectId;
-    final txns = await provider.getTransactionsForObject(objectId);
-    expect(txns.isNotEmpty, true);
+  test('test getTotalTransactionBlocks', () async {
+    final txNum = await provider.getTotalTransactionBlocks();
+    expect(txNum > BigInt.zero, true);
   });
 
   test('test getCoinBalancesOwnedByAddress', () async {
@@ -94,12 +80,12 @@ void main() {
   test('test getObjectsOwnedByObject', () async {
     final objectsID = await provider.getOwnedObjects(address);
     final objectId = objectsID[0].objectId;
-    final result = await provider.getObjectsOwnedByObject(objectId);
-    expect(result.length >= 0, true);
+    final result = await provider.getObject(objectId);
+    expect(result.data?.objectId == objectId, true);
   });
 
   test('test getEventsByTransaction', () async {
-    const txn = 'AWsJPVBcugYHB1qwa7hKhDQ89oImX5lOxphXHphlud8=';
+    const txn = '6oQhbs5miNLuMgun1ZK4ybvx1r7aXx5UdywLqNw36qZd';
     final result = await provider.getEvents(txn);
     expect(result.data.isNotEmpty, true);
     expect(result.data.first.txDigest == txn, true);

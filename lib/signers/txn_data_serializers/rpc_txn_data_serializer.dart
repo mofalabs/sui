@@ -128,9 +128,9 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           signerAddress,
           txn.inputCoins,
           txn.recipients,
-          txn.amounts,
+          txn.amounts.map((e) => e.toString()).toList(),
           txn.gasPayment,
-          txn.gasBudget,
+          txn.gasBudget.toString(),
         ],
       );
       return Base64DataBuffer.fromBase64String(resp['txBytes']);

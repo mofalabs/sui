@@ -1,4 +1,5 @@
 typedef SuiMoveFunctionArgTypesResponse = List<SuiMoveFunctionArgType>;
+
 /// String or SuiMoveFunctionArgTypeObject
 typedef SuiMoveFunctionArgType = dynamic;
 
@@ -17,14 +18,14 @@ class SuiMoveFunctionArgTypeObject {
 }
 
 class SuiMoveNormalizedModule {
-  int file_format_version;
+  int fileFormatVersion;
   String address;
   String name;
   List<SuiMoveModuleId> friends;
   Map<String, SuiMoveNormalizedStruct> structs;
   Map<String, SuiMoveNormalizedFunction> exposedFunctions;
 
-  SuiMoveNormalizedModule(this.file_format_version, this.address, this.name,
+  SuiMoveNormalizedModule(this.fileFormatVersion, this.address, this.name,
       this.friends, this.structs, this.exposedFunctions);
 
   factory SuiMoveNormalizedModule.fromJson(dynamic data) {
@@ -47,19 +48,19 @@ class SuiMoveNormalizedModule {
     final exposedFunctions = data['exposedFunctions'];
     final exposedFunctionsMap = <String, SuiMoveNormalizedFunction>{};
     if (exposedFunctions != null && exposedFunctions is Map) {
-      for (var key in structs.keys) {
-        exposedFunctionsMap[key] =
-            SuiMoveNormalizedFunction.fromJson(structs[key]);
+      for (var key in exposedFunctions.keys) {
+        var d = exposedFunctions[key];
+        exposedFunctionsMap[key] = SuiMoveNormalizedFunction.fromJson(d);
       }
     }
 
     return SuiMoveNormalizedModule(
-      data['file_format_version'],
+      data['fileFormatVersion'],
       data['address'],
       data['name'],
       friendsList,
       structsMap,
-      exposedFunctions,
+      exposedFunctionsMap,
     );
   }
 }
@@ -78,7 +79,6 @@ class SuiMoveModuleId {
   }
 }
 
-
 class SuiMoveNormalizedStruct {
   SuiMoveAbilitySet abilities;
   List<SuiMoveStructTypeParameter> typeParameters;
@@ -87,26 +87,28 @@ class SuiMoveNormalizedStruct {
   SuiMoveNormalizedStruct(this.abilities, this.typeParameters, this.fields);
 
   factory SuiMoveNormalizedStruct.fromJson(dynamic data) {
-    final paramsList = (data['type_parameters'] as List).map((x) =>
-        SuiMoveStructTypeParameter.fromJson(x)).toList();
-    final fieldsList = (data['fields'] as List).map((x) =>
-        SuiMoveNormalizedField.fromJson(x)).toList();
+    final paramsList = (data['typeParameters'] as List)
+        .map((x) => SuiMoveStructTypeParameter.fromJson(x))
+        .toList();
+    final fieldsList = (data['fields'] as List)
+        .map((x) => SuiMoveNormalizedField.fromJson(x))
+        .toList();
     return SuiMoveNormalizedStruct(
-        SuiMoveAbilitySet.fromJson(data['abilities']),
-        paramsList,
-        fieldsList
-    );
+        SuiMoveAbilitySet.fromJson(data['abilities']), paramsList, fieldsList);
   }
 }
 
 class SuiMoveStructTypeParameter {
   SuiMoveAbilitySet constraints;
-  bool isPhantom;
+  bool? isPhantom;
 
   SuiMoveStructTypeParameter(this.constraints, this.isPhantom);
 
   factory SuiMoveStructTypeParameter.fromJson(dynamic data) {
-    return SuiMoveStructTypeParameter(data['constraints'], data['is_phantom']);
+    return SuiMoveStructTypeParameter(
+      SuiMoveAbilitySet.fromJson(data['constraints']),
+      data['is_phantom'],
+    );
   }
 }
 
@@ -123,33 +125,46 @@ class SuiMoveNormalizedField {
 
 class SuiMoveNormalizedFunction {
   SuiMoveVisibility visibility;
-  bool isEntry;
+  bool? isEntry;
   List<SuiMoveAbilitySet> typeParameters;
   List<SuiMoveNormalizedType> parameters;
   List<SuiMoveNormalizedType> returns;
 
-  SuiMoveNormalizedFunction(this.visibility,
-      this.isEntry,
-      this.typeParameters,
-      this.parameters,
-      this.returns);
+  SuiMoveNormalizedFunction(this.visibility, this.isEntry, this.typeParameters,
+      this.parameters, this.returns);
 
   factory SuiMoveNormalizedFunction.fromJson(dynamic data) {
+    SuiMoveVisibility visibility;
+    if (data['visibility'].toString().toLowerCase() == 'public') {
+      visibility = SuiMoveVisibility.Public;
+    } else if (data['visibility'].toString().toLowerCase() == 'private') {
+      visibility = SuiMoveVisibility.Private;
+    } else {
+      visibility = SuiMoveVisibility.Friend;
+    }
+
+    List<SuiMoveAbilitySet> typeParameters = [];
+    for (var type in data['typeParameters']) {
+      typeParameters.add(SuiMoveAbilitySet.fromJson(type));
+    }
+
+    List<SuiMoveNormalizedType> parameters = [];
+
+    for (var type in data['parameters']) {
+      parameters.add(type);
+    }
+
+    List<SuiMoveNormalizedType> returns = [];
+    for (var type in data['return']) {
+      parameters.add(type);
+    }
+
     return SuiMoveNormalizedFunction(
-        data['visibility'],
-        data['is_entry'],
-        data['type_parameters'],
-        data['parameters'],
-        data['return_']
-    );
+        visibility, data['isEntry'], typeParameters, parameters, returns);
   }
 }
 
-enum SuiMoveVisibility {
-  Private,
-  Public,
-  Friend
-}
+enum SuiMoveVisibility { Private, Public, Friend }
 
 typedef SuiMoveTypeParameterIndex = int;
 
@@ -164,8 +179,6 @@ class SuiMoveAbilitySet {
 }
 
 typedef SuiMoveNormalizedType = dynamic;
-
-
 
 // export type SuiMoveNormalizedType =
 //   | string
@@ -195,7 +208,6 @@ class SuiMoveNormalizedStructType {
 
   SuiMoveNormalizedStructType(this.Struct);
 }
-
 
 SuiMoveNormalizedType? extractMutableReference(
     SuiMoveNormalizedType normalizedType) {

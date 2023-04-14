@@ -402,7 +402,7 @@ class JsonRpcProvider {
 
   Future<SuiTransactionBlockResponse> getTransactionBlock(
       TransactionDigest digest,
-      {SuiTransactionBlockResponseOptions? options}) async {
+      [SuiTransactionBlockResponseOptions? options]) async {
     try {
       final data = await client
           .request('sui_getTransactionBlock', [digest, options?.toJson()]);
@@ -500,7 +500,7 @@ class JsonRpcProvider {
   }
 
   /// Query Transactions Hash
-  Future<List<dynamic>> getTransactions(
+  Future<List<SuiTransactionBlockResponse>> getTransactions(
     String address,
     {TransactionDigest? cursor,
     int? limit,
@@ -508,36 +508,24 @@ class JsonRpcProvider {
   ) async {
     final query = { 'ToAddress': address };
     try {
-      final filterFromAddress =
-          await client.request('suix_queryTransactionBlocks', [
-        {
-          "filter": {'FromAddress': address}
-        },
-        cursor,
-        limit,
-        descendingOrder
-      ]);
-      final filterToAddress =
-          await client.request('suix_queryTransactionBlocks', [
-        {
-          "filter": {'ToAddress': address}
-        },
-        cursor,
-        limit,
-        descendingOrder
-      ]);
+      final filterFromAddress = await queryTransactionBlocks(
+          {'FromAddress': address},
+          cursor: cursor,
+          limit: limit ?? 100,
+          descendingOrder: descendingOrder);
+      final filterToAddress = await queryTransactionBlocks(
+          {'ToAddress': address},
+          cursor: cursor,
+          limit: limit ?? 100,
+          descendingOrder: descendingOrder);
 
-      final txIds = <dynamic>{};
-      if (filterFromAddress != null && filterFromAddress['data'] is Iterable) {
-        for (var item in filterFromAddress['data']) {
-          txIds.add(item);
-        }
+      final txIds = <SuiTransactionBlockResponse>{};
+      for (var item in filterFromAddress.data) {
+        txIds.add(item);
       }
 
-      if (filterToAddress != null && filterToAddress['data'] is Iterable) {
-        for (var item in filterToAddress['data']) {
-          txIds.add(item);
-        }
+      for (var item in filterToAddress.data) {
+        txIds.add(item);
       }
       return txIds.toList();
     } catch (err) {
@@ -547,57 +535,14 @@ class JsonRpcProvider {
     }
   }
 
-  Future<List<String>> getTransactionsForObject(
-    String objectID,
-    {bool descendingOrder = true}
-  ) async {
-    final requests = [
-      {
-        'method': 'suix_getTransactions',
-        'args': [{ 'InputObject': objectID }, null, null, descendingOrder],
-      },
-      {
-        'method': 'suix_getTransactions',
-        'args': [{ 'MutatedObject': objectID }, null, null, descendingOrder],
-      },
-    ];
 
-    try {
-      final results = await client.batchRequest(
-        requests
-      );
-      return [...results[0]['data'], ...results[1]['data']];
-    } catch (err) {
-      throw ArgumentError(
-        'Error getting transactions for object: $err for id $objectID'
-      );
-    }
-  }
-
-  Future<SuiTransactionResponse> getTransactionWithEffects(
-    TransactionDigest digest
-  ) async {
-    try {
-      final data = await client.request(
-        'sui_getTransactionBlock',
-        [digest],
-        skipDataValidation
-      );
-      final result = SuiTransactionResponse.fromJson(data);
-      return result;
-    } catch (err) {
-      throw ArgumentError(
-        'Error getting transaction with effects: $err for digest $digest'
-      );
-    }
-  }
-
-  Future<List<dynamic>> getTransactionWithEffectsBatch(
-    List<TransactionDigest> digests
+  Future<List<SuiTransactionBlockResponse>> getTransactionBlockBatch(
+    List<TransactionDigest> digests,
+  [SuiTransactionBlockResponseOptions? options]
   ) async {
     final requests = digests.map((d) => ({
       'method': 'sui_getTransactionBlock',
-      'args': [d],
+      'args': [d, options?.toJson()],
     }));
     try {
       return await client.batchRequest(
@@ -636,35 +581,6 @@ class JsonRpcProvider {
       requestType: requestType,
     );
     return result;
-  }
-
-  Future<int> getTotalTransactionNumber() async {
-    try {
-      final resp = await client.request(
-        'suix_getTotalTransactionNumber',
-        []
-      );
-      return resp;
-    } catch (err) {
-      throw ArgumentError('Error fetching total transaction number: ${err}');
-    }
-  }
-
-  Future<List<String>> getTransactionDigestsInRange(
-    int start,
-    int end
-  ) async {
-    try {
-      final data = await client.request(
-        'suix_getTransactionsInRange',
-        [start, end]
-      );
-      return (data as List).cast<String>();
-    } catch (err) {
-      throw ArgumentError(
-        'Error fetching transaction digests in range: $err for range $start-$end'
-      );
-    }
   }
 
   /// Events
