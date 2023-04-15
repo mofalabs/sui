@@ -85,6 +85,26 @@ class JsonRpcProvider {
     }
   }
 
+  Future<List<CoinBalance>> getBalanceBatch(List<String> owner,
+      {String coinType = "0x2::sui::SUI"}) async {
+    final requests = owner.map((d) => ({
+      'method': 'suix_getBalance',
+      'args': [d, coinType],
+    }));
+    try {
+      var result = await client.batchRequest(requests, skipDataValidation);
+      List<CoinBalance> coins = [];
+      for(var coin in result) {
+        coins.add(CoinBalance.fromJson(coin));
+      }
+      return coins;
+    } catch (err) {
+      final list = owner.join(', ').substring(0, -2);
+      throw ArgumentError(
+          'Error getting transaction effects: $err for digests [$list]');
+    }
+  }
+
   /// Get the total coin balance for all coin type, owned by the address owner.
   Future<List<CoinBalance>> getAllBalance(String owner) async {
     try {

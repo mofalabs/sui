@@ -91,4 +91,17 @@ void main() {
     expect(result.data.first.txDigest == txn, true);
   });
 
+  test('test getBalanceBatch', () async {
+    const owners = [
+      '0x7312d32411f76db457fe943c3c51641483b80ad40fddeed66c30e385174fe32b',
+      '0x223410f50cd360eb4a3ca7eb3c7936af9c4f692e82398594d66399dff7e54ff3',
+      '0x7d20dcdb2bca4f508ea9613994683eb4e76e9c4ed371169677c1be02aaf0b58e',
+    ];
+    final result = await provider.getBalanceBatch(owners);
+    for(var coin in result) {
+      print('coin balance: ${coin.totalBalance}');
+    }
+    expect(result.isNotEmpty, true);
+  });
+
 }
