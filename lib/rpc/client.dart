@@ -29,32 +29,20 @@ class JsonRpcClient {
   String get rpcVersion => "2.0";
   Map<String, dynamic> get headers => {};
 
-  Future request(
+  Future<dynamic> request(
     String method,
-    List<dynamic> args,
-    [bool skipDataValidation = true]
+    List<dynamic> args
   ) async {
-    final expectedSchema = await sendRequest(method, args);
-    final errMsg =
-      TYPE_MISMATCH_ERROR +
-      'Result received was: ${jsonEncode(expectedSchema)}';
-
-    if (skipDataValidation && expectedSchema != null) {
-      return expectedSchema;
-    } else if (expectedSchema != null) {
-      // data validation
-      throw ArgumentError("RPC Error: $errMsg");
-    }
-    return expectedSchema;
+    final resp = await sendRequest(method, args);
+    return resp;
   }
 
   Future batchRequest(
-    Iterable<Map<String, dynamic>> requests,
-    [bool skipDataValidation = true]
+    Iterable<Map<String, dynamic>> requests
   ) async {
     final batchResp = <dynamic>[];
     for (var item in requests) {
-      final resp = await request(item['method'], item['args'], skipDataValidation);
+      final resp = await request(item['method'], item['args']);
       batchResp.add(resp);
     }
     return batchResp;
@@ -90,28 +78,4 @@ class JsonRpcClient {
     }
   }
 
-}
-
-class ValidResponse {
-  String jsonrpc = '2.0';
-  String id;
-  String result;
-
-  ValidResponse(this.id, this.result);
-}
-
-class Error {
-  dynamic code;
-  String message;
-  dynamic data;
-
-  Error(this.code, this.message, this.data);
-}
-
-class ErrorResponse {
-  String jsonrpc = '2.0';
-  String id;
-  Error error;
-
-  ErrorResponse(this.id, this.error);
 }

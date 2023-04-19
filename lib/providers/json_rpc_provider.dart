@@ -17,15 +17,13 @@ import 'package:sui/types/version.dart';
 
 class JsonRpcProvider {
 
-  late bool skipDataValidation;
   late int versionCacheTimoutInSeconds;
   late String endpoint;
   late JsonRpcClient client;
 
   JsonRpcProvider(
     this.endpoint,
-    {this.skipDataValidation = true,
-    this.versionCacheTimoutInSeconds = 600}
+    {this.versionCacheTimoutInSeconds = 600}
   ): super() {
     client = JsonRpcClient(endpoint);
   }
@@ -34,7 +32,6 @@ class JsonRpcProvider {
     final resp = await client.request(
       'rpc.discover',
       [],
-      skipDataValidation
     );
     final rpcApiVersion = RpcApiVersion.parseVersion(resp['info']['version']);
     return rpcApiVersion;
@@ -92,7 +89,7 @@ class JsonRpcProvider {
       'args': [d, coinType],
     }));
     try {
-      var result = await client.batchRequest(requests, skipDataValidation);
+      var result = await client.batchRequest(requests);
       List<CoinBalance> coins = [];
       for(var coin in result) {
         coins.add(CoinBalance.fromJson(coin));
@@ -505,10 +502,7 @@ class JsonRpcProvider {
       'args': [id],
     }));
     try {
-      final dataList = await client.batchRequest(
-        requests,
-        skipDataValidation
-      );
+      final dataList = await client.batchRequest(requests);
 
       final result = (dataList as List)
         .map((data) => SuiObjectResponse.fromJson(data))
@@ -565,10 +559,7 @@ class JsonRpcProvider {
       'args': [d, options?.toJson()],
     }));
     try {
-      return await client.batchRequest(
-        requests,
-        skipDataValidation
-      );
+      return await client.batchRequest(requests);
     } catch (err) {
       final list = digests.join(', ').substring(0, -2);
       throw ArgumentError(
