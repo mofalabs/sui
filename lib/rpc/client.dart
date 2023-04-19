@@ -1,24 +1,6 @@
 
 import 'dart:convert';
-
-import 'package:sui/constants.dart';
 import 'package:sui/http/http.dart';
-
-/// An object defining headers to be passed to the RPC server
-typedef HttpHeaders = Map<String, String>;
-
-
-class RpcParams {
-  String method;
-  List<dynamic> args;
-
-  RpcParams(this.method, this.args);
-}
-
-const TYPE_MISMATCH_ERROR =
-  "The response returned from RPC server does not match " +
-  "the TypeScript definition. This is likely because the SDK version is not " +
-  "compatible with the RPC server. Please update your SDK version to the latest. ";
 
 class JsonRpcClient {
   var _id = 0;

@@ -1,8 +1,4 @@
 
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
@@ -37,9 +33,11 @@ class JsonRpcProvider {
     return rpcApiVersion;
   }
 
-  /// Get all Coin<`coin_type`> objects owned by an address.
-  Future<PaginatedCoins> getCoins(String owner,
-      { String coinType = "0x2::sui::SUI", ObjectId? cursor, int? limit,}) async {
+  Future<PaginatedCoins> getCoins(String owner, {
+    String coinType = "0x2::sui::SUI", 
+    ObjectId? cursor, 
+    int? limit
+  }) async {
     try {
       final resp = await client.request(
           'suix_getCoins',
@@ -53,9 +51,8 @@ class JsonRpcProvider {
     }
   }
 
-  /// Get all Coin objects owned by an address.
   Future<PaginatedCoins> getAllCoins(String owner,
-      { ObjectId? cursor, int? limit,}) async {
+      { ObjectId? cursor, int? limit}) async {
     try {
       final resp = await client.request(
           'suix_getAllCoins',
@@ -69,7 +66,6 @@ class JsonRpcProvider {
     }
   }
 
-  /// Get the total coin balance for one coin type, owned by the address owner.
   Future<CoinBalance> getBalance(String owner,
       {String coinType = "0x2::sui::SUI"}) async {
     try {
@@ -102,7 +98,6 @@ class JsonRpcProvider {
     }
   }
 
-  /// Get the total coin balance for all coin type, owned by the address owner.
   Future<List<CoinBalance>> getAllBalance(String owner) async {
     try {
       final resp = await client.request(
@@ -121,8 +116,6 @@ class JsonRpcProvider {
     }
   }
 
-
-  /// Fetch CoinMetadata for a given coin type
   Future<CoinMetadataStruct> getCoinMetadata(String coinType) async {
     try {
       final resp = await client.request(
@@ -448,16 +441,15 @@ class JsonRpcProvider {
   }
 
 
-  /// transactionBlock is base64 string
   Future<SuiTransactionBlockResponse> executeTransactionBlock(
-    String transactionBlock,
+    String transactionBlockBase64,
     List<String> signature, {
     SuiTransactionBlockResponseOptions? options,
     ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
   }) async {
     try {
       final data = await client.request('sui_executeTransactionBlock', [
-        transactionBlock,
+        transactionBlockBase64,
         signature,
         options?.toJson(),
         requestType.name,
@@ -465,11 +457,10 @@ class JsonRpcProvider {
       return SuiTransactionBlockResponse.fromJson(data);
     } catch (err) {
       throw ArgumentError(
-          'Error fetching executeTransactionBlock info: $err for transactionBlock $transactionBlock');
+          'Error fetching executeTransactionBlock info: $err for transactionBlock $transactionBlockBase64');
     }
   }
 
-  /// Get total number of transactions
   Future<BigInt> getTotalTransactionBlocks() async {
     try {
       final data = await client.request('sui_getTotalTransactionBlocks', []);
@@ -480,7 +471,6 @@ class JsonRpcProvider {
     }
   }
 
-  /// Getting the reference gas price for the network
   Future<BigInt> getReferenceGasPrice() async {
     try {
       final data = await client.request('suix_getReferenceGasPrice', []);
