@@ -111,7 +111,7 @@ class SuiMoveObject {
 class SuiRawMoveObject {
   String type;
   String dataType;
-  String hasPublicTransfer;
+  bool hasPublicTransfer;
 
   /// Fields and values stored inside the Move object
   int version;
@@ -243,6 +243,23 @@ class AddressOwner {
   }
 }
 
+class DisplayFieldsResponse {
+  Map<String, dynamic>? data;
+  dynamic error;
+
+  DisplayFieldsResponse(
+    this.data,
+    this.error,
+  );
+
+  factory DisplayFieldsResponse.fromJson(dynamic data) {
+    return DisplayFieldsResponse(
+      data['data'],
+      data['error'],
+    );
+  }
+}
+
 class SuiObject {
   ObjectId objectId;
   ObjectDigest digest;
@@ -272,7 +289,7 @@ class SuiObject {
    * This can also be None if the struct type does not have Display defined
    * See more details in https://forums.sui.io/t/nft-object-display-proposal/4872
    */
-  dynamic display;
+  DisplayFieldsResponse? display;
 
   SuiObject(
     this.objectId,
@@ -302,6 +319,11 @@ class SuiObject {
     if(data['owner']!=null){
       owner = ObjectOwner.fromJson(data['owner']);
     }
+
+    DisplayFieldsResponse? display;
+    if (data['display'] != null) {
+      display = DisplayFieldsResponse.fromJson(data['display']);
+    }
     return SuiObject(
       data['objectId'],
       data['digest'],
@@ -312,7 +334,7 @@ class SuiObject {
       owner,
       data['previousTransaction'],
       data['storageRebate'],
-      data['display'],
+      display,
     );
   }
 }
@@ -493,6 +515,18 @@ class SuiObjectDataOptions {
     this.showStorageRebate = false,
     this.showDisplay = false,
   });
+
+  Map<String, bool> toJson() {
+    return {
+      'showType': showType,
+      'showContent': showContent,
+      'showBcs': showBcs,
+      'showOwner': showOwner,
+      'showPreviousTransaction': showPreviousTransaction,
+      'showStorageRebate': showStorageRebate,
+      'showDisplay': showDisplay,
+    };
+  }
 }
 
 class PaginatedObjectsResponse {

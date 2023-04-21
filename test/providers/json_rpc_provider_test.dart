@@ -104,4 +104,10 @@ void main() {
     expect(result.isNotEmpty, true);
   });
 
+  test('test getOwnedObjectList', () async {
+    const owner =
+        '0x73024d967e8714e73cffbac418ee0cb0557308c39e3d6afac28f2bddde6651cd';
+    final result = await provider.getOwnedObjectList(owner);
+    expect(result.data.isNotEmpty, true);
+  });
 }

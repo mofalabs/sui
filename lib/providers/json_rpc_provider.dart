@@ -201,6 +201,35 @@ class JsonRpcProvider {
     }
   }
 
+  /// Objects
+  Future<PaginatedObjectsResponse> getOwnedObjectList(
+      String address, {
+        SuiObjectDataOptions? options,
+        int limit = 50,
+        String? cursor,
+      }) async {
+    try {
+      options ??= SuiObjectDataOptions(
+        showDisplay: true,
+        showType: true,
+        showBcs: true,
+        showOwner: true,
+        showPreviousTransaction: true,
+        showStorageRebate: true,
+      );
+      final resp = await client.request('suix_getOwnedObjects', [
+        address,
+        {"options": options.toJson()},
+        cursor,
+        limit,
+      ]);
+      return PaginatedObjectsResponse.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching owned object: $err for address $address');
+    }
+  }
+
   Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
     String packageId,
     String moduleName,
@@ -352,7 +381,7 @@ class JsonRpcProvider {
   Future<SuiObjectResponse> getObject(String objectId,
       {SuiObjectDataOptions? options}) async {
     try {
-      final data = await client.request('sui_getObject', [objectId, options]);
+      final data = await client.request('sui_getObject', [objectId, options?.toJson()]);
       return SuiObjectResponse.fromJson(data);
     } catch (err) {
       throw ArgumentError('Error fetching object info: $err for id $objectId');
@@ -363,7 +392,7 @@ class JsonRpcProvider {
       {SuiObjectDataOptions? options}) async {
     try {
       final data =
-          await client.request('sui_multiGetObjects', [objectIds, options]);
+          await client.request('sui_multiGetObjects', [objectIds, options?.toJson()]);
       List<SuiObjectResponse> list = [];
       for(var response in data){
         list.add(SuiObjectResponse.fromJson(response));
