@@ -57,7 +57,7 @@ dynamic getTransactionKind(SuiTransactionBlockResponse data){
 
 class PaginatedTransactionResponse {
   List<SuiTransactionBlockResponse> data;
-  String nextCursor;
+  String? nextCursor;
   bool hasNextPage;
 
   PaginatedTransactionResponse(

@@ -505,20 +505,23 @@ class JsonRpcProvider {
 
   /// Query Transactions Hash
   Future<List<SuiTransactionBlockResponse>> getTransactions(
-    String address,
-    {TransactionDigest? cursor,
+    String address, {
+    SuiTransactionBlockResponseOptions? options,
+    TransactionDigest? cursor,
     int? limit,
-    bool descendingOrder = true}
-  ) async {
+    bool descendingOrder = true,
+  }) async {
     final query = { 'ToAddress': address };
     try {
       final filterFromAddress = await queryTransactionBlocks(
           {'FromAddress': address},
+          options: options,
           cursor: cursor,
           limit: limit ?? 100,
           descendingOrder: descendingOrder);
       final filterToAddress = await queryTransactionBlocks(
           {'ToAddress': address},
+          options: options,
           cursor: cursor,
           limit: limit ?? 100,
           descendingOrder: descendingOrder);
