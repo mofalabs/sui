@@ -34,8 +34,8 @@ class JsonRpcProvider {
   }
 
   Future<PaginatedCoins> getCoins(String owner, {
-    String coinType = "0x2::sui::SUI", 
-    ObjectId? cursor, 
+    String coinType = "0x2::sui::SUI",
+    ObjectId? cursor,
     int? limit
   }) async {
     try {
@@ -206,8 +206,9 @@ class JsonRpcProvider {
       String address, {
         SuiObjectDataOptions? options,
         int limit = 50,
-        String? cursor,
-      }) async {
+    String? cursor,
+    Map? filter,
+  }) async {
     try {
       options ??= SuiObjectDataOptions(
         showDisplay: true,
@@ -219,7 +220,7 @@ class JsonRpcProvider {
       );
       final resp = await client.request('suix_getOwnedObjects', [
         address,
-        {"options": options.toJson()},
+        {"filter": filter, "options": options.toJson()},
         cursor,
         limit,
       ]);

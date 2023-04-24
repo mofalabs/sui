@@ -82,7 +82,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           signerAddress, 
           txn.objectId, 
           txn.gasPayment, 
-          txn.gasBudget, 
+          txn.gasBudget.toString(),
           txn.recipient
         ]
       );
