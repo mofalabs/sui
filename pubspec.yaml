@@ -8,14 +8,14 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  bip32: ^2.0.0
-  bip39: ^1.0.6
-  dio: ^4.0.6
-  ed25519_edwards: ^0.3.1
   flutter:
     sdk: flutter
-  pointycastle: ^3.6.2
+  bip32: 2.0.0
+  bip39: 1.0.6
+  ed25519_edwards: 0.3.1
+  pointycastle: 3.7.3
   bcs: ^0.0.1
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:
