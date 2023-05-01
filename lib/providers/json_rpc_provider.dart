@@ -201,36 +201,6 @@ class JsonRpcProvider {
     }
   }
 
-  /// Objects
-  Future<PaginatedObjectsResponse> getOwnedObjectList(
-      String address, {
-        SuiObjectDataOptions? options,
-        int limit = 50,
-    String? cursor,
-    Map? filter,
-  }) async {
-    try {
-      options ??= SuiObjectDataOptions(
-        showDisplay: true,
-        showType: true,
-        showBcs: true,
-        showOwner: true,
-        showPreviousTransaction: true,
-        showStorageRebate: true,
-      );
-      final resp = await client.request('suix_getOwnedObjects', [
-        address,
-        {"filter": filter, "options": options.toJson()},
-        cursor,
-        limit,
-      ]);
-      return PaginatedObjectsResponse.fromJson(resp);
-    } catch (err) {
-      throw ArgumentError(
-          'Error fetching owned object: $err for address $address');
-    }
-  }
-
   Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
     String packageId,
     String moduleName,
@@ -267,7 +237,35 @@ class JsonRpcProvider {
     }
   }
 
-  /// Objects
+  Future<PaginatedObjectsResponse> getOwnedObjectList(
+    String address, {
+    SuiObjectDataOptions? options,
+    int limit = 50,
+    String? cursor,
+    Map? filter,
+  }) async {
+    try {
+      options ??= SuiObjectDataOptions(
+        showDisplay: true,
+        showType: true,
+        showBcs: true,
+        showOwner: true,
+        showPreviousTransaction: true,
+        showStorageRebate: true,
+      );
+      final resp = await client.request('suix_getOwnedObjects', [
+        address,
+        {"filter": filter, "options": options.toJson()},
+        cursor,
+        limit,
+      ]);
+      return PaginatedObjectsResponse.fromJson(resp);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching owned object: $err for address $address');
+    }
+  }
+
   Future<List<SuiObjectInfo>> getOwnedObjects(String address) async {
     try {
       final resp = await client.request('suix_getOwnedObjects', [
@@ -404,19 +402,6 @@ class JsonRpcProvider {
     }
   }
 
-  /*
-   {
-      MoveFunction: {
-        package: ObjectId;
-        module: string | null;
-        function: string | null;
-      };
-    }
-  | { InputObject: ObjectId }
-  | { ChangedObject: ObjectId }
-  | { FromAddress: SuiAddress }
-  | { ToAddress: SuiAddress }
-   */
   Future<PaginatedTransactionResponse> queryTransactionBlocks(
       Map filter,
       {SuiTransactionBlockResponseOptions? options,
@@ -656,5 +641,9 @@ class JsonRpcProvider {
     } catch (err) {
       throw ArgumentError('Error dry running transaction with request type: $err');
     }
+  }
+
+  Future<dynamic> getCurrentEpoch() async {
+    return await client.request('suix_getCurrentEpoch', []);
   }
 }
