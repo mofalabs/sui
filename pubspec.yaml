@@ -16,11 +16,16 @@ dependencies:
   pointycastle: 3.7.3
   bcs: ^0.0.1
   dio: ^4.0.6
+  freezed_annotation: ^2.2.0
+  json_annotation: ^4.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  build_runner: ^2.3.3
+  freezed: ^2.3.2
+  json_serializable: ^6.6.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

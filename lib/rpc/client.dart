@@ -13,9 +13,9 @@ class JsonRpcClient {
 
   Future<dynamic> request(
     String method,
-    List<dynamic> args
+    [List<dynamic>? args]
   ) async {
-    final resp = await sendRequest(method, args);
+    final resp = await sendRequest(method, args ?? []);
     return resp;
   }
 

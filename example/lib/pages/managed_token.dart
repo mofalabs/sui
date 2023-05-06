@@ -8,7 +8,7 @@ import 'package:sui/sui_client.dart';
 import 'package:sui/types/objects.dart';
 
 class ManagedToken extends StatefulWidget {
-  const ManagedToken({super.key, required this.client});
+  const ManagedToken({required this.client, Key? key}): super(key: key);
 
   final SuiClient client;
 

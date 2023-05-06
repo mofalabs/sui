@@ -110,4 +110,11 @@ void main() {
     final result = await provider.getOwnedObjectList(owner);
     expect(result.data.isNotEmpty, true);
   });
+
+  test('test getValidatorsApy', () async {
+    final result = await provider.getValidatorsApy();
+    expect(result.apys.isNotEmpty, true);
+    expect(result.apys[0].apy > 0, true);
+  });
+
 }

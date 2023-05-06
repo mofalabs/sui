@@ -1,5 +1,6 @@
 
 import 'package:sui/cryptography/publickey.dart';
+import 'package:sui/models/validators_apys.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/types/coins.dart';
@@ -478,7 +479,7 @@ class JsonRpcProvider {
 
   Future<BigInt> getTotalTransactionBlocks() async {
     try {
-      final data = await client.request('sui_getTotalTransactionBlocks', []);
+      final data = await client.request('sui_getTotalTransactionBlocks');
       return BigInt.parse(data);
     } catch (err) {
       throw ArgumentError(
@@ -488,7 +489,7 @@ class JsonRpcProvider {
 
   Future<BigInt> getReferenceGasPrice() async {
     try {
-      final data = await client.request('suix_getReferenceGasPrice', []);
+      final data = await client.request('suix_getReferenceGasPrice');
       return BigInt.parse(data);
     } catch (err) {
       throw ArgumentError(
@@ -644,6 +645,11 @@ class JsonRpcProvider {
   }
 
   Future<dynamic> getCurrentEpoch() async {
-    return await client.request('suix_getCurrentEpoch', []);
+    return await client.request('suix_getCurrentEpoch');
+  }
+
+  Future<ValidatorsApys> getValidatorsApy() async {
+    final resp = await client.request('suix_getValidatorsApy');
+    return ValidatorsApys.fromJson(resp);
   }
 }
