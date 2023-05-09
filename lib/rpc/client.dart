@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'package:sui/http/http.dart';
+import 'package:sui/utils/error.dart';
 
 class JsonRpcClient {
   var _id = 0;
@@ -50,12 +51,17 @@ class JsonRpcClient {
         data = jsonDecode(data);
       }
       if (data.containsKey("error") && data["error"] != null) {
-        throw Exception(data["error"]);
+        final error = data["error"];
+        throw RPCError(
+          RPCErrorRequest(method, parameters),
+          error["code"],
+          error["message"],
+          error["data"]
+        );
       } else {
         return data["result"];
       }
     } catch (e) {
-      // TODO: process exception
       rethrow;
     }
   }
