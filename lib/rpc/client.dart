@@ -20,7 +20,7 @@ class JsonRpcClient {
     return resp;
   }
 
-  Future batchRequest(
+  Future<dynamic> batchRequest(
     Iterable<Map<String, dynamic>> requests
   ) async {
     final batchResp = <dynamic>[];
