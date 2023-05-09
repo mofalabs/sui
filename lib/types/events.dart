@@ -23,6 +23,7 @@ class MoveEvent {
 }
 
 class SuiEvent {
+  EventId id;
   ObjectId packageId;
   String transactionModule;
   SuiAddress sender;
@@ -30,9 +31,10 @@ class SuiEvent {
 
   Map<String, dynamic>? parsedJson;
   String? bcs;
-  int? timestampMs;
+  String? timestampMs;
 
   SuiEvent(
+    this.id,
     this.packageId,
     this.transactionModule,
     this.sender,
@@ -44,6 +46,7 @@ class SuiEvent {
 
   factory SuiEvent.fromJson(dynamic data) {
     return SuiEvent(
+      EventId.fromJson(data["id"]),
       data['packageId'],
       data['transactionModule'],
       data['sender'],
@@ -183,54 +186,36 @@ enum BalanceChangeType {
   Gas, Pay, Receive
 }
 
-class SuiEventEnvelope {
-  int timestamp;
-  TransactionDigest txDigest;
-  dynamic event;
-
-  SuiEventEnvelope(this.timestamp, this.txDigest, this.event);
-
-  factory SuiEventEnvelope.fromJson(dynamic data) {
-    return SuiEventEnvelope(
-      data['timestamp'],
-      data['txDigest'],
-      data['event']
-    );
-  }
-}
-
-typedef SuiEvents = List<SuiEventEnvelope>;
-
-typedef SubscriptionId = int;
-
 class EventId {
-  int txSeq;
-  int eventSeq;
+  String txDigest;
+  String eventSeq;
 
-  EventId(this.txSeq, this.eventSeq);
+  EventId(this.txDigest, this.eventSeq);
 
   factory EventId.fromJson(dynamic data) {
     return EventId(
-      data['txSeq'],
+      data['txDigest'],
       data['eventSeq']
     );
   }
 }
-
 class PaginatedEvents {
-  List<SuiEventEnvelope> data;
+  List<SuiEvent> data;
   EventId? nextCursor;
 
   PaginatedEvents(this.data, this.nextCursor);
 
   factory PaginatedEvents.fromJson(dynamic data) {
     final eventsData = (data['data'] as List)
-      .map((e) => SuiEventEnvelope.fromJson(e))
+      .map((e) => SuiEvent.fromJson(e))
       .toList();
 
+    final nc =  data['nextCursor'] != null 
+      ? EventId.fromJson(data['nextCursor'])
+      : null;
     return PaginatedEvents(
       eventsData,
-      EventId.fromJson(data['nextCursor'])
+      nc
     );
   }
 }

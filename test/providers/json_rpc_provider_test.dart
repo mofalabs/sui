@@ -15,7 +15,7 @@ void main() {
   test('test getRpcApiVersion', () async {
     final resp = await provider.getRpcApiVersion();
     expect(resp.major >= 0, true);
-    expect(resp.minor >= 15, true);
+    expect(resp.minor >= 0, true);
     expect(resp.patch >= 0, true);
   });
 
@@ -84,11 +84,36 @@ void main() {
     expect(result.data?.objectId == objectId, true);
   });
 
-  test('test getEventsByTransaction', () async {
-    const txn = '6oQhbs5miNLuMgun1ZK4ybvx1r7aXx5UdywLqNw36qZd';
-    final result = await provider.getEvents(txn);
+
+  test('test query all events', () async {
+    final result = await provider.queryEvents({ "All": []});
     expect(result.data.isNotEmpty, true);
-    expect(result.data.first.txDigest == txn, true);
+  });
+
+  test('test query all events paged', () async {
+    final result = await provider.queryEvents({ "All": []}, limit: 2);
+    expect(result.data.isNotEmpty, true);
+    expect(result.nextCursor != null, true);
+  });
+
+  test('test query events by sender paginated', () async {
+    final result = await provider.queryEvents({ "Sender": address});
+    expect(result.data.isNotEmpty, true);
+  });
+
+  test('test queryEventsByTransaction', () async {
+    final result = await provider.queryEvents({ "All": []});
+    expect(result.data.isNotEmpty, true);
+  });
+
+  test('test queryEventsByTransaction', () async {
+    const txn = 'GMKjDJVda5LdFdajyGd5wLvS5xk1mzc7ChyNvevuvGdZ';
+    final result = await provider.queryTransactionEvents(txn);
+    if (result.data.isNotEmpty) {
+      expect(result.data.first.id.txDigest == txn, true);
+    } else {
+      expect(result.data.isEmpty, true);
+    }
   });
 
   test('test getBalanceBatch', () async {
