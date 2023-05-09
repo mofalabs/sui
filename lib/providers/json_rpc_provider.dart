@@ -10,6 +10,7 @@ import 'package:sui/types/framework.dart';
 import 'package:sui/types/normalized.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
+import 'package:sui/types/validator.dart';
 import 'package:sui/types/version.dart';
 
 class JsonRpcProvider {
@@ -494,6 +495,61 @@ class JsonRpcProvider {
     } catch (err) {
       throw ArgumentError(
           'Error fetching getTotalTransactionBlocks info: $err');
+    }
+  }
+
+  Future<SuiSystemStateSummary> getLatestSuiSystemState() async {
+    try {
+      final data = await client.request('suix_getLatestSuiSystemState', []);
+      return SuiSystemStateSummary.fromJson(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching getLatestSuiSystemState info: $err');
+    }
+  }
+
+  Future<ValidatorsApy> getValidatorsApy() async {
+    try {
+      final data = await client.request('suix_getValidatorsApy', []);
+      return ValidatorsApy.fromJson(data);
+    } catch (err) {
+      throw ArgumentError(
+          'Error fetching getValidatorsApy info: $err');
+    }
+  }
+
+  Future<List<DelegatedStake>> getStakes(SuiAddress address) async {
+    try {
+      final data = await client.request('suix_getStakes', [address]);
+      List<DelegatedStake> delegatedStakes = [];
+      for(var value in data){
+        delegatedStakes.add(DelegatedStake.fromJson(value));
+      }
+      return delegatedStakes;
+    } catch (err) {
+      throw ArgumentError('Error fetching getStakes info: $err');
+    }
+  }
+
+  Future<List<DelegatedStake>> getStakesByIds(List<ObjectId> stakedSuiIds) async {
+    try {
+      final data = await client.request('suix_getStakesByIds', [stakedSuiIds]);
+      List<DelegatedStake> delegatedStakes = [];
+      for(var value in data){
+        delegatedStakes.add(DelegatedStake.fromJson(value));
+      }
+      return delegatedStakes;
+    } catch (err) {
+      throw ArgumentError('Error fetching getStakes info: $err');
+    }
+  }
+
+  Future<CommitteeInfo> getCommitteeInfo([String? epoch]) async {
+    try {
+      final data = await client.request('suix_getCommitteeInfo', [epoch]);
+      return CommitteeInfo.fromJson(data);
+    } catch (err) {
+      throw ArgumentError('Error fetching getCommitteeInfo info: $err');
     }
   }
 

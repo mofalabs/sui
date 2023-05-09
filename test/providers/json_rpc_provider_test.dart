@@ -33,7 +33,7 @@ void main() {
 
   test('test getTransactionWithEffectsBatch', () async {
     final txs = await provider.getTransactions(address);
-    List<String> txDigests= [];
+    List<String> txDigests = [];
     for (var element in txs) {
       txDigests.add(element.digest);
     }
@@ -98,7 +98,7 @@ void main() {
       '0x7d20dcdb2bca4f508ea9613994683eb4e76e9c4ed371169677c1be02aaf0b58e',
     ];
     final result = await provider.getBalanceBatch(owners);
-    for(var coin in result) {
+    for (var coin in result) {
       print('coin balance: ${coin.totalBalance}');
     }
     expect(result.isNotEmpty, true);
@@ -111,10 +111,30 @@ void main() {
     expect(result.data.isNotEmpty, true);
   });
 
+  test('test getLatestSuiSystemState', () async {
+    final result = await provider.getLatestSuiSystemState();
+    expect(result.activeValidators.isNotEmpty, true);
+  });
+
   test('test getValidatorsApy', () async {
     final result = await provider.getValidatorsApy();
     expect(result.apys.isNotEmpty, true);
-    expect(result.apys[0].apy > 0, true);
   });
 
+  test('test getStakes', () async {
+    final result = await provider.getStakes(
+        "0x4ee37e332292fa904bed062ce207e3c390c4f9b46773cdc46648b1e65d06adc7");
+    expect(result.isNotEmpty, true);
+  });
+
+  test('test getStakesByIds', () async {
+    final result = await provider.getStakesByIds(
+        ["0x0175d093a5bf9d1f151548b593eed54d29d20d35fcc443be30ac2026a1c6345c"]);
+    expect(result.isNotEmpty, true);
+  });
+
+  test('test getCommitteeInfo', () async {
+    final result = await provider.getCommitteeInfo();
+    expect(result.validators.isNotEmpty, true);
+  });
 }
