@@ -1,6 +1,7 @@
 
 import 'dart:typed_data';
 
+import 'package:ed25519_edwards/ed25519_edwards.dart';
 import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/publickey.dart';
@@ -13,6 +14,8 @@ import 'package:sui/utils/hex.dart';
 
 class SuiAccount {
   late final Keypair _keypair;
+
+  Keypair get keyPair => _keypair;
 
   SuiAccount(Keypair keypair) {
     _keypair = keypair;

@@ -6,6 +6,7 @@ import 'package:sui/providers/json_rpc_provider.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
+import 'package:sui/sui_account.dart';
 import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
@@ -34,6 +35,8 @@ abstract class SignerWithProvider {
     this.serializer =
       serializer ?? RpcTxnDataSerializer(provider.endpoint);
   }
+
+  void setSigner(SuiAccount signer);
 
   SuiAddress getAddress();
 

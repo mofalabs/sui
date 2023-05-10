@@ -13,15 +13,27 @@ class SuiClient extends SignerWithProvider {
   ): super(endpoint) {
     _account = account;
   }
+  
+  @override
+  void setSigner(SuiAccount signer) {
+    _account = signer;
+  }
 
   @override
   SuiAddress getAddress() {
+    if (_account == null) {
+      throw ArgumentError("Please call setSigner method first", "signer");
+    }
     return _account!.getAddress();
   }
 
   @override
   SignaturePubkeyPair signData(Base64DataBuffer data) {
+    if (_account == null) {
+      throw ArgumentError("Please call setSigner method first", "signer");
+    }
     return _account!.signData(data);
   }
+
 
 }
