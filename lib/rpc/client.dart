@@ -44,25 +44,21 @@ class JsonRpcClient {
       message["params"] = parameters;
     }
 
-    try {
-      var data = (await http.post(url, data: message)).data;
-      if (data is String) {
-        if (data.isEmpty) return data;
-        data = jsonDecode(data);
-      }
-      if (data.containsKey("error") && data["error"] != null) {
-        final error = data["error"];
-        throw RPCError(
-          RPCErrorRequest(method, parameters),
-          error["code"],
-          error["message"],
-          error["data"]
-        );
-      } else {
-        return data["result"];
-      }
-    } catch (e) {
-      rethrow;
+    var data = (await http.post(url, data: message)).data;
+    if (data is String) {
+      if (data.isEmpty) return data;
+      data = jsonDecode(data);
+    }
+    if (data.containsKey("error") && data["error"] != null) {
+      final error = data["error"];
+      throw RPCError(
+        RPCErrorRequest(method, parameters),
+        error["code"],
+        error["message"],
+        error["data"]
+      );
+    } else {
+      return data["result"];
     }
   }
 
