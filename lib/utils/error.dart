@@ -13,6 +13,11 @@ class RPCError extends Error {
   dynamic data;
 
   RPCError(this.req, this.code, this.message, this.data);
+
+  @override
+  String toString() {
+    return message;
+  }
 }
 
 class RPCValidationError extends Error {
@@ -21,6 +26,11 @@ class RPCValidationError extends Error {
   dynamic message;
 
   RPCValidationError(this.req, this.result, this.message);
+
+  @override
+  String toString() {
+    return message.toString();
+  }
 }
 
 class FaucetRateLimitError extends Error {}
