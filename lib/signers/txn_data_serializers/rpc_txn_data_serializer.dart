@@ -26,26 +26,20 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress, 
     MoveCallTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_moveCall',
-        [
-          signerAddress,
-          txn.packageObjectId,
-          txn.module,
-          txn.function,
-          txn.typeArguments,
-          txn.arguments,
-          txn.gasPayment,
-          txn.gasBudget,
-        ]
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError(
-        'Error executing a move call: $err with args $txn'
-      );
-    }
+    final resp = await client.request(
+      'unsafe_moveCall',
+      [
+        signerAddress,
+        txn.packageObjectId,
+        txn.module,
+        txn.function,
+        txn.typeArguments,
+        txn.arguments,
+        txn.gasPayment,
+        txn.gasBudget,
+      ]
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
 
   @override
@@ -53,21 +47,17 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress, 
     PublishTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_publish',
-        [
-          signerAddress, 
-          txn.compiledModules,
-          [],
-          txn.gasPayment, 
-          txn.gasBudget.toString()
-        ]
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError('Error publishing package $err');
-    }
+    final resp = await client.request(
+      'unsafe_publish',
+      [
+        signerAddress, 
+        txn.compiledModules,
+        [],
+        txn.gasPayment, 
+        txn.gasBudget.toString()
+      ]
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
 
   @override
@@ -75,23 +65,17 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress, 
     TransferObjectTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_transferObject',
-        [
-          signerAddress, 
-          txn.objectId, 
-          txn.gasPayment, 
-          txn.gasBudget.toString(),
-          txn.recipient
-        ]
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError(
-        'Error transferring object: $err with args $txn'
-      );
-    }
+    final resp = await client.request(
+      'unsafe_transferObject',
+      [
+        signerAddress, 
+        txn.objectId, 
+        txn.gasPayment, 
+        txn.gasBudget.toString(),
+        txn.recipient
+      ]
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
 
   @override
@@ -99,21 +83,17 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress,
     TransferSuiTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_transferSui',
-        [
-          signerAddress, 
-          txn.suiObjectId, 
-          txn.gasBudget.toString(),
-          txn.recipient, 
-          txn.amount.toString()
-        ]
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError('Error transferring Sui coin: $err');
-    }
+    final resp = await client.request(
+      'unsafe_transferSui',
+      [
+        signerAddress, 
+        txn.suiObjectId, 
+        txn.gasBudget.toString(),
+        txn.recipient, 
+        txn.amount.toString()
+      ]
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
 
   @override
@@ -121,22 +101,18 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress, 
     PayTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_pay',
-        [
-          signerAddress,
-          txn.inputCoins,
-          txn.recipients,
-          txn.amounts.map((e) => e.toString()).toList(),
-          txn.gasPayment,
-          txn.gasBudget.toString(),
-        ],
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError('Error executing Pay transaction: $err}');
-    }
+    final resp = await client.request(
+      'unsafe_pay',
+      [
+        signerAddress,
+        txn.inputCoins,
+        txn.recipients,
+        txn.amounts.map((e) => e.toString()).toList(),
+        txn.gasPayment,
+        txn.gasBudget.toString(),
+      ],
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
 
   @override
@@ -144,21 +120,17 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress, 
     PaySuiTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_paySui',
-        [
-          signerAddress, 
-          txn.inputCoins, 
-          txn.recipients, 
-          txn.amountsStr,
-          txn.gasBudget.toString()
-        ]
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError('Error executing PaySui transaction: $err');
-    }
+    final resp = await client.request(
+      'unsafe_paySui',
+      [
+        signerAddress, 
+        txn.inputCoins, 
+        txn.recipients, 
+        txn.amountsStr,
+        txn.gasBudget.toString()
+      ]
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
 
 
@@ -167,20 +139,16 @@ class RpcTxnDataSerializer with TxnDataSerializer {
     SuiAddress signerAddress, 
     PayAllSuiTransaction txn
   ) async {
-    try {
-      final resp = await client.request(
-        'unsafe_payAllSui',
-        [
-          signerAddress, 
-          txn.inputCoins, 
-          txn.recipient, 
-          txn.gasBudget.toString()
-        ]
-      );
-      return Base64DataBuffer.fromBase64String(resp['txBytes']);
-    } catch (err) {
-      throw ArgumentError('Error executing PayAllSui transaction: $err');
-    }
+    final resp = await client.request(
+      'unsafe_payAllSui',
+      [
+        signerAddress, 
+        txn.inputCoins, 
+        txn.recipient, 
+        txn.gasBudget.toString()
+      ]
+    );
+    return Base64DataBuffer.fromBase64String(resp['txBytes']);
   }
     
 }
