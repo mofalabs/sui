@@ -19,6 +19,14 @@ class SuiObjectRef {
         data['version']
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'digest': digest,
+      'objectId': objectId,
+      'version': version,
+    };
+  }
 }
 
 class SuiObjectError {

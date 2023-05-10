@@ -78,6 +78,14 @@ class PaginatedTransactionResponse {
       data['hasNextPage'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data.map((e) => e.toJson()).toList(),
+      'nextCursor': nextCursor,
+      'hasNextPage': hasNextPage,
+    };
+  }
 }
 
 class SuiTransactionBlock {
@@ -94,6 +102,13 @@ class SuiTransactionBlock {
       SuiTransactionBlockData.fromJson(data['data']),
       data['txSignatures'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'data': data.toJson(),
+      'txSignatures': txSignatures,
+    };
   }
 }
 
@@ -112,6 +127,8 @@ class SuiExecuteTransactionResponse {
   /* Errors that occurred in fetching/serializing the transaction. */
   List<dynamic>? errors;
 
+  Map<String, dynamic> json;
+
   SuiExecuteTransactionResponse(
     this.digest,
     this.effects,
@@ -123,6 +140,7 @@ class SuiExecuteTransactionResponse {
     this.objectChanges,
     this.balanceChanges,
     this.errors,
+    this.json,
   );
 
   factory SuiExecuteTransactionResponse.fromJson(dynamic data) {
@@ -162,7 +180,12 @@ class SuiExecuteTransactionResponse {
       data['objectChanges'],
       balanceChangesList,
       data['errors'],
+      data,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return json;
   }
 }
 
@@ -179,6 +202,14 @@ class EffectsCert {
       TransactionEffects.fromJson(data['effects']),
       data['finalityInfo']
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'transactionEffectsDigest': transactionEffectsDigest,
+      'effects': effects.toJson(),
+      'finalityInfo': finalityInfo
+    };
   }
 }
 
@@ -206,6 +237,14 @@ class AuthorityQuorumSignInfo {
       (data['signers_map'] as List).cast<int>()
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'epoch': epoch,
+      'signature': signature,
+      'signersMap': signersMap,
+    };
+  }
 }
 
 class TransferObject {
@@ -220,6 +259,13 @@ class TransferObject {
       SuiObjectRef.fromJson(['objectRef'])
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'recipient': recipient,
+      'objectRef': objectRef.toJson(),
+    };
+  }
 }
 
 class SuiTransferSui {
@@ -233,6 +279,13 @@ class SuiTransferSui {
       data['recipient'],
       data['amount']
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'recipient': recipient,
+      'amount': amount,
+    };
   }
 }
 
@@ -249,6 +302,14 @@ class SuiChangeEpoch {
       data['storage_charge'],
       data['computation_charge']
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'epoch': epoch,
+      'storage_charge': storageCharge,
+      'computation_charge': computationCharge,
+    };
   }
 }
 
@@ -268,6 +329,14 @@ class Pay {
       recipientsList,
       amountsList
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'coins': coins.map((e) => e.toJson()).toList(),
+      'recipients': recipients,
+      'amounts': amounts,
+    };
   }
 }
 
@@ -303,6 +372,14 @@ class PaySui {
       amountsList
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'coins': coins.map((e) => e.toJson()).toList(),
+      'recipients': recipients,
+      'amounts': amounts,
+    };
+  }
 }
 
 class PayAllSui {
@@ -320,6 +397,13 @@ class PayAllSui {
       coinsList,
       data['recipient']
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'coins': coins.map((e) => e.toJson()).toList(),
+      'recipients': recipient,
+    };
   }
 }
 
@@ -540,6 +624,8 @@ class TransactionEffects {
   /// The set of transaction digests this transaction depends on
   List<TransactionDigest> dependencies;
 
+  Map<String, dynamic> json;
+
   TransactionEffects(
     this.status,
     this.gasUsed,
@@ -552,7 +638,8 @@ class TransactionEffects {
     this.wrapped,
     this.gasObject,
     this.events,
-    this.dependencies
+    this.dependencies,
+    this.json,
   );
 
   factory TransactionEffects.fromJson(dynamic data) {
@@ -622,8 +709,13 @@ class TransactionEffects {
       wrappedList,
       OwnedObjectRef.fromJson(data['gasObject']),
       data['events'],
-      dependenciesList
+      dependenciesList,
+      data,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return json;
   }
 }
 
@@ -658,6 +750,15 @@ class SuiTransactionBlockData {
       data['sender'],
       data['gasData'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'messageVersion': messageVersion,
+      'transaction': transaction,
+      'sender': sender,
+      'gasData': gasData,
+    };
   }
 }
 
