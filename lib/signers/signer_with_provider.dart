@@ -99,8 +99,8 @@ abstract class SignerWithProvider {
     }
   }
 
-  Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx) async {
-    final address = getAddress();
+  Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx, String? signerAddress) async {
+    final address = signerAddress ?? getAddress();
     Base64DataBuffer dryRunTxBytes;
     if (tx is Uint8List) {
       dryRunTxBytes = Base64DataBuffer(tx);
@@ -253,8 +253,16 @@ abstract class SignerWithProvider {
 
   /// Returns the estimated gas cost for the transaction,
   /// throw whens fails to estimate the gas cost.
-  Future<int> getGasCostEstimation<T>(T tx) async {
-    final txEffects = await dryRunTransaction(tx);
+  Future<int> getGasCostEstimation<T>(T tx, [String? signerAddress]) async {
+    try {
+      if (signerAddress == null || signerAddress.isEmpty) {
+        getAddress(); // check signer address not null
+      }
+    } catch (e) {
+      throw ArgumentError.notNull("signerAddress");
+    }
+
+    final txEffects = await dryRunTransaction(tx, signerAddress);
     final gasUsed = txEffects.effects.gasUsed;
     final gasEstimation = gasUsed.computationCost + gasUsed.storageCost;
     return gasEstimation;
