@@ -36,9 +36,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  String mnemonics ="hat amused night mixed update exhibit elephant ticket trophy diagram monitor oval";
   BigInt _balance = BigInt.zero;
-  late SuiAccount account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+  late SuiAccount account = SuiAccount.ed25519Account();
   late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
 
   void _requestFaucet() async {

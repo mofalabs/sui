@@ -57,7 +57,7 @@ class _ManagedTokenState extends State<ManagedToken> {
                         "burn", 
                         [], 
                         [objectId!, suiObjects![index].objectId],
-                        10000
+                        100000000
                       );
 
                       final burnResp = await widget.client.executeMoveCall(txCall);
@@ -89,17 +89,15 @@ class _ManagedTokenState extends State<ManagedToken> {
       delegate: SliverChildListDelegate([
           /// Pulish Package
           if (packageId == null) ElevatedButton(onPressed: () async {
-            final pulishTx = PublishTransaction([ContractBytes.managedTokenBytes], 10000);
+            final pulishTx = PublishTransaction(ContractBytes.modules, ContractBytes.dependencies, 100000000);
             final resp = await widget.client.publish(pulishTx);
-            if (resp.confirmedLocalExecution == true) {
-              debugPrint(resp.digest);
-              final events = resp.effects?.events ?? [];
-              final event = events.firstWhere((e) => e["newObject"] != null && e["newObject"]["objectType"].toString().startsWith("0x2::coin::TreasuryCap"));
-              final obj = event["newObject"];
-              packageId = obj["packageId"];
-              objectId = obj["objectId"];
-              transactionModule = obj["transactionModule"];
-            }
+            final objectChanges = resp.objectChanges as List;
+            final package = objectChanges.firstWhere((e) => e["type"] == "published");
+            packageId = package["packageId"].toString();
+            final treasuryCapObj = objectChanges.firstWhere((e) => e["type"] == "created" && e["objectType"].toString().contains("coin::TreasuryCap"));
+            objectId = treasuryCapObj["objectId"].toString();
+            transactionModule = package["modules"][0].toString();
+
             setState(() {});
           },
           style: ElevatedButton.styleFrom(
@@ -120,7 +118,7 @@ class _ManagedTokenState extends State<ManagedToken> {
           if (packageId != null) ElevatedButton(onPressed: () async {
             final amount = mintTextController.text;
             if (int.tryParse(amount) == null) return;
-
+            /// mint coin
             final callTx = MoveCallTransaction(
               packageId!,
               transactionModule!, 
@@ -129,7 +127,7 @@ class _ManagedTokenState extends State<ManagedToken> {
               [
                objectId!, amount, widget.client.getAddress() 
               ],
-              10000
+              100000000
             );
             final resp = await widget.client.executeMoveCall(callTx);
             if (resp.confirmedLocalExecution == true) {
@@ -145,19 +143,23 @@ class _ManagedTokenState extends State<ManagedToken> {
                 suiObjects = coinObjects;
               });
             }
-          }, child: Text("Mint"),
+          },
           style: ElevatedButton.styleFrom(
-            minimumSize: Size.fromHeight(50),
-            textStyle: TextStyle(fontSize: 18)
-          )),
+            minimumSize: const Size.fromHeight(50),
+            textStyle: const TextStyle(fontSize: 18)
+          ), child: const Text("Mint")),
         ],
     ));
   }
 
   Future<List<SuiObjectInfo>> queryCoinObjects() async {
-      final objects = await widget.client.getOwnedObjects(widget.client.getAddress());
-      final coinObjects = objects.where((obj) => obj.type == "0x2::coin::Coin<$coinType>").toList();
-      return coinObjects;
+    final objects = await widget.client.getOwnedObjectsByOptions(
+      widget.client.getAddress(),
+      showType: true,
+      showContent: false
+    );
+    final coinObjects = objects.where((obj) => obj.type == "0x2::coin::Coin<$coinType>").toList();
+    return coinObjects;
   }
 
 }
