@@ -1,20 +1,14 @@
 Sui Dart SDK
 -
 
-Requirements
--
-
-- sdk: ">=2.15.1 <3.0.0"
-- flutter: ">=1.17.0"
+[![Pub](https://img.shields.io/badge/pub-v0.0.1-blue)](https://pub.dev/packages/sui)
 
 Installation
 -
 
 ```
-sui:
-    git:
-      url: https://github.com/0xmove/sui.git
-      ref: main
+dependencies:
+  sui: ^0.0.1
 ```
 
 Usage
