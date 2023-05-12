@@ -71,7 +71,7 @@ class SuiObjectInfo extends SuiObjectRef {
   factory SuiObjectInfo.fromJson(dynamic data) {
     return SuiObjectInfo(
       data['type'] ?? "",
-      data['owner']['AddressOwner'] ?? "",
+      data['owner']?['AddressOwner'] ?? "",
       data['previousTransaction'] ?? "",
       data['digest'] ?? "",
       data['objectId'] ?? "",

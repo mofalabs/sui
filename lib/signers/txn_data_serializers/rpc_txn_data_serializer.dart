@@ -36,7 +36,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.typeArguments,
         txn.arguments,
         txn.gasPayment,
-        txn.gasBudget,
+        txn.gasBudget.toString(),
       ]
     );
     return Base64DataBuffer.fromBase64String(resp['txBytes']);
@@ -52,7 +52,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
       [
         signerAddress, 
         txn.compiledModules,
-        [],
+        txn.dependencies,
         txn.gasPayment, 
         txn.gasBudget.toString()
       ]

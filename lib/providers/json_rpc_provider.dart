@@ -194,20 +194,27 @@ class JsonRpcProvider {
     return PaginatedObjectsResponse.fromJson(resp);
   }
 
-  Future<List<SuiObjectInfo>> getOwnedObjects(String address) async {
+  Future<List<SuiObjectInfo>> getOwnedObjects(String address, {
+    Map<String,dynamic>? filter,
+    Map<String,dynamic>? options,
+    bool showAllOptions = false
+  }) async {
+    final params = <String, dynamic>{};
+    params["filter"] = filter;
+    final opconf =  {
+      "showType": true,
+      "showContent": true,
+      "showBcs": true,
+      "showOwner": true,
+      "showPreviousTransaction": true,
+      "showStorageRebate": true,
+      "showDisplay": true
+    };
+    params["options"] = showAllOptions ? opconf : options;
+
     final resp = await client.request('suix_getOwnedObjects', [
       address,
-      {
-        "options": {
-          "showType": true,
-          "showContent": true,
-          "showBcs": true,
-          "showOwner": true,
-          "showPreviousTransaction": true,
-          "showStorageRebate": true,
-          "showDisplay": true
-        }
-      },
+      params
     ]);
     final objectsInfo = (resp['data'] as List).map((obj) {
       return SuiObjectInfo.fromJson(obj['data']);

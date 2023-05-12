@@ -110,10 +110,11 @@ class SignableTransaction {
 
 class PublishTransaction {
   List<String> compiledModules;
+  List<ObjectId> dependencies;
   int gasBudget;
   ObjectId? gasPayment;
 
-  PublishTransaction(this.compiledModules, this.gasBudget, [this.gasPayment]);
+  PublishTransaction(this.compiledModules, this.dependencies, this.gasBudget, [this.gasPayment]);
 }
 
 mixin TxnDataSerializer {

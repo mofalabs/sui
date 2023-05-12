@@ -124,8 +124,43 @@ abstract class SignerWithProvider {
     return provider.dryRunTransaction(dryRunTxBytes.toString());
   }
 
-  Future<List<SuiObjectInfo>> getOwnedObjects(String address) async {
-    return await provider.getOwnedObjects(address);
+  Future<List<SuiObjectInfo>> getOwnedObjects(String address, {
+    Map<String,dynamic>? filter,
+    Map<String,dynamic>? options,
+    bool showAllOptions = false
+  }) async {
+    return await provider.getOwnedObjects(
+      address, 
+      filter: filter, 
+      options: options, 
+      showAllOptions: showAllOptions);
+  }
+
+  Future<List<SuiObjectInfo>> getOwnedObjectsByOptions(String address, {
+    Map<String,dynamic>? filter,
+    bool showType = false,
+    bool showContent = false,
+    bool showBcs = false,
+    bool showOwner = false,
+    bool showPreviousTransaction = false,
+    bool showStorageRebate = false,
+    bool showDisplay = false
+  }) async {
+
+    final options =  {
+      "showType": showType,
+      "showContent": showContent,
+      "showBcs": showBcs,
+      "showOwner": showOwner,
+      "showPreviousTransaction": showPreviousTransaction,
+      "showStorageRebate": showStorageRebate,
+      "showDisplay": showDisplay
+    };
+
+    return await provider.getOwnedObjects(
+      address, 
+      filter: filter, 
+      options: options);
   }
 
   Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
