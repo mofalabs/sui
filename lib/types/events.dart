@@ -22,42 +22,6 @@ class MoveEvent {
   );
 }
 
-class SuiEvent {
-  EventId id;
-  ObjectId packageId;
-  String transactionModule;
-  SuiAddress sender;
-  String type;
-
-  Map<String, dynamic>? parsedJson;
-  String? bcs;
-  String? timestampMs;
-
-  SuiEvent(
-    this.id,
-    this.packageId,
-    this.transactionModule,
-    this.sender,
-    this.type,
-    this.parsedJson,
-    this.bcs,
-    this.timestampMs,
-  );
-
-  factory SuiEvent.fromJson(dynamic data) {
-    return SuiEvent(
-      EventId.fromJson(data["id"]),
-      data['packageId'],
-      data['transactionModule'],
-      data['sender'],
-      data['type'],
-      data['parsedJson'],
-      data['bcs'],
-      data['timestampMs'],
-    );
-  }
-}
-
 class PublishEvent {
   SuiAddress sender;
   ObjectId packageId;
@@ -184,40 +148,6 @@ enum EventType {
 
 enum BalanceChangeType {
   Gas, Pay, Receive
-}
-
-class EventId {
-  String txDigest;
-  String eventSeq;
-
-  EventId(this.txDigest, this.eventSeq);
-
-  factory EventId.fromJson(dynamic data) {
-    return EventId(
-      data['txDigest'],
-      data['eventSeq']
-    );
-  }
-}
-class PaginatedEvents {
-  List<SuiEvent> data;
-  EventId? nextCursor;
-
-  PaginatedEvents(this.data, this.nextCursor);
-
-  factory PaginatedEvents.fromJson(dynamic data) {
-    final eventsData = (data['data'] as List)
-      .map((e) => SuiEvent.fromJson(e))
-      .toList();
-
-    final nc =  data['nextCursor'] != null 
-      ? EventId.fromJson(data['nextCursor'])
-      : null;
-    return PaginatedEvents(
-      eventsData,
-      nc
-    );
-  }
 }
 
 // mirrors the value defined in https://github.com/MystenLabs/sui/blob/e12f8c58ef7ba17205c4caf5ad2c350cbb01656c/crates/sui-json-rpc/src/api.rs#L27

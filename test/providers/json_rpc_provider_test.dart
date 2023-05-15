@@ -9,8 +9,43 @@ void main() {
   late JsonRpcProvider provider;
 
   setUp(() {
-    provider = JsonRpcProvider(Constants.devnetAPI);
+    provider = JsonRpcProvider(Constants.mainnetAPI);
   });
+
+  test('test getCheckpoint', () async {
+    final resp = await provider.getCheckpoint("2525432");
+    expect(resp.sequenceNumber == "2525432", true);
+  });
+
+  test('test getCheckpoints', () async {
+    final resp = await provider.getCheckpoints();
+    expect(resp.hasNextPage, true);
+    expect(resp.data.isNotEmpty, true);
+  });
+
+  test('test getLatestCheckpointSequenceNumber', () async {
+    final resp = await provider.getLatestCheckpointSequenceNumber();
+    expect(resp > BigInt.zero, true);
+  });
+
+  test('test getLoadedChildObjects', () async {
+    const tx = 'D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb';
+    final resp = await provider.getLoadedChildObjects(tx);
+    expect(resp.loadedChildObjects.isNotEmpty, true);
+  });
+
+  test('test getMoveFunctionArgTypes', () async {
+    const package = "0xf45f752bc45dadff2ebc867c69af682c7192686d2455f655e2c54c9c75e95cff";
+    const module = "post";
+    const function = "create_post";
+    final resp = await provider.getMoveFunctionArgTypes(
+      packageId: package,
+      moduleName: module,
+      functionName: function
+    );
+    expect(resp.length > 0, true);
+  });
+
 
   test('test getRpcApiVersion', () async {
     final resp = await provider.getRpcApiVersion();
@@ -84,6 +119,10 @@ void main() {
     expect(result.data?.objectId == objectId, true);
   });
 
+  test('test getEvents', () async {
+    final resp = await provider.getEvents("D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb");
+    expect(resp.isNotEmpty, true);
+  });
 
   test('test query all events', () async {
     final result = await provider.queryEvents({ "All": []});
@@ -101,13 +140,13 @@ void main() {
     expect(result.data.isNotEmpty, true);
   });
 
-  test('test queryEventsByTransaction', () async {
+  test('test query all events', () async {
     final result = await provider.queryEvents({ "All": []});
     expect(result.data.isNotEmpty, true);
   });
 
   test('test queryEventsByTransaction', () async {
-    const txn = 'GMKjDJVda5LdFdajyGd5wLvS5xk1mzc7ChyNvevuvGdZ';
+    const txn = 'D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb';
     final result = await provider.queryTransactionEvents(txn);
     if (result.data.isNotEmpty) {
       expect(result.data.first.id.txDigest == txn, true);

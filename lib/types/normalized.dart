@@ -1,21 +1,6 @@
-typedef SuiMoveFunctionArgTypesResponse = List<SuiMoveFunctionArgType>;
-
-/// String or SuiMoveFunctionArgTypeObject
 typedef SuiMoveFunctionArgType = dynamic;
 
-typedef SuiMoveFunctionArgTypes = List<SuiMoveFunctionArgType>;
-
 typedef SuiMoveNormalizedModules = Map<String, SuiMoveNormalizedModule>;
-
-class SuiMoveFunctionArgTypeObject {
-  String object;
-
-  SuiMoveFunctionArgTypeObject(this.object);
-
-  factory SuiMoveFunctionArgTypeObject.fromJson(dynamic data) {
-    return SuiMoveFunctionArgTypeObject(data['Object']);
-  }
-}
 
 class SuiMoveNormalizedModule {
   int fileFormatVersion;

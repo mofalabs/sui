@@ -1,11 +1,14 @@
 
 import 'package:sui/cryptography/publickey.dart';
+import 'package:sui/models/checkpoint.dart';
+import 'package:sui/models/loaded_child_objects.dart';
+import 'package:sui/models/paged.dart';
+import 'package:sui/models/sui_event.dart';
 import 'package:sui/models/validators_apys.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
-import 'package:sui/types/events.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/normalized.dart';
 import 'package:sui/types/objects.dart';
@@ -24,6 +27,33 @@ class JsonRpcProvider {
     {this.versionCacheTimoutInSeconds = 600}
   ): super() {
     client = JsonRpcClient(endpoint);
+  }
+
+  Future<Checkpoint> getCheckpoint(String id) async {
+    final resp = await client.request('sui_getCheckpoint', [id]);
+    return Checkpoint.fromJson(resp);
+  }
+
+  Future<Paged<List<Checkpoint>>> getCheckpoints({
+    String? cursor,
+    String? limit,
+    bool descendingOrder = false
+  }) async {
+    final resp = await client.request('sui_getCheckpoints', [cursor, limit, descendingOrder]);
+    final result = Paged<List<Checkpoint>>.fromJson(resp, (json) {
+      return (json as List).map((e) => Checkpoint.fromJson(e)).toList();
+    });
+    return result;
+  }
+
+  Future<BigInt> getLatestCheckpointSequenceNumber() async {
+    final resp = await client.request('sui_getLatestCheckpointSequenceNumber', []);
+    return BigInt.parse(resp);
+  }
+
+  Future<LoadedChildObjects> getLoadedChildObjects(String txDigest) async {
+    final resp = await client.request('sui_getLoadedChildObjects', [txDigest]);
+    return LoadedChildObjects.fromJson(resp);
   }
 
   Future<RpcApiVersion> getRpcApiVersion() async {
@@ -105,16 +135,39 @@ class JsonRpcProvider {
     return CoinSupply.fromJson(resp);
   }
 
-  Future<SuiMoveFunctionArgTypes> getMoveFunctionArgTypes(
-    String packageId,
-    String moduleName,
-    String functionName
-  ) async {
+  Future<dynamic> getMoveFunctionArgTypes({
+    required String packageId,
+    required String moduleName,
+    required String functionName
+  }) async {
     final resp = await client.request(
       'sui_getMoveFunctionArgTypes',
       [packageId, moduleName, functionName]
     );
     return resp;
+  }
+
+  Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
+    String packageId,
+    String moduleName,
+    String functionName
+  ) async {
+    final resp = await client.request(
+      'sui_getNormalizedMoveFunction',
+      [packageId, moduleName, functionName]
+    );
+    return SuiMoveNormalizedFunction.fromJson(resp);
+  }
+
+  Future<SuiMoveNormalizedModule> getNormalizedMoveModule(
+    String packageId,
+    String moduleName
+  ) async {
+    final resp = await client.request(
+      'sui_getNormalizedMoveModule',
+      [packageId, moduleName]
+    );
+    return SuiMoveNormalizedModule.fromJson(resp);
   }
 
   Future<SuiMoveNormalizedModules> getNormalizedMoveModulesByPackage(
@@ -131,29 +184,6 @@ class JsonRpcProvider {
       }
     }
     return modules;
-  }
-
-  Future<SuiMoveNormalizedModule> getNormalizedMoveModule(
-    String packageId,
-    String moduleName
-  ) async {
-    final resp = await client.request(
-      'sui_getNormalizedMoveModule',
-      [packageId, moduleName]
-    );
-    return SuiMoveNormalizedModule.fromJson(resp);
-  }
-
-  Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
-    String packageId,
-    String moduleName,
-    String functionName
-  ) async {
-    final resp = await client.request(
-      'sui_getNormalizedMoveFunction',
-      [packageId, moduleName, functionName]
-    );
-    return SuiMoveNormalizedFunction.fromJson(resp);
   }
 
   Future<SuiMoveNormalizedStruct> getNormalizedMoveStruct(
@@ -461,14 +491,20 @@ class JsonRpcProvider {
   }
 
   /// Events
-  /// 
-  Future<PaginatedEvents> queryEvents(
+  
+  Future<List<SuiEvent>> getEvents(String txDigest) async {
+    final resp = await client.request('sui_getEvents', [txDigest]);
+    final result = (resp as List).map((e) => SuiEvent.fromJson(e)).toList();
+    return result;
+  }
+
+  Future<Paged<List<SuiEvent>>> queryEvents(
     dynamic query,
     {String? cursor,
     int? limit,
     bool descendingOrder = false}
   ) async {
-    final result = await client.request(
+    final resp = await client.request(
       'suix_queryEvents',
       [
         query,
@@ -478,23 +514,26 @@ class JsonRpcProvider {
       ]
     );
 
-    return PaginatedEvents.fromJson(result);
+    final result = Paged<List<SuiEvent>>.fromJson(resp, (json) {
+      return (json as List).map((e) => SuiEvent.fromJson(e)).toList();
+    });
+    return result;
   }
 
-  Future<PaginatedEvents> queryTransactionEvents(
+  Future<Paged<List<SuiEvent>>> queryTransactionEvents(
     TransactionDigest digest,
     {String? cursor,
     int limit = 1,
     bool descendingOrder = true}
   ) async {
     final query = { "Transaction": digest };
-    final result = await queryEvents(
+    final resp = await queryEvents(
       query, 
       limit: limit, 
       descendingOrder: descendingOrder, 
       cursor: cursor
     );
-    return result;
+    return resp;
   }
 
   Future<DryRunTransactionBlockResponse> dryRunTransaction(String txBytes) async {
