@@ -1,10 +1,10 @@
 
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/models/checkpoint.dart';
+import 'package:sui/models/dynamic_field.dart';
 import 'package:sui/models/loaded_child_objects.dart';
 import 'package:sui/models/paged.dart';
 import 'package:sui/models/sui_event.dart';
-import 'package:sui/models/validators_apys.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/types/coins.dart';
@@ -543,6 +543,18 @@ class JsonRpcProvider {
       [txBytes],
     );
     return DryRunTransactionBlockResponse.fromJson(resp);
+  }
+
+  Future<DynamicFieldPage> getDynamicFields(
+    String parentId, {
+    String? cursor,
+    int? limit,
+  }) async {
+    final resp = await client.request(
+      'suix_getDynamicFields',
+      [parentId, cursor, limit],
+    );
+    return DynamicFieldPage.fromJson(resp);
   }
 
   Future<dynamic> getCurrentEpoch() async {
