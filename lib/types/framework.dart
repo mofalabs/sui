@@ -1,5 +1,3 @@
-
-
 import 'package:sui/types/objects.dart';
 
 const SUI_FRAMEWORK_ADDRESS = '0x2';
@@ -225,5 +223,16 @@ class CoinMetadataStruct {
       data['iconUrl'] ?? '',
       data['id'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'decimals': decimals,
+      'name': name,
+      'symbol': symbol,
+      'description': description,
+      'iconUrl': iconUrl,
+      'id': id,
+    };
   }
 }
