@@ -11,9 +11,9 @@ void main() {
   test('test getMoveFunctionArgTypes', () async {
     final client = SuiClient(Constants.devnetAPI);
     final functionArgTypes = await client.provider.getMoveFunctionArgTypes(
-      DEFAULT_PACKAGE,
-      DEFAULT_MODULE,
-      DEFAULT_FUNCTION,
+      packageId: DEFAULT_PACKAGE,
+      moduleName: DEFAULT_MODULE,
+      functionName: DEFAULT_FUNCTION,
     );
     expect(functionArgTypes[0]['Object'] == 'ByImmutableReference', true);
   });

@@ -171,9 +171,9 @@ void main() {
   test('test getMoveFunctionArgTypes', () async {
     final client = SuiClient(Constants.devnetAPI);
     final functionArgTypes = await client.provider.getMoveFunctionArgTypes(
-        '0x15297be265fda4ed4776a7752a433802bd64da8d',
-        'counter',
-        'set_value'
+        packageId: '0x15297be265fda4ed4776a7752a433802bd64da8d',
+        moduleName: 'counter',
+        functionName: 'set_value'
     );
     expect(functionArgTypes.length >= 3, true);
   });

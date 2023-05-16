@@ -464,13 +464,14 @@ class JsonRpcProvider {
     return result.toList();
   }
 
-  Future<SuiExecuteTransactionResponse> executeTransaction(
-    Base64DataBuffer txnBytes,
-    SignatureScheme signatureScheme,
-    Base64DataBuffer signature,
-    PublicKey pubkey, [
+  Future<SuiExecuteTransactionResponse> executeTransaction({
+    required Base64DataBuffer txnBytes,
+    required SignatureScheme signatureScheme,
+    required Base64DataBuffer signature,
+    required PublicKey pubkey,
+    SuiTransactionBlockResponseOptions? options,
     ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
-  ]) async {
+  }) async {
     final serializedSig = <int>[];
     serializedSig.add(SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme));
     serializedSig.addAll(signature.getData());
@@ -478,7 +479,7 @@ class JsonRpcProvider {
     final result = await executeTransactionBlock(
       txnBytes.toBase64(),
       [Base64DataBuffer(serializedSig).toBase64()],
-      options: SuiTransactionBlockResponseOptions(
+      options: options ?? SuiTransactionBlockResponseOptions(
         showInput: true,
         showEffects: true,
         showEvents: true,
