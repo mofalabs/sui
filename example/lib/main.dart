@@ -1,4 +1,5 @@
 import 'package:example/pages/managed_token.dart';
+import 'package:example/pages/token_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/publickey.dart';
@@ -41,13 +42,16 @@ class _MyHomePageState extends State<MyHomePage> {
   late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
 
   void _requestFaucet() async {
-    final resp = await suiClient.provider.getBalance(account.getAddress());
+    var resp = await suiClient.provider.getBalance(account.getAddress());
     _balance = resp.totalBalance;
     if (_balance <= BigInt.zero) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
       await faucet.requestSui(account.getAddress());
     }
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
+
+    resp = await suiClient.provider.getBalance(account.getAddress());
+    _balance = resp.totalBalance;
 
     setState(() {
       _balance = _balance;
@@ -55,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _navigateToTokenManage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ManagedToken(client: suiClient)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => TokenMenu(client: suiClient)));
   }
 
   @override

@@ -123,7 +123,7 @@ class SuiExecuteTransactionResponse {
   TransactionEvents events;
   SuiTransactionBlock? transaction;
   bool? confirmedLocalExecution;
-  dynamic objectChanges;
+  List<dynamic> objectChanges;
   List<BalanceChange> balanceChanges;
   /* Errors that occurred in fetching/serializing the transaction. */
   List<dynamic>? errors;
