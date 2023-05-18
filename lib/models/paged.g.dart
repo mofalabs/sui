@@ -12,9 +12,7 @@ _$_Paged<T> _$$_PagedFromJson<T>(
 ) =>
     _$_Paged<T>(
       data: fromJsonT(json['data']),
-      nextCursor: json['nextCursor'] == null
-          ? null
-          : NextCursor.fromJson(json['nextCursor'] as Map<String, dynamic>),
+      nextCursor: json['nextCursor'],
       hasNextPage: json['hasNextPage'] as bool,
     );
 

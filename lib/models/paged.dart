@@ -8,7 +8,7 @@ part 'paged.g.dart';
 class Paged<T> with _$Paged<T>{
   const factory Paged({
     required T data,
-    NextCursor? nextCursor,
+    dynamic nextCursor,  // NextCursor or String
     required bool hasNextPage
   }) = _Paged;
 

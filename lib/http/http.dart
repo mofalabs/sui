@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:dio/native_imp.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sui/http/interceptor.dart';
 
@@ -17,8 +17,8 @@ class Http extends DioForNative {
   Http._();
 
   _init() {
-    options.connectTimeout = 5000;
-    options.receiveTimeout = 10000;
+    options.connectTimeout = const Duration(seconds: 5);
+    options.receiveTimeout = const Duration(seconds: 10);
 
     options.headers["Content-Type"] = "application/json; charset=UTF-8";
 
