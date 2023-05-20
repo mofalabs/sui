@@ -98,6 +98,10 @@ enum UnserializedSignableTransaction {
   paySui,  // PaySuiTransaction
   payAllSui,  // PayAllSuiTransaction
   publish,  // PublishTransaction
+  addStake,  // AddStakeTransaction
+  withdrawStake,  // WithdrawStakeTransaction
+  splitCoin,  // SplitCoinTransaction
+  splitCoinEqual,  // SplitCoinEqualTransaction
   bytes  // Uint8Array
 }
 
@@ -115,6 +119,46 @@ class PublishTransaction {
   ObjectId? gasPayment;
 
   PublishTransaction(this.compiledModules, this.dependencies, this.gasBudget, [this.gasPayment]);
+}
+
+class AddStakeTransaction {
+  List<ObjectId> coins;
+  BigInt amount;
+  SuiAddress validator;
+  int gasBudget;
+  ObjectId? gasPayment;
+
+  AddStakeTransaction(this.coins, this.amount, this.validator, this.gasBudget,
+      [this.gasPayment]);
+}
+
+class WithdrawStakeTransaction {
+  ObjectId stakeSui;
+  int gasBudget;
+  ObjectId? gasPayment;
+
+  WithdrawStakeTransaction(this.stakeSui, this.gasBudget, [this.gasPayment]);
+}
+
+
+class SplitCoinTransaction {
+  ObjectId coinObjectId;
+  List<BigInt> splitAmounts;
+  int gasBudget;
+  ObjectId? gasPayment;
+
+  SplitCoinTransaction(this.coinObjectId, this.splitAmounts, this.gasBudget,
+      [this.gasPayment]);
+}
+
+class SplitCoinEqualTransaction {
+  ObjectId coinObjectId;
+  BigInt splitCount;
+  int gasBudget;
+  ObjectId? gasPayment;
+
+  SplitCoinEqualTransaction(this.coinObjectId, this.splitCount, this.gasBudget,
+      [this.gasPayment]);
 }
 
 mixin TxnDataSerializer {
@@ -153,4 +197,23 @@ mixin TxnDataSerializer {
     PublishTransaction txn
   );
 
+  Future<Base64DataBuffer> newAddStake(
+    SuiAddress signerAddress,
+    AddStakeTransaction txn,
+  );
+
+  Future<Base64DataBuffer> newWithdrawStake(
+    SuiAddress signerAddress,
+    WithdrawStakeTransaction txn,
+  );
+
+  Future<Base64DataBuffer> newSplitCoin(
+    SuiAddress signerAddress,
+    SplitCoinTransaction txn,
+  );
+
+  Future<Base64DataBuffer> newSplitCoinEqual(
+    SuiAddress signerAddress,
+    SplitCoinEqualTransaction txn,
+  );
 }

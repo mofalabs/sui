@@ -117,6 +117,30 @@ abstract class SignerWithProvider {
           options: options, 
           requestType: requestType
         );
+      case UnserializedSignableTransaction.addStake:
+        return addStake(
+            transaction.data,
+            options: options,
+            requestType: requestType
+        );
+      case UnserializedSignableTransaction.withdrawStake:
+        return withdrawStake(
+            transaction.data,
+            options: options,
+            requestType: requestType
+        );
+      case UnserializedSignableTransaction.splitCoin:
+        return splitCoin(
+            transaction.data,
+            options: options,
+            requestType: requestType
+        );
+      case UnserializedSignableTransaction.splitCoinEqual:
+        return splitCoinEqual(
+            transaction.data,
+            options: options,
+            requestType: requestType
+        );
       default:
         throw ArgumentError(
           'Error, unknown transaction kind: "${transaction.kind}"'
@@ -143,6 +167,14 @@ abstract class SignerWithProvider {
       dryRunTxBytes = await serializer.newTransferObject(address, tx);
     } else if (tx is TransferSuiTransaction) {
       dryRunTxBytes = await serializer.newTransferSui(address, tx);
+    } else if (tx is AddStakeTransaction) {
+      dryRunTxBytes = await serializer.newAddStake(address, tx);
+    } else if (tx is WithdrawStakeTransaction) {
+      dryRunTxBytes = await serializer.newWithdrawStake(address, tx);
+    } else if (tx is SplitCoinTransaction) {
+      dryRunTxBytes = await serializer.newSplitCoin(address, tx);
+    } else if (tx is SplitCoinEqualTransaction) {
+      dryRunTxBytes = await serializer.newSplitCoinEqual(address, tx);
     } else {
       throw ArgumentError("Error, unknown transaction kind ${tx.runtimeType}. Can't dry run transaction.");
     }
@@ -288,6 +320,64 @@ abstract class SignerWithProvider {
       transaction: txBytes,
       options: options,
       requestType: requestType
+    );
+  }
+
+  Future<SuiExecuteTransactionResponse> addStake(
+    AddStakeTransaction transaction, {
+    SuiTransactionBlockResponseOptions? options,
+    ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution,
+  }) async {
+    final signerAddress = getAddress();
+    final txBytes = await serializer.newAddStake(signerAddress, transaction);
+    return await signAndExecuteTransaction(
+      transaction: txBytes,
+      options: options,
+      requestType: requestType,
+    );
+  }
+
+  Future<SuiExecuteTransactionResponse> withdrawStake(
+    WithdrawStakeTransaction transaction, {
+    SuiTransactionBlockResponseOptions? options,
+    ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution,
+  }) async {
+    final signerAddress = getAddress();
+    final txBytes =
+        await serializer.newWithdrawStake(signerAddress, transaction);
+    return await signAndExecuteTransaction(
+      transaction: txBytes,
+      options: options,
+      requestType: requestType,
+    );
+  }
+
+  Future<SuiExecuteTransactionResponse> splitCoin(
+    SplitCoinTransaction transaction, {
+    SuiTransactionBlockResponseOptions? options,
+    ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution,
+  }) async {
+    final signerAddress = getAddress();
+    final txBytes = await serializer.newSplitCoin(signerAddress, transaction);
+    return await signAndExecuteTransaction(
+      transaction: txBytes,
+      options: options,
+      requestType: requestType,
+    );
+  }
+
+  Future<SuiExecuteTransactionResponse> splitCoinEqual(
+    SplitCoinEqualTransaction transaction, {
+    SuiTransactionBlockResponseOptions? options,
+    ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution,
+  }) async {
+    final signerAddress = getAddress();
+    final txBytes =
+        await serializer.newSplitCoinEqual(signerAddress, transaction);
+    return await signAndExecuteTransaction(
+      transaction: txBytes,
+      options: options,
+      requestType: requestType,
     );
   }
 
