@@ -84,6 +84,10 @@ class SuiAccount {
     return mnemonic.isValidMnemonics(mnemonics);
   }
 
+  static bool isValidAddress(String address) {
+    return RegExp(r"^0x[A-Fa-f0-9]{64}$").hasMatch(address);
+  }
+
   Uint8List getSecretKey() {
     return _keypair.getSecretKey();
   }

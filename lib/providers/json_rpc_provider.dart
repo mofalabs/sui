@@ -422,20 +422,20 @@ class JsonRpcProvider {
     String address, {
     SuiTransactionBlockResponseOptions? options,
     TransactionDigest? cursor,
-    int? limit,
+    int limit = 100,
     bool descendingOrder = true,
   }) async {
     final filterFromAddress = await queryTransactionBlocks(
         {'FromAddress': address},
         options: options,
         cursor: cursor,
-        limit: limit ?? 100,
+        limit: limit,
         descendingOrder: descendingOrder);
     final filterToAddress = await queryTransactionBlocks(
         {'ToAddress': address},
         options: options,
         cursor: cursor,
-        limit: limit ?? 100,
+        limit: limit,
         descendingOrder: descendingOrder);
 
     final txIds = <SuiTransactionBlockResponse>{};
