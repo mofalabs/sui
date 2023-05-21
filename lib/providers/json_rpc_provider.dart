@@ -444,6 +444,10 @@ class JsonRpcProvider {
     }
 
     for (var item in filterToAddress.data) {
+      if (txIds.isNotEmpty && txIds.map((e) => e.digest).contains(item.digest)) {
+        continue;
+      }
+
       txIds.add(item);
     }
     return txIds.toList();
