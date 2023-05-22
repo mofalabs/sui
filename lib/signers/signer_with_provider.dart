@@ -12,6 +12,7 @@ import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
+import 'package:sui/utils/error.dart';
 import 'package:sui/utils/sha.dart';
 
 /// Pair of signature and corresponding public key
@@ -427,6 +428,9 @@ abstract class SignerWithProvider {
     }
 
     final txEffects = await dryRunTransaction(tx, signerAddress);
+    if (txEffects.effects.status.status == ExecutionStatusType.failure) {
+      throw ArgumentError(txEffects.effects.status.error);
+    }
     final gasUsed = txEffects.effects.gasUsed;
     final gasEstimation = gasUsed.computationCost + gasUsed.storageCost;
     return gasEstimation;
