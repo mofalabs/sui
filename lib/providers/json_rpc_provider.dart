@@ -564,4 +564,23 @@ class JsonRpcProvider {
   Future<dynamic> getCurrentEpoch() async {
     return await client.request('suix_getCurrentEpoch');
   }
+
+  Future<String> resolveNameServiceAddress(String name) async {
+    return await client.request(
+      'suix_resolveNameServiceAddress',
+      [name]
+    );
+  }
+
+  Future<dynamic> resolveNameServiceNames(
+    String address, {
+    String? cursor,
+    int? limit
+  }) async {
+    return await client.request(
+      'suix_resolveNameServiceNames',
+      [address, cursor, limit]
+    );
+  }
+
 }
