@@ -1,6 +1,7 @@
 
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart';
 import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/cryptography/keypair.dart';
@@ -86,6 +87,12 @@ class SuiAccount {
 
   static bool isValidAddress(String address) {
     return RegExp(r"^0x[A-Fa-f0-9]{64}$").hasMatch(address);
+  }
+
+  static bool isValidSuiNS(String name) {
+    if (name.endsWith('-.sui')) return false;
+    if (name.contains('--')) return false;
+    return RegExp(r"^[a-z0-9][a-z0-9-]{2,62}.sui$").hasMatch(name);
   }
 
   Uint8List getSecretKey() {

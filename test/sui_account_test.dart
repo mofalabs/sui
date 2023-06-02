@@ -15,4 +15,21 @@ void main() {
 
   });
 
+  test('test isValidSuiNS', () {
+    expect(SuiAccount.isValidSuiNS(''), false);
+    expect(SuiAccount.isValidSuiNS(' '), false);
+    expect(SuiAccount.isValidSuiNS('-.sui'), false);
+    expect(SuiAccount.isValidSuiNS('--.sui'), false);
+    expect(SuiAccount.isValidSuiNS('-hello.sui'), false);
+    expect(SuiAccount.isValidSuiNS('hello-.sui'), false);
+    expect(SuiAccount.isValidSuiNS('-hello-.sui'), false);
+    expect(SuiAccount.isValidSuiNS('hello--world.sui'), false);
+    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(64, 48)) + ".sui"), false);
+    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(2, 48)) + ".sui"), false);
+    expect(SuiAccount.isValidSuiNS('hello.sui'), true);
+    expect(SuiAccount.isValidSuiNS('hello-world.sui'), true);
+    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(3, 48)) + ".sui"), true);
+    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(63, 48)) + ".sui"), true);
+  });
+
 }

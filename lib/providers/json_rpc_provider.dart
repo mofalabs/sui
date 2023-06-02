@@ -1,4 +1,5 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/models/checkpoint.dart';
 import 'package:sui/models/dynamic_field.dart';
@@ -565,22 +566,36 @@ class JsonRpcProvider {
     return await client.request('suix_getCurrentEpoch');
   }
 
-  Future<String> resolveNameServiceAddress(String name) async {
-    return await client.request(
-      'suix_resolveNameServiceAddress',
-      [name]
-    );
+  Future<String?> resolveNameServiceAddress(String name) async {
+    try {
+      return await client.request(
+        'suix_resolveNameServiceAddress',
+        [name]
+      );
+    } catch(e) {
+      debugPrint(e.toString());
+      return null;
+    }
   }
 
-  Future<dynamic> resolveNameServiceNames(
+  Future<Paged<List<String>>?> resolveNameServiceNames(
     String address, {
     String? cursor,
     int? limit
   }) async {
-    return await client.request(
-      'suix_resolveNameServiceNames',
-      [address, cursor, limit]
-    );
+    try {
+      final resp = await client.request(
+        'suix_resolveNameServiceNames',
+        [address, cursor, limit]
+      );
+      final result = Paged<List<String>>.fromJson(resp, (json) {
+        return List<String>.from(json as List);
+      });
+      return result;
+    } catch(e) {
+      debugPrint(e.toString());
+      return null;
+    }
   }
 
 }

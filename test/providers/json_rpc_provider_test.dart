@@ -201,4 +201,15 @@ void main() {
     final result = await provider.getCommitteeInfo();
     expect(result.validators.isNotEmpty, true);
   });
+
+  test('test resolveNameServiceAddress', () async {
+    final result = await provider.resolveNameServiceAddress('blockchain.sui');
+    expect(result == '0x57514a8dd8f08724d01954953721b738adecb29bca613b0b351adf76e7233bac', true);
+  });
+
+  test('test resolveNameServiceNames', () async {
+    final result = await provider.resolveNameServiceNames('0x57514a8dd8f08724d01954953721b738adecb29bca613b0b351adf76e7233bac');
+    expect(result!.data.first == 'blockchain.sui', true);
+    expect(result.hasNextPage == false, true);
+  });
 }
