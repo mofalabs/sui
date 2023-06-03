@@ -412,7 +412,7 @@ SuiObjectRef? getObjectReference(SuiObjectResponse resp) {
 }
 
 int? getObjectVersion(dynamic data // SuiObjectResponse | SuiObjectRef
-    ) {
+) {
   if (data is SuiObjectRef) {
     return data.version;
   }

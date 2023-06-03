@@ -567,15 +567,10 @@ class JsonRpcProvider {
   }
 
   Future<String?> resolveNameServiceAddress(String name) async {
-    try {
-      return await client.request(
-        'suix_resolveNameServiceAddress',
-        [name]
-      );
-    } catch(e) {
-      debugPrint(e.toString());
-      return null;
-    }
+    return await client.request(
+      'suix_resolveNameServiceAddress',
+      [name]
+    );
   }
 
   Future<Paged<List<String>>?> resolveNameServiceNames(
@@ -583,19 +578,14 @@ class JsonRpcProvider {
     String? cursor,
     int? limit
   }) async {
-    try {
-      final resp = await client.request(
-        'suix_resolveNameServiceNames',
-        [address, cursor, limit]
-      );
-      final result = Paged<List<String>>.fromJson(resp, (json) {
-        return List<String>.from(json as List);
-      });
-      return result;
-    } catch(e) {
-      debugPrint(e.toString());
-      return null;
-    }
+    final resp = await client.request(
+      'suix_resolveNameServiceNames',
+      [address, cursor, limit]
+    );
+    final result = Paged<List<String>>.fromJson(resp, (json) {
+      return List<String>.from(json as List);
+    });
+    return result;
   }
 
 }

@@ -66,7 +66,7 @@ bool isValidSuiAddress(String value) {
   return isHex(value) && getHexByteLength(value) == SUI_ADDRESS_LENGTH;
 }
 
-bool isValidSuiObjectId(String value){
+bool isValidSuiObjectId(String value) {
   return isValidSuiAddress(value);
 }
 
