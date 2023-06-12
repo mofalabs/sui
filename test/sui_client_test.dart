@@ -29,6 +29,11 @@ void main() {
     expect(account.getAddress() == '0x7ec1b6df34a4018c377109851af1cf70db6687dd4a880a51f9119af86d855643', true);
   });
 
+  test('test secp256r1 account generate from mnemonics', () {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256r1);
+    expect(account.getAddress() == '0xab1965357f9765022c52f46c3ddd299c7980fbf5ddf63231066d3f27efd54d8e', true);
+  });
+
   test('test ed25519 account generate from mnemonics', () {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     expect(account.getAddress() == '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973', true);
@@ -36,6 +41,13 @@ void main() {
 
   test('test secp256k1 account generate', () {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
+    final signature = account.signData(data);
+    bool success = account.verify(data, signature);
+    expect(success, true);
+  });
+
+  test('test secp256r1 account generate', () {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256r1);
     final signature = account.signData(data);
     bool success = account.verify(data, signature);
     expect(success, true);
@@ -107,6 +119,31 @@ void main() {
 
   test('test pay sui with secp256k1', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256k1);
+    final client = SuiClient(Constants.devnetAPI, account: account);
+    final coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
+      final faucet = FaucetClient(Constants.faucetDevAPI);
+      final resp = await faucet.requestSui(account.getAddress());
+      assert(resp.transferredGasObjects.isNotEmpty);
+    }
+
+    final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
+    final txn = PaySuiTransaction(
+        inputObjectIds,
+        [DEFAULT_RECIPIENT],
+        [1000],
+        DEFAULT_GAS_BUDGET
+    );
+
+    final gasBudget = await client.getGasCostEstimation(txn);
+    txn.gasBudget = gasBudget;
+
+    final waitForLocalExecutionTx = await client.paySui(txn);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
+  });
+
+  test('test pay sui with secp256r1', () async {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Secp256r1);
     final client = SuiClient(Constants.devnetAPI, account: account);
     final coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {

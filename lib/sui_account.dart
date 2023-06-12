@@ -1,12 +1,11 @@
 
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart';
-import 'package:ed25519_edwards/ed25519_edwards.dart';
 import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
+import 'package:sui/cryptography/secp256r1_keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart' as mnemonic;
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/signer_with_provider.dart';
@@ -26,6 +25,10 @@ class SuiAccount {
     return SuiAccount(Secp256k1Keypair());
   }
 
+  factory SuiAccount.secp256r1Account() {
+    return SuiAccount(Secp256r1Keypair());
+  }
+
   factory SuiAccount.ed25519Account() {
     return SuiAccount(Ed25519Keypair());
   }
@@ -36,6 +39,14 @@ class SuiAccount {
     switch (scheme) {
       case SignatureScheme.Secp256k1:
         account = SuiAccount(Secp256k1Keypair.fromMnemonics(
+          mnemonics,
+          accountIndex: accountIndex,
+          addressIndex: addressIndex,
+          changeIndex: changeIndex,
+        ));
+        break;
+      case SignatureScheme.Secp256r1:
+        account = SuiAccount(Secp256r1Keypair.fromMnemonics(
           mnemonics,
           accountIndex: accountIndex,
           addressIndex: addressIndex,
@@ -66,6 +77,10 @@ class SuiAccount {
       case SignatureScheme.Secp256k1:
         account = SuiAccount(
             Secp256k1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
+        break;
+      case SignatureScheme.Secp256r1:
+        account = SuiAccount(
+            Secp256r1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
         break;
       case SignatureScheme.ED25519:
         account =

@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
+import 'package:sui/cryptography/secp256r1_keypair.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/raw_signer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
@@ -33,12 +34,14 @@ void main() {
   const DEFAULT_GAS_BUDGET = 10000000;
 
   late Secp256k1Keypair secp256k1Keypair;
+  late Secp256r1Keypair secp256r1Keypair;
   late Ed25519Keypair ed25519Keypair;
 
   setUp(() {
     final secretKey = Uint8List.fromList(VALID_SECP256K1_SECRET_KEY);
     final pubKey = Uint8List.fromList(VALID_SECP256K1_PUBLIC_KEY);
     secp256k1Keypair = Secp256k1Keypair.fromSecretKey(secretKey);
+    secp256r1Keypair = Secp256r1Keypair.fromSecretKey(secretKey);
 
     ed25519Keypair = Ed25519Keypair.fromSecretKey(
       base64Decode(VALID_Ed25519_SECRET_KEY)
@@ -63,6 +66,15 @@ void main() {
     expect(isValid, true);
   });
 
+  test('Secp256r1 keypair signData', () {
+    final keypair = Secp256r1Keypair();
+    final signData = Base64DataBuffer(Uint8List.fromList(utf8.encode('hello world')));
+    final signer = RawSigner(keypair);
+    final signature = signer.signData(signData);
+    final isValid = signer.verify(signData, signature);
+    expect(isValid, true);
+  });
+
   test('transfer sui with ed25519 keypair', () async {
     final signer = RawSigner(ed25519Keypair, endpoint: Constants.devnetAPI);
     final coins = await signer.provider.getCoins(signer.getAddress());
@@ -79,6 +91,14 @@ void main() {
     expect(resp.digest.isNotEmpty, true);
   });
 
+  test('transfer sui with secp256r1 keypair', () async {
+    final signer = RawSigner(secp256r1Keypair, endpoint: Constants.devnetAPI);
+    final coins = await signer.provider.getCoins(signer.getAddress());
+    final txn = TransferSuiTransaction(coins.data[0].coinObjectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
+    final resp = await signer.transferSui(txn);
+    expect(resp.digest.isNotEmpty, true);
+  });
+
   test('pay with secp256k1 keypair', () async {
     final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
     final coins = await signer.provider.getCoins(signer.getAddress());
@@ -89,6 +109,24 @@ void main() {
       [1000],
       DEFAULT_GAS_BUDGET,
       coins.data[2].coinObjectId
+    );
+
+    final waitForLocalExecutionTx = await signer.pay(txn);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
+
+  });
+
+  test('pay with secp256r1 keypair', () async {
+    final signer = RawSigner(secp256r1Keypair, endpoint: Constants.devnetAPI);
+    print(signer.getAddress());
+    final coins = await signer.provider.getCoins(signer.getAddress());
+    final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
+    final txn = PayTransaction(
+        inputObjectIds,
+        [DEFAULT_RECIPIENT],
+        [1000],
+        DEFAULT_GAS_BUDGET,
+        coins.data[2].coinObjectId
     );
 
     final waitForLocalExecutionTx = await signer.pay(txn);
@@ -119,6 +157,20 @@ void main() {
       inputObjectIds,
       DEFAULT_RECIPIENT,
       DEFAULT_GAS_BUDGET
+    );
+
+    final waitForLocalExecutionTx = await signer.payAllSui(txn);
+    expect(waitForLocalExecutionTx.confirmedLocalExecution, true);
+  });
+
+  test('pay all sui with secp256r1 keypair', () async {
+    final signer = RawSigner(secp256r1Keypair, endpoint: Constants.devnetAPI);
+    final coins = await signer.provider.getCoins(signer.getAddress());
+    final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
+    final txn = PayAllSuiTransaction(
+        inputObjectIds,
+        DEFAULT_RECIPIENT,
+        DEFAULT_GAS_BUDGET
     );
 
     final waitForLocalExecutionTx = await signer.payAllSui(txn);

@@ -15,12 +15,13 @@ bool isValidHardenedPath(String path) {
   return true;
 }
 
-/// Parse and validate a path that is compliant to BIP-32 in form m/54'/784'/{account_index}'/{change_index}/{address_index}.
-/// Note that the purpose for Secp256k1 is registered as 54, to differentiate from Ed25519 with purpose 44.
+/// Parse and validate a path that is compliant to BIP-32 in form m/54'/784'/{account_index}'/{change_index}/{address_index}
+/// for Secp256k1 and m/74'/784'/{account_index}'/{change_index}/{address_index} for Secp256r1.
 ///
-/// [path] string (e.g. `m/54'/784'/0'/0/0`).
+/// Note that the purpose for Secp256k1 is registered as 54, to differentiate from Ed25519 with purpose 44.
+/// @param path path string (e.g. `m/54'/784'/0'/0/0`).
 bool isValidBIP32Path(String path) {
-  if (!RegExp(r"^m/54'/784'/[0-9]+'/[0-9]+/[0-9]+$").hasMatch(path)) {
+  if (!RegExp(r"^m/(54|74)'/784'/[0-9]+'/[0-9]+/[0-9]+$").hasMatch(path)) {
     return false;
   }
   return true;

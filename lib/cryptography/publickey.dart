@@ -3,12 +3,14 @@ import 'dart:typed_data';
 
 enum SignatureScheme {
   ED25519,
-  Secp256k1
+  Secp256k1,
+  Secp256r1
 }
 
 abstract class SIGNATURE_SCHEME_TO_FLAG {
   static const int ED25519 = 0x00;
   static const int Secp256k1 = 0x01;
+  static const int Secp256r1 = 0x02;
 
   static int schemeToFlag(SignatureScheme scheme) {
     switch (scheme) {
@@ -16,6 +18,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
         return ED25519;
       case SignatureScheme.Secp256k1:
         return Secp256k1;
+      case SignatureScheme.Secp256r1:
+        return Secp256r1;
       default:
         throw ArgumentError("Undefined Signature Scheme $scheme");
     }
