@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
-import 'package:sui/cryptography/publickey.dart';
+import 'package:sui/cryptography/helper.dart';
 import 'package:sui/rpc/faucet_client.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';

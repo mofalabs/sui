@@ -2,8 +2,8 @@
 import 'dart:typed_data';
 
 import 'package:sui/cryptography/ed25519_keypair.dart';
+import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
-import 'package:sui/cryptography/publickey.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart' as mnemonic;

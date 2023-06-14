@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/cryptography/ed25519_publickey.dart';
-import 'package:sui/cryptography/secp256k1.dart';
+import 'package:sui/cryptography/helper.dart';
 import 'package:sui/utils/hex.dart';
 
 void main() {

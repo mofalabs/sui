@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:sui/cryptography/ed25519_publickey.dart';
+import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
-import 'package:sui/cryptography/publickey.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/ed25519_hd_key.dart' as ed25519HDKey;

@@ -3,40 +3,33 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bip32/bip32.dart';
+import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
-import 'package:sui/cryptography/publickey.dart';
+import 'package:sui/cryptography/secp256.dart';
+import 'package:sui/cryptography/secp256_publickey.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/sha.dart';
 
-import 'secp256r1.dart';
-import 'secp256r1_publickey.dart';
-
 const DEFAULT_SECP256R1_DERIVATION_PATH = "m/74'/784'/0'/0/0";
-
-class Secp256r1KeypairData {
-  Uint8List publicKey;
-  Uint8List secretKey;
-
-  Secp256r1KeypairData(this.publicKey, this.secretKey);
-}
 
 /// An Secp256r1 Keypair used for signing transactions.
 class Secp256r1Keypair with Keypair {
-  late Secp256r1KeypairData _keypair;
+  static final Secp256 secp256r1 = Secp256.fromSecp256r1();
+  late Secp256KeypairData _keypair;
 
   /// Create a new keypair instance.
   /// Generate random keypair if no [Secp256r1Keypair] is provided.
-  Secp256r1Keypair([Secp256r1KeypairData? keypair]) {
+  Secp256r1Keypair([Secp256KeypairData? keypair]) {
     if (keypair != null) {
       if (keypair.secretKey.length != 32) {
         throw ArgumentError('Invalid private key.');
       }
       _keypair = keypair;
     } else { 
-     Uint8List secretKey = generatePrivateKeyBytes();
-     Uint8List publicKey = getPublicKeyFromPrivateKeyBytes(secretKey);
-      _keypair = Secp256r1KeypairData(publicKey, secretKey);
+     Uint8List secretKey = secp256r1.generatePrivateKeyBytes();
+     Uint8List publicKey = secp256r1.getPublicKeyFromPrivateKeyBytes(secretKey);
+      _keypair = Secp256KeypairData(publicKey, secretKey);
     }
   }
 
@@ -46,6 +39,10 @@ class Secp256r1Keypair with Keypair {
     return SignatureScheme.Secp256r1;
   }
 
+  int getKeySchemeFalg() {
+    return SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(getKeyScheme());
+  }
+
   /// Create a keypair from a raw secret key byte array.
   ///
   /// Throw error if the provided secret key is invalid and validation is not skipped.
@@ -53,23 +50,22 @@ class Secp256r1Keypair with Keypair {
     Uint8List secretKey,
     { bool? skipValidation }
   ) {
-    Uint8List publicKey = getPublicKeyFromPrivateKeyBytes(secretKey, false);
+    Uint8List publicKey = secp256r1.getPublicKeyFromPrivateKeyBytes(secretKey, false);
     if (skipValidation == null || !skipValidation) {
       final signData = utf8.encode('sui validation');
       final msgHash = sha256(signData);
-      final signature = sign(msgHash, secretKey);
-      if (!verifySignature(msgHash, signature, publicKey)) {
-        print('---dd-');
+      final signature = secp256r1.sign(msgHash, secretKey);
+      if (!secp256r1.verifySignature(msgHash, signature, publicKey)) {
         throw ArgumentError('Invalid private key.');
       }
     }
-    return Secp256r1Keypair(Secp256r1KeypairData(publicKey, secretKey));
+    return Secp256r1Keypair(Secp256KeypairData(publicKey, secretKey));
   }
 
   /// Generate a keypair from a 32 byte [seed].
   static Secp256r1Keypair fromSeed(Uint8List seed) {
-    final publicKey = getPublicKeyFromPrivateKeyBytes(seed, true);
-    return Secp256r1Keypair(Secp256r1KeypairData(publicKey, seed));
+    final publicKey = secp256r1.getPublicKeyFromPrivateKeyBytes(seed, true);
+    return Secp256r1Keypair(Secp256KeypairData(publicKey, seed));
   }
 
   /// Generate a keypair from [mnemonics] string.
@@ -85,18 +81,18 @@ class Secp256r1Keypair with Keypair {
   }
 
   Uint8List publicKeyBytes([bool isCompressed = true]) {
-    return getPublicKeyFromPrivateKeyBytes(_keypair.secretKey, isCompressed);
+    return secp256r1.getPublicKeyFromPrivateKeyBytes(_keypair.secretKey, isCompressed);
   }
 
   @override
   PublicKey getPublicKey() {
-    return Secp256r1PublicKey.fromBytes(publicKeyBytes());
+    return Secp256PublicKey.fromBytes(publicKeyBytes(), getKeySchemeFalg());
   }
 
   @override
   Base64DataBuffer signData(Base64DataBuffer data) {
     final msgHash = sha256(data.getData());
-    final signatureData = sign(msgHash, _keypair.secretKey);
+    final signatureData = secp256r1.sign(msgHash, _keypair.secretKey);
     return Base64DataBuffer(signatureData.toBytes());
   }
 
@@ -110,12 +106,12 @@ class Secp256r1Keypair with Keypair {
       throw ArgumentError('Invalid derivation path');
     }
     final key = BIP32.fromSeed(mnemonicToSeed(mnemonics)).derivePath(path);
-    return Secp256r1Keypair(Secp256r1KeypairData(key.publicKey, key.privateKey!));
+    return Secp256r1Keypair(Secp256KeypairData(key.publicKey, key.privateKey!));
   }
 
   @override
   bool verify(Base64DataBuffer data, Base64DataBuffer signature, Uint8List publicKey) {
     final msgHash = sha256(data.getData());
-    return verifySignature(msgHash, SignatureData.fromBytes(signature.getData()), publicKey);
+    return secp256r1.verifySignature(msgHash, SignatureData.fromBytes(signature.getData()), publicKey);
   }
 }

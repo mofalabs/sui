@@ -1,6 +1,6 @@
 
-import 'package:flutter/foundation.dart';
-import 'package:sui/cryptography/publickey.dart';
+import 'package:sui/cryptography/helper.dart';
+import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/models/checkpoint.dart';
 import 'package:sui/models/dynamic_field.dart';
 import 'package:sui/models/loaded_child_objects.dart';

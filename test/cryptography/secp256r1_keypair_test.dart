@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/cryptography/secp256r1.dart';
+import 'package:sui/cryptography/secp256.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
 import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/sha.dart';
@@ -95,8 +95,8 @@ void main() {
       final msgHash = sha256(signData.getData());
       final sig = keypair.signData(signData);
       final signature = SignatureData.fromBytes(sig.getData());
-      int recId = recoveryId(signature, msgHash, keypair.publicKeyBytes(false));
-      final publicKey = ecRecover(recId, msgHash, signature);
+      int recId = Secp256r1Keypair.secp256r1.recoveryId(signature, msgHash, keypair.publicKeyBytes(false));
+      final publicKey = Secp256r1Keypair.secp256r1.ecRecover(recId, msgHash, signature);
 
       expect(base64Encode(publicKey) == base64Encode(keypair.publicKeyBytes(false)), true);
     });

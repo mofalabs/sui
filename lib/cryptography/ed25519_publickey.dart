@@ -2,8 +2,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/cryptography/publickey.dart';
-import 'package:sui/cryptography/secp256k1.dart';
+import 'package:sui/cryptography/helper.dart';
+import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
