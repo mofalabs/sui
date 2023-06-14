@@ -1,14 +1,14 @@
 Sui Dart SDK
 -
 
-[![Pub](https://img.shields.io/badge/pub-v0.0.1-blue)](https://pub.dev/packages/sui)
+[![Pub](https://img.shields.io/badge/pub-v0.0.2-blue)](https://pub.dev/packages/sui)
 
 Installation
 -
 
 ```
 dependencies:
-  sui: ^0.0.1
+  sui: ^0.0.2
 ```
 
 Usage
@@ -40,7 +40,6 @@ final txn = PaySuiTransaction(
     gas_budget
 );
 
-// estimate gas cost
 txn.gasBudget = await client.getGasCostEstimation(txn);
 
 final waitForLocalExecutionTx = await client.paySui(txn);
@@ -72,7 +71,36 @@ final txn = PaySuiTransaction(
     gas_budget
 );
 
-// estimate gas cost
+txn.gasBudget = await client.getGasCostEstimation(txn);
+
+final waitForLocalExecutionTx = await client.paySui(txn);
+```
+
+#### pay sui with secp256r1
+
+```dart
+const gasBudget = 10000000;
+final recipientAccount = SuiAccount.secp256r1Account();
+final recipient = recipientAccount.getAddress();
+
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
+final client = SuiClient(Constants.devnetAPI, account: account);
+var coins = await client.getCoins(account.getAddress());
+if (coins.data.isEmpty) {
+    final faucet = FaucetClient(Constants.faucetDevAPI);
+    final resp = await faucet.requestSui(account.getAddress());
+    assert(resp.transferredGasObjects.isNotEmpty);
+    coins = await client.getCoins(account.getAddress());
+}
+
+final inputObjectIds = [coins.data.first.coinObjectId];
+final txn = PaySuiTransaction(
+    inputObjectIds,
+    [recipient],
+    [1000],
+    gasBudget
+);
+
 txn.gasBudget = await client.getGasCostEstimation(txn);
 
 final waitForLocalExecutionTx = await client.paySui(txn);

@@ -11,7 +11,6 @@ void main() {
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
-    // transfer sui with ed25519
     final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     var coins = await client.getCoins(account.getAddress());
@@ -30,7 +29,6 @@ void main() {
         gasBudget
     );
 
-    // update with estimate gas cost
     txn.gasBudget = await client.getGasCostEstimation(txn);
 
     final waitForLocalExecutionTx = await client.paySui(txn);
@@ -42,7 +40,6 @@ void main() {
     final recipientAccount = SuiAccount.secp256k1Account();
     final recipient = recipientAccount.getAddress();
 
-    // transfer sui with secp256k1
     final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
     final client = SuiClient(Constants.devnetAPI, account: account);
     var coins = await client.getCoins(account.getAddress());
@@ -61,7 +58,6 @@ void main() {
         gasBudget
     );
 
-    // update with estimate gas cost
     txn.gasBudget = await client.getGasCostEstimation(txn);
 
     final waitForLocalExecutionTx = await client.paySui(txn);
@@ -73,8 +69,7 @@ void main() {
     final recipientAccount = SuiAccount.secp256r1Account();
     final recipient = recipientAccount.getAddress();
 
-    // transfer sui with secp256k1
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
     final client = SuiClient(Constants.devnetAPI, account: account);
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
@@ -92,7 +87,6 @@ void main() {
         gasBudget
     );
 
-    // update with estimate gas cost
     txn.gasBudget = await client.getGasCostEstimation(txn);
 
     final waitForLocalExecutionTx = await client.paySui(txn);
