@@ -41,4 +41,7 @@ mixin PublicKey {
 
   /// Return the Sui address associated with this public key
   String toSuiAddress();
+
+  /// Return signature scheme flag of the public key
+  int flag();
 }

@@ -80,4 +80,7 @@ class Ed25519PublicKey with PublicKey {
     final publicKey = Hex.encode(blake2b(tmp));
     return normalizeSuiAddress(publicKey.substring(0, SUI_ADDRESS_LENGTH * 2));
   }
+
+  @override
+  int flag() => SIGNATURE_SCHEME_TO_FLAG.ED25519;
 }
