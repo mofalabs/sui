@@ -43,6 +43,7 @@ final txn = PaySuiTransaction(
 txn.gasBudget = await client.getGasCostEstimation(txn);
 
 final waitForLocalExecutionTx = await client.paySui(txn);
+print(waitForLocalExecutionTx.digest);
 ```
 
 #### pay sui with secp256k1
@@ -74,6 +75,7 @@ final txn = PaySuiTransaction(
 txn.gasBudget = await client.getGasCostEstimation(txn);
 
 final waitForLocalExecutionTx = await client.paySui(txn);
+print(waitForLocalExecutionTx.digest);
 ```
 
 #### pay sui with secp256r1
@@ -104,4 +106,5 @@ final txn = PaySuiTransaction(
 txn.gasBudget = await client.getGasCostEstimation(txn);
 
 final waitForLocalExecutionTx = await client.paySui(txn);
+print(waitForLocalExecutionTx.digest);
 ```
