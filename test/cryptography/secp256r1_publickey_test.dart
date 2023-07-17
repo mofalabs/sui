@@ -25,10 +25,11 @@ void main() {
   final INVALID_SECP256R1_PUBLIC_KEY = Uint8List.fromList(List<int>.filled(32, 1));
 
   final SECP_TEST_CASES = [
-    [
-      'A8Ju2r5X3EZ3aYuZzH+Ofs6cd1j2WOwY7lhoJQenulBl',
-      '0xafd0f5a4f41c5770c201879518740b83743164ed2445016fbba9ae98e04af8a5',
-    ],
+    {
+      "rawPublicKey": "A8Ju2r5X3EZ3aYuZzH+Ofs6cd1j2WOwY7lhoJQenulBl",
+      "suiPublicKey": "AgPCbtq+V9xGd2mLmcx/jn7OnHdY9ljsGO5YaCUHp7pQZQ==",
+      "suiAddress": "0xafd0f5a4f41c5770c201879518740b83743164ed2445016fbba9ae98e04af8a5"
+    }
   ];
 
   group('Secp256r1PublicKey', () {
@@ -68,9 +69,18 @@ void main() {
     });
 
     SECP_TEST_CASES.forEach((data) {
-      test('toSuiAddress from base64 public key ${data[1]}}', () {
-        final key = Secp256PublicKey.fromString(data[0], SIGNATURE_SCHEME_TO_FLAG.Secp256r1);
-        expect(key.toSuiAddress() == data[1], true);
+      final rawPublicKey = data["rawPublicKey"]!;
+      final suiPublicKey = data["suiPublicKey"]!;
+      final suiAddress = data["suiAddress"]!;
+
+      test('toSuiAddress from base64 public key $suiAddress}', () {
+        final key = Secp256PublicKey.fromString(rawPublicKey, SIGNATURE_SCHEME_TO_FLAG.Secp256r1);
+        expect(key.toSuiAddress() == suiAddress, true);
+      });
+
+      test("toSuiPublicKey from base64 public key $suiAddress", () {
+        final key = Secp256PublicKey.fromString(rawPublicKey, SIGNATURE_SCHEME_TO_FLAG.Secp256r1);
+        expect(key.toSuiPublicKey(), suiPublicKey);
       });
     });
 
