@@ -8,7 +8,6 @@ class CoinStruct {
   String version;
   TransactionDigest digest;
   String balance;
-  dynamic lockedUntilEpoch;
   TransactionDigest previousTransaction;
 
   CoinStruct(
@@ -17,7 +16,6 @@ class CoinStruct {
     this.version,
     this.digest,
     this.balance,
-    this.lockedUntilEpoch,
     this.previousTransaction,
   );
 
@@ -28,7 +26,6 @@ class CoinStruct {
       data['version'],
       data['digest'],
       data['balance'],
-      data['lockedUntilEpoch'],
       data['previousTransaction'],
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
@@ -53,6 +55,17 @@ void main() {
     expect(resp.minor >= 0, true);
     expect(resp.patch >= 0, true);
   });
+
+  test('test getCoins', () async {
+    final resp = await provider.getCoins(address);
+    expect(resp.data.isNotEmpty, true);
+  });
+
+  test('test getAllCoins', () async {
+    final resp = await provider.getAllCoins(address);
+    expect(resp.data.isNotEmpty, true);
+  });
+
 
   test('test getTransactions', () async {
     final resp = await provider.getTransactions(address);
