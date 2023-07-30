@@ -14,14 +14,7 @@ class Ed25519PublicKey with PublicKey {
 
  late BigInt _bn;
 
-  Ed25519PublicKey(BigInt bn) {
-      Uint8List buffer = encodeBigIntAsUnsigned(bn);
-      if (buffer.length != PUBLIC_KEY_SIZE) {
-        throw ArgumentError(
-          "Invalid public key input. Expected $PUBLIC_KEY_SIZE bytes, got ${buffer.length}"
-        );
-      }
-
+  Ed25519PublicKey._(BigInt bn) {
       _bn = bn;
   }
 
@@ -32,7 +25,7 @@ class Ed25519PublicKey with PublicKey {
         "Invalid public key input. Expected $PUBLIC_KEY_SIZE bytes, got ${buffer.length}"
       );
     }
-    return Ed25519PublicKey(decodeBigIntToUnsigned(buffer));
+    return Ed25519PublicKey._(decodeBigIntToUnsigned(buffer));
   }
 
   /// Create a new Ed25519PublicKey object.

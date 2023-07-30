@@ -48,16 +48,6 @@ void main() {
       }, throwsArgumentError);
 
       expect(() {
-        Uint8List publicKey = Hex.decode('0x300000000000000000000000000000000000000000000000000000000000000000000');
-        Ed25519PublicKey(decodeBigIntToUnsigned(publicKey));
-      }, throwsArgumentError);
-
-      expect(() {
-        Uint8List publicKey = Hex.decode('135693854574979916511997248057056142015550763280047535983739356259273198796800000');
-        Ed25519PublicKey(decodeBigIntToUnsigned(publicKey));
-      }, throwsArgumentError);
-
-      expect(() {
         Ed25519PublicKey.fromBytes(Uint8List.fromList(utf8.encode('12345')));
       }, throwsArgumentError);
     });

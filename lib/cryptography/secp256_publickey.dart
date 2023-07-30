@@ -14,14 +14,7 @@ class Secp256PublicKey with PublicKey {
   late int _flag;
   late BigInt _bn;
 
-  Secp256PublicKey(BigInt bn, int flag) {
-      Uint8List buffer = encodeBigIntAsUnsigned(bn);
-      if (buffer.length != SECP256_PUBLIC_KEY_SIZE) {
-        throw ArgumentError(
-          "Invalid public key input. Expected $SECP256_PUBLIC_KEY_SIZE bytes, got ${buffer.length}"
-        );
-      }
-
+  Secp256PublicKey._(BigInt bn, int flag) {
       _bn = bn;
       _flag = flag;
   }
@@ -33,7 +26,7 @@ class Secp256PublicKey with PublicKey {
         "Invalid public key input. Expected $SECP256_PUBLIC_KEY_SIZE bytes, got ${buffer.length}"
       );
     }
-    return Secp256PublicKey(decodeBigIntToUnsigned(buffer), flag);
+    return Secp256PublicKey._(decodeBigIntToUnsigned(buffer), flag);
   }
 
   /// Create a new Secp256PublicKey object.
