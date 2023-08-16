@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/cryptography/secp256.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/sha.dart';
 
 void main() {
@@ -88,13 +87,11 @@ void main() {
 
     test('signature of data is valid', () async {
       final keypair = Secp256r1Keypair();
-      final signData = Base64DataBuffer(
-          Uint8List.fromList(utf8.encode('hello world'))
-      );
+      final signData = Uint8List.fromList(utf8.encode('hello world'));
 
-      final msgHash = sha256(signData.getData());
+      final msgHash = sha256(signData);
       final sig = keypair.signData(signData);
-      final signature = SignatureData.fromBytes(sig.getData());
+      final signature = SignatureData.fromBytes(sig);
       int recId = Secp256r1Keypair.secp256r1.recoveryId(signature, msgHash, keypair.publicKeyBytes(false));
       final publicKey = Secp256r1Keypair.secp256r1.ecRecover(recId, msgHash, signature);
 

@@ -1,10 +1,10 @@
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
@@ -18,7 +18,7 @@ import 'package:sui/utils/sha.dart';
 /// Pair of signature and corresponding public key
 class SignaturePubkeyPair {
   SignatureScheme signatureScheme;
-  Base64DataBuffer signature;
+  Uint8List signature;
   PublicKey pubKey;
 
   SignaturePubkeyPair(this.signatureScheme, this.signature, this.pubKey);
@@ -41,20 +41,19 @@ abstract class SignerWithProvider {
 
   SuiAddress getAddress();
 
-  SignaturePubkeyPair signData(Base64DataBuffer data);
+  SignaturePubkeyPair signData(Uint8List data);
 
   /// Sign a transaction and submit to the Fullnode for execution. Only exists on Fullnode
   Future<SuiExecuteTransactionResponse> signAndExecuteTransaction({
-    required Base64DataBuffer transaction,
+    required Uint8List transaction,
     SuiTransactionBlockResponseOptions? options,
     ExecuteTransaction requestType = ExecuteTransaction.WaitForLocalExecution
   }) async {
       final intentMessage = <int>[];
       intentMessage.addAll(INTENT_BYTES);
-      intentMessage.addAll(transaction.getData());
+      intentMessage.addAll(transaction);
       final digest = blake2b(intentMessage);
-      final dataToSign = Base64DataBuffer(digest);
-      final sig = signData(dataToSign);
+      final sig = signData(digest);
       return await provider.executeTransaction(
         txnBytes: transaction,
         signatureScheme: sig.signatureScheme,
@@ -72,7 +71,7 @@ abstract class SignerWithProvider {
     switch (transaction.kind) {
       case UnserializedSignableTransaction.bytes:
         return await signAndExecuteTransaction(
-          transaction: Base64DataBuffer(transaction.data),
+          transaction: Uint8List.fromList(transaction.data),
           options: options,
           requestType: requestType
         );
@@ -151,9 +150,9 @@ abstract class SignerWithProvider {
 
   Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx, String? signerAddress) async {
     final address = signerAddress ?? getAddress();
-    Base64DataBuffer dryRunTxBytes;
+    Uint8List dryRunTxBytes;
     if (tx is Uint8List) {
-      dryRunTxBytes = Base64DataBuffer(tx);
+      dryRunTxBytes = tx;
     } else if (tx is MoveCallTransaction) {
       dryRunTxBytes = await serializer.newMoveCall(address, tx);
     } else if (tx is PayTransaction) {
@@ -179,7 +178,7 @@ abstract class SignerWithProvider {
     } else {
       throw ArgumentError("Error, unknown transaction kind ${tx.runtimeType}. Can't dry run transaction.");
     }
-    return provider.dryRunTransaction(dryRunTxBytes.toString());
+    return provider.dryRunTransaction(base64Encode(dryRunTxBytes));
   }
 
   Future<List<SuiObjectInfo>> getOwnedObjects(String address, {

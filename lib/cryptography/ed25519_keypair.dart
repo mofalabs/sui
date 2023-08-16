@@ -7,7 +7,6 @@ import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/ed25519_hd_key.dart' as ed25519HDKey;
 
 const DEFAULT_ED25519_DERIVATION_PATH = "m/44'/784'/0'/0'/0'";
@@ -95,9 +94,9 @@ class Ed25519Keypair with Keypair {
 
   /// Return the signature for the provided data using Ed25519.
   @override
-  Base64DataBuffer signData(Base64DataBuffer data) {
-    Uint8List signature = ed25519.sign(_signingKeypair.privateKey, data.getData());
-    return Base64DataBuffer(signature);
+  Uint8List signData(Uint8List data) {
+    Uint8List signature = ed25519.sign(_signingKeypair.privateKey, data);
+    return signature;
   }
 
   /// Derive Ed25519 keypair from mnemonics and path. The mnemonics must be normalized
@@ -132,8 +131,8 @@ class Ed25519Keypair with Keypair {
   }
 
   @override
-  bool verify(Base64DataBuffer data, Base64DataBuffer signature, Uint8List publicKey) {
-    return ed25519.verify(ed25519.PublicKey(publicKey), data.getData(), signature.getData());
+  bool verify(Uint8List data,Uint8List signature, Uint8List publicKey) {
+    return ed25519.verify(ed25519.PublicKey(publicKey), data, signature);
   }
 
 }

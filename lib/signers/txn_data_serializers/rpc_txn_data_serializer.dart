@@ -1,5 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:sui/rpc/client.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/types/common.dart';
 
@@ -18,7 +20,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
   }
 
   @override
-  Future<Base64DataBuffer> newMoveCall(
+  Future<Uint8List> newMoveCall(
     SuiAddress signerAddress,
     MoveCallTransaction txn
   ) async {
@@ -35,11 +37,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.gasBudget.toString(),
       ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newPublish(
+  Future<Uint8List> newPublish(
     SuiAddress signerAddress,
     PublishTransaction txn
   ) async {
@@ -53,11 +55,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.gasBudget.toString()
       ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newTransferObject(
+  Future<Uint8List> newTransferObject(
     SuiAddress signerAddress,
     TransferObjectTransaction txn
   ) async {
@@ -71,11 +73,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.recipient
       ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newTransferSui(
+  Future<Uint8List> newTransferSui(
     SuiAddress signerAddress,
     TransferSuiTransaction txn
   ) async {
@@ -89,11 +91,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.amount.toString()
       ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newPay(
+  Future<Uint8List> newPay(
     SuiAddress signerAddress,
     PayTransaction txn
   ) async {
@@ -108,11 +110,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.gasBudget.toString(),
       ],
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newPaySui(
+  Future<Uint8List> newPaySui(
     SuiAddress signerAddress,
     PaySuiTransaction txn
   ) async {
@@ -126,12 +128,12 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.gasBudget.toString()
       ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
 
   @override
-  Future<Base64DataBuffer> newPayAllSui(
+  Future<Uint8List> newPayAllSui(
     SuiAddress signerAddress,
     PayAllSuiTransaction txn
   ) async {
@@ -144,11 +146,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
         txn.gasBudget.toString()
       ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newAddStake(
+  Future<Uint8List> newAddStake(
       SuiAddress signerAddress,
       AddStakeTransaction txn
       ) async {
@@ -163,11 +165,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           txn.gasBudget.toString()
         ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newWithdrawStake(SuiAddress signerAddress,
+  Future<Uint8List> newWithdrawStake(SuiAddress signerAddress,
       WithdrawStakeTransaction txn) async {
     final resp = await client.request(
         'unsafe_requestWithdrawStake',
@@ -178,11 +180,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           txn.gasBudget.toString()
         ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newSplitCoin(SuiAddress signerAddress,
+  Future<Uint8List> newSplitCoin(SuiAddress signerAddress,
       SplitCoinTransaction txn) async {
     final resp = await client.request(
         'unsafe_splitCoin',
@@ -194,11 +196,11 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           txn.gasBudget.toString()
         ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 
   @override
-  Future<Base64DataBuffer> newSplitCoinEqual(SuiAddress signerAddress,
+  Future<Uint8List> newSplitCoinEqual(SuiAddress signerAddress,
       SplitCoinEqualTransaction txn) async {
     final resp = await client.request(
         'unsafe_splitCoinEqual',
@@ -209,7 +211,7 @@ class RpcTxnDataSerializer with TxnDataSerializer {
           txn.gasBudget.toString()
         ]
     );
-    return Base64DataBuffer.fromBase64String(resp['txBytes']);
+    return base64Decode(resp['txBytes']);
   }
 }
 

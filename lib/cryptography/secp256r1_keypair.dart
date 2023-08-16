@@ -8,7 +8,6 @@ import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
 import 'package:sui/cryptography/secp256.dart';
 import 'package:sui/cryptography/secp256_publickey.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/utils/sha.dart';
 
 const DEFAULT_SECP256R1_DERIVATION_PATH = "m/74'/784'/0'/0/0";
@@ -90,10 +89,10 @@ class Secp256r1Keypair with Keypair {
   }
 
   @override
-  Base64DataBuffer signData(Base64DataBuffer data) {
-    final msgHash = sha256(data.getData());
+  Uint8List signData(Uint8List data) {
+    final msgHash = sha256(data);
     final signatureData = secp256r1.sign(msgHash, _keypair.secretKey);
-    return Base64DataBuffer(signatureData.toBytes());
+    return signatureData.toBytes();
   }
 
   /// Derive Secp256r1 keypair from mnemonics and path. The mnemonics must be normalized
@@ -110,8 +109,8 @@ class Secp256r1Keypair with Keypair {
   }
 
   @override
-  bool verify(Base64DataBuffer data, Base64DataBuffer signature, Uint8List publicKey) {
-    final msgHash = sha256(data.getData());
-    return secp256r1.verifySignature(msgHash, SignatureData.fromBytes(signature.getData()), publicKey);
+  bool verify(Uint8List data, Uint8List signature, Uint8List publicKey) {
+    final msgHash = sha256(data);
+    return secp256r1.verifySignature(msgHash, SignatureData.fromBytes(signature), publicKey);
   }
 }

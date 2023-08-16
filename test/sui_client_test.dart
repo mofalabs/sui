@@ -1,8 +1,10 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/helper.dart';
 import 'package:sui/rpc/faucet_client.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/sui_client.dart';
@@ -16,7 +18,7 @@ void main() {
 
   const DEFAULT_GAS_BUDGET = 10000000;
 
-  final data = Base64DataBuffer.fromString('hello world');
+  final data = Uint8List.fromList(utf8.encode('hello world'));
 
   test('test mnemonic generate', (){
     final mnemonics = SuiAccount.generateMnemonic();

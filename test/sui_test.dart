@@ -7,7 +7,7 @@ void main() {
   const mnemonics = "describe beyond repair shuffle pluck during still prefer gravity film green master";
 
   test('test ed25519 transfer sui', () async {
-    const gasBudget = 200000;
+    const gasBudget = 2000000;
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
@@ -36,7 +36,7 @@ void main() {
   });
 
   test('test secp256k1 transfer sui', () async {
-    const gasBudget = 10000000;
+    const gasBudget = 2000000;
     final recipientAccount = SuiAccount.secp256k1Account();
     final recipient = recipientAccount.getAddress();
 
@@ -65,7 +65,7 @@ void main() {
   });
 
   test('test secp256r1 transfer sui', () async {
-    const gasBudget = 10000000;
+    const gasBudget = 2000000;
     final recipientAccount = SuiAccount.secp256r1Account();
     final recipient = recipientAccount.getAddress();
 

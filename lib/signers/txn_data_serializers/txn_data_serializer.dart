@@ -1,5 +1,6 @@
 
-import 'package:sui/serialization/base64_buffer.dart';
+import 'dart:typed_data';
+
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
@@ -162,57 +163,57 @@ class SplitCoinEqualTransaction {
 }
 
 mixin TxnDataSerializer {
-  Future<Base64DataBuffer> newTransferObject(
+  Future<Uint8List> newTransferObject(
     SuiAddress signerAddress,
     TransferObjectTransaction txn
   );
 
-  Future<Base64DataBuffer> newTransferSui(
+  Future<Uint8List> newTransferSui(
     SuiAddress signerAddress,
     TransferSuiTransaction txn
   );
 
-  Future<Base64DataBuffer> newPay(
+  Future<Uint8List> newPay(
     SuiAddress signerAddress,
     PayTransaction txn
   );
 
-  Future<Base64DataBuffer> newPaySui(
+  Future<Uint8List> newPaySui(
     SuiAddress signerAddress,
     PaySuiTransaction txn
   );
 
-  Future<Base64DataBuffer> newPayAllSui(
+  Future<Uint8List> newPayAllSui(
     SuiAddress signerAddress,
     PayAllSuiTransaction txn
   );
 
-  Future<Base64DataBuffer> newMoveCall(
+  Future<Uint8List> newMoveCall(
     SuiAddress signerAddress,
     MoveCallTransaction txn
   );
 
-  Future<Base64DataBuffer> newPublish(
+  Future<Uint8List> newPublish(
     SuiAddress signerAddress,
     PublishTransaction txn
   );
 
-  Future<Base64DataBuffer> newAddStake(
+  Future<Uint8List> newAddStake(
     SuiAddress signerAddress,
     AddStakeTransaction txn,
   );
 
-  Future<Base64DataBuffer> newWithdrawStake(
+  Future<Uint8List> newWithdrawStake(
     SuiAddress signerAddress,
     WithdrawStakeTransaction txn,
   );
 
-  Future<Base64DataBuffer> newSplitCoin(
+  Future<Uint8List> newSplitCoin(
     SuiAddress signerAddress,
     SplitCoinTransaction txn,
   );
 
-  Future<Base64DataBuffer> newSplitCoinEqual(
+  Future<Uint8List> newSplitCoinEqual(
     SuiAddress signerAddress,
     SplitCoinEqualTransaction txn,
   );

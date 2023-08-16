@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/models/checkpoint.dart';
@@ -7,7 +10,6 @@ import 'package:sui/models/loaded_child_objects.dart';
 import 'package:sui/models/paged.dart';
 import 'package:sui/models/sui_event.dart';
 import 'package:sui/rpc/client.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
@@ -470,20 +472,20 @@ class JsonRpcProvider {
   }
 
   Future<SuiExecuteTransactionResponse> executeTransaction({
-    required Base64DataBuffer txnBytes,
+    required Uint8List txnBytes,
     required SignatureScheme signatureScheme,
-    required Base64DataBuffer signature,
+    required Uint8List signature,
     required PublicKey pubkey,
     SuiTransactionBlockResponseOptions? options,
     ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
   }) async {
     final serializedSig = <int>[];
     serializedSig.add(SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme));
-    serializedSig.addAll(signature.getData());
+    serializedSig.addAll(signature);
     serializedSig.addAll(pubkey.toBytes());
     final result = await executeTransactionBlock(
-      txnBytes.toBase64(),
-      [Base64DataBuffer(serializedSig).toBase64()],
+      base64Encode(txnBytes),
+      [base64Encode(serializedSig)],
       options: options ?? SuiTransactionBlockResponseOptions(
         showInput: true,
         showEffects: true,

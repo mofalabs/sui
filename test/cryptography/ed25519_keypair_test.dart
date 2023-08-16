@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/cryptography/ed25519_keypair.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 
 void main() {
@@ -54,9 +53,9 @@ void main() {
 
     test('signature of data is valid', () {
       final keypair = Ed25519Keypair();
-      final signData = Base64DataBuffer.fromString('hello world');
+      final signData = Uint8List.fromList(utf8.encode('hello world'));
       final signature = keypair.signData(signData);
-      final isValid = ed25519.verify(keypair.keyPair().publicKey, signData.getData(), signature.getData());
+      final isValid = ed25519.verify(keypair.keyPair().publicKey, signData, signature);
       expect(isValid, true);
     });
 

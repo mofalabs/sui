@@ -1,6 +1,5 @@
 
-
-import 'package:sui/serialization/base64_buffer.dart';
+import 'dart:convert';
 
 /// Base64 string representing the object digest
 typedef TransactionDigest = String;
@@ -50,7 +49,7 @@ bool isValidTransactionDigest(
   String value
 ) {
   return
-    Base64DataBuffer.fromBase64String(value).getLength() == TX_DIGEST_LENGTH &&
+    base64Decode(value).length == TX_DIGEST_LENGTH &&
     VALID_BASE64_REGEX.hasMatch(value);
 }
 

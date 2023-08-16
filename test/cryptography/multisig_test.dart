@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/cryptography/multisig.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/utils/sha.dart';
 
@@ -32,11 +31,11 @@ void main() {
       expect(multisigAddress, "0x37b048598ca569756146f4e8ea41666c657406db154a31f11bb5c1cbaf0b98d7");
 
       final data = Uint8List.fromList([0, 0, 0, 5, 72, 101, 108, 108, 111]);
-      final digest = Base64DataBuffer(blake2b(data));
+      final digest = blake2b(data);
 
-      final ser_sig1 = toSerializedSignature(k1.getKeyScheme(), k1.signData(digest).getData(), pk1);
+      final ser_sig1 = toSerializedSignature(k1.getKeyScheme(), k1.signData(digest), pk1);
 
-      final ser_sig2 = toSerializedSignature(k2.getKeyScheme(), k2.signData(digest).getData(), pk2);
+      final ser_sig2 = toSerializedSignature(k2.getKeyScheme(), k2.signData(digest), pk2);
 
     });
 

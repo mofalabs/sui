@@ -1,5 +1,6 @@
 
-import 'package:sui/serialization/base64_buffer.dart';
+import 'dart:typed_data';
+
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
@@ -28,7 +29,7 @@ class SuiClient extends SignerWithProvider {
   }
 
   @override
-  SignaturePubkeyPair signData(Base64DataBuffer data) {
+  SignaturePubkeyPair signData(Uint8List data) {
     if (_account == null) {
       throw ArgumentError("Please call setSigner method first", "signer");
     }

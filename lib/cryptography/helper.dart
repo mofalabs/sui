@@ -8,7 +8,6 @@ import 'package:pointycastle/src/utils.dart' as utils;
 import 'package:sui/cryptography/ed25519_publickey.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/secp256_publickey.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 
 enum SignatureScheme {
@@ -108,7 +107,7 @@ SignaturePubkeyPair fromSerializedSignature(
   final pubkeyBytes = bytes.sublist(1 + signature.length);
   final pubKey = getPublicKey(signatureScheme, pubkeyBytes);
 
-  return SignaturePubkeyPair(signatureScheme, Base64DataBuffer(signature), pubKey);
+  return SignaturePubkeyPair(signatureScheme, signature, pubKey);
 }
 
 Uint8List encodeBigInt(BigInt? number) => utils.encodeBigInt(number);

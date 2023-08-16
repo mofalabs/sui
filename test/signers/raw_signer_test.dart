@@ -8,7 +8,6 @@ import 'package:sui/constants.dart';
 import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
-import 'package:sui/serialization/base64_buffer.dart';
 import 'package:sui/signers/raw_signer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/types/transactions.dart';
@@ -50,7 +49,7 @@ void main() {
 
   test('Ed25519 keypair signData', () {
     final keypair = Ed25519Keypair();
-    final signData = Base64DataBuffer(Uint8List.fromList(utf8.encode('hello world')));
+    final signData = Uint8List.fromList(utf8.encode('hello world'));
     final signer = RawSigner(keypair);
     final signature = signer.signData(signData);
     final isValid = signer.verify(signData, signature);
@@ -59,7 +58,7 @@ void main() {
 
   test('Secp256k1 keypair signData', () {
     final keypair = Secp256k1Keypair();
-    final signData = Base64DataBuffer(Uint8List.fromList(utf8.encode('hello world')));
+    final signData = Uint8List.fromList(utf8.encode('hello world'));
     final signer = RawSigner(keypair);
     final signature = signer.signData(signData);
     final isValid = signer.verify(signData, signature);
@@ -68,7 +67,7 @@ void main() {
 
   test('Secp256r1 keypair signData', () {
     final keypair = Secp256r1Keypair();
-    final signData = Base64DataBuffer(Uint8List.fromList(utf8.encode('hello world')));
+    final signData = Uint8List.fromList(utf8.encode('hello world'));
     final signer = RawSigner(keypair);
     final signature = signer.signData(signData);
     final isValid = signer.verify(signData, signature);
