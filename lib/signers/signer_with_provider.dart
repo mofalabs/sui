@@ -2,8 +2,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
+import 'package:sui/cryptography/signature.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';

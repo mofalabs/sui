@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/cryptography/helper.dart';
+import 'package:sui/cryptography/signature.dart';
 
 /// A keypair used for signing transactions.
 mixin Keypair {

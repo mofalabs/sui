@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
-import 'package:sui/cryptography/helper.dart';
+import 'package:sui/cryptography/signature.dart';
 import 'package:sui/rpc/faucet_client.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';

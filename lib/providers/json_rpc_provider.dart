@@ -2,8 +2,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
+import 'package:sui/cryptography/signature.dart';
 import 'package:sui/models/checkpoint.dart';
 import 'package:sui/models/dynamic_field.dart';
 import 'package:sui/models/loaded_child_objects.dart';

@@ -2,11 +2,11 @@
 import 'dart:typed_data';
 
 import 'package:sui/cryptography/ed25519_keypair.dart';
-import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart' as mnemonic;
+import 'package:sui/cryptography/signature.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
