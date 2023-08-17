@@ -84,5 +84,15 @@ void main() {
       }, throwsArgumentError);
     });
 
+    test('signs PersonalMessages', () {
+      final keypair = Ed25519Keypair();
+      final message = Uint8List.fromList(utf8.encode('hello world'));
+
+      final signatureWithBytes = (keypair.signPersonalMessage(message));
+
+      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+    });
+
   });
 }

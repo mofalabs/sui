@@ -123,5 +123,15 @@ void main() {
         Secp256r1Keypair.deriveKeypair("m/74'/784'/0'/0'/0'", TEST_MNEMONIC);
       }, throwsArgumentError);
     });
+
+    test('signs PersonalMessages', () {
+      final keypair = Secp256r1Keypair();
+      final message = Uint8List.fromList(utf8.encode('hello world'));
+
+      final signatureWithBytes = (keypair.signPersonalMessage(message));
+
+      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+    });
   });
 }

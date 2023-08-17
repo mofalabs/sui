@@ -134,5 +134,19 @@ class Ed25519Keypair with Keypair {
   bool verify(Uint8List data,Uint8List signature, Uint8List publicKey) {
     return ed25519.verify(ed25519.PublicKey(publicKey), data, signature);
   }
+  
+  @override
+  bool verifySerialized(Uint8List message, String signature, Uint8List publicKey) {
+    final parsed = parseSerializedSignature(signature);
+    if (parsed.signatureScheme != SignatureScheme.ED25519) {
+      throw ArgumentError('Invalid signature scheme');
+    }
+
+    if (base64Encode(publicKey) != parsed.pubKey.toBase64()) {
+      throw ArgumentError('Signature does not match public key');
+    }
+
+    return verify(message, parsed.signature, publicKey);
+  }
 
 }

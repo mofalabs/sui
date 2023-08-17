@@ -109,6 +109,16 @@ void main() {
       }, throwsArgumentError);
     });
 
+    test('signs PersonalMessages', () {
+      final keypair = Secp256k1Keypair();
+      final message = Uint8List.fromList(utf8.encode('hello world'));
+
+      final signatureWithBytes = (keypair.signPersonalMessage(message));
+
+      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+    });
+
   });
 
 }

@@ -113,4 +113,18 @@ class Secp256r1Keypair with Keypair {
     final msgHash = sha256(data);
     return secp256r1.verifySignature(msgHash, SignatureData.fromBytes(signature), publicKey);
   }
+  
+  @override
+  bool verifySerialized(Uint8List message, String signature, Uint8List publicKey) {
+    final parsed = parseSerializedSignature(signature);
+    if (parsed.signatureScheme != SignatureScheme.Secp256r1) {
+      throw ArgumentError('Invalid signature scheme');
+    }
+
+    if (base64Encode(publicKey) != parsed.pubKey.toBase64()) {
+      throw ArgumentError('Signature does not match public key');
+    }
+
+    return verify(message, parsed.signature, publicKey);
+  }
 }
