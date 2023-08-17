@@ -17,7 +17,7 @@ Usage
 #### pay sui with ed25519
 
 ```dart
-const gas_budget = 10000;
+const gas_budget = 2000000;
 final recipientAccount = SuiAccount.ed25519Account();
 final recipient = recipientAccount.getAddress();
 
@@ -49,7 +49,7 @@ print(waitForLocalExecutionTx.digest);
 #### pay sui with secp256k1
 
 ```dart
-const gas_budget = 10000;
+const gas_budget = 2000000;
 final recipientAccount = SuiAccount.secp256k1Account();
 final recipient = recipientAccount.getAddress();
 
