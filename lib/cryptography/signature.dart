@@ -64,7 +64,7 @@ String toSerializedSignature(
   return base64Encode(serializedSignature);
 }
 
-SignaturePubkeyPair fromSerializedSignature(
+SignaturePubkeyPair parseSerializedSignature(
   String serializedSignature,
 ) {
   final bytes = base64Decode(serializedSignature);

@@ -1,13 +1,18 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sui/builder/inputs.dart';
+import 'package:sui/builder/transaction_block.dart';
+import 'package:sui/builder/transactions.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/rpc/faucet_client.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/sui_client.dart';
+import 'package:sui/types/sui_bcs.dart';
 
 void main() {
 
@@ -215,6 +220,31 @@ void main() {
         functionName: 'set_value'
     );
     expect(functionArgTypes.length >= 3, true);
+  });
+
+  test('test transacitonblock', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final sender = signer.getAddress();
+
+    final coins = await client.provider.getOwnedObjectList(sender);
+    final gasCoin = coins.data.first.data!;
+
+    final gasPrice = await client.provider.getReferenceGasPrice();
+
+    final txb = TransactionBlock();
+    txb.setSender(signer.getAddress());
+    txb.setGasBudget(BigInt.from(2000000));
+    txb.setGasPrice(gasPrice);
+    txb.setGasPayment([gasCoin]);
+
+    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(100000000, BCS.U64))]));
+    txb.transferObjects([coin], txb.pure(
+      Inputs.Pure("0xd7ff3a8ef291fa361f2ed125540c3eb7377686a0e78a253881442cd6d98c40a9", BCS.ADDRESS)
+    ));
+
+    final resp = await client.signAndExecuteTransactionBlock(signer.keyPair, txb);
+    print(resp);
   });
 
 }

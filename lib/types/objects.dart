@@ -268,10 +268,7 @@ class DisplayFieldsResponse {
   }
 }
 
-class SuiObject {
-  ObjectId objectId;
-  ObjectDigest digest;
-  String version;
+class SuiObject extends SuiObjectRef {
 
   /// Type of the object, default to be undefined unless SuiObjectDataOptions.showType is set to true
   String? type;
@@ -300,9 +297,9 @@ class SuiObject {
   DisplayFieldsResponse? display;
 
   SuiObject(
-    this.objectId,
-    this.digest,
-    this.version,
+    String objectId,
+    String digest,
+    int version,
     this.type,
     this.content,
     this.bcs,
@@ -310,7 +307,7 @@ class SuiObject {
     this.previousTransaction,
     this.storageRebate,
     this.display,
-  );
+  ): super(digest, objectId, version);
 
   factory SuiObject.fromJson(dynamic data) {
     SuiMoveObject? content;
@@ -335,7 +332,7 @@ class SuiObject {
     return SuiObject(
       data['objectId'],
       data['digest'],
-      data['version'],
+      int.parse(data['version']),
       data['type'],
       content,
       bcs,
@@ -404,7 +401,7 @@ SuiObjectRef? getObjectReference(SuiObjectResponse resp) {
     return SuiObjectRef(
       objectExistsResponse.digest,
       objectExistsResponse.objectId,
-      int.parse(objectExistsResponse.version),
+      objectExistsResponse.version,
     );
   } else {
     return getObjectDeletedResponse(resp);

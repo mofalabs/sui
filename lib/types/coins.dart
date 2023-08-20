@@ -29,6 +29,17 @@ class CoinStruct {
       data['previousTransaction'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "coinType": coinType,
+      "coinObjectId": coinObjectId,
+      "version": version,
+      "digest": digest,
+      "balance": balance,
+      "previousTransaction": previousTransaction
+    };
+  }
 }
 
 class PaginatedCoins {

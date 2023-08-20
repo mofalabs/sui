@@ -28,11 +28,10 @@ packages:
   bcs:
     dependency: transitive
     description:
-      name: bcs
-      sha256: "6755c5a05df5f8a8dbac4673869fcbc6c79aa22b9d2230ad002a8733ca3e6b13"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
+      path: "../../bcs"
+      relative: true
+    source: path
+    version: "0.0.2"
   bip32:
     dependency: transitive
     description:
@@ -336,5 +335,5 @@ packages:
     source: hosted
     version: "2.4.0"
 sdks:
-  dart: ">=3.0.0-0 <4.0.0"
+  dart: ">=3.0.3 <4.0.0"
   flutter: ">=1.17.0"
