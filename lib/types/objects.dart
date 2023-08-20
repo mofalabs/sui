@@ -16,7 +16,7 @@ class SuiObjectRef {
     return SuiObjectRef(
         data['digest'],
         data['objectId'],
-        data['version']
+        int.parse(data['version'].toString())
     );
   }
 

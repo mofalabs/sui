@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:sui/builder/bcs.dart';
 import 'package:sui/types/common.dart';
+import 'package:sui/types/objects.dart';
 
 
 class Inputs {
@@ -20,13 +21,13 @@ class Inputs {
 		};
 	}
 
-	static Map<String, dynamic> ObjectRef(Map<String, dynamic> data) {
+	static Map<String, dynamic> ObjectRef(SuiObjectRef data) {
 		return {
 			"Object": {
 				"ImmOrOwned": {
-					"digest": data["digest"],
-					"version": data["version"],
-					"objectId": normalizeSuiAddress(data["objectId"]),
+					"digest": data.digest,
+					"version": data.version,
+					"objectId": normalizeSuiAddress(data.objectId),
 				},
 			},
 		};

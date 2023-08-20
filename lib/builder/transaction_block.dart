@@ -163,10 +163,10 @@ class TransactionBlock {
 	setExpiration(TransactionExpiration? expiration) {
 		_blockData.expiration = expiration;
 	}
-	setGasPrice(BigInt price) {
+	setGasPrice(int price) {
 		_blockData.gasConfig.price = price;
 	}
-	setGasBudget(BigInt budget) {
+	setGasBudget(int budget) {
 		_blockData.gasConfig.budget = budget;
 	}
 	setGasOwner(String owner) {
@@ -275,7 +275,7 @@ class TransactionBlock {
 	}
 
 	/** Add a transaction to the transaction block. */
-	add(dynamic transaction) {
+	TransactionResult add(dynamic transaction) {
 		_blockData.transactions.add(transaction);
 		return createTransactionResult(_blockData.transactions.length - 1);
 	}

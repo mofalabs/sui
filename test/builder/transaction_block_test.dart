@@ -14,7 +14,7 @@ void main() {
 
   test('can construct and serialize an empty tranaction', () {
     final tx = TransactionBlock();
-    expect(() => tx.serialize(), throwsA(anything));
+    expect(() => tx.serialize(), returnsNormally);
   });
 
   test('can be serialized and deserialized to the same values', () {
@@ -40,28 +40,29 @@ void main() {
       }),
     );
 
-    // const [nft, account] = registerResult;
+    // final nft = registerResult["kind"];
+    // final account = registerResult["index"];
 
     // // NOTE: This might seem silly but destructuring works differently than property access.
-    // expect(nft).toBe(registerResult[0]);
+    // expect(nft, registerResult[0]);
     // expect(account).toBe(registerResult[1]);
   });
 
   group('offline build', () {
 
-    Map<String, dynamic> ref() {
-      return {
-        "digest": toB58(Uint8List.fromList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
-        "objectId": (Random().nextDouble() * 100000).toStringAsFixed(0).padRight(64, '0'),
-        "version": (Random().nextDouble() * 100000).toInt()
-      };
+    SuiObjectRef ref() {
+      return SuiObjectRef(
+        toB58(Uint8List.fromList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
+        (Random().nextDouble() * 100000).toStringAsFixed(0).padRight(64, '0'),
+        (Random().nextDouble() * 100000).toInt()
+      );
     }
 
     TransactionBlock setup() {
       final tx = TransactionBlock();
       tx.setSender('0x2');
-      tx.setGasPrice(BigInt.from(5));
-      tx.setGasBudget(BigInt.from(100));
+      tx.setGasPrice(5);
+      tx.setGasBudget(100);
       tx.setGasPayment([ref()]);
       return tx;
     }
@@ -87,7 +88,7 @@ void main() {
       final tx = setup();
       final tx2 = TransactionBlock(tx);
 
-      tx.setGasBudget(BigInt.from(999));
+      tx.setGasBudget(999);
 
       // Ensure that setting budget after a clone does not affect the original:
       expect(tx2.blockData, isNot(equals(tx.blockData)));
@@ -95,20 +96,18 @@ void main() {
       // Ensure `blockData` always breaks reference equality:
       expect(tx.blockData, isNot(same(tx.blockData)));
       expect(tx.blockData.gasConfig, isNot(same(tx.blockData.gasConfig)));
-      // expect(tx.blockData.transactions, isNot(same(tx.blockData.transactions)));
-      // expect(tx.blockData.inputs, isNot(same(tx.blockData.inputs)));
     });
 
     test('can determine the type of inputs for built-in transactions', () async {
       final tx = setup();
       // tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(100)]));
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, 'u64'))]));
+      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, BCS.U64))]));
       await tx.build();
     });
 
     test('supports pre-serialized inputs as Uint8Array', () async {
       final tx = setup();
-      final inputBytes = builder.ser('u64', BigInt.from(100)).toBytes();
+      final inputBytes = builder.ser(BCS.U64, BigInt.from(100)).toBytes();
       // Use bytes directly in pure value:
       tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(inputBytes)]));
       // Use bytes in input helper:

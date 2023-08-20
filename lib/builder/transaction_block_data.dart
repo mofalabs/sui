@@ -35,8 +35,8 @@ typedef TransactionExpiration = dynamic;
 // });
 // type GasConfig = Infer<typeof GasConfig>;
 class GasConfig {
-  BigInt? budget;
-  BigInt? price;
+  int? budget;
+  int? price;
   List<SuiObjectRef>? payment;
   String? owner;
 
@@ -44,8 +44,8 @@ class GasConfig {
 
    Map<String, dynamic> toJson() {
     return {
-      "budget": budget?.toString(),
-      "price": price?.toString(),
+      "budget": budget,
+      "price": price,
       "payment": payment?.map((e) => e.toJson()).toList(),
       "owner": owner
     };
@@ -53,8 +53,8 @@ class GasConfig {
 
   factory GasConfig.fromJson(Map<String, dynamic> json) {
     return GasConfig(
-      budget: BigInt.tryParse(json["budget"].toString()),
-      price: BigInt.tryParse(json["price"].toString()),
+      budget: int.tryParse(json["budget"]?.toString() ?? ""),
+      price: int.tryParse(json["price"]?.toString() ?? ""),
       payment: json["payment"]?.map<SuiObjectRef>((e) => SuiObjectRef.fromJson(e)).toList(),
       owner: json["owner"]
     );
@@ -84,7 +84,7 @@ class SerializedTransactionDataBuilder {
       "expiration": expiration,
       "gasConfig": gasConfig.toJson(),
       "inputs": inputs,
-      "transactions": jsonEncode(transactions)
+      "transactions": transactions
     };
   }
 

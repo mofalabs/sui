@@ -234,8 +234,8 @@ void main() {
 
     final txb = TransactionBlock();
     txb.setSender(signer.getAddress());
-    txb.setGasBudget(BigInt.from(2000000));
-    txb.setGasPrice(gasPrice);
+    txb.setGasBudget(2000000);
+    txb.setGasPrice(gasPrice.toInt());
     txb.setGasPayment([gasCoin]);
 
     final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(100000000, BCS.U64))]));
