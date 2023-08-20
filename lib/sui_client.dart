@@ -6,6 +6,7 @@ import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
+import 'package:sui/types/transactions.dart';
 
 class SuiClient extends SignerWithProvider {
   late final SuiAccount? _account;
@@ -38,17 +39,22 @@ class SuiClient extends SignerWithProvider {
     return _account!.signData(data);
   }
 
-  signAndExecuteTransactionBlock(
+  Future<SuiTransactionBlockResponse> signAndExecuteTransactionBlock(
     Keypair signer,
     TransactionBlock transactionBlock,
     {
-      Map<String, dynamic>? options
+      BuildOptions? options
     }
   ) async {
+    if (options == null) {
+      options = BuildOptions(client: this);
+    } else {
+      options.client ??= this;
+    }
+    
     final transactionBytes = await transactionBlock.build(options);
     final signWithBytes = signer.signTransactionBlock(transactionBytes);
-    final resp = await this.provider.executeTransactionBlock(signWithBytes.bytes, [signWithBytes.signature]);
-    print(resp);
+    return await provider.executeTransactionBlock(signWithBytes.bytes, [signWithBytes.signature]);
   }
 
 

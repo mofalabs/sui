@@ -1,4 +1,8 @@
 
+import 'package:bcs/bcs.dart';
+import 'package:sui/builder/type_tag_serializer.dart';
+import 'package:sui/types/common.dart';
+
 // const option = <T extends Struct<any, any>>(some: T) =>
 // 	union([object({ None: union([literal(true), literal(null)]) }), object({ Some: some })]);
 
@@ -116,14 +120,11 @@
 // export const TransactionType = union([...TransactionTypes]);
 // export type TransactionType = Infer<typeof TransactionType>;
 
-// export function getTransactionType(data: unknown) {
-// 	assert(data, TransactionType);
-// 	return TransactionTypes.find((schema) => is(data, schema as Struct))!;
-// }
+// dynamic getTransactionType(dynamic data) {
+// 	// return TransactionTypes.find((schema) => is(data, schema as Struct))!;
+//   return TransactionTypes.firstWhere((schema) => is(data, schema as Struct));
 
-import 'package:bcs/bcs.dart';
-import 'package:sui/builder/type_tag_serializer.dart';
-import 'package:sui/types/common.dart';
+// }
 
 /**
  * Simple helpers used to construct transactions:

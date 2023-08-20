@@ -61,8 +61,8 @@ void main() {
     TransactionBlock setup() {
       final tx = TransactionBlock();
       tx.setSender('0x2');
-      tx.setGasPrice(5);
-      tx.setGasBudget(100);
+      tx.setGasPrice(BigInt.from(5));
+      tx.setGasBudget(BigInt.from(100));
       tx.setGasPayment([ref()]);
       return tx;
     }
@@ -88,7 +88,7 @@ void main() {
       final tx = setup();
       final tx2 = TransactionBlock(tx);
 
-      tx.setGasBudget(999);
+      tx.setGasBudget(BigInt.from(999));
 
       // Ensure that setting budget after a clone does not affect the original:
       expect(tx2.blockData, isNot(equals(tx.blockData)));

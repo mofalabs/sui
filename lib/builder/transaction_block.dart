@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
@@ -8,10 +9,12 @@ import 'package:sui/builder/transaction_block_data.dart';
 import 'package:sui/builder/transactions.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
+import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_client.dart';
 import 'package:sui/types/coins.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/objects.dart';
+import 'package:sui/types/transactions.dart';
 
 typedef TransactionResult = dynamic;
 
@@ -37,13 +40,13 @@ TransactionResult createTransactionResult(int index) {
 }
 
 SuiClient expectClient(BuildOptions options) {
-	if (options.client == null && options.provider == null) {
+	if (options.client == null) {
 		throw ArgumentError(
 			"No provider passed to Transaction#build, but transaction data was not sufficient to build offline.",
 		);
 	}
 
-	return (options.client ?? options.provider!) as SuiClient;
+	return options.client!;
 }
 
 const TRANSACTION_BRAND = Symbol('@mysten/transaction');
@@ -73,20 +76,18 @@ const MAX_OBJECTS_PER_FETCH = 50;
 // 		arr.slice(i * size, i * size + size),
 // 	);
 
-mixin BuildOptions {
-	/**
-	 * @deprecated Use `client` instead.
-	 */
-	JsonRpcProvider? provider;
+class BuildOptions {
 	SuiClient? client;
 	bool? onlyTransactionKind;
 	/** Define a protocol config to build against, instead of having it fetched from the provider at build time. */
 	dynamic protocolConfig;
 	/** Define limits that are used when building the transaction. In general, we recommend using the protocol configuration instead of defining limits. */
 	Limits? limits;
+
+  BuildOptions({this.client, this.onlyTransactionKind, this.protocolConfig, this.limits});
 }
 
-class SignOptions with BuildOptions {
+class SignOptions extends BuildOptions {
 	Keypair signer;
 
   SignOptions(this.signer);
@@ -163,10 +164,10 @@ class TransactionBlock {
 	setExpiration(TransactionExpiration? expiration) {
 		_blockData.expiration = expiration;
 	}
-	setGasPrice(int price) {
+	setGasPrice(BigInt price) {
 		_blockData.gasConfig.price = price;
 	}
-	setGasBudget(int budget) {
+	setGasBudget(BigInt budget) {
 		_blockData.gasConfig.budget = budget;
 	}
 	setGasOwner(String owner) {
@@ -320,26 +321,26 @@ class TransactionBlock {
 		return jsonEncode(_blockData.snapshot());
 	}
 
-	_getConfig(dynamic key, Map<String, dynamic> options) {
+	_getConfig(dynamic key, BuildOptions options) {
 		// Use the limits definition if that exists:
-		if (options["limits"] != null && options["limits"][key] is int) {
-			return options["limits"][key]!;
+		if (options.limits != null && options.limits[key] is int) {
+			return options.limits[key]!;
 		}
 
-		if (options["protocolConfig"] == null) {
+		if (options.protocolConfig == null) {
 			return DefaultOfflineLimits[key];
 		}
 
 		// Fallback to protocol config:
-		final attribute = options["protocolConfig"]?["attributes"][LIMITS[key]];
+		final attribute = options.protocolConfig?["attributes"][LIMITS[key]];
 		if (attribute == null) {
 			throw ArgumentError('Missing expected protocol config: "${LIMITS[key]}"');
 		}
 
 		final value =
-			attribute.containKey("u64") ? attribute.u64 : attribute.containKey("u32") ? attribute["u32"] : attribute["f64"];
+			attribute.containsKey("u64") ? attribute["u64"] : attribute.containsKey("u32") ? attribute["u32"] : attribute["f64"];
 
-		if (value.isEmpty) {
+		if (value == null) {
 			throw ArgumentError('Unexpected protocol config value found for: "${LIMITS[key]}"');
 		}
 
@@ -347,31 +348,32 @@ class TransactionBlock {
 		return value;
 	}
 
-	/** Build the transaction to BCS bytes, and sign it with the provided keypair. */
-	Future<dynamic> sign(Map<String, dynamic> options) async {
+	/// Build the transaction to BCS bytes, and sign it with the provided keypair.
+	Future<dynamic> sign(SignOptions options) async {
 		final bytes = await build(options);
-		return options["signer"].signTransactionBlock(bytes);
+		return options.signer.signTransactionBlock(bytes);
 	}
 
-	/** Build the transaction to BCS bytes. */
-	Future<Uint8List> build([Map<String, dynamic>? options]) async {
-		// await _prepare(options);
+	/// Build the transaction to BCS bytes.
+	Future<Uint8List> build([BuildOptions? options]) async {
+    options ??= BuildOptions();
+		await _prepare(options);
 		return _blockData.build(
-			maxSizeBytes: _getConfig('maxTxSizeBytes', options ?? {}),
-			onlyTransactionKind: options?["onlyTransactionKind"],
+			maxSizeBytes: int.tryParse(_getConfig('maxTxSizeBytes', options)),
+			onlyTransactionKind: options.onlyTransactionKind,
 		);
 	}
 
-	/** Derive transaction digest */
+	/// Derive transaction digest
 	Future<String> getDigest(
     BuildOptions options
 	) async {
-		// await _prepare(options);
+		await _prepare(options);
 		return _blockData.getDigest();
 	}
 
-	_validate(Map<String, dynamic> options) {
-		final maxPureArgumentSize = _getConfig('maxPureArgumentSize', options);
+	_validate(BuildOptions options) {
+		final maxPureArgumentSize = int.parse(_getConfig('maxPureArgumentSize', options));
 		// Validate all inputs are the correct size:
     for (var i = 0; i < _blockData.inputs.length; i++) {
       final input = _blockData.inputs[i];
@@ -386,57 +388,65 @@ class TransactionBlock {
 	}
 
 	// The current default is just picking _all_ coins we can which may not be ideal.
-	// _prepareGasPayment(BuildOptions options) async {
-	// 	if (_blockData.gasConfig.payment) {
-	// 		final maxGasObjects = _getConfig('maxGasObjects', options);
-	// 		if (_blockData.gasConfig.payment.length > maxGasObjects) {
-	// 			throw ArgumentError("Payment objects exceed maximum amount: $maxGasObjects");
-	// 		}
-	// 	}
+	_prepareGasPayment(BuildOptions options) async {
+		if (_blockData.gasConfig.payment != null) {
+			final maxGasObjects = int.parse(_getConfig('maxGasObjects', options));
+			if (_blockData.gasConfig.payment!.length > maxGasObjects) {
+				throw ArgumentError("Payment objects exceed maximum amount: $maxGasObjects");
+			}
+		}
 
-	// 	// Early return if the payment is already set:
-	// 	if ((options.onlyTransactionKind ?? false) || _blockData.gasConfig.payment) {
-	// 		return;
-	// 	}
+		// Early return if the payment is already set:
+		if ((options.onlyTransactionKind ?? false) || _blockData.gasConfig.payment != null) {
+			return;
+		}
 
-	// 	final gasOwner = _blockData.gasConfig.owner ?? _blockData.sender;
+		final gasOwner = _blockData.gasConfig.owner ?? _blockData.sender;
 
-	// 	final coins = await expectClient(options).getCoins(gasOwner!, coinType: SUI_TYPE_ARG);
+		final coins = await expectClient(options).getCoins(gasOwner!, coinType: SUI_TYPE_ARG);
 
-	// 	final paymentCoins = coins.data
-	// 		// Filter out coins that are also used as input:
-	// 		.where((coin) {
-	// 			final matchingInput = _blockData.inputs.indexOf((input) {
-  //         final iv = input["value"];
-	// 				if (iv.containsKey("Object") && iv["Object"].containsKey("ImmOrOwned")) {
-	// 					return coin.coinObjectId == iv["Object"]["ImmOrOwned"]["objectId"];
-	// 				}
+		final paymentCoins = coins.data
+			// Filter out coins that are also used as input:
+			.where((coin) {
+				final matchingInput = _blockData.inputs.indexOf((input) {
+          final iv = input["value"];
+					if (iv.containsKey("Object") && iv["Object"].containsKey("ImmOrOwned")) {
+						return coin.coinObjectId == iv["Object"]["ImmOrOwned"]["objectId"];
+					}
 
-	// 				return false;
-	// 			});
+					return false;
+				});
 
-	// 			return matchingInput > -1;
-	// 		}).toList()
-	// 		.sublist(0, _getConfig('maxGasObjects', options) - 1)
-	// 		.map((coin) => SuiObjectRef(coin.digest, coin.coinObjectId, int.parse(coin.version)));
+				return matchingInput == -1;
+			})
+      .toList();
 
-	// 	if (paymentCoins.isEmpty) {
-	// 		throw ArgumentError('No valid gas coins found for the transaction.');
-	// 	}
+      int end = min(paymentCoins.length, int.parse(_getConfig('maxGasObjects', options)) - 1);
 
-	// 	setGasPayment(paymentCoins.toList());
-	// }
+			final usePaymentCoins = paymentCoins
+        .sublist(0, end)
+			  .map((coin) => SuiObjectRef(coin.digest, coin.coinObjectId, int.parse(coin.version)))
+        .toList();
 
-	// _prepareGasPrice(BuildOptions options) async {
-	// 	if (options.onlyTransactionKind != null || _blockData.gasConfig.price != null) {
-	// 		return;
-	// 	}
+		if (paymentCoins.isEmpty) {
+			throw ArgumentError('No valid gas coins found for the transaction.');
+		}
 
-	// 	setGasPrice(await expectClient(options).getReferenceGasPrice());
-	// }
+		setGasPayment(usePaymentCoins);
+	}
+
+	_prepareGasPrice(BuildOptions options) async {
+		if (options.onlyTransactionKind != null || _blockData.gasConfig.price != null) {
+			return;
+		}
+
+    final gasPrice = await expectClient(options).provider.getReferenceGasPrice();
+		setGasPrice(gasPrice);
+	}
 
 	// _prepareTransactions(BuildOptions options) async {
-	// 	final { inputs, transactions } = this._blockData;
+  //   final inputs = _blockData.inputs;
+  //   final transactions = _blockData.transactions;
 
 	// 	List<MoveCallTransaction> moveModulesToResolve = [];
 
@@ -448,18 +458,18 @@ class TransactionBlock {
 	// 		normalizedType?: SuiMoveNormalizedType;
 	// 	}[] = [];
 
-	// 	transactions.forEach((transaction) => {
+	// 	transactions.forEach((transaction) {
 	// 		// Special case move call:
-	// 		if (transaction.kind == 'MoveCall') {
+	// 		if (transaction["kind"] == 'MoveCall') {
 	// 			// Determine if any of the arguments require encoding.
 	// 			// - If they don't, then this is good to go.
 	// 			// - If they do, then we need to fetch the normalized move module.
-	// 			final needsResolution = transaction.arguments.some(
-	// 				(arg) => arg.kind === 'Input' && !is(inputs[arg.index].value, BuilderCallArg),
-	// 			);
+  //       final needsResolution = transaction["arguments"].any(
+  //         (arg) => arg['kind'] == 'Input' && inputs[arg['index']].value is! BuilderCallArg
+  //       );
 
 	// 			if (needsResolution) {
-	// 				moveModulesToResolve.push(transaction);
+	// 				moveModulesToResolve.add(transaction);
 	// 			}
 
 	// 			return;
@@ -512,7 +522,7 @@ class TransactionBlock {
 	// 		});
 	// 	});
 
-	// 	if (moveModulesToResolve.length) {
+	// 	if (moveModulesToResolve.isNotEmpty) {
 	// 		await Promise.all(
 	// 			moveModulesToResolve.map(async (moveCall) => {
 	// 				const [packageId, moduleName, functionName] = moveCall.target.split('::');
@@ -639,63 +649,61 @@ class TransactionBlock {
 	// 	}
 	// }
 
-	/**
-	 * Prepare the transaction by valdiating the transaction data and resolving all inputs
-	 * so that it can be built into bytes.
-	 */
-	// _prepare(BuildOptions options) async {
-	// 	if (options.onlyTransactionKind == null && this._blockData.sender == null) {
-	// 		throw ArgumentError('Missing transaction sender');
-	// 	}
+	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
+	/// so that it can be built into bytes.
+	_prepare(BuildOptions options) async {
+		if (options.onlyTransactionKind == null && _blockData.sender == null) {
+			throw ArgumentError('Missing transaction sender');
+		}
 
-	// 	final client = options.client || options.provider;
+		final client = options.client;
 
-	// 	if (!options.protocolConfig && !options.limits && client) {
-	// 		options.protocolConfig = await client.getProtocolConfig();
-	// 	}
+		if (options.protocolConfig == null && options.limits == null && client != null) {
+			options.protocolConfig = await client.provider.getProtocolConfig();
+		}
 
-	// 	await Promise.all([this._prepareGasPrice(options), this._prepareTransactions(options)]);
+		// await Promise.all([_prepareGasPrice(options), _prepareTransactions(options)]);
+    await _prepareGasPrice(options);
 
-	// 	if (!options.onlyTransactionKind) {
-	// 		await this._prepareGasPayment(options);
+		if (options.onlyTransactionKind != true) {
+			// await _prepareGasPayment(options);
 
-	// 		if (!this._blockData.gasConfig.budget) {
-	// 			const dryRunResult = await expectClient(options).dryRunTransactionBlock({
-	// 				transactionBlock: this._blockData.build({
-	// 					maxSizeBytes: this._getConfig('maxTxSizeBytes', options),
-	// 					overrides: {
-	// 						gasConfig: {
-	// 							budget: String(this._getConfig('maxTxGas', options)),
-	// 							payment: [],
-	// 						},
-	// 					},
-	// 				}),
-	// 			});
-	// 			if (dryRunResult.effects.status.status != 'success') {
-	// 				throw ArgumentError(
-	// 					"Dry run failed, could not automatically determine a budget: ${dryRunResult.effects.status.error}",
-	// 					{ cause: dryRunResult },
-	// 				);
-	// 			}
+			if (_blockData.gasConfig.budget == null) {
+				final dryRunResult = await expectClient(options).dryRunTransaction(
+					_blockData.build(
+						maxSizeBytes: int.tryParse(_getConfig('maxTxSizeBytes', options)),
+            gasConfig: GasConfig(
+              budget: BigInt.tryParse(_getConfig('maxTxGas', options)), 
+              payment: []
+            )
+					),
+          _blockData.sender
+				);
 
-	// 			const safeOverhead = GAS_SAFE_OVERHEAD * BigInt(this.blockData.gasConfig.price || 1n);
+				if (dryRunResult.effects.status.status != ExecutionStatusType.success) {
+					throw ArgumentError(
+						"Dry run failed, could not automatically determine a budget: ${dryRunResult.effects.status.error}"
+					);
+				}
 
-	// 			const baseComputationCostWithOverhead =
-	// 				BigInt(dryRunResult.effects.gasUsed.computationCost) + safeOverhead;
+				final safeOverhead = GAS_SAFE_OVERHEAD * (blockData.gasConfig.price ?? BigInt.one);
 
-	// 			const gasBudget =
-	// 				baseComputationCostWithOverhead +
-	// 				BigInt(dryRunResult.effects.gasUsed.storageCost) -
-	// 				BigInt(dryRunResult.effects.gasUsed.storageRebate);
+				final baseComputationCostWithOverhead =
+					BigInt.from(dryRunResult.effects.gasUsed.computationCost) + safeOverhead;
 
-	// 			// Set the budget to max(computation, computation + storage - rebate)
-	// 			this.setGasBudget(
-	// 				gasBudget > baseComputationCostWithOverhead ? gasBudget : baseComputationCostWithOverhead,
-	// 			);
-	// 		}
-	// 	}
+				final gasBudget =
+					baseComputationCostWithOverhead +
+					BigInt.from(dryRunResult.effects.gasUsed.storageCost) -
+					BigInt.from(dryRunResult.effects.gasUsed.storageRebate);
 
-	// 	// Perform final validation on the transaction:
-	// 	this._validate(options);
-	// }
+				// Set the budget to max(computation, computation + storage - rebate)
+				setGasBudget(
+					gasBudget > baseComputationCostWithOverhead ? gasBudget : baseComputationCostWithOverhead,
+				);
+			}
+		}
+
+		// Perform final validation on the transaction:
+		_validate(options);
+	}
 }

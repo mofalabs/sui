@@ -230,13 +230,10 @@ void main() {
     final coins = await client.provider.getOwnedObjectList(sender);
     final gasCoin = coins.data.first.data!;
 
-    final gasPrice = await client.provider.getReferenceGasPrice();
-
     final txb = TransactionBlock();
     txb.setSender(signer.getAddress());
-    txb.setGasBudget(2000000);
-    txb.setGasPrice(gasPrice.toInt());
     txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(2000000));
 
     final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(100000000, BCS.U64))]));
     txb.transferObjects([coin], txb.pure(

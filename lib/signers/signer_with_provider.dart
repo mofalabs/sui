@@ -232,8 +232,8 @@ abstract class SignerWithProvider {
     return await provider.getAllBalance(address);
   }
 
-  Future<PaginatedCoins> getCoins(String address) async {
-    return await provider.getCoins(address);
+  Future<PaginatedCoins> getCoins(String address, {String? coinType}) async {
+    return await provider.getCoins(address, coinType: coinType);
   }
 
   Future<PaginatedCoins> getAllCoins(String address) async {

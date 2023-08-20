@@ -35,8 +35,8 @@ typedef TransactionExpiration = dynamic;
 // });
 // type GasConfig = Infer<typeof GasConfig>;
 class GasConfig {
-  int? budget;
-  int? price;
+  BigInt? budget;
+  BigInt? price;
   List<SuiObjectRef>? payment;
   String? owner;
 
@@ -53,8 +53,8 @@ class GasConfig {
 
   factory GasConfig.fromJson(Map<String, dynamic> json) {
     return GasConfig(
-      budget: int.tryParse(json["budget"]?.toString() ?? ""),
-      price: int.tryParse(json["price"]?.toString() ?? ""),
+      budget: BigInt.tryParse(json["budget"]?.toString() ?? ""),
+      price: BigInt.tryParse(json["price"]?.toString() ?? ""),
       payment: json["payment"]?.map<SuiObjectRef>((e) => SuiObjectRef.fromJson(e)).toList(),
       owner: json["owner"]
     );
@@ -215,7 +215,18 @@ class TransactionBlockDataBuilder {
 
 		final expirationValue = expiration ?? this.expiration;
 		final senderValue = sender ?? this.sender;
-    Map<String, dynamic> gasConfigValue = { ...this.gasConfig.toJson(), ...(gasConfig?.toJson() ?? {}) };
+    
+    final gasConfigValue = this.gasConfig.toJson();
+    if (gasConfig != null) {
+      gasConfig.toJson().forEach((key, value) {
+        if ((value is Iterable && value.isNotEmpty)) {
+            gasConfigValue[key] = value;
+        }
+        if (value != null && value is! Iterable) {
+          gasConfigValue[key] = value;
+        }
+      });
+    }
 
 		if (senderValue == null) {
 			throw ArgumentError('Missing transaction sender');
