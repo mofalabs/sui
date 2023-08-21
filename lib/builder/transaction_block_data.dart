@@ -7,33 +7,10 @@ import 'package:sui/builder/bcs.dart';
 import 'package:sui/builder/hash.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
-// export const TransactionExpiration = optional(
-// 	nullable(
-// 		union([object({ Epoch: integer() }), object({ None: union([literal(true), literal(null)]) })]),
-// 	),
-// );
 
-// export type TransactionExpiration = Infer<typeof TransactionExpiration>;
+
 typedef TransactionExpiration = dynamic;
 
-// const StringEncodedBigint = define<string>('StringEncodedBigint', (val) => {
-// 	if (!['string', 'number', 'bigint'].includes(typeof val)) return false;
-
-// 	try {
-// 		BigInt(val as string);
-// 		return true;
-// 	} catch {
-// 		return false;
-// 	}
-// });
-
-// const GasConfig = object({
-// 	budget: optional(StringEncodedBigint),
-// 	price: optional(StringEncodedBigint),
-// 	payment: optional(array(SuiObjectRef)),
-// 	owner: optional(string()),
-// });
-// type GasConfig = Infer<typeof GasConfig>;
 class GasConfig {
   BigInt? budget;
   BigInt? price;
@@ -99,7 +76,7 @@ class SerializedTransactionDataBuilder {
   }
 }
 
-prepareSuiAddress(String address) {
+String prepareSuiAddress(String address) {
 	return normalizeSuiAddress(address).replaceAll('0x', '');
 }
 
@@ -280,14 +257,6 @@ class TransactionBlockDataBuilder {
       "version": version,
       "expiration": expiration
     });
-  //  return SerializedTransactionDataBuilder(
-  //     gasConfig: gasConfig, 
-  //     inputs: inputs, 
-  //     transactions: transactions,
-  //     sender: sender,
-  //     version: version,
-  //     expiration: expiration
-  //   ); 
   }
 
 }

@@ -164,15 +164,12 @@ class TransactionBlock {
 		return { "kind": 'GasCoin' };
 	}
 
-	/**
-	 * Dynamically create a new input, which is separate from the `input`. This is important
-	 * for generated clients to be able to define unique inputs that are non-overlapping with the
-	 * defined inputs.
-	 *
-	 * For `Uint8Array` type automatically convert the input into a `Pure` CallArg, since this
-	 * is the format required for custom serialization.
-	 *
-	 */
+	/// Dynamically create a new input, which is separate from the `input`. This is important
+	/// for generated clients to be able to define unique inputs that are non-overlapping with the
+	/// defined inputs.
+	///
+	/// For `Uint8Array` type automatically convert the input into a `Pure` CallArg, since this
+	/// is the format required for custom serialization.
 	_input(String type, dynamic value) {
 		final index = _blockData.inputs.length;
 		final input =
@@ -273,18 +270,16 @@ class TransactionBlock {
 		return add(Transactions.MakeMoveVec(objects: objects, type: type));
 	}
 
-	/**
-	 * Serialize the transaction to a string so that it can be sent to a separate context.
-	 * This is different from `build` in that it does not serialize to BCS bytes, and instead
-	 * uses a separate format that is unique to the transaction builder. This allows
-	 * us to serialize partially-complete transactions, that can then be completed and
-	 * built in a separate context.
-	 *
-	 * For example, a dapp can construct a transaction, but not provide gas objects
-	 * or a gas budget. The transaction then can be sent to the wallet, where this
-	 * information is automatically filled in (e.g. by querying for coin objects
-	 * and performing a dry run).
-	 */
+	/// Serialize the transaction to a string so that it can be sent to a separate context.
+	/// This is different from `build` in that it does not serialize to BCS bytes, and instead
+	/// uses a separate format that is unique to the transaction builder. This allows
+	/// us to serialize partially-complete transactions, that can then be completed and
+	/// built in a separate context.
+	///
+	/// For example, a dapp can construct a transaction, but not provide gas objects
+	/// or a gas budget. The transaction then can be sent to the wallet, where this
+	/// information is automatically filled in (e.g. by querying for coin objects
+	/// and performing a dry run).
 	String serialize() {
 		return jsonEncode(_blockData.snapshot());
 	}

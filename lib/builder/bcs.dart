@@ -44,44 +44,31 @@ var _builder = bcs
   })
   // Keep this in sync with crates/sui-types/src/messages.rs
   .registerEnumType(TRANSACTION_INNER, {
-    /**
-     * A Move Call - any public Move function can be called via
-     * this transaction. The results can be used that instant to pass
-     * into the next transaction.
-     */
+    /// A Move Call - any public Move function can be called via
+    /// this transaction. The results can be used that instant to pass
+    /// into the next transaction.
     "MoveCall": PROGRAMMABLE_CALL,
-    /**
-     * Transfer vector of objects to a receiver.
-     */
+    /// Transfer vector of objects to a receiver.
     "TransferObjects": {
       "objects": [VECTOR, ARGUMENT],
       "address": ARGUMENT,
     },
-    /**
-     * Split `amount` from a `coin`.
-     */
+    /// Split `amount` from a `coin`.
     "SplitCoins": { "coin": ARGUMENT, "amounts": [VECTOR, ARGUMENT] },
-    /**
-     * Merge Vector of Coins (`sources`) into a `destination`.
-     */
+    /// Merge Vector of Coins (`sources`) into a `destination`.
     "MergeCoins": { "destination": ARGUMENT, "sources": [VECTOR, ARGUMENT] },
-    /**
-     * Publish a Move module.
-     */
+    /// Publish a Move module.
     "Publish": {
       "modules": [VECTOR, [VECTOR, BCS.U8]],
       "dependencies": [VECTOR, BCS.ADDRESS],
     },
-    /**
-     * Build a vector of objects using the input arguments.
-     * It is impossible to construct a `vector<T: key>` otherwise,
-     * so this call serves a utility function.
-     */
+    /// Build a vector of objects using the input arguments.
+    /// It is impossible to construct a `vector<T: key>` otherwise,
+    /// so this call serves a utility function.
     "MakeMoveVec": {
       "type": [OPTION, TYPE_TAG],
       "objects": [VECTOR, ARGUMENT],
     },
-    /**  */
     "Upgrade": {
       "modules": [VECTOR, [VECTOR, BCS.U8]],
       "dependencies": [VECTOR, BCS.ADDRESS],
@@ -90,21 +77,17 @@ var _builder = bcs
     },
   });
 
-  /**
-   * Wrapper around Enum, which transforms any `T` into an object with `kind` property:
-   * @example
-   * ```
-   * let bcsEnum = { TransferObjects: { objects: [], address: ... } }
-   * // becomes
-   * let translatedEnum = { kind: 'TransferObjects', objects: [], address: ... };
-   * ```
-   */
+  /// Wrapper around Enum, which transforms any `T` into an object with `kind` property:
+  /// ```dart
+  /// final bcsEnum = { TransferObjects: { objects: [], address: ... } }
+  /// // becomes
+  /// final translatedEnum = { kind: 'TransferObjects', objects: [], address: ... };
+  /// ```
   _builder.registerType(
     [ENUM_KIND, 'T'],
     (writer, data, typeParams, typeMap) {
       final kind = data["kind"];
       final invariant = { kind: data };
-      // final [enumType] = typeParams;
       final enumType = typeParams.first.toString();
 
       return _builder.getTypeInterface(enumType).encodeRaw(
@@ -115,7 +98,6 @@ var _builder = bcs
       );
     },
     (reader, typeParams, typeMap) {
-      // const [enumType] = typeParams;
       final enumType = typeParams.first.toString();
       final data = _builder.getTypeInterface(enumType).decodeRaw(
         reader,
@@ -146,24 +128,22 @@ var _builder = bcs
       return true;
     },
   );
-  /**
-   * Custom deserializer for the ProgrammableCall.
-   *
-   * Hides the inner structure and gives a simpler, more convenient
-   * interface to encode and decode this struct as a part of `TransactionData`.
-   *
-   * - `(package)::(module)::(function)` are now `target` property.
-   * - `TypeTag[]` array is now passed as strings, not as a struct.
-   */
+
+  /// Custom deserializer for the ProgrammableCall.
+  ///
+  /// Hides the inner structure and gives a simpler, more convenient
+  /// interface to encode and decode this struct as a part of `TransactionData`.
+  ///
+  /// - `(package)::(module)::(function)` are now `target` property.
+  /// - `TypeTag[]` array is now passed as strings, not as a struct.
   _builder.registerType(
     PROGRAMMABLE_CALL,
     (writer, data, typeParams, typeMap) {
-      // final [pkg, module, fun] = data.target.split('::');
       final target = data["target"].split("::");
       final pkg = target[0];
       final module = target[1];
       final fun = target[2];
-      final type_arguments = data["typeArguments"].map((tag) =>
+      final typeArguments = data["typeArguments"].map((tag) =>
         TypeTagSerializer.parseFromStr(tag, true)
       ).toList();
 
@@ -173,7 +153,7 @@ var _builder = bcs
           "package": normalizeSuiAddress(pkg),
           "module": module,
           "function": fun,
-          "type_arguments": type_arguments,
+          "type_arguments": typeArguments,
           "arguments": data["arguments"]
         },
         typeParams,
