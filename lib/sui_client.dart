@@ -51,10 +51,14 @@ class SuiClient extends SignerWithProvider {
     } else {
       options.client ??= this;
     }
-    
+
     final transactionBytes = await transactionBlock.build(options);
     final signWithBytes = signer.signTransactionBlock(transactionBytes);
-    return await provider.executeTransactionBlock(signWithBytes.bytes, [signWithBytes.signature]);
+    return await provider.executeTransactionBlock(
+      signWithBytes.bytes, 
+      [signWithBytes.signature],
+      requestType: ExecuteTransaction.WaitForLocalExecution
+    );
   }
 
 

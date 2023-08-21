@@ -13,6 +13,7 @@ import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/sui_client.dart';
 import 'package:sui/types/sui_bcs.dart';
+import 'package:sui/types/transactions.dart';
 
 void main() {
 
@@ -222,7 +223,7 @@ void main() {
     expect(functionArgTypes.length >= 3, true);
   });
 
-  test('test transacitonblock', () async {
+  test('test transacitonblock SplitCoins', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
@@ -237,10 +238,63 @@ void main() {
 
     final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(100000000, BCS.U64))]));
     txb.transferObjects([coin], txb.pure(
-      Inputs.Pure("0xd7ff3a8ef291fa361f2ed125540c3eb7377686a0e78a253881442cd6d98c40a9", BCS.ADDRESS)
+      Inputs.Pure(sender, BCS.ADDRESS)
     ));
 
     final resp = await client.signAndExecuteTransactionBlock(signer.keyPair, txb);
+    expect(resp.confirmedLocalExecution, true);
+  });
+
+
+  test('test transacitonblock transfer objects', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final sender = signer.getAddress();
+
+    final coins = await client.provider.getOwnedObjectList(sender);
+    final gasCoin = coins.data.first.data!;
+    final obj = coins.data.skip(1).first.data!;
+
+    final txb = TransactionBlock();
+    txb.setSender(signer.getAddress());
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(2000000));
+    txb.transferObjects(
+      [txb.objectRef(obj)],
+      txb.pure(sender, BCS.ADDRESS),
+    );
+
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer.keyPair,
+      txb,
+    );
+    print(resp);
+  });
+
+
+  test('test transacitonblock merge coins', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final sender = signer.getAddress();
+
+    final coins = await client.provider.getOwnedObjectList(sender);
+    final gasCoin = coins.data.first.data!;
+    final destObj = coins.data.skip(1).first.data!;
+    final srcObj = coins.data.skip(2).first.data!;
+
+    final txb = TransactionBlock();
+    txb.setSender(signer.getAddress());
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(2000000));
+
+    txb.mergeCoins(txb.objectRef(destObj), [
+      txb.objectRef(srcObj),
+    ]);
+
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer.keyPair,
+      txb,
+    );
     print(resp);
   });
 

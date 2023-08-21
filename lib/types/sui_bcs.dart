@@ -41,21 +41,6 @@ class StructTag {
 /// Sui TypeTag object. A decoupled `0x...::module::Type<???>` parameter.
 typedef TypeTag = dynamic;
 
-enum PureType {
-	bool,
-	u8,
-	u64,
-	u128,
-	address,
-	signer,
-	vector,
-	struct,
-	u16,
-	u32,
-	u256,
-}
-
-
 /// The GasData to be used in the transaction.
 class GasData {
   List<SuiObjectRef> payment;

@@ -17,18 +17,9 @@ const PROGRAMMABLE_CALL_INNER = 'ProgrammableMoveCall';
 const TRANSACTION_INNER = 'Transaction';
 const ENUM_KIND = 'EnumKind';
 
-/** Wrapper around transaction Enum to support `kind` matching in TS */
 const TRANSACTION = [ENUM_KIND, TRANSACTION_INNER];
-
-/** Wrapper around Argument Enum to support `kind` matching in TS */
 const ARGUMENT = [ENUM_KIND, ARGUMENT_INNER];
-
-/** Custom serializer for decoding package, module, function easier */
 const PROGRAMMABLE_CALL = 'SimpleProgrammableMoveCall';
-
-/** Transaction types */
-
-// type Option<T> = { some: T } | { none: true };
 
 final builder = getBuilder();
 

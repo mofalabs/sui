@@ -97,21 +97,10 @@ class SignOptions extends BuildOptions {
 // 	return !!obj && typeof obj === 'object' && (obj as any)[TRANSACTION_BRAND] === true;
 // }
 
-/**
- * Transaction Builder
- */
 class TransactionBlock {
-	/** Returns `true` if the object is an instance of the Transaction builder class.
-	 * @deprecated Use `isTransactionBlock` from `@mysten/sui.js/transactions` instead.
-	 */
-	// static is(obj: unknown): obj is TransactionBlock {
-	// 	return !!obj && typeof obj === 'object' && (obj as any)[TRANSACTION_BRAND] === true;
-	// }
 
-	/**
-	 * Converts from a serialize transaction kind (built with `build({ onlyTransactionKind: true })`) to a `Transaction` class.
-	 * Supports either a byte array, or base64-encoded bytes.
-	 */
+	/// Converts from a serialize transaction kind (built with `build({ onlyTransactionKind: true })`) to a `Transaction` class.
+	/// Supports either a byte array, or base64-encoded bytes.
 	static fromKind(dynamic serialized) {
 		final tx = TransactionBlock();
 
@@ -143,21 +132,12 @@ class TransactionBlock {
 		return tx;
 	}
 
-	/**
-	 * A helper to retrieve the Transaction builder `Inputs`
-	 * * @deprecated Either use the helper methods on the `TransactionBlock` class, or import `Inputs` from `@mysten/sui.js/transactions`.
-	 */
-	// static get Inputs {
-	// 	return Inputs;
-	// }
-
 	setSender(String sender) {
 		_blockData.sender = sender;
 	}
-	/**
-	 * Sets the sender only if it has not already been set.
-	 * This is useful for sponsored transaction flows where the sender may not be the same as the signer address.
-	 */
+
+	/// Sets the sender only if it has not already been set.
+	/// This is useful for sponsored transaction flows where the sender may not be the same as the signer address.
 	setSenderIfNotSet(String sender) {
 		_blockData.sender ??= sender;
 	}
@@ -179,7 +159,7 @@ class TransactionBlock {
 
 	late TransactionBlockDataBuilder _blockData;
 
-	/** Get a snapshot of the transaction data, in JSON form: */
+	/// Get a snapshot of the transaction data, in JSON form:
 	SerializedTransactionDataBuilder get blockData {
 		return _blockData.snapshot();
 	}
@@ -196,7 +176,7 @@ class TransactionBlock {
 		);
 	}
 
-	/** Returns an argument for the gas coin, to be used in a transaction. */
+	/// Returns an argument for the gas coin, to be used in a transaction.
 	get gas {
 		return { "kind": 'GasCoin' };
 	}
@@ -224,9 +204,7 @@ class TransactionBlock {
 		return input;
 	}
 
-	/**
-	 * Add a new object input to the transaction.
-	 */
+	/// Add a new object input to the transaction.
 	object(dynamic value) {
 		final id = getIdFromCallArg(value);
 		// deduplicate
@@ -237,35 +215,25 @@ class TransactionBlock {
 		return inserted ?? _input('object', value);
 	}
 
-	/**
-	 * Add a new object input to the transaction using the fully-resolved object reference.
-	 * If you only have an object ID, use `builder.object(id)` instead.
-	 */
-	objectRef(dynamic args) {
-		return this.object(Inputs.ObjectRef(args));
+	/// Add a new object input to the transaction using the fully-resolved object reference.
+	/// If you only have an object ID, use `builder.object(id)` instead.
+	objectRef(SuiObjectRef args) {
+		return object(Inputs.ObjectRef(args));
 	}
 
-	/**
-	 * Add a new shared object input to the transaction using the fully-resolved shared object reference.
-	 * If you only have an object ID, use `builder.object(id)` instead.
-	 */
+	/// Add a new shared object input to the transaction using the fully-resolved shared object reference.
+	/// If you only have an object ID, use `builder.object(id)` instead.
 	sharedObjectRef(dynamic args) {
-		return this.object(Inputs.SharedObjectRef(args));
+		return object(Inputs.SharedObjectRef(args));
 	}
 
-	/**
-	 * Add a new non-object input to the transaction.
-	 */
-	pure(
-		/**
-		 * The pure value that will be used as the input value. If this is a Uint8Array, then the value
-		 * is assumed to be raw bytes, and will be used directly.
-		 */
+	/// Add a new non-object input to the transaction.
+	Map<String, dynamic> pure(
+		/// The pure value that will be used as the input value. If this is a Uint8Array, then the value
+		/// is assumed to be raw bytes, and will be used directly.
 		dynamic value,
-		/**
-		 * The BCS type to serialize the value into. If not provided, the type will automatically be determined
-		 * based on how the input is used.
-		 */
+		/// The BCS type to serialize the value into. If not provided, the type will automatically be determined
+		/// based on how the input is used.
 		[String? type]
 	) {
 		// TODO: we can also do some deduplication here
@@ -275,7 +243,7 @@ class TransactionBlock {
 		);
 	}
 
-	/** Add a transaction to the transaction block. */
+	/// Add a transaction to the transaction block.
 	TransactionResult add(dynamic transaction) {
 		_blockData.transactions.add(transaction);
 		return createTransactionResult(_blockData.transactions.length - 1);
@@ -286,9 +254,9 @@ class TransactionBlock {
 	splitCoins(dynamic coin, List amounts) {
 		return add(Transactions.SplitCoins(coin, amounts));
 	}
-	// mergeCoins(dynamic args) {
-	// 	return add(Transactions.MergeCoins(args));
-	// }
+	mergeCoins(dynamic destination, List sources) {
+		return add(Transactions.MergeCoins(destination, sources));
+	}
 	// publish(dynamic args) {
 	// 	return add(Transactions.Publish(args));
 	// }
@@ -377,7 +345,7 @@ class TransactionBlock {
 		// Validate all inputs are the correct size:
     for (var i = 0; i < _blockData.inputs.length; i++) {
       final input = _blockData.inputs[i];
-			if (input["value"].containsKey("Pure")) {
+			if (input["value"] is Map && input["value"].containsKey("Pure")) {
 				if (input["value"]["Pure"].length > maxPureArgumentSize) {
 					throw ArgumentError(
 						"Input at index $i is too large, max pure input size is $maxPureArgumentSize bytes, got ${input["value"]["Pure"].length} bytes",

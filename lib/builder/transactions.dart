@@ -155,7 +155,7 @@ class Transactions {
 
 	static dynamic MergeCoins(
 		dynamic destination,
-		dynamic sources,
+		List sources,
 	) {
 		return { "kind": 'MergeCoins', "destination": destination, "sources": sources };
 	}
