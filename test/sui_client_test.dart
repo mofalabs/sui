@@ -357,4 +357,37 @@ void main() {
     print(resp);
   });
 
+
+  test('test transacitonblock make move vec', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final sender = signer.getAddress();
+
+    final ownedObjs = await client.provider.getOwnedObjectList(sender);
+    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    final gasCoin = coins.first.data!;
+
+    final txb = TransactionBlock();
+    txb.setSender(signer.getAddress());
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(100000000));
+
+    final vec = txb.makeMoveVec(objects: [
+      txb.objectRef(coins.skip(2).first.data!),
+      txb.objectRef(coins.skip(3).first.data!)
+    ]);
+
+    txb.moveCall(
+      target: "0x2::pay::join_vec",
+      typeArguments: ["0x2::sui::SUI"],
+      arguments: [txb.objectRef(coins.skip(1).first.data!), vec]
+    );
+
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer.keyPair,
+      txb,
+    );
+    print(resp);
+  });
+
 }

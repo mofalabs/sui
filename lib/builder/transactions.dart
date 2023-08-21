@@ -128,7 +128,7 @@ import 'package:sui/types/common.dart';
 
 /// Simple helpers used to construct transactions:
 class Transactions {
-  
+
 	static dynamic MoveCall({
     required String target,
     List? typeArguments,
@@ -192,13 +192,13 @@ class Transactions {
 	}
 
 	static dynamic MakeMoveVec({
+		required dynamic objects,
 		dynamic type,
-		dynamic objects,
 	}) {
 		return
 			{
 				"kind": 'MakeMoveVec',
-				"type": type ? { "Some": TypeTagSerializer.parseFromStr(type) } : { "None": null },
+				"type": type != null ? { "Some": TypeTagSerializer.parseFromStr(type) } : { "None": null },
 				"objects": objects,
 			};
 	}

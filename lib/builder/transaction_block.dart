@@ -283,9 +283,12 @@ class TransactionBlock {
 		return add(Transactions.TransferObjects(objects, address));
 	}
 
-	// makeMoveVec(dynamic args) {
-	// 	return add(Transactions.MakeMoveVec(args));
-	// }
+	makeMoveVec({
+    required dynamic objects,
+    dynamic type
+  }) {
+		return add(Transactions.MakeMoveVec(objects: objects, type: type));
+	}
 
 	/**
 	 * Serialize the transaction to a string so that it can be sent to a separate context.
