@@ -254,21 +254,35 @@ class TransactionBlock {
 	splitCoins(dynamic coin, List amounts) {
 		return add(Transactions.SplitCoins(coin, amounts));
 	}
+
 	mergeCoins(dynamic destination, List sources) {
 		return add(Transactions.MergeCoins(destination, sources));
 	}
-	// publish(dynamic args) {
-	// 	return add(Transactions.Publish(args));
-	// }
+
+	publish(List<String> modules, List<String> dependencies) {
+		return add(Transactions.Publish(modules, dependencies));
+	}
+
 	// upgrade(dynamic args) {
 	// 	return add(Transactions.Upgrade(args));
 	// }
-	// moveCall(dynamic args) {
-	// 	return add(Transactions.MoveCall(args));
-	// }
+
+	moveCall({
+    required String target,
+    List? typeArguments,
+    List? arguments
+	}) {
+		return add(Transactions.MoveCall(
+      target: target,
+      typeArguments: typeArguments,
+      arguments: arguments
+    ));
+	}
+
 	transferObjects(List<dynamic> objects, dynamic address) {
 		return add(Transactions.TransferObjects(objects, address));
 	}
+
 	// makeMoveVec(dynamic args) {
 	// 	return add(Transactions.MakeMoveVec(args));
 	// }

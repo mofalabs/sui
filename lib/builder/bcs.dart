@@ -135,7 +135,7 @@ var _builder = bcs
       }
     },
     (data) {
-      if (!(data as Map).containsKey("kind")) {
+      if (data is Map && !data.containsKey("kind")) {
         throw ArgumentError(
           'EnumKind: Missing property "kind" in the input ${jsonEncode(
             data,

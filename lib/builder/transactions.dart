@@ -126,24 +126,25 @@ import 'package:sui/types/common.dart';
 
 // }
 
-/**
- * Simple helpers used to construct transactions:
- */
+/// Simple helpers used to construct transactions:
 class Transactions {
-	static dynamic MoveCall(
-		dynamic input
-	) {
+  
+	static dynamic MoveCall({
+    required String target,
+    List? typeArguments,
+    List? arguments
+	}) {
 		return 
 			{
 				"kind": 'MoveCall',
-				"target": input["target"],
-				"arguments": input["arguments"] ?? [],
-				"typeArguments": input["typeArguments"] ?? [],
+				"target": target,
+				"arguments": arguments ?? [],
+				"typeArguments": typeArguments ?? [],
 			};
 	}
 
 	static dynamic TransferObjects(
-		dynamic objects,
+		List objects,
 		dynamic address
 	) {
 		return { "kind": 'TransferObjects', "objects": objects, "address": address };
@@ -160,17 +161,15 @@ class Transactions {
 		return { "kind": 'MergeCoins', "destination": destination, "sources": sources };
 	}
 
-	static dynamic Publish({
-		dynamic modules,
-		dynamic dependencies
-	}) {
+	static dynamic Publish(
+		List<String> modules,
+		List<String> dependencies
+	) {
 		return
 			{
 				"kind": 'Publish',
-				"modules": modules.map((module) =>
-					module is String ? fromB64(module) : module,
-				),
-				dependencies: dependencies.map((dep) => normalizeSuiObjectId(dep)),
+				"modules": modules.map((m) => fromB64(m)).toList(),
+				"dependencies": dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
 			};
 	}
 
