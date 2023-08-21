@@ -49,8 +49,6 @@ SuiClient expectClient(BuildOptions options) {
 	return options.client!;
 }
 
-const TRANSACTION_BRAND = Symbol('@mysten/transaction');
-
 const LIMITS = {
 	// The maximum gas that is allowed.
 	"maxTxGas": 'max_tx_gas',
@@ -79,9 +77,9 @@ const MAX_OBJECTS_PER_FETCH = 50;
 class BuildOptions {
 	SuiClient? client;
 	bool? onlyTransactionKind;
-	/** Define a protocol config to build against, instead of having it fetched from the provider at build time. */
+	/// Define a protocol config to build against, instead of having it fetched from the provider at build time.
 	dynamic protocolConfig;
-	/** Define limits that are used when building the transaction. In general, we recommend using the protocol configuration instead of defining limits. */
+	/// Define limits that are used when building the transaction. In general, we recommend using the protocol configuration instead of defining limits.
 	Limits? limits;
 
   BuildOptions({this.client, this.onlyTransactionKind, this.protocolConfig, this.limits});
@@ -92,10 +90,6 @@ class SignOptions extends BuildOptions {
 
   SignOptions(this.signer);
 }
-
-// function isTransactionBlock(obj: unknown): obj is TransactionBlock {
-// 	return !!obj && typeof obj === 'object' && (obj as any)[TRANSACTION_BRAND] === true;
-// }
 
 class TransactionBlock {
 
@@ -111,24 +105,19 @@ class TransactionBlock {
 		return tx;
 	}
 
-	/**
-	 * Converts from a serialized transaction format to a `Transaction` class.
-	 * There are two supported serialized formats:
-	 * - A string returned from `Transaction_serialize`. The serialized format must be compatible, or it will throw an error.
-	 * - A byte array (or base64-encoded bytes) containing BCS transaction data.
-	 */
-	static TransactionBlock from(dynamic serialized) {
+	/// Converts from a serialized transaction format to a `Transaction` class.
+	/// There are two supported serialized formats:
+	/// - A string returned from `Transaction_serialize`. The serialized format must be compatible, or it will throw an error.
+	/// - A byte array (or base64-encoded bytes) containing BCS transaction data.
+	static TransactionBlock from(String serialized) {
 		final tx = TransactionBlock();
+		tx._blockData = TransactionBlockDataBuilder.restore(jsonDecode(serialized));
+		return tx;
+	}
 
-		// Check for bytes:
-		if (serialized is! String || !serialized.startsWith('{')) {
-			tx._blockData = TransactionBlockDataBuilder.fromBytes(
-				serialized is String ? fromB64(serialized) : serialized,
-			);
-		} else {
-			tx._blockData = TransactionBlockDataBuilder.restore(jsonDecode(serialized));
-		}
-
+	static TransactionBlock fromBytes(Uint8List bytes) {
+		final tx = TransactionBlock();
+		tx._blockData = TransactionBlockDataBuilder.fromBytes(bytes);
 		return tx;
 	}
 
@@ -163,12 +152,6 @@ class TransactionBlock {
 	SerializedTransactionDataBuilder get blockData {
 		return _blockData.snapshot();
 	}
-
-	// Used to brand transaction classes so that they can be identified, even between multiple copies
-	// of the builder.
-	// get [TRANSACTION_BRAND]() {
-	// 	return true;
-	// }
 
 	TransactionBlock([TransactionBlock? transaction]) {
 		_blockData = TransactionBlockDataBuilder(
@@ -344,7 +327,7 @@ class TransactionBlock {
     options ??= BuildOptions();
 		await _prepare(options);
 		return _blockData.build(
-			maxSizeBytes: int.tryParse(_getConfig('maxTxSizeBytes', options)),
+			maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options).toString()),
 			onlyTransactionKind: options.onlyTransactionKind,
 		);
 	}
@@ -358,7 +341,7 @@ class TransactionBlock {
 	}
 
 	_validate(BuildOptions options) {
-		final maxPureArgumentSize = int.parse(_getConfig('maxPureArgumentSize', options));
+		final maxPureArgumentSize = int.parse(_getConfig('maxPureArgumentSize', options).toString());
 		// Validate all inputs are the correct size:
     for (var i = 0; i < _blockData.inputs.length; i++) {
       final input = _blockData.inputs[i];
@@ -656,7 +639,7 @@ class TransactionBlock {
 			if (_blockData.gasConfig.budget == null) {
 				final dryRunResult = await expectClient(options).dryRunTransaction(
 					_blockData.build(
-						maxSizeBytes: int.tryParse(_getConfig('maxTxSizeBytes', options)),
+						maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options).toString()),
             gasConfig: GasConfig(
               budget: BigInt.tryParse(_getConfig('maxTxGas', options)), 
               payment: []

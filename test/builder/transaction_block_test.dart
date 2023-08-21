@@ -35,9 +35,9 @@ void main() {
   test('supports nested results through either array index or destructuring', () {
     final tx = TransactionBlock();
     final registerResult = tx.add(
-      Transactions.MoveCall({
-        "target": '0x2::game::register',
-      }),
+      Transactions.MoveCall(
+        target: '0x2::game::register',
+      )
     );
 
     // final nft = registerResult["kind"];
@@ -120,15 +120,15 @@ void main() {
       final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, 'u64'))]));
       tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.ObjectRef(ref()))]));
       tx.add(
-        Transactions.MoveCall({
-          "target": '0x2::devnet_nft::mint',
-          "typeArguments": [],
-          "arguments": [
+        Transactions.MoveCall(
+          target: '0x2::devnet_nft::mint',
+          typeArguments: [],
+          arguments: [
             tx.pure(Inputs.Pure('foo', 'string')),
             tx.pure(Inputs.Pure('bar', 'string')),
             tx.pure(Inputs.Pure('baz', 'string')),
           ],
-        }),
+        ),
       );
       await tx.build();
     });
@@ -138,19 +138,19 @@ void main() {
       final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, 'u64'))]));
       tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.ObjectRef(ref()))]));
       tx.add(
-        Transactions.MoveCall({
-          "target": '0x2::devnet_nft::mint',
-          "typeArguments": [],
-          "arguments": [
+        Transactions.MoveCall(
+          target: '0x2::devnet_nft::mint',
+          typeArguments: [],
+          arguments: [
             tx.pure(Inputs.Pure('foo', 'string')),
             tx.pure(Inputs.Pure('bar', 'string')),
             tx.pure(Inputs.Pure('baz', 'string')),
           ],
-        }),
+        ),
       );
 
       final bytes = await tx.build();
-      final tx2 = TransactionBlock.from(bytes);
+      final tx2 = TransactionBlock.fromBytes(bytes);
       final bytes2 = await tx2.build();
 
       expect(bytes, bytes2);

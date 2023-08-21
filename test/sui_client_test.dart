@@ -233,15 +233,16 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final coins = await client.provider.getOwnedObjectList(sender);
-    final gasCoin = coins.data.first.data!;
+    final ownedObjs = await client.provider.getOwnedObjectList(sender);
+    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    final gasCoin = coins.first.data!;
 
     final txb = TransactionBlock();
     txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
 
-    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(100000000, BCS.U64))]));
+    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(1000000, BCS.U64))]));
     txb.transferObjects([coin], txb.pure(
       Inputs.Pure(sender, BCS.ADDRESS)
     ));
@@ -251,14 +252,15 @@ void main() {
   });
 
 
-  test('test transacitonblock transfer objects', () async {
+  test('test transacitonblock transferObjects', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final coins = await client.provider.getOwnedObjectList(sender);
-    final gasCoin = coins.data.first.data!;
-    final obj = coins.data.skip(1).first.data!;
+    final ownedObjs = await client.provider.getOwnedObjectList(sender);
+    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    final gasCoin = coins.first.data!;
+    final obj = coins.skip(1).first.data!;
 
     final txb = TransactionBlock();
     txb.setSender(signer.getAddress());
@@ -277,15 +279,16 @@ void main() {
   });
 
 
-  test('test transacitonblock merge coins', () async {
+  test('test transacitonblock mergeCoins', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final coins = await client.provider.getOwnedObjectList(sender);
-    final gasCoin = coins.data.last.data!;
-    final destObj = coins.data.first.data!;
-    final srcObj = coins.data.skip(1).first.data!;
+    final ownedObjs = await client.provider.getOwnedObjectList(sender);
+    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    final gasCoin = coins.last.data!;
+    final destObj = coins.first.data!;
+    final srcObj = coins.skip(1).first.data!;
 
     final txb = TransactionBlock();
     txb.setSender(signer.getAddress());
@@ -309,8 +312,9 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final coins = await client.provider.getOwnedObjectList(sender);
-    final gasCoin = coins.data.first.data!;
+    final ownedObjs = await client.provider.getOwnedObjectList(sender);
+    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    final gasCoin = coins.first.data!;
 
     final txb = TransactionBlock();
     txb.setSender(signer.getAddress());
@@ -327,7 +331,7 @@ void main() {
   });
 
 
-  test('test transacitonblock move call', () async {
+  test('test transacitonblock moveCall', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
@@ -358,7 +362,7 @@ void main() {
   });
 
 
-  test('test transacitonblock make move vec', () async {
+  test('test transacitonblock makeMoveVec', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
