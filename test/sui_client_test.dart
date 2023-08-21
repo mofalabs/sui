@@ -242,10 +242,8 @@ void main() {
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
 
-    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pure(Inputs.Pure(1000000, BCS.U64))]));
-    txb.transferObjects([coin], txb.pure(
-      Inputs.Pure(sender, BCS.ADDRESS)
-    ));
+    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pureInt(1000000)]));
+    txb.transferObjects([coin], txb.pureAddress(sender));
 
     final resp = await client.signAndExecuteTransactionBlock(signer.keyPair, txb);
     expect(resp.confirmedLocalExecution, true);
@@ -268,7 +266,7 @@ void main() {
     txb.setGasBudget(BigInt.from(2000000));
     txb.transferObjects(
       [txb.objectRef(obj)],
-      txb.pure(sender, BCS.ADDRESS),
+      txb.pureAddress(sender),
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
@@ -321,7 +319,7 @@ void main() {
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
-    txb.transferObjects([cap], txb.pure(Inputs.Pure(sender, BCS.ADDRESS)));
+    txb.transferObjects([cap], txb.pureAddress(sender));
 
     final resp = await client.signAndExecuteTransactionBlock(
       signer.keyPair,
@@ -350,7 +348,7 @@ void main() {
     txb.moveCall(
       target: "0xf6612affa17fb388ffa0a429243abc4796c976afa681fc50e08fa237f2464a1a::managed::mint",
       arguments: [
-        txb.objectRef(capObj.data!), txb.pure(1000, BCS.U64), txb.pure(sender, BCS.ADDRESS)
+        txb.objectRef(capObj.data!), txb.pureInt(1000), txb.pureAddress(sender)
       ]
     );
 

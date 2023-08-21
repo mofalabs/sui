@@ -216,12 +216,43 @@ class TransactionBlock {
 		/// based on how the input is used.
 		[String? type]
 	) {
-		// TODO: we can also do some deduplication here
 		return _input(
 			'pure',
 			value is Uint8List ? Inputs.Pure(value) : type != null ? Inputs.Pure(value, type) : value,
 		);
 	}
+
+  Map<String, dynamic> pureBytes(Uint8List value) {
+		return _input('pure', Inputs.Pure(value));
+  }
+
+  Map<String, dynamic> pureInt(int value, [String type = BCS.U64]) {
+		return _input('pure', Inputs.Pure(value, type));
+  }
+
+  Map<String, dynamic> pureBool(bool value) {
+		return _input('pure', Inputs.Pure(value, BCS.BOOL));
+  }
+
+  Map<String, dynamic> pureAddress(String address) {
+		return _input('pure', Inputs.Pure(address, BCS.ADDRESS));
+  }
+
+  Map<String, dynamic> pureString(String str) {
+		return _input('pure', Inputs.Pure(str, BCS.STRING));
+  }
+
+  Map<String, dynamic> pureHex(String hex) {
+		return _input('pure', Inputs.Pure(hex, BCS.HEX));
+  }
+
+  Map<String, dynamic> pureVector(dynamic vector) {
+		return _input('pure', Inputs.Pure(vector, BCS.VECTOR));
+  }
+
+  Map<String, dynamic> pureBase64(String value) {
+		return _input('pure', Inputs.Pure(value, BCS.BASE64));
+  }
 
 	/// Add a transaction to the transaction block.
 	TransactionResult add(dynamic transaction) {
