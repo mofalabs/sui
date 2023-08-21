@@ -238,14 +238,13 @@ void main() {
     final gasCoin = coins.first.data!;
 
     final txb = TransactionBlock();
-    txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
 
-    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pureInt(1000000)]));
+    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pureInt(1000000000)]));
     txb.transferObjects([coin], txb.pureAddress(sender));
 
-    final resp = await client.signAndExecuteTransactionBlock(signer.keyPair, txb);
+    final resp = await client.signAndExecuteTransactionBlock(signer, txb);
     expect(resp.confirmedLocalExecution, true);
   });
 
@@ -261,7 +260,6 @@ void main() {
     final obj = coins.skip(1).first.data!;
 
     final txb = TransactionBlock();
-    txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
     txb.transferObjects(
@@ -270,7 +268,7 @@ void main() {
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
-      signer.keyPair,
+      signer,
       txb,
     );
     print(resp);
@@ -289,7 +287,6 @@ void main() {
     final srcObj = coins.skip(1).first.data!;
 
     final txb = TransactionBlock();
-    txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
 
@@ -298,7 +295,7 @@ void main() {
     ]);
 
     final resp = await client.signAndExecuteTransactionBlock(
-      signer.keyPair,
+      signer,
       txb,
     );
     print(resp);
@@ -315,14 +312,13 @@ void main() {
     final gasCoin = coins.first.data!;
 
     final txb = TransactionBlock();
-    txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
     final resp = await client.signAndExecuteTransactionBlock(
-      signer.keyPair,
+      signer,
       txb,
     );
     print(resp);
@@ -341,7 +337,6 @@ void main() {
     final capObj = ownedObjs.data.firstWhere((e) => e.data?.type?.startsWith("0x2::coin::TreasuryCap") ?? false);
 
     final txb = TransactionBlock();
-    txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
@@ -353,7 +348,7 @@ void main() {
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
-      signer.keyPair,
+      signer,
       txb,
     );
     print(resp);
@@ -370,7 +365,6 @@ void main() {
     final gasCoin = coins.first.data!;
 
     final txb = TransactionBlock();
-    txb.setSender(signer.getAddress());
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
@@ -386,7 +380,7 @@ void main() {
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
-      signer.keyPair,
+      signer,
       txb,
     );
     print(resp);

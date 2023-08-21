@@ -660,14 +660,14 @@ class TransactionBlock {
     await _prepareGasPrice(options);
 
 		if (options.onlyTransactionKind != true) {
-			// await _prepareGasPayment(options);
+			await _prepareGasPayment(options);
 
 			if (_blockData.gasConfig.budget == null) {
 				final dryRunResult = await expectClient(options).dryRunTransaction(
 					_blockData.build(
 						maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options).toString()),
             gasConfig: GasConfig(
-              budget: BigInt.tryParse(_getConfig('maxTxGas', options)), 
+              budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
               payment: []
             )
 					),

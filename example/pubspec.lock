@@ -28,9 +28,11 @@ packages:
   bcs:
     dependency: transitive
     description:
-      path: "../../bcs"
-      relative: true
-    source: path
+      path: "."
+      ref: "8da80be"
+      resolved-ref: "8da80bebe5a4ed0f755aebc42db2d97b5b45aac4"
+      url: "https://github.com/mofalabs/bcs.git"
+    source: git
     version: "0.0.2"
   bip32:
     dependency: transitive

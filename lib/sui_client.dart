@@ -40,7 +40,7 @@ class SuiClient extends SignerWithProvider {
   }
 
   Future<SuiTransactionBlockResponse> signAndExecuteTransactionBlock(
-    Keypair signer,
+    SuiAccount signer,
     TransactionBlock transactionBlock,
     {
       BuildOptions? options
@@ -52,8 +52,9 @@ class SuiClient extends SignerWithProvider {
       options.client ??= this;
     }
 
+    transactionBlock.setSenderIfNotSet(signer.getAddress());
     final transactionBytes = await transactionBlock.build(options);
-    final signWithBytes = signer.signTransactionBlock(transactionBytes);
+    final signWithBytes = signer.keyPair.signTransactionBlock(transactionBytes);
     return await provider.executeTransactionBlock(
       signWithBytes.bytes, 
       [signWithBytes.signature],
