@@ -239,10 +239,12 @@ void main() {
 
     final txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
-    txb.setGasBudget(BigInt.from(2000000));
+    txb.setGasBudget(BigInt.from(4000000));
 
-    final coin = txb.add(Transactions.SplitCoins(txb.gas, [txb.pureInt(1000000000)]));
-    txb.transferObjects([coin], txb.pureAddress(sender));
+    final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000), txb.pureInt(100000000)]);
+    txb.transferObjects([coin[0], coin[1]], txb.pureAddress(sender));
+    // txb.transferObjects([coin[0]], txb.pureAddress(sender));
+    // txb.transferObjects([coin[1]], txb.pureAddress(sender));
 
     final resp = await client.signAndExecuteTransactionBlock(signer, txb);
     expect(resp.confirmedLocalExecution, true);

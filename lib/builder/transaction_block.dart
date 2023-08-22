@@ -8,15 +8,22 @@ import 'package:sui/builder/inputs.dart';
 import 'package:sui/builder/transaction_block_data.dart';
 import 'package:sui/builder/transactions.dart';
 import 'package:sui/cryptography/keypair.dart';
-import 'package:sui/providers/json_rpc_provider.dart';
-import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_client.dart';
-import 'package:sui/types/coins.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 
-typedef TransactionResult = dynamic;
+class TransactionResult {
+  final int index;
+
+  TransactionResult(this.index);
+
+  dynamic get result => { "kind": 'Result', "index": index };
+
+  operator [](subIndex) {
+    return { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
+  }
+}
 
 const DefaultOfflineLimits = {
 	"maxPureArgumentSize": 16 * 1024,
@@ -24,20 +31,6 @@ const DefaultOfflineLimits = {
 	"maxGasObjects": 256,
 	"maxTxSizeBytes": 128 * 1024,
 };
-
-TransactionResult createTransactionResult(int index) {
-	final baseResult = { "kind": 'Result', "index": index };
-
-	// final nestedResults = [];
-	// final nestedResultFor = (int resultIndex) =>
-	// 	(nestedResults[resultIndex] ??= {
-	// 		"kind": 'NestedResult',
-	// 		"index": index,
-	// 		"resultIndex": resultIndex,
-	// 	});
-
-	return baseResult;
-}
 
 SuiClient expectClient(BuildOptions options) {
 	if (options.client == null) {
@@ -257,24 +250,24 @@ class TransactionBlock {
 	/// Add a transaction to the transaction block.
 	TransactionResult add(dynamic transaction) {
 		_blockData.transactions.add(transaction);
-		return createTransactionResult(_blockData.transactions.length - 1);
+		return TransactionResult(_blockData.transactions.length - 1);
 	}
 
 	// Method shorthands:
 
-	splitCoins(dynamic coin, List amounts) {
+	TransactionResult splitCoins(dynamic coin, List amounts) {
 		return add(Transactions.SplitCoins(coin, amounts));
 	}
 
-	mergeCoins(dynamic destination, List sources) {
+	TransactionResult mergeCoins(dynamic destination, List sources) {
 		return add(Transactions.MergeCoins(destination, sources));
 	}
 
-	publish(List<String> modules, List<String> dependencies) {
+	TransactionResult publish(List<String> modules, List<String> dependencies) {
 		return add(Transactions.Publish(modules, dependencies));
 	}
 
-	upgrade({
+	TransactionResult upgrade({
 		required dynamic modules,
 		required List<String> dependencies,
 		required String packageId,
@@ -288,7 +281,7 @@ class TransactionBlock {
     ));
 	}
 
-	moveCall({
+	TransactionResult moveCall({
     required String target,
     List? typeArguments,
     List? arguments
@@ -300,11 +293,11 @@ class TransactionBlock {
     ));
 	}
 
-	transferObjects(List<dynamic> objects, dynamic address) {
+	TransactionResult transferObjects(List<dynamic> objects, dynamic address) {
 		return add(Transactions.TransferObjects(objects, address));
 	}
 
-	makeMoveVec({
+	TransactionResult makeMoveVec({
     required dynamic objects,
     dynamic type
   }) {
