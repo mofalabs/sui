@@ -274,9 +274,19 @@ class TransactionBlock {
 		return add(Transactions.Publish(modules, dependencies));
 	}
 
-	// upgrade(dynamic args) {
-	// 	return add(Transactions.Upgrade(args));
-	// }
+	upgrade({
+		required dynamic modules,
+		required List<String> dependencies,
+		required String packageId,
+		required dynamic ticket,
+	}) {
+		return add(Transactions.Upgrade(
+      modules: modules,
+      dependencies: dependencies,
+      packageId: packageId,
+      ticket: ticket
+    ));
+	}
 
 	moveCall({
     required String target,
@@ -384,7 +394,7 @@ class TransactionBlock {
 	// The current default is just picking _all_ coins we can which may not be ideal.
 	_prepareGasPayment(BuildOptions options) async {
 		if (_blockData.gasConfig.payment != null) {
-			final maxGasObjects = int.parse(_getConfig('maxGasObjects', options));
+			final maxGasObjects = int.parse(_getConfig('maxGasObjects', options).toString());
 			if (_blockData.gasConfig.payment!.length > maxGasObjects) {
 				throw ArgumentError("Payment objects exceed maximum amount: $maxGasObjects");
 			}
@@ -438,211 +448,6 @@ class TransactionBlock {
 		setGasPrice(gasPrice);
 	}
 
-	// _prepareTransactions(BuildOptions options) async {
-  //   final inputs = _blockData.inputs;
-  //   final transactions = _blockData.transactions;
-
-	// 	List<MoveCallTransaction> moveModulesToResolve = [];
-
-	// 	// Keep track of the object references that will need to be resolved at the end of the transaction.
-	// 	// We keep the input by-reference to avoid needing to re-resolve it:
-	// 	const objectsToResolve: {
-	// 		id: string;
-	// 		input: TransactionBlockInput;
-	// 		normalizedType?: SuiMoveNormalizedType;
-	// 	}[] = [];
-
-	// 	transactions.forEach((transaction) {
-	// 		// Special case move call:
-	// 		if (transaction["kind"] == 'MoveCall') {
-	// 			// Determine if any of the arguments require encoding.
-	// 			// - If they don't, then this is good to go.
-	// 			// - If they do, then we need to fetch the normalized move module.
-  //       final needsResolution = transaction["arguments"].any(
-  //         (arg) => arg['kind'] == 'Input' && inputs[arg['index']].value is! BuilderCallArg
-  //       );
-
-	// 			if (needsResolution) {
-	// 				moveModulesToResolve.add(transaction);
-	// 			}
-
-	// 			return;
-	// 		}
-
-	// 		// Get the matching struct definition for the transaction, and use it to attempt to automatically
-	// 		// encode the matching inputs.
-	// 		final transactionType = getTransactionType(transaction);
-	// 		if (!transactionType.schema) return;
-
-	// 		Object.entries(transaction).forEach(([key, value]) => {
-	// 			if (key == 'kind') return;
-	// 			const keySchema = (transactionType.schema as any)[key];
-	// 			const isArray = keySchema.type == 'array';
-	// 			const wellKnownEncoding: WellKnownEncoding = isArray
-	// 				? keySchema.schema[TRANSACTION_TYPE]
-	// 				: keySchema[TRANSACTION_TYPE];
-
-	// 			// This argument has unknown encoding, assume it must be fully-encoded:
-	// 			if (!wellKnownEncoding) return;
-
-	// 			const encodeInput = (index: number) => {
-	// 				const input = inputs[index];
-	// 				if (!input) {
-	// 					throw new Error(`Missing input ${value.index}`);
-	// 				}
-
-	// 				// Input is fully resolved:
-	// 				if (is(input.value, BuilderCallArg)) return;
-	// 				if (wellKnownEncoding.kind == 'object' && typeof input.value == 'string') {
-	// 					// The input is a string that we need to resolve to an object reference:
-	// 					objectsToResolve.push({ id: input.value, input });
-	// 				} else if (wellKnownEncoding.kind == 'pure') {
-	// 					// Pure encoding, so construct BCS bytes:
-	// 					input.value = Inputs.Pure(input.value, wellKnownEncoding.type);
-	// 				} else {
-	// 					throw new Error('Unexpected input format.');
-	// 				}
-	// 			};
-
-	// 			if (isArray) {
-	// 				value.forEach((arrayItem: TransactionArgument) => {
-	// 					if (arrayItem.kind != 'Input') return;
-	// 					encodeInput(arrayItem.index);
-	// 				});
-	// 			} else {
-	// 				if (value.kind != 'Input') return;
-	// 				encodeInput(value.index);
-	// 			}
-	// 		});
-	// 	});
-
-	// 	if (moveModulesToResolve.isNotEmpty) {
-	// 		await Promise.all(
-	// 			moveModulesToResolve.map(async (moveCall) => {
-	// 				const [packageId, moduleName, functionName] = moveCall.target.split('::');
-
-	// 				const normalized = await expectClient(options).getNormalizedMoveFunction({
-	// 					package: normalizeSuiObjectId(packageId),
-	// 					module: moduleName,
-	// 					function: functionName,
-	// 				});
-
-	// 				// Entry functions can have a mutable reference to an instance of the TxContext
-	// 				// struct defined in the TxContext module as the last parameter. The caller of
-	// 				// the function does not need to pass it in as an argument.
-	// 				const hasTxContext =
-	// 					normalized.parameters.length > 0 && isTxContext(normalized.parameters.at(-1)!);
-
-	// 				const params = hasTxContext
-	// 					? normalized.parameters.slice(0, normalized.parameters.length - 1)
-	// 					: normalized.parameters;
-
-	// 				if (params.length != moveCall.arguments.length) {
-	// 					throw new Error('Incorrect number of arguments.');
-	// 				}
-
-	// 				params.forEach((param, i) => {
-	// 					const arg = moveCall.arguments[i];
-	// 					if (arg.kind != 'Input') return;
-	// 					const input = inputs[arg.index];
-	// 					// Skip if the input is already resolved
-	// 					if (is(input.value, BuilderCallArg)) return;
-
-	// 					const inputValue = input.value;
-
-	// 					const serType = getPureSerializationType(param, inputValue);
-
-	// 					if (serType) {
-	// 						input.value = Inputs.Pure(inputValue, serType);
-	// 						return;
-	// 					}
-
-	// 					const structVal = extractStructTag(param);
-	// 					if (structVal != null || (typeof param == 'object' && 'TypeParameter' in param)) {
-	// 						if (typeof inputValue != 'string') {
-	// 							throw new Error(
-	// 								`Expect the argument to be an object id string, got ${JSON.stringify(
-	// 									inputValue,
-	// 									null,
-	// 									2,
-	// 								)}`,
-	// 							);
-	// 						}
-	// 						objectsToResolve.push({
-	// 							id: inputValue,
-	// 							input,
-	// 							normalizedType: param,
-	// 						});
-	// 						return;
-	// 					}
-
-	// 					throw new Error(
-	// 						`Unknown call arg type ${JSON.stringify(param, null, 2)} for value ${JSON.stringify(
-	// 							inputValue,
-	// 							null,
-	// 							2,
-	// 						)}`,
-	// 					);
-	// 				});
-	// 			}),
-	// 		);
-	// 	}
-
-	// 	if (objectsToResolve.length) {
-	// 		final dedupedIds = [...new Set(objectsToResolve.map(({ id }) => id))];
-	// 		final objectChunks = chunk(dedupedIds, MAX_OBJECTS_PER_FETCH);
-	// 		final objects = (
-	// 			await Promise.all(
-	// 				objectChunks.map((chunk) =>
-	// 					expectClient(options).multiGetObjects({
-	// 						ids: chunk,
-	// 						options: { showOwner: true },
-	// 					}),
-	// 				),
-	// 			)
-	// 		).flat();
-
-	// 		final objectsById = Map(
-	// 			dedupedIds.map((id, index) => {
-	// 				return [id, objects[index]];
-	// 			}),
-	// 		);
-
-	// 		const invalidObjects = Array.from(objectsById)
-	// 			.filter(([_, obj]) => obj.error)
-	// 			.map(([id, _]) => id);
-	// 		if (invalidObjects.length) {
-	// 			throw ArgumentError("The following input objects are invalid: ${invalidObjects.join(', ')}");
-	// 		}
-
-	// 		objectsToResolve.forEach(({ id, input, normalizedType }) => {
-	// 			final object = objectsById.get(id)!;
-	// 			const owner = object.data?.owner;
-	// 			const initialSharedVersion =
-	// 				owner && typeof owner === 'object' && 'Shared' in owner
-	// 					? owner.Shared.initial_shared_version
-	// 					: undefined;
-
-	// 			if (initialSharedVersion) {
-	// 				// There could be multiple transactions that reference the same shared object.
-	// 				// If one of them is a mutable reference, then we should mark the input
-	// 				// as mutable.
-	// 				const mutable =
-	// 					isMutableSharedObjectInput(input.value) ||
-	// 					(normalizedType != null && extractMutableReference(normalizedType) != null);
-
-	// 				input.value = Inputs.SharedObjectRef({
-	// 					objectId: id,
-	// 					initialSharedVersion,
-	// 					mutable,
-	// 				});
-	// 			} else {
-	// 				input.value = Inputs.ObjectRef(getObjectReference(object as SuiObjectResponse)!);
-	// 			}
-	// 		});
-	// 	}
-	// }
-
 	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
 	/// so that it can be built into bytes.
 	_prepare(BuildOptions options) async {
@@ -656,8 +461,8 @@ class TransactionBlock {
 			options.protocolConfig = await client.provider.getProtocolConfig();
 		}
 
-		// await Promise.all([_prepareGasPrice(options), _prepareTransactions(options)]);
     await _prepareGasPrice(options);
+    // await _prepareTransactions(options);
 
 		if (options.onlyTransactionKind != true) {
 			await _prepareGasPayment(options);

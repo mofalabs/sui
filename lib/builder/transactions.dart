@@ -51,10 +51,10 @@ class Transactions {
 	}
 
 	static dynamic Upgrade({
-		dynamic modules,
-		dynamic dependencies,
-		dynamic packageId,
-		dynamic ticket,
+		required dynamic modules,
+		required List<String> dependencies,
+		required String packageId,
+		required dynamic ticket,
 	}) {
 		return
 			{
