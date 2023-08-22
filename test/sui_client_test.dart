@@ -241,6 +241,9 @@ void main() {
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(4000000));
 
+    // final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000)]);
+    // txb.transferObjects([coin], txb.pureAddress(sender));
+
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000), txb.pureInt(100000000)]);
     txb.transferObjects([coin[0], coin[1]], txb.pureAddress(sender));
     // txb.transferObjects([coin[0]], txb.pureAddress(sender));

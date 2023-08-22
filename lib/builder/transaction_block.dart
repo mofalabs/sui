@@ -18,11 +18,20 @@ class TransactionResult {
 
   TransactionResult(this.index);
 
-  dynamic get result => { "kind": 'Result', "index": index };
+  Map<String, dynamic> get result => { "kind": 'Result', "index": index };
 
   operator [](subIndex) {
-    return { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
+    if (int.tryParse(subIndex.toString()) != null) {
+      return { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
+    } else {
+      return result[subIndex];
+    }
   }
+
+  bool containsKey(String key) {
+    return result.containsKey(key);
+  }
+
 }
 
 const DefaultOfflineLimits = {
