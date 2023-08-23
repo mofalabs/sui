@@ -391,4 +391,61 @@ void main() {
     print(resp);
   });
 
+
+  test('test transacitonblock test publish package', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final sender = signer.getAddress();
+
+    final ownedObjs = await client.provider.getOwnedObjectList(sender);
+    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    final gasCoin = coins.first.data!;
+
+    final bytecodeStr = '{"modules":["oRzrCwYAAAAHAQAGAgYIAw4KBRgPByctCFRgDLQBDgAEAQMCBQEABwACAQIAAAIAAQAABAIBAAEHCAEABAgACAAIAAcIAQZTdHJpbmcJVHhDb250ZXh0BGluaXQGc3RyaW5nBHRlc3QKdHhfY29udGV4dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABAQIBAQQAAQECAA=="],"dependencies":["0x0000000000000000000000000000000000000000000000000000000000000001","0x0000000000000000000000000000000000000000000000000000000000000002"],"digest":[54,25,72,21,237,244,164,121,88,120,101,42,91,74,72,110,81,80,196,167,192,190,64,83,78,199,83,77,32,91,82,189]}';
+    final bytecode = jsonDecode(bytecodeStr);
+    final modules = bytecode["modules"].cast<String>();
+    final dependencies = bytecode["dependencies"].cast<String>();
+
+    final txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(100000000));
+    final cap = txb.publish(modules, dependencies);
+    txb.transferObjects([cap], txb.pureAddress(sender));
+
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer,
+      txb,
+    );
+    print(resp);
+  });
+
+  test('test transaction block test args', () async {
+
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final client = SuiClient(Constants.devnetAPI, account: account);
+    final receiver = SuiAccount.ed25519Account();
+    final ownedObjs =
+        await client.provider.getOwnedObjectList(account.getAddress());
+    final coins = ownedObjs.data
+        .where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false)
+        .toList();
+    final gasCoin = coins.first.data!;
+    final txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(2000000));
+
+    final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000000)]);
+    txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
+
+    txb.moveCall(target: '0xc354e261e0a92aa728bc77e36810950eaa94fe327d1533dfaddab5a998480d99::test::test', arguments: [
+      txb.pureString('demo'),
+      txb.pureString('string'),
+      txb.pureString("xyz")
+    ]);
+
+    final resp = await client.signAndExecuteTransactionBlock(account, txb);
+    expect(resp.confirmedLocalExecution, true);
+    
+  });
+
 }
