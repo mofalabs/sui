@@ -17,6 +17,8 @@ class SuiClient extends SignerWithProvider {
   ): super(endpoint) {
     _account = account;
   }
+
+  SuiAccount? get account => _account;
   
   @override
   void setSigner(SuiAccount signer) {
