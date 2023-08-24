@@ -412,11 +412,18 @@ void main() {
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
+    final responseOptions = SuiTransactionBlockResponseOptions(
+      showEffects: true,
+      showObjectChanges: true
+    );
     final resp = await client.signAndExecuteTransactionBlock(
       signer,
       txb,
+      responseOptions: responseOptions
     );
-    print(resp);
+    final packageId = resp.objectChanges?.where((o) => o["type"] == "published").first["packageId"];
+    expect(packageId is String, true);
+    print("Published package $packageId from address $sender");
   });
 
   test('test transaction block test args', () async {

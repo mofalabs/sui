@@ -45,7 +45,8 @@ class SuiClient extends SignerWithProvider {
     SuiAccount signer,
     TransactionBlock transactionBlock,
     {
-      BuildOptions? options
+      BuildOptions? options,
+      SuiTransactionBlockResponseOptions? responseOptions
     }
   ) async {
     if (options == null) {
@@ -60,6 +61,7 @@ class SuiClient extends SignerWithProvider {
     return await provider.executeTransactionBlock(
       signWithBytes.bytes, 
       [signWithBytes.signature],
+      options: responseOptions,
       requestType: ExecuteTransaction.WaitForLocalExecution
     );
   }
