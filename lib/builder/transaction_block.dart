@@ -19,13 +19,18 @@ class TransactionResult {
   TransactionResult(this.index);
 
   Map<String, dynamic> get result => { "kind": 'Result', "index": index };
+  Map<String, dynamic> nestedResult(subIndex) {
+    return { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
+  }
 
-  operator [](subIndex) {
-    if (int.tryParse(subIndex.toString()) != null) {
-      return { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
-    } else {
-      return result[subIndex];
+  operator [](indexKey) {
+    if (result.containsKey(indexKey)) {
+      return result[indexKey];
     }
+
+    final subIndex = int.tryParse(indexKey.toString());
+    if (subIndex == null || subIndex < 0) return;
+    return nestedResult(subIndex);
   }
 
   bool containsKey(String key) {

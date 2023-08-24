@@ -40,12 +40,11 @@ void main() {
       )
     );
 
-    // final nft = registerResult["kind"];
-    // final account = registerResult["index"];
+    final result0 = {"kind": "NestedResult", "index": 0, "resultIndex": 0};
+    final result1 = {"kind": "NestedResult", "index": 0, "resultIndex": 1};
 
-    // // NOTE: This might seem silly but destructuring works differently than property access.
-    // expect(nft, registerResult[0]);
-    // expect(account).toBe(registerResult[1]);
+    expect(result0, registerResult[0]);
+    expect(result1, registerResult[1]);
   });
 
   group('offline build', () {
