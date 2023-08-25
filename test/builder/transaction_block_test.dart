@@ -79,7 +79,7 @@ void main() {
 
     test('builds a split transaction', () async {
       final tx = setup();
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, 'u64'))]));
+      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
       await tx.build();
     });
 
@@ -100,7 +100,7 @@ void main() {
     test('can determine the type of inputs for built-in transactions', () async {
       final tx = setup();
       // tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(100)]));
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, BCS.U64))]));
+      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, BCS.U64))]));
       await tx.build();
     });
 
@@ -110,22 +110,22 @@ void main() {
       // Use bytes directly in pure value:
       tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(inputBytes)]));
       // Use bytes in input helper:
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(inputBytes))]));
+      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(inputBytes))]));
       await tx.build();
     });
 
     test('builds a more complex interaction', () async {
       final tx = setup();
-      final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, 'u64'))]));
-      tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.ObjectRef(ref()))]));
+      final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
         Transactions.MoveCall(
           target: '0x2::devnet_nft::mint',
           typeArguments: [],
           arguments: [
-            tx.pure(Inputs.Pure('foo', 'string')),
-            tx.pure(Inputs.Pure('bar', 'string')),
-            tx.pure(Inputs.Pure('baz', 'string')),
+            tx.pure(Inputs.pure('foo', 'string')),
+            tx.pure(Inputs.pure('bar', 'string')),
+            tx.pure(Inputs.pure('baz', 'string')),
           ],
         ),
       );
@@ -134,16 +134,16 @@ void main() {
 
     test('builds a more complex interaction', () async {
       final tx = setup();
-      final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.Pure(100, 'u64'))]));
-      tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.ObjectRef(ref()))]));
+      final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
         Transactions.MoveCall(
           target: '0x2::devnet_nft::mint',
           typeArguments: [],
           arguments: [
-            tx.pure(Inputs.Pure('foo', 'string')),
-            tx.pure(Inputs.Pure('bar', 'string')),
-            tx.pure(Inputs.Pure('baz', 'string')),
+            tx.pure(Inputs.pure('foo', 'string')),
+            tx.pure(Inputs.pure('bar', 'string')),
+            tx.pure(Inputs.pure('baz', 'string')),
           ],
         ),
       );

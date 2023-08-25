@@ -19,8 +19,11 @@ class TransactionResult {
   TransactionResult(this.index);
 
   Map<String, dynamic> get result => { "kind": 'Result', "index": index };
+  final Map<String, dynamic> _nestedResult = <String, dynamic>{};
   Map<String, dynamic> nestedResult(subIndex) {
-    return { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
+    final result = { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
+    _nestedResult.addAll(result);
+    return result;
   }
 
   operator [](indexKey) {
@@ -35,6 +38,10 @@ class TransactionResult {
 
   bool containsKey(String key) {
     return result.containsKey(key);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _nestedResult.isNotEmpty ? _nestedResult : result;
   }
 
 }
@@ -128,28 +135,33 @@ class TransactionBlock {
 		return tx;
 	}
 
-	setSender(String sender) {
+	void setSender(String sender) {
 		_blockData.sender = sender;
 	}
 
 	/// Sets the sender only if it has not already been set.
 	/// This is useful for sponsored transaction flows where the sender may not be the same as the signer address.
-	setSenderIfNotSet(String sender) {
+	void setSenderIfNotSet(String sender) {
 		_blockData.sender ??= sender;
 	}
-	setExpiration(TransactionExpiration? expiration) {
+
+	void setExpiration(TransactionExpiration? expiration) {
 		_blockData.expiration = expiration;
 	}
-	setGasPrice(BigInt price) {
+
+	void setGasPrice(BigInt price) {
 		_blockData.gasConfig.price = price;
 	}
-	setGasBudget(BigInt budget) {
+
+	void setGasBudget(BigInt budget) {
 		_blockData.gasConfig.budget = budget;
 	}
-	setGasOwner(String owner) {
+
+	void setGasOwner(String owner) {
 		_blockData.gasConfig.owner = owner;
 	}
-	setGasPayment(List<SuiObjectRef> payments) {
+
+	void setGasPayment(List<SuiObjectRef> payments) {
 		_blockData.gasConfig.payment = payments;
 	}
 
@@ -167,7 +179,7 @@ class TransactionBlock {
 	}
 
 	/// Returns an argument for the gas coin, to be used in a transaction.
-	get gas {
+	Map<String, String> get gas {
 		return { "kind": 'GasCoin' };
 	}
 
@@ -177,7 +189,7 @@ class TransactionBlock {
 	///
 	/// For `Uint8Array` type automatically convert the input into a `Pure` CallArg, since this
 	/// is the format required for custom serialization.
-	_input(String type, dynamic value) {
+	Map<String, dynamic> _input(String type, dynamic value) {
 		final index = _blockData.inputs.length;
 		final input =
 			{
@@ -205,13 +217,13 @@ class TransactionBlock {
 	/// Add a new object input to the transaction using the fully-resolved object reference.
 	/// If you only have an object ID, use `builder.object(id)` instead.
 	objectRef(SuiObjectRef args) {
-		return object(Inputs.ObjectRef(args));
+		return object(Inputs.objectRef(args));
 	}
 
 	/// Add a new shared object input to the transaction using the fully-resolved shared object reference.
 	/// If you only have an object ID, use `builder.object(id)` instead.
 	sharedObjectRef(dynamic args) {
-		return object(Inputs.SharedObjectRef(args));
+		return object(Inputs.sharedObjectRef(args));
 	}
 
 	/// Add a new non-object input to the transaction.
@@ -225,40 +237,40 @@ class TransactionBlock {
 	) {
 		return _input(
 			'pure',
-			value is Uint8List ? Inputs.Pure(value) : type != null ? Inputs.Pure(value, type) : value,
+			value is Uint8List ? Inputs.pure(value) : type != null ? Inputs.pure(value, type) : value,
 		);
 	}
 
   Map<String, dynamic> pureBytes(Uint8List value) {
-		return _input('pure', Inputs.Pure(value));
+		return _input('pure', Inputs.pure(value));
   }
 
   Map<String, dynamic> pureInt(int value, [String type = BCS.U64]) {
-		return _input('pure', Inputs.Pure(value, type));
+		return _input('pure', Inputs.pure(value, type));
   }
 
   Map<String, dynamic> pureBool(bool value) {
-		return _input('pure', Inputs.Pure(value, BCS.BOOL));
+		return _input('pure', Inputs.pure(value, BCS.BOOL));
   }
 
   Map<String, dynamic> pureAddress(String address) {
-		return _input('pure', Inputs.Pure(address, BCS.ADDRESS));
+		return _input('pure', Inputs.pure(address, BCS.ADDRESS));
   }
 
   Map<String, dynamic> pureString(String str) {
-		return _input('pure', Inputs.Pure(str, BCS.STRING));
+		return _input('pure', Inputs.pure(str, BCS.STRING));
   }
 
   Map<String, dynamic> pureHex(String hex) {
-		return _input('pure', Inputs.Pure(hex, BCS.HEX));
+		return _input('pure', Inputs.pure(hex, BCS.HEX));
   }
 
   Map<String, dynamic> pureVector(dynamic vector) {
-		return _input('pure', Inputs.Pure(vector, BCS.VECTOR));
+		return _input('pure', Inputs.pure(vector, BCS.VECTOR));
   }
 
   Map<String, dynamic> pureBase64(String value) {
-		return _input('pure', Inputs.Pure(value, BCS.BASE64));
+		return _input('pure', Inputs.pure(value, BCS.BASE64));
   }
 
 	/// Add a transaction to the transaction block.
@@ -383,7 +395,7 @@ class TransactionBlock {
 		return _blockData.getDigest();
 	}
 
-	_validate(BuildOptions options) {
+	void _validate(BuildOptions options) {
 		final maxPureArgumentSize = int.parse(_getConfig('maxPureArgumentSize', options).toString());
 		// Validate all inputs are the correct size:
     for (var i = 0; i < _blockData.inputs.length; i++) {
@@ -399,7 +411,7 @@ class TransactionBlock {
 	}
 
 	// The current default is just picking _all_ coins we can which may not be ideal.
-	_prepareGasPayment(BuildOptions options) async {
+	Future<void> _prepareGasPayment(BuildOptions options) async {
 		if (_blockData.gasConfig.payment != null) {
 			final maxGasObjects = int.parse(_getConfig('maxGasObjects', options).toString());
 			if (_blockData.gasConfig.payment!.length > maxGasObjects) {
@@ -446,7 +458,7 @@ class TransactionBlock {
 		setGasPayment(usePaymentCoins);
 	}
 
-	_prepareGasPrice(BuildOptions options) async {
+	Future<void> _prepareGasPrice(BuildOptions options) async {
 		if (options.onlyTransactionKind != null || _blockData.gasConfig.price != null) {
 			return;
 		}
@@ -457,7 +469,7 @@ class TransactionBlock {
 
 	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
 	/// so that it can be built into bytes.
-	_prepare(BuildOptions options) async {
+	Future<void> _prepare(BuildOptions options) async {
 		if (options.onlyTransactionKind == null && _blockData.sender == null) {
 			throw ArgumentError('Missing transaction sender');
 		}

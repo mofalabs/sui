@@ -2,7 +2,6 @@
 import 'dart:typed_data';
 
 import 'package:sui/builder/transaction_block.dart';
-import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
@@ -46,14 +45,12 @@ class SuiClient extends SignerWithProvider {
     TransactionBlock transactionBlock,
     {
       BuildOptions? options,
+      ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
       SuiTransactionBlockResponseOptions? responseOptions
     }
   ) async {
-    if (options == null) {
-      options = BuildOptions(client: this);
-    } else {
-      options.client ??= this;
-    }
+    options ??= BuildOptions(client: this);
+    options.client ??= this;
 
     transactionBlock.setSenderIfNotSet(signer.getAddress());
     final transactionBytes = await transactionBlock.build(options);
@@ -62,7 +59,7 @@ class SuiClient extends SignerWithProvider {
       signWithBytes.bytes, 
       [signWithBytes.signature],
       options: responseOptions,
-      requestType: ExecuteTransaction.WaitForLocalExecution
+      requestType: requestType
     );
   }
 
