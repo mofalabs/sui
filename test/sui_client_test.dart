@@ -249,7 +249,10 @@ void main() {
     // txb.transferObjects([coin[0]], txb.pureAddress(sender));
     // txb.transferObjects([coin[1]], txb.pureAddress(sender));
 
-    final resp = await client.signAndExecuteTransactionBlock(signer, txb);
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer, 
+      txb,
+      requestType: ExecuteTransaction.WaitForLocalExecution);
     expect(resp.confirmedLocalExecution, true);
   });
 

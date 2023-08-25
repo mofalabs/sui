@@ -52,6 +52,11 @@ class SuiClient extends SignerWithProvider {
     options ??= BuildOptions(client: this);
     options.client ??= this;
 
+    if(responseOptions != null && 
+      (responseOptions.showEvents || responseOptions.showEffects)) {
+      requestType = ExecuteTransaction.WaitForLocalExecution;
+    }
+
     transactionBlock.setSenderIfNotSet(signer.getAddress());
     final transactionBytes = await transactionBlock.build(options);
     final signWithBytes = signer.keyPair.signTransactionBlock(transactionBytes);
