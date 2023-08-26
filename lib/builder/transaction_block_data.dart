@@ -83,23 +83,26 @@ String prepareSuiAddress(String address) {
 class TransactionBlockDataBuilder {
 	static fromKindBytes(Uint8List bytes) {
 		final kind = builder.de('TransactionKind', bytes);
-		final programmableTx = kind?.ProgrammableTransaction;
-		if (!programmableTx) {
+		final programmableTx = kind?["ProgrammableTransaction"];
+		if (programmableTx == null) {
 			throw ArgumentError('Unable to deserialize from bytes.');
 		}
+
+    final inputsList = <dynamic>[];
+    List.from(programmableTx["inputs"]).asMap().forEach((index, value) { 
+      inputsList.add({
+        "kind": 'Input',
+        "value": value,
+        "index": index,
+        "type": value["Pure"] != null ? 'pure' : 'object',
+      });
+    });
 
 		final serialized = {
 				"version": 1,
 				"gasConfig": GasConfig().toJson(),
-				"inputs": programmableTx.inputs.map((dynamic value, int index) =>
-						{
-							"kind": 'Input',
-							"value": value,
-							"index": index,
-							"type": value["Pure"] != null ? 'pure' : 'object',
-						},
-				),
-				"transactions": programmableTx.transactions,
+				"inputs": inputsList,
+				"transactions": programmableTx["transactions"],
     };
 
 		return TransactionBlockDataBuilder.restore(serialized);

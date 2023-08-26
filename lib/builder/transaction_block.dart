@@ -109,7 +109,7 @@ class TransactionBlock {
 
 	/// Converts from a serialize transaction kind (built with `build({ onlyTransactionKind: true })`) to a `Transaction` class.
 	/// Supports either a byte array, or base64-encoded bytes.
-	static fromKind(dynamic serialized) {
+	static TransactionBlock fromKind(dynamic serialized) {
 		final tx = TransactionBlock();
 
 		tx._blockData = TransactionBlockDataBuilder.fromKindBytes(

@@ -17,9 +17,18 @@ void main() {
     expect(() => tx.serialize(), returnsNormally);
   });
 
+  test('can be serialized and deserialized to the same values with onlyTransactionKind', () async {
+    final tx = TransactionBlock();
+    tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
+    final bytes = await tx.build(BuildOptions(onlyTransactionKind: true));
+    final tx2 = TransactionBlock.fromKind(bytes);
+    final bytes2 = await tx2.build(BuildOptions(onlyTransactionKind: true));
+    expect(bytes, bytes2);
+  });
+
   test('can be serialized and deserialized to the same values', () {
     final tx = TransactionBlock();
-    tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(100)]));
+    tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
     final serialized = tx.serialize();
     final tx2 = TransactionBlock.from(serialized);
     expect(serialized, tx2.serialize());
@@ -27,7 +36,7 @@ void main() {
 
   test('allows transfer with the result of split transactions', () {
     final tx = TransactionBlock();
-    final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(100)]));
+    final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
     tx.add(Transactions.TransferObjects([coin], tx.object('0x2')));
     debugPrint(tx.serialize());
   });
@@ -99,7 +108,7 @@ void main() {
 
     test('can determine the type of inputs for built-in transactions', () async {
       final tx = setup();
-      // tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(100)]));
+      tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
       tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, BCS.U64))]));
       await tx.build();
     });
@@ -108,7 +117,7 @@ void main() {
       final tx = setup();
       final inputBytes = builder.ser(BCS.U64, BigInt.from(100)).toBytes();
       // Use bytes directly in pure value:
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(inputBytes)]));
+      tx.add(Transactions.SplitCoins(tx.gas, [tx.pureBytes(inputBytes)]));
       // Use bytes in input helper:
       tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(inputBytes))]));
       await tx.build();

@@ -54,9 +54,7 @@ getIdFromCallArg(dynamic arg) {
 }
 
 dynamic getSharedObjectInput(Map arg) {
-  return (arg.containsKey("Object") && arg["Object"].containsKey("Shared"))
-      ? arg["Object"]["Shared"]
-      : null;
+  return arg["Object"]?["Shared"];
 }
 
 bool isSharedObjectInput(dynamic arg) {
@@ -65,6 +63,5 @@ bool isSharedObjectInput(dynamic arg) {
 
 bool isMutableSharedObjectInput(dynamic arg) {
   final tmp = getSharedObjectInput(arg);
-  if (tmp == null) return false;
-  return tmp["mutable"] ?? false;
+  return tmp?["mutable"] ?? false;
 }
