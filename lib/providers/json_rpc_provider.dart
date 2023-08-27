@@ -69,10 +69,11 @@ class JsonRpcProvider {
   }
 
   Future<PaginatedCoins> getCoins(String owner, {
-    String coinType = "0x2::sui::SUI",
+    String? coinType,
     ObjectId? cursor,
     int? limit
   }) async {
+    coinType ??= SUI_TYPE_ARG;
     final resp = await client.request(
         'suix_getCoins',
         [owner, coinType, cursor, limit]
@@ -589,5 +590,12 @@ class JsonRpcProvider {
     });
     return result;
   }
+
+	Future<dynamic> getProtocolConfig([String? version]) async {
+		return await client.request(
+			'sui_getProtocolConfig',
+			[version]
+		);
+	}
 
 }

@@ -694,8 +694,10 @@ class TransactionEffects {
 
     final dependenciesData = data['dependencies'];
     final dependenciesList = <TransactionDigest>[];
-    for (var dependency in dependenciesData) {
-      dependenciesList.add(dependency);
+    if (dependenciesData != null) {
+      for (var dependency in dependenciesData) {
+        dependenciesList.add(dependency);
+      }
     }
 
     return TransactionEffects(

@@ -41,7 +41,6 @@ class StructTag {
 /// Sui TypeTag object. A decoupled `0x...::module::Type<???>` parameter.
 typedef TypeTag = dynamic;
 
-
 /// The GasData to be used in the transaction.
 class GasData {
   List<SuiObjectRef> payment;
@@ -65,13 +64,6 @@ class TypeSchema {
 
   TypeSchema(this.structs, this.enums, this.aliases);
 }
-
-final TransactionDataV1 = {
-  "kind": 'TransactionKind',
-  "sender": BCS.ADDRESS,
-  "gasData": 'GasData',
-  "expiration": 'TransactionExpiration',
-};
 
 final BCS_SPEC = BcsConfigTypes(
   enums: {
@@ -145,7 +137,12 @@ final BCS_SPEC = BcsConfigTypes(
       "data": 'TransactionData',
       "txSignatures": [VECTOR, [VECTOR, BCS.U8]],
     },
-    // "TransactionDataV1": "TransactionDataV1",
+    "TransactionDataV1": {
+      "kind": 'TransactionKind',
+      "sender": BCS.ADDRESS,
+      "gasData": 'GasData',
+      "expiration": 'TransactionExpiration',
+    }
   },
   aliases: {
     "ObjectDigest": BCS.BASE58,
