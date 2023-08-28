@@ -19,7 +19,7 @@ void main() {
 
   test('can be serialized and deserialized to the same values with onlyTransactionKind', () async {
     final tx = TransactionBlock();
-    tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
+    tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(100)]));
     final bytes = await tx.build(BuildOptions(onlyTransactionKind: true));
     final tx2 = TransactionBlock.fromKind(bytes);
     final bytes2 = await tx2.build(BuildOptions(onlyTransactionKind: true));
@@ -28,7 +28,7 @@ void main() {
 
   test('can be serialized and deserialized to the same values', () {
     final tx = TransactionBlock();
-    tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
+    tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(100)]));
     final serialized = tx.serialize();
     final tx2 = TransactionBlock.from(serialized);
     expect(serialized, tx2.serialize());
@@ -36,15 +36,15 @@ void main() {
 
   test('allows transfer with the result of split transactions', () {
     final tx = TransactionBlock();
-    final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
-    tx.add(Transactions.TransferObjects([coin], tx.object('0x2')));
+    final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(100)]));
+    tx.add(Transactions.transferObjects([coin], tx.object('0x2')));
     debugPrint(tx.serialize());
   });
 
   test('supports nested results through either array index or destructuring', () {
     final tx = TransactionBlock();
     final registerResult = tx.add(
-      Transactions.MoveCall(
+      Transactions.moveCall(
         target: '0x2::game::register',
       )
     );
@@ -88,7 +88,7 @@ void main() {
 
     test('builds a split transaction', () async {
       final tx = setup();
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
       await tx.build();
     });
 
@@ -108,8 +108,8 @@ void main() {
 
     test('can determine the type of inputs for built-in transactions', () async {
       final tx = setup();
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pureInt(100)]));
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, BCS.U64))]));
+      tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(100)]));
+      tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, BCS.U64))]));
       await tx.build();
     });
 
@@ -117,18 +117,18 @@ void main() {
       final tx = setup();
       final inputBytes = builder.ser(BCS.U64, BigInt.from(100)).toBytes();
       // Use bytes directly in pure value:
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pureBytes(inputBytes)]));
+      tx.add(Transactions.splitCoins(tx.gas, [tx.pureBytes(inputBytes)]));
       // Use bytes in input helper:
-      tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(inputBytes))]));
+      tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(inputBytes))]));
       await tx.build();
     });
 
     test('builds a more complex interaction', () async {
       final tx = setup();
-      final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
-      tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
+      final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(Transactions.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
-        Transactions.MoveCall(
+        Transactions.moveCall(
           target: '0x2::devnet_nft::mint',
           typeArguments: [],
           arguments: [
@@ -143,10 +143,10 @@ void main() {
 
     test('builds a more complex interaction', () async {
       final tx = setup();
-      final coin = tx.add(Transactions.SplitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
-      tx.add(Transactions.MergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
+      final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(Transactions.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
-        Transactions.MoveCall(
+        Transactions.moveCall(
           target: '0x2::devnet_nft::mint',
           typeArguments: [],
           arguments: [
