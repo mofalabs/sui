@@ -14,7 +14,7 @@ const PAY_JOIN_COIN_FUNC_NAME = 'join';
 final COIN_TYPE_ARG_REGEX = RegExp(r'^0x2::coin::Coin<(.+)>$');
 
 class ObjectData {
-  SuiObjectInfo? objectInfo;
+  SuiObject? objectInfo;
   SuiObjectResponse? dataResponse;
   SuiMoveObject? moveObject;
 
@@ -26,8 +26,8 @@ class Coin {
     return Coin.getType(data)?.startsWith(COIN_TYPE) ?? false;
   }
 
-  static bool suiObjectIsCoin(SuiObjectInfo data) {
-    return data.type.startsWith(COIN_TYPE);
+  static bool suiObjectIsCoin(SuiObject data) {
+    return data.type?.startsWith(COIN_TYPE) ?? false;
   }
 
   static String? getCoinType(String type) {

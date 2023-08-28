@@ -282,24 +282,24 @@ class TransactionBlock {
 	// Method shorthands:
 
 	TransactionResult splitCoins(dynamic coin, List amounts) {
-		return add(Transactions.SplitCoins(coin, amounts));
+		return add(Transactions.splitCoins(coin, amounts));
 	}
 
 	TransactionResult mergeCoins(dynamic destination, List sources) {
-		return add(Transactions.MergeCoins(destination, sources));
+		return add(Transactions.mergeCoins(destination, sources));
 	}
 
 	TransactionResult publish(List<String> modules, List<String> dependencies) {
-		return add(Transactions.Publish(modules, dependencies));
+		return add(Transactions.publish(modules, dependencies));
 	}
 
 	TransactionResult upgrade({
-		required dynamic modules,
+		required List<String> modules,
 		required List<String> dependencies,
 		required String packageId,
 		required dynamic ticket,
 	}) {
-		return add(Transactions.Upgrade(
+		return add(Transactions.upgrade(
       modules: modules,
       dependencies: dependencies,
       packageId: packageId,
@@ -312,7 +312,7 @@ class TransactionBlock {
     List? typeArguments,
     List? arguments
 	}) {
-		return add(Transactions.MoveCall(
+		return add(Transactions.moveCall(
       target: target,
       typeArguments: typeArguments,
       arguments: arguments
@@ -320,14 +320,14 @@ class TransactionBlock {
 	}
 
 	TransactionResult transferObjects(List<dynamic> objects, dynamic address) {
-		return add(Transactions.TransferObjects(objects, address));
+		return add(Transactions.transferObjects(objects, address));
 	}
 
 	TransactionResult makeMoveVec({
     required dynamic objects,
-    dynamic type
+    String? type
   }) {
-		return add(Transactions.MakeMoveVec(objects: objects, type: type));
+		return add(Transactions.makeMoveVec(objects: objects, type: type));
 	}
 
 	/// Serialize the transaction to a string so that it can be sent to a separate context.

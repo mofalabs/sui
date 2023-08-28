@@ -25,7 +25,7 @@ class _ManagedTokenState extends State<ManagedToken> {
   String? packageId;
   String? objectId;
   String? transactionModule;
-  List<SuiObjectInfo>? suiObjects;
+  List<SuiObject>? suiObjects;
   String? coinType;
 
   @override
@@ -152,7 +152,7 @@ class _ManagedTokenState extends State<ManagedToken> {
     ));
   }
 
-  Future<List<SuiObjectInfo>> queryCoinObjects() async {
+  Future<List<SuiObject>> queryCoinObjects() async {
     final objects = await widget.client.getOwnedObjectsByOptions(
       widget.client.getAddress(),
       showType: true,
