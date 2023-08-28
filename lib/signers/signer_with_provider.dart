@@ -181,7 +181,7 @@ abstract class SignerWithProvider {
     return provider.dryRunTransaction(base64Encode(dryRunTxBytes));
   }
 
-  Future<List<SuiObjectInfo>> getOwnedObjects(String address, {
+  Future<List<SuiObject>> getOwnedObjects(String address, {
     Map<String,dynamic>? filter,
     Map<String,dynamic>? options,
     bool showAllOptions = false
@@ -193,7 +193,7 @@ abstract class SignerWithProvider {
       showAllOptions: showAllOptions);
   }
 
-  Future<List<SuiObjectInfo>> getOwnedObjectsByOptions(String address, {
+  Future<List<SuiObject>> getOwnedObjectsByOptions(String address, {
     Map<String,dynamic>? filter,
     bool showType = false,
     bool showContent = false,
@@ -220,7 +220,7 @@ abstract class SignerWithProvider {
       options: options);
   }
 
-  Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
+  Future<List<SuiObject>> getGasObjectsOwnedByAddress(String address) async {
     return await provider.getGasObjectsOwnedByAddress(address);
   }
 

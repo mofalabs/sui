@@ -28,7 +28,7 @@ class _ManagedNFTState extends State<ManagedNFT> {
   String? packageId;
   String? objectId;
   String? transactionModule;
-  List<SuiObjectInfo>? suiObjects;
+  List<SuiObject>? suiObjects;
   String? coinType;
 
   @override
@@ -162,7 +162,7 @@ class _ManagedNFTState extends State<ManagedNFT> {
             final resp = await widget.client.executeMoveCall(callTx);
             if (resp.confirmedLocalExecution == true) {
               final createdObjs = resp.objectChanges?.where((e) => e["type"] == "created");
-              final nftObjects = createdObjs?.map<SuiObjectInfo>((e) => SuiObjectInfo.fromJson(e)).toList();
+              final nftObjects = createdObjs?.map<SuiObject>((e) => SuiObject.fromJson(e)).toList();
               suiObjects?.addAll(nftObjects ?? []);
 
               setState(() {});

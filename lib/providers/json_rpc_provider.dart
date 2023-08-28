@@ -228,7 +228,7 @@ class JsonRpcProvider {
     return PaginatedObjectsResponse.fromJson(resp);
   }
 
-  Future<List<SuiObjectInfo>> getOwnedObjects(String address, {
+  Future<List<SuiObject>> getOwnedObjects(String address, {
     Map<String,dynamic>? filter,
     Map<String,dynamic>? options,
     bool showAllOptions = false
@@ -251,12 +251,12 @@ class JsonRpcProvider {
       params
     ]);
     final objectsInfo = (resp['data'] as List).map((obj) {
-      return SuiObjectInfo.fromJson(obj['data']);
+      return SuiObject.fromJson(obj['data']);
     }).toList();
     return objectsInfo;
   }
 
-  Future<List<SuiObjectInfo>> getGasObjectsOwnedByAddress(String address) async {
+  Future<List<SuiObject>> getGasObjectsOwnedByAddress(String address) async {
     final objects = await getOwnedObjects(address);
     final result = objects
       .where((obj) => Coin.isSUI(ObjectData(objectInfo: obj)));
@@ -277,12 +277,12 @@ class JsonRpcProvider {
     return result;
   }
 
-  Future<List<SuiObjectInfo>> getObjectsOwnedByObject(String objectId) async {
+  Future<List<SuiObject>> getObjectsOwnedByObject(String objectId) async {
     final data = await client.request(
       'sui_getObjectsOwnedByObject',
       [objectId]
     );
-    return (data as List).map((e) => SuiObjectInfo.fromJson(e)).toList();
+    return (data as List).map((e) => SuiObject.fromJson(e)).toList();
   }
 
   Future<SuiObjectResponse> getObject(String objectId,
