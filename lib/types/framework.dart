@@ -65,6 +65,7 @@ class Coin {
     if (data.dataResponse != null) {
       return data.dataResponse?.data?.content?.type ?? '';
     }
+    return null;
   }
 }
 

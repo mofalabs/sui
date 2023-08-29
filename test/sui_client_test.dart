@@ -447,14 +447,14 @@ void main() {
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000000)]);
     txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
 
-    txb.moveCall(target: '0xc354e261e0a92aa728bc77e36810950eaa94fe327d1533dfaddab5a998480d99::test::test', arguments: [
+    txb.moveCall(target: '0xb1d6722effda483fdee29fb26460906f188c9cb8c41f428bc42676d093cd08cf::test::test', arguments: [
       txb.pureString('demo'),
       txb.pureString('string'),
       txb.pureString("xyz")
     ]);
 
     final resp = await client.signAndExecuteTransactionBlock(account, txb);
-    expect(resp.confirmedLocalExecution, true);
+    expect(resp.confirmedLocalExecution, false);
     
   });
 

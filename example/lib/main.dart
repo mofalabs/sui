@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      floatingActionButton: _balance != 0 ? FloatingActionButton(
+      floatingActionButton: _balance != BigInt.zero ? FloatingActionButton(
         onPressed: _navigateToTokenManage,
         tooltip: 'TokenManager',
         child: const Icon(Icons.menu),

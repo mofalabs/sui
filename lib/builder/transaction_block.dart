@@ -228,16 +228,12 @@ class TransactionBlock {
 
 	/// Add a new non-object input to the transaction.
 	Map<String, dynamic> pure(
-		/// The pure value that will be used as the input value. If this is a Uint8Array, then the value
-		/// is assumed to be raw bytes, and will be used directly.
-		dynamic value,
-		/// The BCS type to serialize the value into. If not provided, the type will automatically be determined
-		/// based on how the input is used.
+		Map<String, dynamic> value,
 		[String? type]
 	) {
 		return _input(
 			'pure',
-			value is Uint8List ? Inputs.pure(value) : type != null ? Inputs.pure(value, type) : value,
+			type != null ? Inputs.pure(value, type) : value
 		);
 	}
 
