@@ -209,7 +209,7 @@ SuiMoveNormalizedType? extractReference(SuiMoveNormalizedType normalizedType) {
   return null;
 }
 
-SuiMoveNormalizedStructType? extractStructTag(
+dynamic extractStructTag(
     SuiMoveNormalizedType normalizedType) {
   if (normalizedType is Map && normalizedType.containsKey('Struct')) {
     return normalizedType['Struct'];
@@ -218,11 +218,11 @@ SuiMoveNormalizedStructType? extractStructTag(
   final ref = extractReference(normalizedType);
   final mutRef = extractMutableReference(normalizedType);
 
-  if (ref is SuiMoveNormalizedStructType) {
+  if (ref != null && ref["Struct"] != null) {
     return ref;
   }
 
-  if (mutRef is SuiMoveNormalizedStructType) {
+  if (mutRef != null && mutRef["Struct"] != null) {
     return mutRef;
   }
 

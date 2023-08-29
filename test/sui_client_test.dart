@@ -329,7 +329,7 @@ void main() {
       signer,
       txb,
     );
-    print(resp);
+    print(resp.digest);
   });
 
 
@@ -349,9 +349,10 @@ void main() {
     txb.setGasBudget(BigInt.from(100000000));
 
     txb.moveCall(
-      target: "0xf6612affa17fb388ffa0a429243abc4796c976afa681fc50e08fa237f2464a1a::managed::mint",
+      target: "0x06248169793ef0aded8ac885ee4b18f0b2330177c61e95002854f029b5fed684::managed::mint",
       arguments: [
-        txb.objectRef(capObj.data!), txb.pureInt(1000), txb.pureAddress(sender)
+        txb.pure(capObj.data!.objectId), txb.pureInt(1000), txb.pureAddress(sender)
+        // txb.objectRef(capObj.data!), txb.pureInt(1000), txb.pureAddress(sender)
       ]
     );
 
