@@ -43,7 +43,7 @@ class SerializedTransactionDataBuilder {
 	int version;
 	String? sender;
 	TransactionExpiration expiration;
-	List<dynamic>? inputs;
+	List<Map<String, dynamic>>? inputs;
 	List<dynamic>? transactions;
 
   SerializedTransactionDataBuilder({
@@ -68,7 +68,7 @@ class SerializedTransactionDataBuilder {
   factory SerializedTransactionDataBuilder.fromJson(Map<String, dynamic> data) {
     return SerializedTransactionDataBuilder(
       gasConfig: GasConfig.fromJson(data["gasConfig"]),
-      inputs: data["inputs"], 
+      inputs: List<Map<String, dynamic>>.from(data["inputs"]),
       transactions: data["transactions"],
       sender: data["sender"],
       expiration: data["expiration"]
@@ -88,7 +88,7 @@ class TransactionBlockDataBuilder {
 			throw ArgumentError('Unable to deserialize from bytes.');
 		}
 
-    final inputsList = <dynamic>[];
+    final inputsList = <Map<String, dynamic>>[];
     List.from(programmableTx["inputs"]).asMap().forEach((index, value) { 
       inputsList.add({
         "kind": 'Input',
@@ -116,7 +116,7 @@ class TransactionBlockDataBuilder {
 			throw ArgumentError('Unable to deserialize from bytes.');
 		}
 
-    final inputsList = <dynamic>[];
+    final inputsList = <Map<String, dynamic>>[];
     List.from(programmableTx["inputs"]).asMap().forEach((index, value) { 
       inputsList.add({
         "kind": 'Input',
@@ -157,7 +157,7 @@ class TransactionBlockDataBuilder {
 	String? sender;
 	TransactionExpiration? expiration;
 	late GasConfig gasConfig;
-	late List<dynamic> inputs;
+	late List<Map<String, dynamic>> inputs;
 	late List<dynamic> transactions;
 
 	TransactionBlockDataBuilder([SerializedTransactionDataBuilder? clone]) {

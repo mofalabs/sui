@@ -235,7 +235,7 @@ void main() {
 
     final ownedObjs = await client.provider.getOwnedObjectList(sender);
     final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    final gasCoin = coins.last.data!;
 
     final txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
@@ -261,6 +261,7 @@ void main() {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
+    final receiver = SuiAccount.ed25519Account().getAddress();
 
     final ownedObjs = await client.provider.getOwnedObjectList(sender);
     final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
@@ -272,7 +273,7 @@ void main() {
     txb.setGasBudget(BigInt.from(2000000));
     txb.transferObjects(
       [txb.objectRef(obj)],
-      txb.pureAddress(sender),
+      txb.pureAddress(receiver),
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
