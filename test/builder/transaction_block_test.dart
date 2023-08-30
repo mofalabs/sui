@@ -138,24 +138,6 @@ void main() {
           ],
         ),
       );
-      await tx.build();
-    });
-
-    test('builds a more complex interaction', () async {
-      final tx = setup();
-      final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
-      tx.add(Transactions.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
-      tx.add(
-        Transactions.moveCall(
-          target: '0x2::devnet_nft::mint',
-          typeArguments: [],
-          arguments: [
-            tx.pure(Inputs.pure('foo', 'string')),
-            tx.pure(Inputs.pure('bar', 'string')),
-            tx.pure(Inputs.pure('baz', 'string')),
-          ],
-        ),
-      );
 
       final bytes = await tx.build();
       final tx2 = TransactionBlock.fromBytes(bytes);

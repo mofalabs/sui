@@ -5,11 +5,14 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:sui/builder/inputs.dart';
+import 'package:sui/builder/serializer.dart';
 import 'package:sui/builder/transaction_block_data.dart';
 import 'package:sui/builder/transactions.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/sui_client.dart';
+import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
+import 'package:sui/types/normalized.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 
@@ -83,10 +86,13 @@ final GAS_SAFE_OVERHEAD = BigInt.from(1000);
 // The maximum objects that can be fetched at once using multiGetObjects.
 const MAX_OBJECTS_PER_FETCH = 50;
 
-// const chunk = <T>(arr: T[], size: number): T[][] =>
-// 	Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-// 		arr.slice(i * size, i * size + size),
-// 	);
+List<List<T>> chunk<T>(List<T> arr, int size) {
+  int length = (arr.length / size).ceil();
+
+  return List<List<T>>.generate(length, (int i) {
+    return arr.sublist(i * size, (i * size + size > arr.length) ? arr.length : i * size + size);
+  });
+}
 
 class BuildOptions {
 	SuiClient? client;
@@ -228,16 +234,12 @@ class TransactionBlock {
 
 	/// Add a new non-object input to the transaction.
 	Map<String, dynamic> pure(
-		/// The pure value that will be used as the input value. If this is a Uint8Array, then the value
-		/// is assumed to be raw bytes, and will be used directly.
 		dynamic value,
-		/// The BCS type to serialize the value into. If not provided, the type will automatically be determined
-		/// based on how the input is used.
 		[String? type]
 	) {
 		return _input(
 			'pure',
-			value is Uint8List ? Inputs.pure(value) : type != null ? Inputs.pure(value, type) : value,
+			type != null ? Inputs.pure(value, type) : value
 		);
 	}
 
@@ -467,6 +469,211 @@ class TransactionBlock {
 		setGasPrice(gasPrice);
 	}
 
+  bool isBuilderCallArg(arg) {
+    if (arg is! Map) return false;
+    return arg.containsKey("Pure") || arg.containsKey("Object");
+  }
+
+  Future<void> _prepareTransactions(BuildOptions options) async {
+    final inputs = _blockData.inputs;
+    final transactions = _blockData.transactions;
+
+    final moveModulesToResolve = [];
+
+		// Keep track of the object references that will need to be resolved at the end of the transaction.
+		// We keep the input by-reference to avoid needing to re-resolve it:
+		final objectsToResolve = [];
+
+    for (var transaction in transactions) {
+      if (transaction["kind"] == "MoveCall") {
+        bool needsResolution = (transaction["arguments"] as List).any(
+                                (arg) => arg is Map &&
+                                arg['kind'] == 'Input' && 
+                                !(isBuilderCallArg(inputs[arg['index']]["value"])));
+        if (needsResolution) {
+          moveModulesToResolve.add(transaction);
+        }
+
+        continue;
+      }
+
+			// Get the matching struct definition for the transaction, and use it to attempt to automatically
+			// encode the matching inputs.
+			// final transactionType = getTransactionType(transaction);
+			// if (transactionType.schema == null) return;
+
+      // const TRANSACTION_TYPE = 'transaction-argument-type';
+
+      // (transaction as Map).forEach((key, value) {
+			// 	if (key == 'kind') return;
+			// 	var keySchema = transaction[key];
+      //   // TODO: check below code
+      //   if (keySchema is Iterable) keySchema = keySchema.first;
+			// 	final isArray = keySchema["type"] == 'array';
+			// 	final wellKnownEncoding = isArray
+			// 		? keySchema["schema"][TRANSACTION_TYPE]
+			// 		: keySchema[TRANSACTION_TYPE];
+
+			// 	// This argument has unknown encoding, assume it must be fully-encoded:
+			// 	if (wellKnownEncoding == null) return;
+
+			// 	void encodeInput(index) {
+			// 		final input = inputs[index];
+			// 		if (!input) {
+			// 			throw ArgumentError("Missing input ${value["index"]}");
+			// 		}
+
+			// 		// Input is fully resolved:
+			// 		if (isBuilderCallArg(input["value"])) return;
+			// 		if (wellKnownEncoding["kind"] == 'object' && input["value"] is String) {
+			// 			// The input is a string that we need to resolve to an object reference:
+			// 			objectsToResolve.add({ "id": input["value"], "input": input });
+			// 		} else if (wellKnownEncoding["kind"] == 'pure') {
+			// 			// Pure encoding, so construct BCS bytes:
+			// 			input["value"] = Inputs.pure(input["value"], wellKnownEncoding["type"]);
+			// 		} else {
+			// 			throw ArgumentError('Unexpected input format.');
+			// 		}
+			// 	}
+
+			// 	if (isArray) {
+			// 		value.forEach((arrayItem) {
+			// 			if (arrayItem["kind"] != 'Input') return;
+			// 			encodeInput(arrayItem.index);
+			// 		});
+			// 	} else {
+			// 		if (value["kind"] != 'Input') return;
+			// 		encodeInput(value["index"]);
+			// 	}
+
+      // });
+    }
+
+    if (moveModulesToResolve.isNotEmpty) {
+      for (var moveCall in moveModulesToResolve) {
+        final target = moveCall["target"].split('::');
+        final packageId = target[0];
+        final moduleName = target[1];
+        final functionName = target[2];
+
+        final normalized = await expectClient(options).provider.getNormalizedMoveFunction(
+          normalizeSuiObjectId(packageId),
+          moduleName,
+          functionName,
+        );
+
+        // Entry functions can have a mutable reference to an instance of the TxContext
+        // struct defined in the TxContext module as the last parameter. The caller of
+        // the function does not need to pass it in as an argument.
+        final hasTxContext =
+          normalized.parameters.isNotEmpty && isTxContext(normalized.parameters.last);
+
+        final params = hasTxContext
+          ? normalized.parameters.sublist(0, normalized.parameters.length - 1)
+          : normalized.parameters;
+
+        if (params.length != moveCall["arguments"].length) {
+          throw ArgumentError('Incorrect number of arguments.');
+        }
+
+        for (int i = 0; i < params.length; i++) {
+          final param = params[i];
+          final arg = moveCall["arguments"][i];
+          if (arg["kind"] != 'Input') continue;
+          final input = inputs[arg["index"]];
+          // Skip if the input is already resolved
+          if (isBuilderCallArg(input["value"])) continue;
+
+          final inputValue = input["value"];
+
+          final serType = getPureSerializationType(param, inputValue);
+
+          if (serType != null) {
+            input["value"] = Inputs.pure(inputValue, serType);
+            continue;
+          }
+
+          final structVal = extractStructTag(param);
+          if (structVal != null || (param["TypeParameter"] != null)) {
+            if (inputValue is! String) {
+              throw ArgumentError(
+                "Expect the argument to be an object id string, got ${jsonEncode(inputValue)}",
+              );
+            }
+            objectsToResolve.add({
+              "id": inputValue,
+              "input": input,
+              "normalizedType": param,
+            });
+          } else {
+            throw ArgumentError(
+              "Unknown call arg type ${jsonEncode(param)} for value ${jsonEncode(inputValue)}",
+            );
+          }
+        }
+
+      }
+    }
+
+
+    if (objectsToResolve.isNotEmpty) {
+      final dedupedIds = Set<String>.from(objectsToResolve.map((o) => o["id"])).toList();
+      final objectChunks = chunk(dedupedIds, MAX_OBJECTS_PER_FETCH);
+      final objects = (
+        await Future.wait(
+          objectChunks.map((chunk) =>
+            expectClient(options).provider.multiGetObjects(
+              chunk,
+              options: SuiObjectDataOptions(showOwner: true),
+            ),
+          ),
+        )
+      ).expand((element) => element).toList();
+
+      final objectsById = <String, SuiObjectResponse>{};
+      for (int index = 0; index < dedupedIds.length; index++) {
+        objectsById[dedupedIds[index]] = objects[index];
+      }
+
+      final invalidObjects = objectsById.entries
+          .where((entry) => entry.value.error != null)
+          .map((entry) => entry.key)
+          .toList();
+      if (invalidObjects.isNotEmpty) {
+        throw ArgumentError("The following input objects are invalid: ${invalidObjects.join(', ')}");
+      }
+
+      for (var item in objectsToResolve) {
+        final id = item["id"];
+        final input = item["input"];
+        final normalizedType = item["normalizedType"];
+
+        final object = objectsById[id];
+        final owner = object?.data?.owner;
+        final initialSharedVersion = owner?.shared?.initialSharedVersion;
+
+        if (initialSharedVersion != null) {
+          // There could be multiple transactions that reference the same shared object.
+          // If one of them is a mutable reference, then we should mark the input
+          // as mutable.
+          final mutable =
+            isMutableSharedObjectInput(input["value"]) ||
+            (normalizedType != null && extractMutableReference(normalizedType) != null);
+
+          input["value"] = Inputs.sharedObjectRef({
+            "objectId": id,
+            "initialSharedVersion": initialSharedVersion,
+            "mutable": mutable,
+          });
+        } else {
+          input["value"] = Inputs.objectRef(getObjectReference(object as SuiObjectResponse)!);
+        }
+
+      }
+    }
+
+  }
+
 	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
 	/// so that it can be built into bytes.
 	Future<void> _prepare(BuildOptions options) async {
@@ -480,8 +687,7 @@ class TransactionBlock {
 			options.protocolConfig = await client.provider.getProtocolConfig();
 		}
 
-    await _prepareGasPrice(options);
-    // await _prepareTransactions(options);
+    await Future.wait([_prepareGasPrice(options), _prepareTransactions(options)]);
 
 		if (options.onlyTransactionKind != true) {
 			await _prepareGasPayment(options);
