@@ -318,7 +318,7 @@ void main() {
 
     var ownedObjs = await client.provider.getOwnedObjectList(sender);
     var coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    var gasCoin = coins.first.data!;
+    var gasCoin = coins.last.data!;
 
     var txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
@@ -329,24 +329,29 @@ void main() {
     final resp1 = await client.signAndExecuteTransactionBlock(
       signer,
       txb,
+      responseOptions: SuiTransactionBlockResponseOptions(showObjectChanges: true)
     );
     print(resp1.digest);
 
+    await Future.delayed(const Duration(seconds: 3));
+
+    final packageId = resp1.objectChanges!.firstWhere((e) => e["type"] == "published")["packageId"];
+    final capObjectId = resp1.objectChanges!.firstWhere((e) => e["type"] == "created" && e["objectType"] != null && e["objectType"].toString().startsWith("0x2::coin::TreasuryCap"))["objectId"];
+    final capObj = await client.provider.getObject(capObjectId);
+
     ownedObjs = await client.provider.getOwnedObjectList(sender);
     coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    gasCoin = coins.first.data!;
-
-    final capObj = ownedObjs.data.firstWhere((e) => e.data?.type?.startsWith("0x2::coin::TreasuryCap") ?? false);
+    gasCoin = coins.last.data!;
 
     txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
     txb.moveCall(
-      target: "0x06248169793ef0aded8ac885ee4b18f0b2330177c61e95002854f029b5fed684::managed::mint",
+      target: "$packageId::managed::mint",
       arguments: [
-        txb.pure(capObj.data!.objectId), txb.pureInt(1000), txb.pureAddress(sender)
-        // txb.objectRef(capObj.data!), txb.pureInt(1000), txb.pureAddress(sender)
+        // txb.pure(capObjectId), txb.pureInt(1000), txb.pureAddress(sender)
+        txb.objectRef(capObj.data!), txb.pureInt(1000), txb.pureAddress(sender)
       ]
     );
 
