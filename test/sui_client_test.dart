@@ -311,41 +311,34 @@ void main() {
   });
 
 
-  test('test transacitonblock public package', () async {
+  test('test transacitonblock publish package and move call', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    var ownedObjs = await client.provider.getOwnedObjectList(sender);
+    var coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    var gasCoin = coins.first.data!;
 
-    final txb = TransactionBlock();
+    var txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
-    final resp = await client.signAndExecuteTransactionBlock(
+    final resp1 = await client.signAndExecuteTransactionBlock(
       signer,
       txb,
     );
-    print(resp.digest);
-  });
+    print(resp1.digest);
 
-
-  test('test transacitonblock moveCall', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
-    final sender = signer.getAddress();
-
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    ownedObjs = await client.provider.getOwnedObjectList(sender);
+    coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    gasCoin = coins.first.data!;
 
     final capObj = ownedObjs.data.firstWhere((e) => e.data?.type?.startsWith("0x2::coin::TreasuryCap") ?? false);
 
-    final txb = TransactionBlock();
+    txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
@@ -357,11 +350,11 @@ void main() {
       ]
     );
 
-    final resp = await client.signAndExecuteTransactionBlock(
+    final resp2 = await client.signAndExecuteTransactionBlock(
       signer,
       txb,
     );
-    print(resp);
+    print(resp2);
   });
 
 
