@@ -371,6 +371,63 @@ void main() {
   });
 
 
+
+test('test transacitonblock publish package and multi mint move call', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final sender = signer.getAddress();
+
+    var ownedObjs = await client.provider.getOwnedObjectList(sender);
+    var coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    var gasCoin = coins.last.data!;
+
+    var txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(100000000));
+    final cap = txb.publish(modules, dependencies);
+    txb.transferObjects([cap], txb.pureAddress(sender));
+
+    final resp1 = await client.signAndExecuteTransactionBlock(
+      signer,
+      txb,
+      responseOptions: SuiTransactionBlockResponseOptions(showObjectChanges: true)
+    );
+    print(resp1.digest);
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    final packageId = resp1.objectChanges!.firstWhere((e) => e["type"] == "published")["packageId"];
+    final capObjectId = resp1.objectChanges!.firstWhere((e) => e["type"] == "created" && e["objectType"] != null && e["objectType"].toString().startsWith("0x2::coin::TreasuryCap"))["objectId"];
+    final capObj = await client.provider.getObject(capObjectId);
+
+    ownedObjs = await client.provider.getOwnedObjectList(sender);
+    coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
+    gasCoin = coins.last.data!;
+
+    txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(100000000));
+
+    for (var i = 0; i < 3; i++) {
+      final coin = txb.moveCall(
+        target: "$packageId::managed::mint",
+        arguments: [
+          // txb.pure(capObjectId), txb.pureInt(1000)
+          txb.objectRef(capObj.data!), txb.pureInt(1000)
+        ]
+      );
+
+      txb.transferObjects([coin], txb.pureAddress(sender));
+    }
+
+    final resp2 = await client.signAndExecuteTransactionBlock(
+      signer,
+      txb,
+    );
+    print(resp2);
+  });
+
+
   test('test transacitonblock makeMoveVec', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
