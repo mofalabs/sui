@@ -257,7 +257,7 @@ class JsonRpcProvider {
   }
 
   Future<List<SuiObject>> getGasObjectsOwnedByAddress(String address) async {
-    final objects = await getOwnedObjects(address);
+    final objects = await getOwnedObjects(address, options: { "showType": true });
     final result = objects
       .where((obj) => Coin.isSUI(ObjectData(objectInfo: obj)));
     return result.toList();

@@ -210,25 +210,25 @@ class TransactionBlock {
 	}
 
 	/// Add a new object input to the transaction.
-	object(dynamic value) {
+	Map<String, dynamic> object(dynamic value) {
 		final id = getIdFromCallArg(value);
 		// deduplicate
 		final inserted = _blockData.inputs.firstWhere(
 			(i) => i["type"] == 'object' && id == getIdFromCallArg(i["value"]),
-      orElse: () => null,
+      orElse: () => <String, dynamic>{},
 		);
-		return inserted ?? _input('object', value);
+		return inserted.isNotEmpty ? inserted : _input('object', value);
 	}
 
 	/// Add a new object input to the transaction using the fully-resolved object reference.
 	/// If you only have an object ID, use `builder.object(id)` instead.
-	objectRef(SuiObjectRef args) {
+	Map<String, dynamic> objectRef(SuiObjectRef args) {
 		return object(Inputs.objectRef(args));
 	}
 
 	/// Add a new shared object input to the transaction using the fully-resolved shared object reference.
 	/// If you only have an object ID, use `builder.object(id)` instead.
-	sharedObjectRef(dynamic args) {
+	Map<String, dynamic> sharedObjectRef(dynamic args) {
 		return object(Inputs.sharedObjectRef(args));
 	}
 
@@ -283,11 +283,11 @@ class TransactionBlock {
 
 	// Method shorthands:
 
-	TransactionResult splitCoins(dynamic coin, List amounts) {
+	TransactionResult splitCoins(Map<String, dynamic> coin, List<Map<String, dynamic>> amounts) {
 		return add(Transactions.splitCoins(coin, amounts));
 	}
 
-	TransactionResult mergeCoins(dynamic destination, List sources) {
+	TransactionResult mergeCoins(Map<String, dynamic> destination, List<Map<String, dynamic>> sources) {
 		return add(Transactions.mergeCoins(destination, sources));
 	}
 
@@ -433,9 +433,9 @@ class TransactionBlock {
 		final paymentCoins = coins.data
 			// Filter out coins that are also used as input:
 			.where((coin) {
-				final matchingInput = _blockData.inputs.indexOf((input) {
+				final matchingInput = _blockData.inputs.indexWhere((input) {
           final iv = input["value"];
-					if (iv.containsKey("Object") && iv["Object"].containsKey("ImmOrOwned")) {
+					if (iv is Map && iv["Object"]?["ImmOrOwned"] != null) {
 						return coin.coinObjectId == iv["Object"]["ImmOrOwned"]["objectId"];
 					}
 

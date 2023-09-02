@@ -17,7 +17,7 @@ import 'package:sui/types/sui_bcs.dart';
 import 'package:sui/types/transactions.dart';
 
 
-const modules = ["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"];
+const modules = ["oRzrCwYAAAAKAQAMAgwkAzBDBHMOBYEBqAEHqQLdAQiGBGAG5gQPCvUEBQz6BFYADAERAggCFQIWAhcAAgIAAQMHAQAAAgAMAQABAgEMAQABAgQMAQABBAUCAAUGBwAACwABAAAPAgEAAA0DBAAABwUBAAEQAQgBAAIHFRYBAAIJCgsBAgINExQBAAIOEgEBAAMSDQEBDAMTEQEBDAQUDg8ABAcGCQkMChAICQcJBQkCCAAHCAUABAcLBAEIAAMFBwgFAwcLBAEIAAMHCAUBCwIBCAACBwsEAQgACwIBCAACCwMBCAALBAEIAAEIBgELAQEJAAEIAAcJAAIKAgoCCgILAQEIBgcIBQILBAEJAAsDAQkAAQsDAQgAAQkAAQYIBQEFAQsEAQgAAgkABQQHCwQBCQADBQcIBQMHCwQBCQADBwgFAQsCAQkAAgcLBAEJAAsCAQkAAQMEQ29pbgxDb2luTWV0YWRhdGEHTUFOQUdFRAZPcHRpb24LVHJlYXN1cnlDYXAJVHhDb250ZXh0A1VybARidXJuBGNvaW4PY3JlYXRlX2N1cnJlbmN5C2R1bW15X2ZpZWxkBGluaXQHbWFuYWdlZARtaW50EW1pbnRfYW5kX3RyYW5zZmVyB21pbnRfdG8Ebm9uZQZvcHRpb24UcHVibGljX2ZyZWV6ZV9vYmplY3QPcHVibGljX3RyYW5zZmVyBnNlbmRlcgh0cmFuc2Zlcgp0eF9jb250ZXh0A3VybAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgoCCAdNQU5BR0VECgIBAAACAQoBAAAAAAYSCwAxAgcABwEHATgACgE4AQwCDAMLAjgCCwMLAS4RCzgDAgEBBAABBgsACwELAgsDOAQCAgEAAAEFCwALAQsCOAUCAwEEAAEFCwALATgGAQIA"];
 const dependencies = ["0x0000000000000000000000000000000000000000000000000000000000000001","0x0000000000000000000000000000000000000000000000000000000000000002"];
 
 void main() {
@@ -233,9 +233,8 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    final coins = await client.provider.getGasObjectsOwnedByAddress(sender);
+    final gasCoin = coins.last;
 
     final txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
@@ -261,18 +260,18 @@ void main() {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
+    final receiver = SuiAccount.ed25519Account().getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
-    final obj = coins.skip(1).first.data!;
+    final coins = await client.provider.getGasObjectsOwnedByAddress(sender);
+    final gasCoin = coins[0];
+    final obj = coins[1];
 
     final txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
     txb.transferObjects(
       [txb.objectRef(obj)],
-      txb.pureAddress(sender),
+      txb.pureAddress(receiver),
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
@@ -288,11 +287,10 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.last.data!;
-    final destObj = coins.first.data!;
-    final srcObj = coins.skip(1).first.data!;
+    final coins = await client.provider.getGasObjectsOwnedByAddress(sender);
+    final gasCoin = coins.last;
+    final destObj = coins.first;
+    final srcObj = coins[1];
 
     final txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
@@ -310,57 +308,112 @@ void main() {
   });
 
 
-  test('test transacitonblock public package', () async {
+  test('test transacitonblock publish package and move call', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    var gasCoin = (await client.provider.getGasObjectsOwnedByAddress(sender)).last;
 
-    final txb = TransactionBlock();
+    var txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
-    final resp = await client.signAndExecuteTransactionBlock(
+    final resp1 = await client.signAndExecuteTransactionBlock(
+      signer,
+      txb,
+      responseOptions: SuiTransactionBlockResponseOptions(showObjectChanges: true)
+    );
+    print(resp1.digest);
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    final packageId = resp1.objectChanges!.firstWhere((e) => e["type"] == "published")["packageId"];
+    final capObjectId = resp1.objectChanges!.firstWhere((e) => e["type"] == "created" && e["objectType"] != null && e["objectType"].toString().startsWith("0x2::coin::TreasuryCap"))["objectId"];
+    final capObj = await client.provider.getObject(capObjectId);
+
+    gasCoin = (await client.provider.getGasObjectsOwnedByAddress(sender)).last;
+
+    txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(100000000));
+
+    final coin = txb.moveCall(
+      target: "$packageId::managed::mint",
+      arguments: [
+        // txb.pure(capObjectId), txb.pureInt(1000)
+        txb.objectRef(capObj.data!), txb.pureInt(1000)
+      ]
+    );
+    txb.moveCall(
+      target: "$packageId::managed::burn",
+      arguments: [
+        // txb.pure(capObjectId), coin
+        txb.objectRef(capObj.data!), coin
+      ]
+    );
+    // txb.transferObjects([coin], txb.pureAddress(sender));
+
+    final resp2 = await client.signAndExecuteTransactionBlock(
       signer,
       txb,
     );
-    print(resp.digest);
+    print(resp2);
   });
 
 
-  test('test transacitonblock moveCall', () async {
+
+test('test transacitonblock publish package and multi mint move call', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    var gasCoin = (await client.provider.getGasObjectsOwnedByAddress(sender)).last;
 
-    final capObj = ownedObjs.data.firstWhere((e) => e.data?.type?.startsWith("0x2::coin::TreasuryCap") ?? false);
+    var txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(100000000));
+    final cap = txb.publish(modules, dependencies);
+    txb.transferObjects([cap], txb.pureAddress(sender));
 
-    final txb = TransactionBlock();
+    final resp1 = await client.signAndExecuteTransactionBlock(
+      signer,
+      txb,
+      responseOptions: SuiTransactionBlockResponseOptions(showObjectChanges: true)
+    );
+    print(resp1.digest);
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    final packageId = resp1.objectChanges!.firstWhere((e) => e["type"] == "published")["packageId"];
+    final capObjectId = resp1.objectChanges!.firstWhere((e) => e["type"] == "created" && e["objectType"] != null && e["objectType"].toString().startsWith("0x2::coin::TreasuryCap"))["objectId"];
+    final capObj = await client.provider.getObject(capObjectId);
+
+    gasCoin = (await client.provider.getGasObjectsOwnedByAddress(sender)).last;
+
+    txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
-    txb.moveCall(
-      target: "0x06248169793ef0aded8ac885ee4b18f0b2330177c61e95002854f029b5fed684::managed::mint",
-      arguments: [
-        txb.pure(capObj.data!.objectId), txb.pureInt(1000), txb.pureAddress(sender)
-        // txb.objectRef(capObj.data!), txb.pureInt(1000), txb.pureAddress(sender)
-      ]
-    );
+    for (var i = 0; i < 3; i++) {
+      final coin = txb.moveCall(
+        target: "$packageId::managed::mint",
+        arguments: [
+          // txb.pure(capObjectId), txb.pureInt(1000)
+          txb.objectRef(capObj.data!), txb.pureInt(1000)
+        ]
+      );
 
-    final resp = await client.signAndExecuteTransactionBlock(
+      txb.transferObjects([coin], txb.pureAddress(sender));
+    }
+
+    final resp2 = await client.signAndExecuteTransactionBlock(
       signer,
       txb,
     );
-    print(resp);
+    print(resp2);
   });
 
 
@@ -369,23 +422,22 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.provider.getOwnedObjectList(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
+    final coins = await client.provider.getGasObjectsOwnedByAddress(sender);
+    final gasCoin = coins[0];
 
     final txb = TransactionBlock();
     txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
     final vec = txb.makeMoveVec(objects: [
-      txb.objectRef(coins.skip(2).first.data!),
-      txb.objectRef(coins.skip(3).first.data!)
+      txb.objectRef(coins[2]),
+      txb.objectRef(coins[3])
     ]);
 
     txb.moveCall(
       target: "0x2::pay::join_vec",
       typeArguments: ["0x2::sui::SUI"],
-      arguments: [txb.objectRef(coins.skip(1).first.data!), vec]
+      arguments: [txb.objectRef(coins[1]), vec]
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
