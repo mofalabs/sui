@@ -52,8 +52,7 @@ class SuiClient extends SignerWithProvider {
     options ??= BuildOptions(client: this);
     options.client ??= this;
 
-    if(responseOptions != null && 
-      (responseOptions.showEvents || responseOptions.showEffects || responseOptions.showObjectChanges)) {
+    if(responseOptions != null) {
       requestType = ExecuteTransaction.WaitForLocalExecution;
     }
 
