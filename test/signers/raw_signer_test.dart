@@ -10,7 +10,6 @@ import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
 import 'package:sui/signers/raw_signer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
-import 'package:sui/types/transactions.dart';
 
 void main() {
 
