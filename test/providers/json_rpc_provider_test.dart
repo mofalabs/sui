@@ -30,6 +30,11 @@ void main() {
     expect(resp > BigInt.zero, true);
   });
 
+  test('test totalSupply', () async {
+    final resp = await provider.getTotalSupply("0x2::sui::SUI");
+    expect(resp.value, BigInt.zero);
+  });
+
   test('test getLoadedChildObjects', () async {
     const tx = 'D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb';
     final resp = await provider.getLoadedChildObjects(tx);

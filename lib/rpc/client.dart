@@ -16,19 +16,19 @@ class JsonRpcClient {
     String method,
     [List<dynamic>? args]
   ) async {
-    final resp = await sendRequest(method, args ?? []);
-    return resp;
+    final result = await sendRequest(method, args ?? []);
+    return result;
   }
 
   Future<dynamic> batchRequest(
     Iterable<Map<String, dynamic>> requests
   ) async {
-    final batchResp = <dynamic>[];
+    final batchResult = <dynamic>[];
     for (var item in requests) {
       final resp = await request(item['method'], item['args']);
-      batchResp.add(resp);
+      batchResult.add(resp);
     }
-    return batchResp;
+    return batchResult;
   }
 
   Future<dynamic> sendRequest(String method, [dynamic parameters]) async {

@@ -97,7 +97,7 @@ class CoinSupply {
 
   CoinSupply(this.value);
 
-  factory CoinSupply.fromJson(dynamic data) {
-    return CoinSupply(BigInt.parse((data['coinType'] ?? '0').toString()));
+  factory CoinSupply.fromJson(Map<String, dynamic> data) {
+    return CoinSupply(BigInt.parse((data['value'] ?? '0').toString()));
   }
 }
