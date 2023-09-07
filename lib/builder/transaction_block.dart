@@ -267,8 +267,8 @@ class TransactionBlock {
 		return _input('pure', Inputs.pure(hex, BCS.HEX));
   }
 
-  Map<String, dynamic> pureVector(dynamic vector) {
-		return _input('pure', Inputs.pure(vector, BCS.VECTOR));
+  Map<String, dynamic> pureVector<T>(List<T> vector, String type) {
+		return _input('pure', Inputs.pure(vector, "${BCS.VECTOR}<$type>"));
   }
 
   Map<String, dynamic> pureBase64(String value) {
@@ -309,8 +309,8 @@ class TransactionBlock {
     ));
 	}
 
-	TransactionResult moveCall({
-    required String target,
+	TransactionResult moveCall(
+    String target, {
     List? typeArguments,
     List? arguments
 	}) {

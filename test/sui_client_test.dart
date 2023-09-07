@@ -341,14 +341,14 @@ void main() {
     txb.setGasBudget(BigInt.from(100000000));
 
     final coin = txb.moveCall(
-      target: "$packageId::managed::mint",
+      "$packageId::managed::mint",
       arguments: [
         // txb.pure(capObjectId), txb.pureInt(1000)
         txb.objectRef(capObj.data!), txb.pureInt(1000)
       ]
     );
     txb.moveCall(
-      target: "$packageId::managed::burn",
+      "$packageId::managed::burn",
       arguments: [
         // txb.pure(capObjectId), coin
         txb.objectRef(capObj.data!), coin
@@ -399,7 +399,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
 
     for (var i = 0; i < 3; i++) {
       final coin = txb.moveCall(
-        target: "$packageId::managed::mint",
+        "$packageId::managed::mint",
         arguments: [
           // txb.pure(capObjectId), txb.pureInt(1000)
           txb.objectRef(capObj.data!), txb.pureInt(1000)
@@ -435,7 +435,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     ]);
 
     txb.moveCall(
-      target: "0x2::pay::join_vec",
+      "0x2::pay::join_vec",
       typeArguments: ["0x2::sui::SUI"],
       arguments: [txb.objectRef(coins[1]), vec]
     );
@@ -500,7 +500,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000000)]);
     txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
 
-    txb.moveCall(target: '0xb1d6722effda483fdee29fb26460906f188c9cb8c41f428bc42676d093cd08cf::test::test', arguments: [
+    txb.moveCall('0xb1d6722effda483fdee29fb26460906f188c9cb8c41f428bc42676d093cd08cf::test::test', arguments: [
       txb.pureString('demo'),
       txb.pureString('string'),
       txb.pureString("xyz")
@@ -509,6 +509,33 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final resp = await client.signAndExecuteTransactionBlock(account, txb);
     expect(resp.confirmedLocalExecution, false);
     
+  });
+
+  test('test transaction block move call pure values', () async {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final client = SuiClient(Constants.devnetAPI, account: account);
+    final ownedObjs =
+        await client.provider.getOwnedObjectList(account.getAddress());
+    final coins = ownedObjs.data
+        .where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false)
+        .toList();
+    final gasCoin = coins.first.data!;
+    final txb = TransactionBlock();
+    txb.setGasPayment([gasCoin]);
+    txb.setGasBudget(BigInt.from(2000000));
+
+    final emptyVec = txb.moveCall("0x1::vector::empty", typeArguments: [BCS.U64]);
+    txb.moveCall(
+      "0x1::vector::append",
+      typeArguments: [BCS.U64], 
+      arguments: [
+        emptyVec,
+        txb.pureVector([1, 2, 3], BCS.U64)
+      ]
+    );
+
+    final resp = await client.signAndExecuteTransactionBlock(account, txb);
+    expect(resp.confirmedLocalExecution, false);
   });
 
 }
