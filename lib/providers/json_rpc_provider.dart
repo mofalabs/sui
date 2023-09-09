@@ -422,42 +422,47 @@ class JsonRpcProvider {
   }
 
   /// Query Transactions
-  Future<List<SuiTransactionBlockResponse>> getTransactions(
+  Future<(List<SuiTransactionBlockResponse> data, String?, String?)> getTransactions(
     String address, {
     SuiTransactionBlockResponseOptions? options,
-    TransactionDigest? cursor,
+    TransactionDigest? filterFromCursor,
+    TransactionDigest? filterToCursor,
     int? limit,
     bool descendingOrder = true,
   }) async {
     final filterFromAddressQuery = queryTransactionBlocks(
         {'FromAddress': address},
         options: options,
-        cursor: cursor,
+        cursor: filterFromCursor,
         limit: limit,
         descendingOrder: descendingOrder);
     final filterToAddressQuery = queryTransactionBlocks(
         {'ToAddress': address},
         options: options,
-        cursor: cursor,
+        cursor: filterToCursor,
         limit: limit,
         descendingOrder: descendingOrder);
 
     final result = await Future.wait([filterFromAddressQuery, filterToAddressQuery]);
 
-    final txs = result[0].data;
+    final fromResult = result[0];
+    final toResult = result[1];
+    final txs = fromResult.data;
+    final nextFromCursor = fromResult.hasNextPage ? fromResult.nextCursor : null;
+    final nextToCursor = toResult.hasNextPage ? toResult.nextCursor : null;
     final digests = txs.isNotEmpty ? txs.map((e) => e.digest).toList() : [];
     if (digests.isEmpty) {
-      return result[1].data;
+      return (toResult.data, nextFromCursor, nextToCursor);
     }
 
-    for (var item in result[1].data) {
+    for (var item in toResult.data) {
       if (digests.contains(item.digest)) {
         continue;
       }
 
       txs.add(item);
     }
-    return txs;
+    return (txs, nextFromCursor, nextToCursor);
   }
 
 

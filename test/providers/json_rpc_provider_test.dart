@@ -74,18 +74,18 @@ void main() {
 
   test('test getTransactions', () async {
     final resp = await provider.getTransactions(address);
-    expect(resp.isNotEmpty, true);
+    expect(resp.$1.isNotEmpty, true);
   });
 
   test('test getTransactionWithEffects', () async {
-    final txns = await provider.getTransactions(address);
+    final txns = (await provider.getTransactions(address)).$1;
     expect(txns.isNotEmpty, true);
     final resp = await provider.getTransactionBlock(txns[0].digest);
     expect(txns[0].digest == resp.digest, true);
   });
 
   test('test getTransactionWithEffectsBatch', () async {
-    final txs = await provider.getTransactions(address);
+    final txs = (await provider.getTransactions(address)).$1;
     List<String> txDigests = [];
     for (var element in txs) {
       txDigests.add(element.digest);
