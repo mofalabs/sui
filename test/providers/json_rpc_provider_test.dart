@@ -11,7 +11,7 @@ void main() {
   late JsonRpcProvider provider;
 
   setUp(() {
-    provider = JsonRpcProvider(Constants.mainnetAPI);
+    provider = JsonRpcProvider(Constants.devnetAPI);
   });
 
   test('test getCheckpoint', () async {

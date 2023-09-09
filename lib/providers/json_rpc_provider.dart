@@ -305,7 +305,7 @@ class JsonRpcProvider {
   Future<PaginatedTransactionResponse> queryTransactionBlocks(
       Map filter,
       {SuiTransactionBlockResponseOptions? options,
-      int limit = 100,
+      int? limit,
       String? cursor,
       bool descendingOrder = true}) async {
     final data = await client.request('suix_queryTransactionBlocks', [
@@ -421,12 +421,12 @@ class JsonRpcProvider {
     return result;
   }
 
-  /// Query Transactions Hash
+  /// Query Transactions
   Future<List<SuiTransactionBlockResponse>> getTransactions(
     String address, {
     SuiTransactionBlockResponseOptions? options,
     TransactionDigest? cursor,
-    int limit = 100,
+    int? limit,
     bool descendingOrder = true,
   }) async {
     final filterFromAddress = await queryTransactionBlocks(
@@ -442,19 +442,20 @@ class JsonRpcProvider {
         limit: limit,
         descendingOrder: descendingOrder);
 
-    final txIds = <SuiTransactionBlockResponse>{};
-    for (var item in filterFromAddress.data) {
-      txIds.add(item);
+    final txs = filterFromAddress.data;
+    final digests = txs.isNotEmpty ? txs.map((e) => e.digest).toList() : [];
+    if (digests.isEmpty) {
+      return filterToAddress.data;
     }
 
     for (var item in filterToAddress.data) {
-      if (txIds.isNotEmpty && txIds.map((e) => e.digest).contains(item.digest)) {
+      if (digests.contains(item.digest)) {
         continue;
       }
 
-      txIds.add(item);
+      txs.add(item);
     }
-    return txIds.toList();
+    return txs;
   }
 
 
