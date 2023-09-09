@@ -429,26 +429,28 @@ class JsonRpcProvider {
     int? limit,
     bool descendingOrder = true,
   }) async {
-    final filterFromAddress = await queryTransactionBlocks(
+    final filterFromAddressQuery = queryTransactionBlocks(
         {'FromAddress': address},
         options: options,
         cursor: cursor,
         limit: limit,
         descendingOrder: descendingOrder);
-    final filterToAddress = await queryTransactionBlocks(
+    final filterToAddressQuery = queryTransactionBlocks(
         {'ToAddress': address},
         options: options,
         cursor: cursor,
         limit: limit,
         descendingOrder: descendingOrder);
 
-    final txs = filterFromAddress.data;
+    final result = await Future.wait([filterFromAddressQuery, filterToAddressQuery]);
+
+    final txs = result[0].data;
     final digests = txs.isNotEmpty ? txs.map((e) => e.digest).toList() : [];
     if (digests.isEmpty) {
-      return filterToAddress.data;
+      return result[1].data;
     }
 
-    for (var item in filterToAddress.data) {
+    for (var item in result[1].data) {
       if (digests.contains(item.digest)) {
         continue;
       }
