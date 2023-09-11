@@ -220,6 +220,10 @@ class TransactionBlock {
 		return inserted.isNotEmpty ? inserted : _input('object', value);
 	}
 
+	Map<String, dynamic> objectId(String value) {
+    return object(value);
+	}
+
 	/// Add a new object input to the transaction using the fully-resolved object reference.
 	/// If you only have an object ID, use `builder.object(id)` instead.
 	Map<String, dynamic> objectRef(SuiObjectRef args) {
