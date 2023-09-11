@@ -53,8 +53,12 @@ getIdFromCallArg(dynamic arg) {
   return normalizeSuiAddress(arg["Object"]["Shared"]["objectId"]);
 }
 
-dynamic getSharedObjectInput(Map arg) {
-  return arg["Object"]?["Shared"];
+dynamic getSharedObjectInput(dynamic arg) {
+  if (arg is Map) {
+    return arg["Object"]?["Shared"];
+  } else {
+    return null;
+  }
 }
 
 bool isSharedObjectInput(dynamic arg) {

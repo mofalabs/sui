@@ -31,7 +31,7 @@ class ObjectOwner {
     return ObjectOwner(
       data['AddressOwner'],
       data['ObjectOwner'],
-      data['shared'] != null ? Shared.fromJson(data['shared']) : null,
+      data['Shared'] != null ? Shared.fromJson(data['Shared']) : null,
       null
     );
   }
