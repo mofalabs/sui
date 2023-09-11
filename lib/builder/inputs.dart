@@ -31,12 +31,24 @@ class Inputs {
   }
 
   static Map<String, dynamic> sharedObjectRef(dynamic data) {
+    bool mutable = false;
+    int initialSharedVersion;
+    String objectId;
+    if (data is SuiObject) {
+      mutable = data.owner!.immutable ? false : true;
+      initialSharedVersion = data.owner!.shared!.initialSharedVersion;
+      objectId = data.objectId;
+    } else {
+      mutable = data["mutable"];
+      initialSharedVersion = data["initialSharedVersion"];
+      objectId = data["objectId"];
+    }
     return {
       "Object": {
         "Shared": {
-          "mutable": data["mutable"],
-          "initialSharedVersion": data["initialSharedVersion"],
-          "objectId": normalizeSuiAddress(data["objectId"]),
+          "mutable": mutable,
+          "initialSharedVersion": initialSharedVersion,
+          "objectId": normalizeSuiAddress(objectId),
         },
       },
     };

@@ -19,7 +19,7 @@ class ObjectOwner {
   SuiAddress? addressOwner;
   SuiAddress? objectOwner;
   Shared? shared;
-  bool? immutable;
+  bool immutable;
 
   ObjectOwner(this.addressOwner, this.objectOwner, this.shared, this.immutable);
 
@@ -32,7 +32,7 @@ class ObjectOwner {
       data['AddressOwner'],
       data['ObjectOwner'],
       data['Shared'] != null ? Shared.fromJson(data['Shared']) : null,
-      null
+      false
     );
   }
 }

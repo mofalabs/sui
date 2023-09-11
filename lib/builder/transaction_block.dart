@@ -232,7 +232,7 @@ class TransactionBlock {
 
 	/// Add a new shared object input to the transaction using the fully-resolved shared object reference.
 	/// If you only have an object ID, use `builder.object(id)` instead.
-	Map<String, dynamic> sharedObjectRef(dynamic args) {
+	Map<String, dynamic> sharedObjectRef(SuiObject args) {
 		return object(Inputs.sharedObjectRef(args));
 	}
 
