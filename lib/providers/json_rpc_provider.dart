@@ -139,7 +139,7 @@ class JsonRpcProvider {
     return CoinSupply.fromJson(result);
   }
 
-  Future<dynamic> getMoveFunctionArgTypes({
+  Future<List<dynamic>> getMoveFunctionArgTypes({
     required String packageId,
     required String moduleName,
     required String functionName
@@ -148,7 +148,7 @@ class JsonRpcProvider {
       'sui_getMoveFunctionArgTypes',
       [packageId, moduleName, functionName]
     );
-    return result;
+    return List<dynamic>.from(result);
   }
 
   Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(

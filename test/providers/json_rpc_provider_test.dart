@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
@@ -11,23 +9,24 @@ void main() {
   late JsonRpcProvider provider;
 
   setUp(() {
-    provider = JsonRpcProvider(Constants.devnetAPI);
+    provider = JsonRpcProvider(Constants.mainnetAPI);
+  });
+
+  test('test getLatestCheckpointSequenceNumber', () async {
+    final resp = await provider.getLatestCheckpointSequenceNumber();
+    expect(resp > BigInt.zero, true);
   });
 
   test('test getCheckpoint', () async {
-    final resp = await provider.getCheckpoint("2525432");
-    expect(resp.sequenceNumber == "2525432", true);
+    final seq = await provider.getLatestCheckpointSequenceNumber();
+    final resp = await provider.getCheckpoint(seq.toString());
+    expect(resp.sequenceNumber == seq.toString(), true);
   });
 
   test('test getCheckpoints', () async {
     final resp = await provider.getCheckpoints();
     expect(resp.hasNextPage, true);
     expect(resp.data.isNotEmpty, true);
-  });
-
-  test('test getLatestCheckpointSequenceNumber', () async {
-    final resp = await provider.getLatestCheckpointSequenceNumber();
-    expect(resp > BigInt.zero, true);
   });
 
   test('test totalSupply', () async {
@@ -42,15 +41,15 @@ void main() {
   });
 
   test('test getMoveFunctionArgTypes', () async {
-    const package = "0xf45f752bc45dadff2ebc867c69af682c7192686d2455f655e2c54c9c75e95cff";
-    const module = "post";
-    const function = "create_post";
+    const package = "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1";
+    const module = "suifrens";
+    const function = "burn";
     final resp = await provider.getMoveFunctionArgTypes(
       packageId: package,
       moduleName: module,
       functionName: function
     );
-    expect(resp.length > 0, true);
+    expect(resp.isNotEmpty, true);
   });
 
 
