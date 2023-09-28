@@ -136,7 +136,7 @@ void main() {
     final coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
-      final resp = await faucet.requestSui(account.getAddress());
+      final resp = await faucet.requestSuiFromFaucetV1(account.getAddress());
       assert(resp.transferredGasObjects.isNotEmpty);
     }
 
@@ -161,7 +161,7 @@ void main() {
     final coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
-      final resp = await faucet.requestSui(account.getAddress());
+      final resp = await faucet.requestSuiFromFaucetV1(account.getAddress());
       assert(resp.transferredGasObjects.isNotEmpty);
     }
 
@@ -186,7 +186,7 @@ void main() {
     final coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
-      final resp = await faucet.requestSui(account.getAddress());
+      final resp = await faucet.requestSuiFromFaucetV1(account.getAddress());
       assert(resp.transferredGasObjects.isNotEmpty);
     }
 

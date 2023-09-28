@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _balance = resp.totalBalance;
     if (_balance <= BigInt.zero) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
-      await faucet.requestSui(account.getAddress());
+      await faucet.requestSuiFromFaucetV1(account.getAddress());
     }
     await Future.delayed(const Duration(seconds: 2));
 
