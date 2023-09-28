@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sui/builder/transaction_block.dart';
+import 'package:sui/builder/transactions.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui.dart';
+import 'package:sui/types/objects.dart';
 
 void main() {
   const mnemonics = "describe beyond repair shuffle pluck during still prefer gravity film green master";
@@ -17,7 +20,7 @@ void main() {
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
         final faucet = FaucetClient(Constants.faucetDevAPI);
-        final resp = await faucet.requestSui(account.getAddress());
+        final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
         assert(resp.transferredGasObjects.isNotEmpty);
         coins = await client.getCoins(account.getAddress());
     }
@@ -46,7 +49,7 @@ void main() {
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
         final faucet = FaucetClient(Constants.faucetDevAPI);
-        final resp = await faucet.requestSui(account.getAddress());
+        final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
         assert(resp.transferredGasObjects.isNotEmpty);
         coins = await client.getCoins(account.getAddress());
     }
@@ -75,7 +78,7 @@ void main() {
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
-      final resp = await faucet.requestSui(account.getAddress());
+      final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
       assert(resp.transferredGasObjects.isNotEmpty);
       coins = await client.getCoins(account.getAddress());
     }
@@ -91,6 +94,32 @@ void main() {
     txn.gasBudget = await client.getGasCostEstimation(txn);
 
     final waitForLocalExecutionTx = await client.paySui(txn);
+    debugPrint(waitForLocalExecutionTx.digest);
+  });
+
+test('test programmable transaction blocks', () async {
+    final recipientAccount = SuiAccount.ed25519Account();
+    final recipient = recipientAccount.getAddress();
+
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final client = SuiClient(Constants.devnetAPI, account: account);
+    var coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
+        final faucet = FaucetClient(Constants.faucetDevAPI);
+        final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
+        assert(resp.transferredGasObjects.isNotEmpty);
+    }
+
+    final gasCoin = coins.data.first;
+
+    final tx = TransactionBlock();
+    tx.setGasPayment([SuiObjectRef(gasCoin.digest, gasCoin.coinObjectId, gasCoin.version)]);
+    tx.setGasBudget(BigInt.from(2000000));
+
+    final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
+    tx.add(Transactions.transferObjects([coin], tx.pureAddress(recipient)));
+
+    final waitForLocalExecutionTx = await client.signAndExecuteTransactionBlock(account, tx);
     debugPrint(waitForLocalExecutionTx.digest);
   });
 }

@@ -5,7 +5,7 @@ import 'objects.dart';
 class CoinStruct {
   String coinType;
   ObjectId coinObjectId;
-  String version;
+  int version;
   TransactionDigest digest;
   String balance;
   TransactionDigest previousTransaction;
@@ -23,7 +23,7 @@ class CoinStruct {
     return CoinStruct(
       data['coinType'],
       data['coinObjectId'],
-      data['version'],
+      int.parse(data['version']),
       data['digest'],
       data['balance'],
       data['previousTransaction'],

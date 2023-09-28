@@ -454,7 +454,7 @@ class TransactionBlock {
 
 			final usePaymentCoins = paymentCoins
         .sublist(0, end)
-			  .map((coin) => SuiObjectRef(coin.digest, coin.coinObjectId, int.parse(coin.version)))
+			  .map((coin) => SuiObjectRef(coin.digest, coin.coinObjectId, coin.version))
         .toList();
 
 		if (paymentCoins.isEmpty) {

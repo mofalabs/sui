@@ -27,7 +27,7 @@ final client = SuiClient(Constants.devnetAPI, account: account);
 var coins = await client.getCoins(account.getAddress());
 if (coins.data.isEmpty) {
     final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSui(account.getAddress());
+    final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
     assert(resp.transferredGasObjects.isNotEmpty);
     coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
 }
@@ -59,7 +59,7 @@ final client = SuiClient(Constants.devnetAPI, account: account);
 var coins = await client.getCoins(account.getAddress());
 if (coins.data.isEmpty) {
     final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSui(account.getAddress());
+    final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
     assert(resp.transferredGasObjects.isNotEmpty);
     coins = await client.getCoins(account.getAddress());
 }
@@ -90,7 +90,7 @@ final client = SuiClient(Constants.devnetAPI, account: account);
 var coins = await client.getCoins(account.getAddress());
 if (coins.data.isEmpty) {
     final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSui(account.getAddress());
+    final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
     assert(resp.transferredGasObjects.isNotEmpty);
     coins = await client.getCoins(account.getAddress());
 }
@@ -108,3 +108,34 @@ txn.gasBudget = await client.getGasCostEstimation(txn);
 final waitForLocalExecutionTx = await client.paySui(txn);
 print(waitForLocalExecutionTx.digest);
 ```
+
+#### Programmable Transaction Blocks
+
+```dart
+test('test programmable transaction blocks', () async {
+    final recipientAccount = SuiAccount.ed25519Account();
+    final recipient = recipientAccount.getAddress();
+
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final client = SuiClient(Constants.devnetAPI, account: account);
+    var coins = await client.getCoins(account.getAddress());
+    if (coins.data.isEmpty) {
+        final faucet = FaucetClient(Constants.faucetDevAPI);
+        final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
+        assert(resp.transferredGasObjects.isNotEmpty);
+    }
+
+    final gasCoin = coins.data.first;
+
+    final tx = TransactionBlock();
+    tx.setGasPayment([SuiObjectRef(gasCoin.digest, gasCoin.coinObjectId, gasCoin.version)]);
+    tx.setGasBudget(BigInt.from(2000000));
+
+    final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
+    tx.add(Transactions.transferObjects([coin], tx.pureAddress(recipient)));
+
+    final waitForLocalExecutionTx = await client.signAndExecuteTransactionBlock(account, tx);
+    debugPrint(waitForLocalExecutionTx.digest);
+});
+```
+
