@@ -8,6 +8,7 @@ import 'package:sui/builder/inputs.dart';
 import 'package:sui/builder/serializer.dart';
 import 'package:sui/builder/transaction_block_data.dart';
 import 'package:sui/builder/transactions.dart';
+import 'package:sui/builder/utils.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/sui_client.dart';
 import 'package:sui/types/common.dart';
@@ -501,56 +502,44 @@ class TransactionBlock {
         continue;
       }
 
-			// Get the matching struct definition for the transaction, and use it to attempt to automatically
-			// encode the matching inputs.
-			// final transactionType = getTransactionType(transaction);
-			// if (transactionType.schema == null) return;
+      final transactionType = transaction["kind"];
 
-      // const TRANSACTION_TYPE = 'transaction-argument-type';
+      (transaction as Map).forEach((key, value) {
+				if (key == 'kind') return;
 
-      // (transaction as Map).forEach((key, value) {
-			// 	if (key == 'kind') return;
-			// 	var keySchema = transaction[key];
-      //   // TODO: check below code
-      //   if (keySchema is Iterable) keySchema = keySchema.first;
-			// 	final isArray = keySchema["type"] == 'array';
-			// 	final wellKnownEncoding = isArray
-			// 		? keySchema["schema"][TRANSACTION_TYPE]
-			// 		: keySchema[TRANSACTION_TYPE];
+        var wellKnownEncoding = WellKnownEncoding.getWellKnownEncoding(transactionType, key);
+        if (wellKnownEncoding == null) return;
+        
+				void encodeInput(int index) {
+					if (inputs.length <= index) {
+						throw ArgumentError("Missing input ${value["index"]}");
+					}
 
-			// 	// This argument has unknown encoding, assume it must be fully-encoded:
-			// 	if (wellKnownEncoding == null) return;
+					final input = inputs[index];
+					// Input is fully resolved:
+					if (isBuilderCallArg(input["value"])) return;
+					if (wellKnownEncoding["kind"] == 'object' && input["value"] is String) {
+						// The input is a string that we need to resolve to an object reference:
+						objectsToResolve.add({ "id": input["value"], "input": input });
+					} else if (wellKnownEncoding["kind"] == 'pure') {
+						// Pure encoding, so construct BCS bytes:
+						input["value"] = Inputs.pure(input["value"], wellKnownEncoding["type"]);
+					} else {
+						throw ArgumentError('Unexpected input format.');
+					}
+				}
 
-			// 	void encodeInput(index) {
-			// 		final input = inputs[index];
-			// 		if (!input) {
-			// 			throw ArgumentError("Missing input ${value["index"]}");
-			// 		}
+				if (value is Iterable) {
+					for (var item in value) {
+						if (item["kind"] != 'Input') continue;
+						encodeInput(item["index"]);
+					}
+				} else {
+					if (value["kind"] != 'Input') return;
+					encodeInput(value["index"]);
+				}
 
-			// 		// Input is fully resolved:
-			// 		if (isBuilderCallArg(input["value"])) return;
-			// 		if (wellKnownEncoding["kind"] == 'object' && input["value"] is String) {
-			// 			// The input is a string that we need to resolve to an object reference:
-			// 			objectsToResolve.add({ "id": input["value"], "input": input });
-			// 		} else if (wellKnownEncoding["kind"] == 'pure') {
-			// 			// Pure encoding, so construct BCS bytes:
-			// 			input["value"] = Inputs.pure(input["value"], wellKnownEncoding["type"]);
-			// 		} else {
-			// 			throw ArgumentError('Unexpected input format.');
-			// 		}
-			// 	}
-
-			// 	if (isArray) {
-			// 		value.forEach((arrayItem) {
-			// 			if (arrayItem["kind"] != 'Input') return;
-			// 			encodeInput(arrayItem.index);
-			// 		});
-			// 	} else {
-			// 		if (value["kind"] != 'Input') return;
-			// 		encodeInput(value["index"]);
-			// 	}
-
-      // });
+      });
     }
 
     if (moveModulesToResolve.isNotEmpty) {

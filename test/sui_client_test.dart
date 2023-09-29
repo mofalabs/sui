@@ -538,4 +538,70 @@ test('test transacitonblock publish package and multi mint move call', () async 
     expect(resp.confirmedLocalExecution, false);
   });
 
+  test("test restore transaction block data", () async {
+    final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
+    final address = account.getAddress();
+    final client = SuiClient(Constants.devnetAPI, account: account);
+
+    var txJson = {
+      "version": 1,
+      "gasConfig": {
+          "budget": "2000000000"
+      },
+      "inputs": [
+          {
+              "kind": "Input",
+              "value": 1000,
+              "index": 0,
+              "type": "pure"
+          },
+          {
+              "kind": "Input",
+              "value": address,
+              "index": 1,
+              "type": "pure"
+          }
+      ],
+      "transactions": [
+          {
+              "kind": "SplitCoins",
+              "coin": {
+                  "kind": "GasCoin"
+              },
+              "amounts": [
+                  {
+                      "kind": "Input",
+                      "value": 1000,
+                      "index": 0,
+                      "type": "pure"
+                  }
+              ]
+          },
+          {
+              "kind": "TransferObjects",
+              "objects": [
+                  {
+                      "kind": "Result",
+                      "index": 0
+                  }
+              ],
+              "address": {
+                  "kind": "Input",
+                  "value": address,
+                  "index": 1,
+                  "type": "pure"
+              }
+          }
+      ]
+    };
+
+    final transactionBlock = TransactionBlock.from(jsonEncode(txJson));
+    transactionBlock.setSender(address);
+    var txBytes = await transactionBlock.build(BuildOptions(client: client));
+    print(txBytes);
+  
+    final resp = await client.signAndExecuteTransaction(transaction: txBytes);
+    expect(resp.confirmedLocalExecution, true);
+  });
+
 }
