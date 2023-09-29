@@ -1,5 +1,4 @@
 
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
@@ -139,7 +138,6 @@ class TransactionBlockDataBuilder {
 	}
 
 	static TransactionBlockDataBuilder restore(Map<String, dynamic> data) {
-		// assert(data, SerializedTransactionDataBuilder);
 		final transactionData = TransactionBlockDataBuilder(
       SerializedTransactionDataBuilder.fromJson(data)
     );
@@ -176,10 +174,7 @@ class TransactionBlockDataBuilder {
 		bool? onlyTransactionKind,
 	}) {
 		// Resolve inputs down to values:
-		final inputs = this.inputs.map((input) {
-			// assert(input["value"], BuilderCallArg);
-			return input["value"];
-		});
+		final inputs = this.inputs.map((input) => input["value"]);
 
 		final kind = {
 			"ProgrammableTransaction": {

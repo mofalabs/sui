@@ -378,7 +378,7 @@ class TransactionBlock {
 	}
 
 	/// Build the transaction to BCS bytes, and sign it with the provided keypair.
-	Future<dynamic> sign(SignOptions options) async {
+	Future<SignatureWithBytes> sign(SignOptions options) async {
 		final bytes = await build(options);
 		return options.signer.signTransactionBlock(bytes);
 	}

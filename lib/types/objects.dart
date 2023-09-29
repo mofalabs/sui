@@ -281,19 +281,15 @@ class SuiObject extends SuiObjectRef {
   /// The digest of the transaction that created or last mutated this object.
   /// Default to be undefined unless SuiObjectDataOptions.showPreviousTransaction is set to true
   TransactionDigest? previousTransaction;
-  /*
-   * The amount of SUI we would rebate if this object gets deleted.
-   * This number is re-calculated each time the object is mutated based on
-   * the present storage gas price.
-   * Default to be undefined unless SuiObjectDataOptions.showStorageRebate is set to true
-   */
+  /// The amount of SUI we would rebate if this object gets deleted.
+  /// This number is re-calculated each time the object is mutated based on
+  /// the present storage gas price.
+  /// Default to be undefined unless SuiObjectDataOptions.showStorageRebate is set to true
   String? storageRebate;
 
-  /*
-   * Display metadata for this object, default to be undefined unless SuiObjectDataOptions.showDisplay is set to true
-   * This can also be None if the struct type does not have Display defined
-   * See more details in https://forums.sui.io/t/nft-object-display-proposal/4872
-   */
+  /// Display metadata for this object, default to be undefined unless SuiObjectDataOptions.showDisplay is set to true
+  /// This can also be None if the struct type does not have Display defined
+  /// See more details in https://forums.sui.io/t/nft-object-display-proposal/4872
   DisplayFieldsResponse? display;
 
   SuiObject(
@@ -367,12 +363,6 @@ typedef ObjectDigest = String;
 typedef ObjectId = String;
 typedef SequenceNumber = int;
 
-/* -------------------------------------------------------------------------- */
-/*                              Helper functions                              */
-/* -------------------------------------------------------------------------- */
-
-/* -------------------------- SuiObjectResponse ------------------------- */
-
 SuiObject? getSuiObjectData(SuiObjectResponse resp) {
   return resp.data;
 }
@@ -443,16 +433,14 @@ bool isSharedObject(SuiObjectResponse resp) {
 
 bool isImmutableObject(SuiObjectResponse resp) {
   final owner = getObjectOwner(resp);
-  return owner == 'Immutable';
+  return owner?.immutable ?? false;
 }
 
 String? getMoveObjectType(SuiObjectResponse resp) {
   return getMoveObject(resp)?.type;
 }
 
-ObjectContentFields? getObjectFields(dynamic resp
-    // SuiObjectResponse | SuiMoveObject
-    ) {
+ObjectContentFields? getObjectFields(dynamic resp) {
   if (resp is SuiMoveObject) {
     return resp.fields;
   }
@@ -460,8 +448,7 @@ ObjectContentFields? getObjectFields(dynamic resp
   return getMoveObject(resp)?.fields;
 }
 
-SuiMoveObject? getMoveObject(dynamic data // SuiObjectResponse | SuiObject
-    ) {
+SuiMoveObject? getMoveObject(dynamic data) {
   var suiObject = data is SuiObject ? data : getSuiObjectData(data);
   if (suiObject?.content?.dataType != 'moveObject') {
     return null;
@@ -469,14 +456,11 @@ SuiMoveObject? getMoveObject(dynamic data // SuiObjectResponse | SuiObject
   return suiObject?.content as SuiMoveObject;
 }
 
-bool hasPublicTransfer(dynamic data // SuiObjectResponse | SuiObject
-    ) {
+bool hasPublicTransfer(dynamic data) {
   return getMoveObject(data)?.hasPublicTransfer ?? false;
 }
 
-MovePackageContent? getMovePackageContent(dynamic data
-    // SuiObjectResponse | SuiMovePackage
-    ) {
+MovePackageContent? getMovePackageContent(dynamic data) {
   if (data is SuiMovePackage) {
     return data.disassembled;
   }
@@ -490,25 +474,25 @@ MovePackageContent? getMovePackageContent(dynamic data
 
 
 class SuiObjectDataOptions {
-  /* Whether to fetch the object type, default to be true */
+  /// Whether to fetch the object type, default to be true
   bool showType;
 
-  /* Whether to fetch the object content, default to be false */
+  /// Whether to fetch the object content, default to be false
   bool showContent;
 
-  /* Whether to fetch the object content in BCS bytes, default to be false */
+  /// Whether to fetch the object content in BCS bytes, default to be false
   bool showBcs;
 
-  /* Whether to fetch the object owner, default to be false */
+  /// Whether to fetch the object owner, default to be false
   bool showOwner;
 
-  /* Whether to fetch the previous transaction digest, default to be false */
+  /// Whether to fetch the previous transaction digest, default to be false
   bool showPreviousTransaction;
 
-  /* Whether to fetch the storage rebate, default to be false */
+  /// Whether to fetch the storage rebate, default to be false
   bool showStorageRebate;
 
-  /* Whether to fetch the display metadata, default to be false */
+  /// Whether to fetch the display metadata, default to be false
   bool showDisplay;
 
   SuiObjectDataOptions({
