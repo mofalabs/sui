@@ -20,8 +20,8 @@ class GasConfig {
 
    Map<String, dynamic> toJson() {
     return {
-      "budget": budget,
-      "price": price,
+      "budget": budget?.toString(),
+      "price": price?.toString(),
       "payment": payment?.map((e) => e.toJson()).toList(),
       "owner": owner
     };
@@ -58,7 +58,7 @@ class SerializedTransactionDataBuilder {
     return {
       "sender": sender,
       "expiration": expiration,
-      "gasConfig": gasConfig.toJson(),
+      "gasConfig": gasConfig,
       "inputs": inputs,
       "transactions": transactions
     };
@@ -248,7 +248,7 @@ class TransactionBlockDataBuilder {
 
 	SerializedTransactionDataBuilder snapshot() {
     return SerializedTransactionDataBuilder.fromJson({
-      "gasConfig": gasConfig.toJson(), 
+      "gasConfig": gasConfig.toJson(),
       "inputs": inputs, 
       "transactions": transactions,
       "sender": sender,

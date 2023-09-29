@@ -338,6 +338,22 @@ class SuiObject extends SuiObjectRef {
       display,
     );
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'digest': digest,
+      'objectId': objectId,
+      'version': version,
+      'type': type,
+      'content': content,
+      'bcs': bcs,
+      'owner': owner,
+      'previousTransaction': previousTransaction,
+      'storageRebate': storageRebate,
+      'display': display
+    };
+  }
 }
 
 class SuiObjectResponse {
