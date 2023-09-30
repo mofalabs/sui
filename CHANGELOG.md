@@ -9,3 +9,8 @@
 * Secp256r1
 
 * Programmable Transactions Block
+
+## 0.0.4
+
+* Add requestSuiFromFaucetV1
+* Fix TransactionBlock decode json data
