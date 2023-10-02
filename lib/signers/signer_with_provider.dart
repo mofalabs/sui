@@ -19,9 +19,10 @@ import 'package:sui/utils/sha.dart';
 class SignaturePubkeyPair {
   SignatureScheme signatureScheme;
   Uint8List signature;
-  PublicKey pubKey;
+  dynamic pubKey;
+  dynamic zkLogin;
 
-  SignaturePubkeyPair(this.signatureScheme, this.signature, this.pubKey);
+  SignaturePubkeyPair(this.signatureScheme, this.signature, {this.pubKey, this.zkLogin});
 }
 
 // This is currently hardcoded with [IntentScope::TransactionData = 0, Version::V0 = 0, AppId::Sui = 0]

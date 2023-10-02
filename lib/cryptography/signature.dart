@@ -5,12 +5,16 @@ import 'package:sui/cryptography/ed25519_publickey.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/secp256_publickey.dart';
 import 'package:sui/signers/signer_with_provider.dart';
+import 'package:sui/zklogin/address.dart';
+import 'package:sui/zklogin/jwt_utils.dart';
+import 'package:sui/zklogin/signature.dart';
 
 enum SignatureScheme {
   ED25519,
   Secp256k1,
   Secp256r1,
   MultiSig,
+  ZkLogin,
 }
 
 abstract class SIGNATURE_SCHEME_TO_FLAG {
@@ -18,6 +22,7 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
   static const int Secp256k1 = 0x01;
   static const int Secp256r1 = 0x02;
   static const int MultiSig = 0x03;
+  static const int ZkLogin = 0x05;
 
   static int schemeToFlag(SignatureScheme scheme) {
     switch (scheme) {
@@ -29,6 +34,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
         return Secp256r1;
       case SignatureScheme.MultiSig:
         return MultiSig;
+      case SignatureScheme.ZkLogin:
+        return ZkLogin;
       default:
         throw ArgumentError("Undefined Signature Scheme $scheme");
     }
@@ -44,6 +51,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
         return SignatureScheme.Secp256r1;
       case MultiSig:
         return SignatureScheme.MultiSig;
+      case ZkLogin:
+        return SignatureScheme.ZkLogin;
       default:
         throw ArgumentError("Undefined Signature Flag $flag");
     }
@@ -71,6 +80,21 @@ SignaturePubkeyPair parseSerializedSignature(
   final signatureScheme = SIGNATURE_SCHEME_TO_FLAG.flagToScheme(bytes[0]);
   if (signatureScheme == SignatureScheme.MultiSig) {
     throw ArgumentError('MultiSig is not supported');
+  }
+
+  if (signatureScheme == SignatureScheme.ZkLogin) {
+		final signatureBytes = bytes.sublist(1);
+		final signature = parseZkLoginSignature(signatureBytes);
+		final iss = extractClaimValue<String>(signature.inputs.issBase64Details, 'iss');
+		final address = computeZkLoginAddressFromSeed(BigInt.parse(signature.inputs.addressSeed), iss);
+    final zkLgoin = {
+				"inputs": signature.inputs,
+				"maxEpoch": signature.maxEpoch,
+				"userSignature": signature.userSignature,
+				"iss": iss,
+				"address": address,
+		};
+    return SignaturePubkeyPair(signatureScheme, signatureBytes, zkLogin: zkLgoin);
   }
 
   PublicKey getPublicKey(SignatureScheme scheme, Uint8List bytes) {
@@ -103,5 +127,5 @@ SignaturePubkeyPair parseSerializedSignature(
   final pubkeyBytes = bytes.sublist(1 + signature.length);
   final pubKey = getPublicKey(signatureScheme, pubkeyBytes);
 
-  return SignaturePubkeyPair(signatureScheme, signature, pubKey);
+  return SignaturePubkeyPair(signatureScheme, signature, pubKey: pubKey);
 }

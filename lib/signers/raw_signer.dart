@@ -33,7 +33,7 @@ class RawSigner extends SignerWithProvider {
     return SignaturePubkeyPair(
       _keypair.getKeyScheme(),
       _keypair.signData(data),
-      _keypair.getPublicKey()
+      pubKey: _keypair.getPublicKey()
     );
   }
 
