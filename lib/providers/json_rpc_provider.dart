@@ -259,7 +259,7 @@ class JsonRpcProvider {
   Future<List<SuiObject>> getGasObjectsOwnedByAddress(String address) async {
     final objects = await getOwnedObjects(address, options: { "showType": true });
     final result = objects
-      .where((obj) => Coin.isSUI(ObjectData(objectInfo: obj)));
+      .where((obj) => Coin.isSUI(obj));
     return result.toList();
   }
 
@@ -269,8 +269,8 @@ class JsonRpcProvider {
   ) async {
     final objects = await getOwnedObjects(address);
     final coinIds = objects
-      .where((x) => Coin.isCoin(ObjectData(objectInfo: x))
-                && (typeArg == null || typeArg == Coin.getCoinTypeArg(ObjectData(objectInfo: x))))
+      .where((x) => Coin.isCoin(x)
+                && (typeArg == null || typeArg == Coin.getCoinTypeArg(x)))
       .map((y) => y.objectId);
 
     final result = await getObjectBatch(coinIds.toList());
