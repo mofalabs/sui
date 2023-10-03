@@ -169,7 +169,10 @@ class TransactionBlock {
 	}
 
 	void setGasPayment(List<SuiObjectRef> payments) {
-		_blockData.gasConfig.payment = payments;
+    // NOTE: subclass toJson() do not have objectId field
+		_blockData.gasConfig.payment = payments.map(
+      (p) => SuiObjectRef(p.digest, p.objectId, p.version)
+    ).toList();
 	}
 
 	late TransactionBlockDataBuilder _blockData;

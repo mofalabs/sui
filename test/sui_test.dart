@@ -113,7 +113,7 @@ test('test programmable transaction blocks', () async {
     final gasCoin = coins.data.first;
 
     final tx = TransactionBlock();
-    tx.setGasPayment([SuiObjectRef(gasCoin.digest, gasCoin.coinObjectId, gasCoin.version)]);
+    tx.setGasPayment([gasCoin]);
     tx.setGasBudget(BigInt.from(2000000));
 
     final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));

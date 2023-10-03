@@ -2,22 +2,20 @@ import 'common.dart';
 
 import 'objects.dart';
 
-class CoinStruct {
+class CoinStruct extends SuiObjectRef {
   String coinType;
   ObjectId coinObjectId;
-  int version;
-  TransactionDigest digest;
   String balance;
   TransactionDigest previousTransaction;
 
   CoinStruct(
     this.coinType,
     this.coinObjectId,
-    this.version,
-    this.digest,
+    int version,
+    TransactionDigest digest,
     this.balance,
     this.previousTransaction,
-  );
+  ): super(digest, coinObjectId, version);
 
   factory CoinStruct.fromJson(dynamic data) {
     return CoinStruct(
@@ -30,6 +28,7 @@ class CoinStruct {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       "coinType": coinType,
