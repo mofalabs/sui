@@ -39,7 +39,7 @@ class JsonRpcProvider {
 
   Future<Paged<List<Checkpoint>>> getCheckpoints({
     String? cursor,
-    String? limit,
+    int? limit,
     bool descendingOrder = false
   }) async {
     final result = await client.request('sui_getCheckpoints', [cursor, limit, descendingOrder]);
