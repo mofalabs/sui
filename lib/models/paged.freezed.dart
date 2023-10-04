@@ -22,7 +22,8 @@ Paged<T> _$PagedFromJson<T>(
 /// @nodoc
 mixin _$Paged<T> {
   T get data => throw _privateConstructorUsedError;
-  dynamic get nextCursor => throw _privateConstructorUsedError;
+  dynamic get nextCursor =>
+      throw _privateConstructorUsedError; // NextCursor or String
   bool get hasNextPage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
@@ -43,6 +44,7 @@ class _$_Paged<T> implements _Paged<T> {
   final T data;
   @override
   final dynamic nextCursor;
+// NextCursor or String
   @override
   final bool hasNextPage;
 
@@ -71,7 +73,7 @@ abstract class _Paged<T> implements Paged<T> {
   T get data;
   @override
   dynamic get nextCursor;
-  @override
+  @override // NextCursor or String
   bool get hasNextPage;
 }
 

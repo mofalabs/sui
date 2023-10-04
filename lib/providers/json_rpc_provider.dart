@@ -2,9 +2,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:sui/builder/transaction_block.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/models/checkpoint.dart';
+import 'package:sui/models/dev_inspect_results.dart';
 import 'package:sui/models/dynamic_field.dart';
 import 'package:sui/models/loaded_child_objects.dart';
 import 'package:sui/models/object_read.dart';
@@ -31,6 +33,31 @@ class JsonRpcProvider {
     {this.versionCacheTimoutInSeconds = 600}
   ): super() {
     client = JsonRpcClient(endpoint);
+  }
+
+  Future<DevInspectResults> devInspectTransactionBlock(
+    String sender,
+    Uint8List txBytes, {
+      BigInt? gasPrice,
+      String? epoch
+    }
+  ) async {
+    final txBase64 = base64Encode(txBytes);
+
+    final result = await client.request('sui_devInspectTransactionBlock', 
+      [
+        sender,
+        txBase64,
+        gasPrice?.toInt(),
+        epoch
+      ]
+    );
+    return DevInspectResults.fromJson(result);
+  }
+
+  Future<String> getChainIdentifier() async {
+    final result = await client.request('sui_getChainIdentifier', []);
+    return result;
   }
 
   Future<Checkpoint> getCheckpoint(String id) async {
@@ -573,6 +600,16 @@ class JsonRpcProvider {
       [txBytes],
     );
     return DryRunTransactionBlockResponse.fromJson(result);
+  }
+
+  Future<SuiObjectResponse> getDynamicFieldObject(
+    String parentObjectId, 
+    String nameType, 
+    String nameValue
+  ) async {
+    final params = {"type": nameType, "value": nameValue};
+    final data = await client.request('suix_getDynamicFieldObject', [parentObjectId, params]);
+    return SuiObjectResponse.fromJson(data);
   }
 
   Future<DynamicFieldPage> getDynamicFields(

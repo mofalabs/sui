@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:sui/builder/transaction_block.dart';
+import 'package:sui/models/dev_inspect_results.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
@@ -66,6 +67,25 @@ class SuiClient extends SignerWithProvider {
       requestType: requestType
     );
   }
+
+  Future<DevInspectResults> devInspectTransactionBlock(
+    String sender,
+    TransactionBlock transactionBlock, {
+      BigInt? gasPrice,
+      String? epoch
+    }
+  ) async {
+    transactionBlock.setSenderIfNotSet(sender);
+    final txBytes = await transactionBlock.build(BuildOptions(client: this, onlyTransactionKind: true));
+    final result = await provider.devInspectTransactionBlock(
+      sender,
+      txBytes,
+      gasPrice: gasPrice,
+      epoch: epoch
+    );
+    return result;
+  }
+
 
 
 }

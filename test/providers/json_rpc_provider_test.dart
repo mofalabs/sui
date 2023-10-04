@@ -12,6 +12,11 @@ void main() {
     provider = JsonRpcProvider(Constants.mainnetAPI);
   });
 
+  test('test getChainIdentifier', () async {
+    final result = await provider.getChainIdentifier();
+    expect(result, '35834a8a');
+  });
+
   test('test getLatestCheckpointSequenceNumber', () async {
     final resp = await provider.getLatestCheckpointSequenceNumber();
     expect(resp > BigInt.zero, true);
