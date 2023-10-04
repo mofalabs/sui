@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:sui/builder/transaction_block.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/types/coins.dart';
@@ -48,17 +49,19 @@ class TestToolbox {
 	}
 }
 
-SuiClient getClient() {
-	return SuiClient(DEFAULT_FULLNODE_URL);
-}
-
-Future<TestToolbox> setup() async {
+Future<TestToolbox> setup([int faucetCount = 1]) async {
 	final keypair = Ed25519Keypair();
 	final address = keypair.getPublicKey().toSuiAddress();
-	final client = getClient();
+	final client = SuiClient(DEFAULT_FULLNODE_URL);
   final faucetClient = FaucetClient(DEFAULT_FAUCET_URL);
-	await faucetClient.requestSuiFromFaucetV0(address);
-  await Future.delayed(const Duration(seconds: 3));
+  for (var i = 0; i < faucetCount; i++) {
+    try {
+      await faucetClient.requestSuiFromFaucetV0(address);
+    } catch(e) {
+      debugPrint(e.toString());
+    }
+    await Future.delayed(const Duration(seconds: 3));
+  }
 	return TestToolbox(keypair, client);
 }
 

@@ -7,6 +7,7 @@ import 'package:sui/cryptography/signature.dart';
 import 'package:sui/models/checkpoint.dart';
 import 'package:sui/models/dynamic_field.dart';
 import 'package:sui/models/loaded_child_objects.dart';
+import 'package:sui/models/object_read.dart';
 import 'package:sui/models/paged.dart';
 import 'package:sui/models/sui_event.dart';
 import 'package:sui/rpc/client.dart';
@@ -290,6 +291,19 @@ class JsonRpcProvider {
     final data = await client.request('sui_getObject', [objectId, options?.toJson()]);
     return SuiObjectResponse.fromJson(data);
   }
+
+	Future<ObjectRead> tryGetPastObject(
+    String id, 
+    int version, {
+      SuiObjectDataOptions? options
+    }
+  ) async {
+		final data = await client.request(
+			'sui_tryGetPastObject',
+			[id, version, options?.toJson()]
+		);
+    return ObjectRead.fromJson(data);
+	}
 
   Future<List<SuiObjectResponse>> multiGetObjects(List<String> objectIds,
       {SuiObjectDataOptions? options}) async {
