@@ -14,3 +14,9 @@
 
 * Add requestSuiFromFaucetV1
 * Fix TransactionBlock decode json data
+
+## 0.1.0
+
+* Refactor JsonRpcProvider
+* Add more rpc methods
+* Update readme

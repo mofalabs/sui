@@ -1,14 +1,14 @@
 Sui Dart SDK
 -
 
-[![Pub](https://img.shields.io/badge/pub-v0.0.4-blue)](https://pub.dev/packages/sui)
+[![Pub](https://img.shields.io/badge/pub-v0.1.0-blue)](https://pub.dev/packages/sui)
 
 Installation
 -
 
 ```
 dependencies:
-  sui: ^0.0.4
+  sui: ^0.1.0
 ```
 
 Usage
@@ -48,24 +48,15 @@ await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fe
 ```dart
 /// Ed25519 account
 final ed25519 = SuiAccount.ed25519Account();
-final ed25519Import = SuiAccount.fromPrivateKey(
-    ed25519.privateKeyHex(), 
-    SignatureScheme.ED25519
-);
+final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKeyHex(), SignatureScheme.ED25519);
 
 /// Secp256k1 account
 final secp256k1 = SuiAccount.secp256k1Account();
-final sepc256k1Import = SuiAccount.fromPrivateKey(
-    secp256k1.privateKeyHex(), 
-    SignatureScheme.Secp256k1
-);
+final sepc256k1Import = SuiAccount.fromPrivateKey(secp256k1.privateKeyHex(), SignatureScheme.Secp256k1);
 
 /// Secp256r1 account
 final secp256r1 = SuiAccount.secp256r1Account();
-final sepc256r1Import = SuiAccount.fromPrivateKey(
-    secp256r1.privateKeyHex(), 
-    SignatureScheme.Secp256r1
-);
+final sepc256r1Import = SuiAccount.fromPrivateKey(secp256r1.privateKeyHex(), SignatureScheme.Secp256r1);
 ```
 
 #### Create account with mnemonic
