@@ -361,7 +361,6 @@ void main() {
   });
 
 
-
 test('test transacitonblock publish package and multi mint move call', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
@@ -450,7 +449,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.getOwnedObjectList(sender);
+    final ownedObjs = await client.getOwnedObjects(sender);
     final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
     final gasCoin = coins.first.data!;
 
@@ -485,7 +484,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final client = SuiClient(Constants.devnetAPI, account: account);
     final receiver = SuiAccount.ed25519Account();
     final ownedObjs =
-        await client.getOwnedObjectList(account.getAddress());
+        await client.getOwnedObjects(account.getAddress());
     final coins = ownedObjs.data
         .where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false)
         .toList();
@@ -512,7 +511,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     final ownedObjs =
-        await client.getOwnedObjectList(account.getAddress());
+        await client.getOwnedObjects(account.getAddress());
     final coins = ownedObjs.data
         .where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false)
         .toList();

@@ -19,7 +19,7 @@ void main() {
 
     test('Get Owned Objects', () async {
       final gasObjects = await toolbox.client.getOwnedObjects(toolbox.address());
-      expect(gasObjects.isNotEmpty, true);
+      expect(gasObjects.data.isNotEmpty, true);
     });
 
     test('Get Object', () async {

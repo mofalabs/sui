@@ -31,13 +31,9 @@ class TestToolbox {
   Future<List<SuiObject>> getGasObjectsOwnedByAddress() async {
     final objects = await client.getOwnedObjects(
 			address(),
-			options: {
-				"showType": true,
-				"showContent": true,
-				"showOwner": true,
-			},
+      options: SuiObjectDataOptions(showType: true, showContent: true, showOwner: true)
 		);
-		return objects.where((obj) => Coin.isSUI(obj)).toList();
+		return objects.data.where((obj) => Coin.isSUI(obj)).map((x) => x.data!).toList();
 	}
 
 	Future<List<CoinStruct>> getCoinsByAddress() async {
