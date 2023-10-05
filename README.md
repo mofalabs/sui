@@ -14,6 +14,76 @@ dependencies:
 Usage
 -
 
+### Connecting to Sui Network
+
+```dart
+/// connect to devnet
+final devnetClient = SuiClient(Constants.devnetAPI);
+
+/// connect to testnet
+final testnetClient = SuiClient(Constants.testnetAPI);
+
+/// connect to mainnet
+final mainnetClient = SuiClient(Constants.mainnetAPI);
+```
+
+### Getting coins from the faucet
+
+#### Faucet V0
+```dart
+final faucet = FaucetClient(Constants.faucetDevAPI);
+await faucet.requestSuiFromFaucetV0('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+```
+
+#### Faucet V1
+```dart
+final faucet = FaucetClient(Constants.faucetDevAPI);
+await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+```
+
+### Sui Account
+
+#### Create account with private key
+
+```dart
+/// Ed25519 account
+final ed25519 = SuiAccount.ed25519Account();
+final ed25519Import = SuiAccount.fromPrivateKey(
+    ed25519.privateKeyHex(), 
+    SignatureScheme.ED25519
+);
+
+/// Secp256k1 account
+final secp256k1 = SuiAccount.secp256k1Account();
+final sepc256k1Import = SuiAccount.fromPrivateKey(
+    secp256k1.privateKeyHex(), 
+    SignatureScheme.Secp256k1
+);
+
+/// Secp256r1 account
+final secp256r1 = SuiAccount.secp256r1Account();
+final sepc256r1Import = SuiAccount.fromPrivateKey(
+    secp256r1.privateKeyHex(), 
+    SignatureScheme.Secp256r1
+);
+```
+
+#### Create account with mnemonic
+
+```dart
+/// create mnemonics
+final mnemonics = SuiAccount.generateMnemonic();
+
+/// Ed25519 account
+final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+
+/// Secp256k1 account
+final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
+
+/// Secp256r1 account
+final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
+```
+
 #### pay sui with ed25519
 
 ```dart
