@@ -84,128 +84,153 @@ final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1)
 final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
 ```
 
-#### pay sui with ed25519
+### Writing APIs
+
+#### Transfer Object
 
 ```dart
-const gas_budget = 2000000;
-final recipientAccount = SuiAccount.ed25519Account();
-final recipient = recipientAccount.getAddress();
-
-final mnemonics = SuiAccount.generateMnemonic();
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
-final client = SuiClient(Constants.devnetAPI, account: account);
-var coins = await client.getCoins(account.getAddress());
-if (coins.data.isEmpty) {
-    final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-    assert(resp.transferredGasObjects.isNotEmpty);
-    coins = await client.getGasObjectsOwnedByAddress(account.getAddress());
-}
+final client = SuiClient(Constants.devnetAPI);
 
-final inputObjectIds = [coins.data.first.coinObjectId];
-final txn = PaySuiTransaction(
-    inputObjectIds, 
-    [recipient],
-    [1000],
-    gas_budget
+final tx = TransactionBlock();
+tx.setGasBudget(BigInt.from(20000000));
+tx.transferObjects(
+    [tx.objectId('0x2619f581cb1864d07c89453a69611202669fdc4784fb59b9cb4278ec60756011')], 
+    tx.pureAddress(account.getAddress())
 );
 
-txn.gasBudget = await client.getGasCostEstimation(txn);
-
-final waitForLocalExecutionTx = await client.paySui(txn);
-print(waitForLocalExecutionTx.digest);
+final result = await client.signAndExecuteTransactionBlock(account, tx);
+print(result.digest);
 ```
 
-#### pay sui with secp256k1
+#### Split and Transfer Coins
 
 ```dart
-const gas_budget = 2000000;
-final recipientAccount = SuiAccount.secp256k1Account();
-final recipient = recipientAccount.getAddress();
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final client = SuiClient(Constants.devnetAPI);
 
-final mnemonics = SuiAccount.generateMnemonic();
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
-final client = SuiClient(Constants.devnetAPI, account: account);
-var coins = await client.getCoins(account.getAddress());
-if (coins.data.isEmpty) {
-    final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-    assert(resp.transferredGasObjects.isNotEmpty);
-    coins = await client.getCoins(account.getAddress());
-}
-
-final inputObjectIds = [coins.data.first.coinObjectId];
-final txn = PaySuiTransaction(
-    inputObjectIds, 
-    [recipient],
-    [1000],
-    gas_budget
+final tx = TransactionBlock();
+tx.setGasBudget(BigInt.from(20000000));
+final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000)]);
+tx.transferObjects(
+    [coin],
+    tx.pureAddress(account.getAddress())
 );
 
-txn.gasBudget = await client.getGasCostEstimation(txn);
-
-final waitForLocalExecutionTx = await client.paySui(txn);
-print(waitForLocalExecutionTx.digest);
+final result = await client.signAndExecuteTransactionBlock(account, tx);
+print(result.digest);
 ```
 
-#### pay sui with secp256r1
+#### Merge Coins
 
 ```dart
-const gasBudget = 10000000;
-final recipientAccount = SuiAccount.secp256r1Account();
-final recipient = recipientAccount.getAddress();
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final client = SuiClient(Constants.devnetAPI);
 
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
-final client = SuiClient(Constants.devnetAPI, account: account);
-var coins = await client.getCoins(account.getAddress());
-if (coins.data.isEmpty) {
-    final faucet = FaucetClient(Constants.faucetDevAPI);
-    final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-    assert(resp.transferredGasObjects.isNotEmpty);
-    coins = await client.getCoins(account.getAddress());
-}
-
-final inputObjectIds = [coins.data.first.coinObjectId];
-final txn = PaySuiTransaction(
-    inputObjectIds,
-    [recipient],
-    [1000],
-    gasBudget
+final tx = TransactionBlock();
+tx.setGasBudget(BigInt.from(20000000));
+tx.mergeCoins(tx.objectId('0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'), 
+    [tx.objectId('0x8dafc96dec7f8d635e052a6da9a4153e37bc4d59ed44c45006e4e9d17d07f80d')]
 );
 
-txn.gasBudget = await client.getGasCostEstimation(txn);
-
-final waitForLocalExecutionTx = await client.paySui(txn);
-print(waitForLocalExecutionTx.digest);
+final result = await client.signAndExecuteTransactionBlock(account, tx);
+print(result.digest);
 ```
 
-#### Programmable Transaction Blocks
+#### Move Call
 
 ```dart
-test('test programmable transaction blocks', () async {
-    final recipientAccount = SuiAccount.ed25519Account();
-    final recipient = recipientAccount.getAddress();
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final client = SuiClient(Constants.devnetAPI);
 
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
-    final client = SuiClient(Constants.devnetAPI, account: account);
-    var coins = await client.getCoins(account.getAddress());
-    if (coins.data.isEmpty) {
-        final faucet = FaucetClient(Constants.faucetDevAPI);
-        final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-        assert(resp.transferredGasObjects.isNotEmpty);
-    }
+const packageObjectId = '0x...';
+final tx = TransactionBlock();
+tx.setGasBudget(BigInt.from(20000000));
+tx.moveCall('$packageObjectId::nft::mint', arguments: [tx.pureString('Example NFT')]);
 
-    final gasCoin = coins.data.first;
-
-    final tx = TransactionBlock();
-    tx.setGasPayment([SuiObjectRef(gasCoin.digest, gasCoin.coinObjectId, gasCoin.version)]);
-    tx.setGasBudget(BigInt.from(2000000));
-
-    final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
-    tx.add(Transactions.transferObjects([coin], tx.pureAddress(recipient)));
-
-    final waitForLocalExecutionTx = await client.signAndExecuteTransactionBlock(account, tx);
-    debugPrint(waitForLocalExecutionTx.digest);
-});
+final result = await client.signAndExecuteTransactionBlock(account, tx);
+print(result.digest);
 ```
+
+#### Publish Modules
+
+```dart
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final client = SuiClient(Constants.devnetAPI);
+
+const moduels = <String>[];
+const dependencies = <String>[];
+final tx = TransactionBlock();
+tx.setGasBudget(BigInt.from(20000000));
+final upgradeCap = tx.publish(moduels, dependencies);
+tx.transferObjects([upgradeCap], account.getAddress());
+
+final result = await client.signAndExecuteTransactionBlock(account, tx);
+print(result.digest);
+```
+
+### Reading APIs
+
+#### Get Owned Objects
+
+```dart
+final client = SuiClient(Constants.devnetAPI);
+
+final objects = await client.getOwnedObjects('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+```
+
+#### Get Objects
+
+```dart
+final client = SuiClient(Constants.devnetAPI);
+
+final obj = await client.getObject('0x0d49dbda185cd0941b71315edb594276731f21b2232d8713f319b02c462a2da7',
+    options: SuiObjectDataOptions(showContent: true)
+);
+
+final objs = await client.multiGetObjects([
+    '0x0d49dbda185cd0941b71315edb594276731f21b2232d8713f319b02c462a2da7',
+    '0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'
+], options: SuiObjectDataOptions(showType: true));
+```
+
+#### Get Transaction
+
+```dart
+final client = SuiClient(Constants.devnetAPI);
+
+final txn = await client.getTransactionBlock('6oH779AUs2WpwW77xCVGbYqK1FYVamRqHjV6A5wCV8Qj',
+    options: SuiTransactionBlockResponseOptions(showEffects: true)
+);
+
+final txns = await client.multiGetTransactionBlocks([
+    '9znMGToLRRa8yZvjCUfj1FJmq4gpb8QwpibFAUffuto1',
+    '4CEFMajEtM62MthwY1xR3Bcddoh2h5wc7jeKEy7WWsbv'
+], options: SuiTransactionBlockResponseOptions(showInput: true, showEffects: true));
+```
+
+#### Get Checkpoints
+
+```dart
+final client = SuiClient(Constants.devnetAPI);
+
+final checkpoint = await client.getCheckpoint('338000');
+
+final checkpoints = await client.getCheckpoints(descendingOrder: true);
+```
+
+#### Get Coins
+
+```dart
+final client = SuiClient(Constants.devnetAPI);
+
+final coins = await client.getCoins(
+    '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2',
+    coinType: '0x2::sui::SUI');
+
+final allCoins = await client.getAllCoins('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+
+final suiBalance = await client.getBalance('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+```
+
 
