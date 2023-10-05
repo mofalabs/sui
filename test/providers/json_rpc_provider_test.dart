@@ -100,26 +100,27 @@ void main() {
 
   test('test getOwnedObjects', () async {
     final resp = await client.getOwnedObjects(address);
-    expect(resp.isNotEmpty, true);
+    expect(resp.data.isNotEmpty, true);
   });
 
   test('test getObject by objectId', () async {
-    final objectsID = await client.getOwnedObjects(address);
-    final objectId = objectsID[0].objectId;
+    final objResp = await client.getOwnedObjects(address);
+    final objectId = objResp.data[0].data!.objectId;
     final resp = await client.getObject(objectId);
     expect(resp.data?.objectId == objectId, true);
   });
 
   test('test getObjectRef by objectId', () async {
-    final objectsID = await client.getOwnedObjects(address);
-    final objectId = objectsID[0].objectId;
+    final objResp = await client.getOwnedObjects(address);
+    final objectId = objResp.data[0].data!.objectId;
     final resp = await client.getObjectRef(objectId);
     expect(resp?.objectId == objectId, true);
   });
 
   test('test getObjectBatch', () async {
-    final objectsID = await client.getOwnedObjects(address);
-    final ids = objectsID.map((obj) => obj.objectId).toList();
+    final objResp = await client.getOwnedObjects(address);
+    final ids = objResp.data.where((x) => x.data?.objectId != null)
+                            .map((obj) => obj.data!.objectId).toList();
     final resp = await client.getObjectBatch(ids);
     expect(resp.length == ids.length, true);
   });
@@ -135,8 +136,8 @@ void main() {
   });
 
   test('test getObjectsOwnedByObject', () async {
-    final objectsID = await client.getOwnedObjects(address);
-    final objectId = objectsID[0].objectId;
+    final objResp = await client.getOwnedObjects(address);
+    final objectId = objResp.data[0].data!.objectId;
     final result = await client.getObject(objectId);
     expect(result.data?.objectId == objectId, true);
   });
@@ -193,7 +194,7 @@ void main() {
   test('test getOwnedObjectList', () async {
     const owner =
         '0x73024d967e8714e73cffbac418ee0cb0557308c39e3d6afac28f2bddde6651cd';
-    final result = await client.getOwnedObjectList(owner);
+    final result = await client.getOwnedObjects(owner);
     expect(result.data.isNotEmpty, true);
   });
 

@@ -184,31 +184,26 @@ abstract class SignerWithProvider with JsonRpcProvider {
     return dryRunTransactionBlock(base64Encode(dryRunTxBytes));
   }
 
-  Future<List<SuiObject>> getOwnedObjectsByOptions(String address, {
+  Future<PaginatedObjectsResponse> getOwnedObjectsShowAllOptions(String address, {
     Map<String,dynamic>? filter,
-    bool showType = false,
-    bool showContent = false,
-    bool showBcs = false,
-    bool showOwner = false,
-    bool showPreviousTransaction = false,
-    bool showStorageRebate = false,
-    bool showDisplay = false
+    int limit = 50,
+    String? cursor,
   }) async {
-
-    final options =  {
-      "showType": showType,
-      "showContent": showContent,
-      "showBcs": showBcs,
-      "showOwner": showOwner,
-      "showPreviousTransaction": showPreviousTransaction,
-      "showStorageRebate": showStorageRebate,
-      "showDisplay": showDisplay
-    };
-
+    final options = SuiObjectDataOptions(
+      showBcs: true,
+      showContent: true,
+      showDisplay: true,
+      showOwner: true,
+      showPreviousTransaction: true,
+      showStorageRebate: true,
+      showType: true
+    );
     return await getOwnedObjects(
       address, 
       filter: filter, 
-      options: options);
+      options: options,
+      limit: limit,
+      cursor: cursor);
   }
 
   Future<SuiExecuteTransactionResponse> transferObject(

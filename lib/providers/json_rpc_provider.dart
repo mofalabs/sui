@@ -88,7 +88,7 @@ mixin JsonRpcProvider {
 
   Future<PaginatedCoins> getCoins(String owner, {
     String? coinType,
-    ObjectId? cursor,
+    String? cursor,
     int? limit
   }) async {
     coinType ??= SUI_TYPE_ARG;
@@ -100,7 +100,7 @@ mixin JsonRpcProvider {
   }
 
   Future<PaginatedCoins> getAllCoins(String owner,
-      { ObjectId? cursor, int? limit}) async {
+      { String? cursor, int? limit}) async {
     final result = await client.request(
         'suix_getAllCoins',
         [owner, cursor, limit]
@@ -222,21 +222,14 @@ mixin JsonRpcProvider {
 
   /// Objects
   
-  Future<PaginatedObjectsResponse> getOwnedObjectList(
-      String address, {
-        SuiObjectDataOptions? options,
-        int limit = 50,
+  Future<PaginatedObjectsResponse> getOwnedObjects(
+    String address, {
+    SuiObjectDataOptions? options,
+    int limit = 50,
     String? cursor,
     Map? filter,
   }) async {
-    options ??= SuiObjectDataOptions(
-      showDisplay: true,
-      showType: true,
-      showBcs: true,
-      showOwner: true,
-      showPreviousTransaction: true,
-      showStorageRebate: true,
-    );
+    options ??= SuiObjectDataOptions();
     final result = await client.request('suix_getOwnedObjects', [
       address,
       {"filter": filter, "options": options.toJson()},
@@ -246,38 +239,12 @@ mixin JsonRpcProvider {
     return PaginatedObjectsResponse.fromJson(result);
   }
 
-  Future<List<SuiObject>> getOwnedObjects(String address, {
-    Map<String,dynamic>? filter,
-    Map<String,dynamic>? options,
-    bool showAllOptions = false
-  }) async {
-    final params = <String, dynamic>{};
-    params["filter"] = filter;
-    final opconf =  {
-      "showType": true,
-      "showContent": true,
-      "showBcs": true,
-      "showOwner": true,
-      "showPreviousTransaction": true,
-      "showStorageRebate": true,
-      "showDisplay": true
-    };
-    params["options"] = showAllOptions ? opconf : options;
-
-    final result = await client.request('suix_getOwnedObjects', [
-      address,
-      params
-    ]);
-    final objectsInfo = (result['data'] as List).map((obj) {
-      return SuiObject.fromJson(obj['data']);
-    }).toList();
-    return objectsInfo;
-  }
-
   Future<List<SuiObject>> getGasObjectsOwnedByAddress(String address) async {
-    final objects = await getOwnedObjects(address, options: { "showType": true });
+    final objects = await getOwnedObjects(address, options: SuiObjectDataOptions(showType: true));
     final result = objects
-      .where((obj) => Coin.isSUI(obj));
+      .data
+      .where((x) => Coin.isSUI(x))
+      .map((y) => y.data!);
     return result.toList();
   }
 
@@ -287,9 +254,10 @@ mixin JsonRpcProvider {
   ) async {
     final objects = await getOwnedObjects(address);
     final coinIds = objects
+      .data
       .where((x) => Coin.isCoin(x)
                 && (typeArg == null || typeArg == Coin.getCoinTypeArg(x)))
-      .map((y) => y.objectId);
+      .map((y) => y.data!.objectId);
 
     final result = await getObjectBatch(coinIds.toList());
     return result;
@@ -353,7 +321,7 @@ mixin JsonRpcProvider {
 
   Future<SuiTransactionBlockResponse> getTransactionBlock(
       TransactionDigest digest,
-      [SuiTransactionBlockResponseOptions? options]) async {
+      {SuiTransactionBlockResponseOptions? options}) async {
     final data = await client
         .request('sui_getTransactionBlock', [digest, options?.toJson()]);
     return SuiTransactionBlockResponse.fromJson(data);

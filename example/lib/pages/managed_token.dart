@@ -153,12 +153,12 @@ class _ManagedTokenState extends State<ManagedToken> {
   }
 
   Future<List<SuiObject>> queryCoinObjects() async {
-    final objects = await widget.client.getOwnedObjectsByOptions(
+    final objectsResp = await widget.client.getOwnedObjects(
       widget.client.getAddress(),
-      showType: true,
-      showContent: false
+      options: SuiObjectDataOptions(showType: true, showContent: true),
     );
-    final coinObjects = objects.where((obj) => obj.type == "0x2::coin::Coin<$coinType>").toList();
+    final coinObjects = objectsResp.data.where((obj) => obj.data?.type == "0x2::coin::Coin<$coinType>")
+      .map((x) => x.data!).toList();
     return coinObjects;
   }
 
