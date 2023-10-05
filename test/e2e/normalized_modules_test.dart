@@ -10,7 +10,7 @@ void main() {
 
   test('test getMoveFunctionArgTypes', () async {
     final client = SuiClient(Constants.devnetAPI);
-    final functionArgTypes = await client.provider.getMoveFunctionArgTypes(
+    final functionArgTypes = await client.getMoveFunctionArgTypes(
       packageId: DEFAULT_PACKAGE,
       moduleName: DEFAULT_MODULE,
       functionName: DEFAULT_FUNCTION,
@@ -20,7 +20,7 @@ void main() {
 
   test('test getNormalizedMoveModulesByPackage', () async {
     final client = SuiClient(Constants.devnetAPI);
-    final moveModules = await client.provider
+    final moveModules = await client
         .getNormalizedMoveModulesByPackage(DEFAULT_PACKAGE);
     expect(moveModules.keys.contains(DEFAULT_MODULE), true);
     expect(moveModules.keys.isNotEmpty, true);
@@ -28,14 +28,14 @@ void main() {
 
   test('test getNormalizedMoveModule', () async {
     final client = SuiClient(Constants.devnetAPI);
-    final moveModule = await client.provider
+    final moveModule = await client
         .getNormalizedMoveModule(DEFAULT_PACKAGE, DEFAULT_MODULE);
     expect(moveModule.exposedFunctions.containsKey(DEFAULT_FUNCTION), true);
   });
 
   test('test getNormalizedMoveFunction', () async {
     final client = SuiClient(Constants.devnetAPI);
-    final moveFunction = await client.provider.getNormalizedMoveFunction(
+    final moveFunction = await client.getNormalizedMoveFunction(
       DEFAULT_PACKAGE,
       DEFAULT_MODULE,
       DEFAULT_FUNCTION,
@@ -45,7 +45,7 @@ void main() {
 
   test('test getNormalizedMoveStruct', () async {
     final client = SuiClient(Constants.devnetAPI);
-    final moveStruct = await client.provider.getNormalizedMoveStruct(
+    final moveStruct = await client.getNormalizedMoveStruct(
       DEFAULT_PACKAGE,
       DEFAULT_MODULE,
       DEFAULT_STRUCT,

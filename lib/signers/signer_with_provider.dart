@@ -2,15 +2,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
+import 'package:sui/rpc/client.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
 import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
-import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
-import 'package:sui/types/framework.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
 import 'package:sui/utils/sha.dart';
@@ -28,15 +26,19 @@ class SignaturePubkeyPair {
 // This is currently hardcoded with [IntentScope::TransactionData = 0, Version::V0 = 0, AppId::Sui = 0]
 const INTENT_BYTES = [0, 0, 0];
 
-abstract class SignerWithProvider {
-  late final JsonRpcProvider provider;
+abstract class SignerWithProvider with JsonRpcProvider {
+  late final JsonRpcClient rpcClient;
   late final TxnDataSerializer serializer;
 
   SignerWithProvider(String endpoint, [TxnDataSerializer? serializer]) {
-    provider = JsonRpcProvider(endpoint);
+    rpcClient = JsonRpcClient(endpoint);
     this.serializer =
-      serializer ?? RpcTxnDataSerializer(provider.endpoint);
+      serializer ?? RpcTxnDataSerializer(endpoint);
   }
+
+
+  @override
+  JsonRpcClient get client => rpcClient;
 
   void setSigner(SuiAccount signer);
 
@@ -55,7 +57,7 @@ abstract class SignerWithProvider {
       intentMessage.addAll(transaction);
       final digest = blake2b(intentMessage);
       final sig = signData(digest);
-      return await provider.executeTransaction(
+      return await executeTransaction(
         txnBytes: transaction,
         signatureScheme: sig.signatureScheme,
         signature: sig.signature,
@@ -179,19 +181,7 @@ abstract class SignerWithProvider {
     } else {
       throw ArgumentError("Error, unknown transaction kind ${tx.runtimeType}. Can't dry run transaction.");
     }
-    return provider.dryRunTransaction(base64Encode(dryRunTxBytes));
-  }
-
-  Future<List<SuiObject>> getOwnedObjects(String address, {
-    Map<String,dynamic>? filter,
-    Map<String,dynamic>? options,
-    bool showAllOptions = false
-  }) async {
-    return await provider.getOwnedObjects(
-      address, 
-      filter: filter, 
-      options: options, 
-      showAllOptions: showAllOptions);
+    return dryRunTransactionBlock(base64Encode(dryRunTxBytes));
   }
 
   Future<List<SuiObject>> getOwnedObjectsByOptions(String address, {
@@ -215,34 +205,10 @@ abstract class SignerWithProvider {
       "showDisplay": showDisplay
     };
 
-    return await provider.getOwnedObjects(
+    return await getOwnedObjects(
       address, 
       filter: filter, 
       options: options);
-  }
-
-  Future<List<SuiObject>> getGasObjectsOwnedByAddress(String address) async {
-    return await provider.getGasObjectsOwnedByAddress(address);
-  }
-
-  Future<CoinBalance> getBalance(String address) async {
-    return await provider.getBalance(address);
-  }
-
-  Future<List<CoinBalance>> getAllBalance(String address) async {
-    return await provider.getAllBalance(address);
-  }
-
-  Future<PaginatedCoins> getCoins(String address, {String? coinType}) async {
-    return await provider.getCoins(address, coinType: coinType);
-  }
-
-  Future<PaginatedCoins> getAllCoins(String address) async {
-    return await provider.getAllCoins(address);
-  }
-
-  Future<CoinMetadataStruct> getCoinMetadata(String coinType) async {
-    return await provider.getCoinMetadata(coinType);
   }
 
   Future<SuiExecuteTransactionResponse> transferObject(

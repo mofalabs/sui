@@ -1,43 +1,43 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/constants.dart';
-import 'package:sui/providers/json_rpc_provider.dart';
+import 'package:sui/sui.dart';
 import 'package:sui/types/transactions.dart';
 
 void main() {
   const address =
       '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973';
-  late JsonRpcProvider provider;
+  late SuiClient client;
   List<SuiTransactionBlockResponse> transactions = [];
 
   setUp(() async {
-    provider = JsonRpcProvider(Constants.devnetAPI);
-    var list = await provider
+    client = SuiClient(Constants.devnetAPI);
+    var list = await client
         .queryTransactionBlocks({'FromAddress': address}, limit: 10);
     transactions.addAll(list.data);
   });
 
   test('Get Total Transactions', () async {
-    final numTransactions = await provider.getTotalTransactionBlocks();
+    final numTransactions = await client.getTotalTransactionBlocks();
     expect(numTransactions > BigInt.zero, true);
   });
 
   test('Get Transactions', () async {
     final digest = transactions[0].digest;
-    final txn = await provider.getTransactionBlock(digest);
+    final txn = await client.getTransactionBlock(digest);
     expect(txn.digest == digest, true);
   });
 
   test('Multi Get Pay Transactions', () async {
     var options = SuiTransactionBlockResponseOptions(showBalanceChanges: true);
     List<SuiTransactionBlockResponse> ts =
-        (await provider.queryTransactionBlocks(
+        (await client.queryTransactionBlocks(
       {'FromAddress': address},
       options: options,
       limit: 10,
     )).data;
     final digests = ts.map((t) => t.digest).toList();
     final txns =
-        await provider.multiGetTransactionBlocks(digests, options: options);
+        await client.multiGetTransactionBlocks(digests, options: options);
     for (var txn in txns) {
       expect(txn.balanceChanges.isNotEmpty, true);
     }
@@ -49,13 +49,13 @@ void main() {
       showEvents: true,
       showEffects: true,
     );
-    final resp = await provider.queryTransactionBlocks(
+    final resp = await client.queryTransactionBlocks(
       {'FromAddress': address},
       options: options,
       limit: 1,
     );
     final digest = resp.data[0].digest;
-    final resp2 = await provider.getTransactionBlock(
+    final resp2 = await client.getTransactionBlock(
       digest,
       options,
     );
@@ -64,7 +64,7 @@ void main() {
   });
 
   test('Get Transactions', () async {
-    final resp = await provider.queryTransactionBlocks(
+    final resp = await client.queryTransactionBlocks(
       {'FromAddress': address},
       limit: 10,
     );
@@ -72,10 +72,10 @@ void main() {
   });
 
   test('Genesis exists', () async {
-    final allTransactions = await provider.queryTransactionBlocks(
+    final allTransactions = await client.queryTransactionBlocks(
         {'FromAddress': address},
         limit: 1, descendingOrder: false);
-    final resp = await provider.getTransactionBlock(
+    final resp = await client.getTransactionBlock(
       allTransactions.data[0].digest,
       SuiTransactionBlockResponseOptions(showInput: true),
     );

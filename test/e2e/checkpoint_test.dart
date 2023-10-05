@@ -13,12 +13,12 @@ void main() {
     });
 
     test('Get latest checkpoint sequence number', () async {
-      final checkpointSequenceNumber = await client.provider.getLatestCheckpointSequenceNumber();
+      final checkpointSequenceNumber = await client.getLatestCheckpointSequenceNumber();
       expect(checkpointSequenceNumber > BigInt.zero, true);
     });
 
     test('gets checkpoint by id', () async {
-      final resp = await client.provider.getCheckpoint('0');
+      final resp = await client.getCheckpoint('0');
       expect(resp.digest.isNotEmpty, true);
       expect(resp.transactions.isNotEmpty, true);
       expect(resp.epoch, "0");
@@ -28,14 +28,14 @@ void main() {
     });
 
     test('get checkpoint contents by digest', () async {
-      final checkpointResp = await client.provider.getCheckpoint('0');
+      final checkpointResp = await client.getCheckpoint('0');
       final digest = checkpointResp.digest;
-      final resp = await client.provider.getCheckpoint(digest);
+      final resp = await client.getCheckpoint(digest);
       expect(checkpointResp.digest, resp.digest);
     });
 
     test('getCheckpoints',  () async {
-      final checkpoints = await client.provider.getCheckpoints(
+      final checkpoints = await client.getCheckpoints(
         descendingOrder: false,
         limit: 1
       );
@@ -44,7 +44,7 @@ void main() {
       expect(checkpoints.data.length, 1);
       expect(checkpoints.hasNextPage, true);
 
-      final checkpoints1 = await client.provider.getCheckpoints(
+      final checkpoints1 = await client.getCheckpoints(
         cursor: checkpoints.nextCursor!,
         limit: 1,
         descendingOrder: false,

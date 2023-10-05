@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/builder/transaction_block.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/models/checkpoint.dart';
@@ -22,20 +21,11 @@ import 'package:sui/types/transactions.dart';
 import 'package:sui/types/validator.dart';
 import 'package:sui/types/version.dart';
 
-class JsonRpcProvider {
+mixin JsonRpcProvider {
 
-  late int versionCacheTimoutInSeconds;
-  late String endpoint;
-  late JsonRpcClient client;
+  JsonRpcClient get client;
 
-  JsonRpcProvider(
-    this.endpoint,
-    {this.versionCacheTimoutInSeconds = 600}
-  ): super() {
-    client = JsonRpcClient(endpoint);
-  }
-
-  Future<DevInspectResults> devInspectTransactionBlock(
+  Future<DevInspectResults> devInspectTransaction(
     String sender,
     Uint8List txBytes, {
       BigInt? gasPrice,
@@ -594,7 +584,7 @@ class JsonRpcProvider {
     return result;
   }
 
-  Future<DryRunTransactionBlockResponse> dryRunTransaction(String txBytes) async {
+  Future<DryRunTransactionBlockResponse> dryRunTransactionBlock(String txBytes) async {
     final result = await client.request(
       'sui_dryRunTransactionBlock',
       [txBytes],

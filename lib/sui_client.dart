@@ -60,7 +60,7 @@ class SuiClient extends SignerWithProvider {
     transactionBlock.setSenderIfNotSet(signer.getAddress());
     final transactionBytes = await transactionBlock.build(options);
     final signWithBytes = signer.keyPair.signTransactionBlock(transactionBytes);
-    return await provider.executeTransactionBlock(
+    return await executeTransactionBlock(
       signWithBytes.bytes, 
       [signWithBytes.signature],
       options: responseOptions,
@@ -76,8 +76,10 @@ class SuiClient extends SignerWithProvider {
     }
   ) async {
     transactionBlock.setSenderIfNotSet(sender);
-    final txBytes = await transactionBlock.build(BuildOptions(client: this, onlyTransactionKind: true));
-    final result = await provider.devInspectTransactionBlock(
+    final txBytes = await transactionBlock.build(
+      BuildOptions(client: this, onlyTransactionKind: true)
+    );
+    final result = await devInspectTransaction(
       sender,
       txBytes,
       gasPrice: gasPrice,
@@ -85,7 +87,6 @@ class SuiClient extends SignerWithProvider {
     );
     return result;
   }
-
 
 
 }

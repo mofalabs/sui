@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
 
   void _requestFaucet() async {
-    var resp = await suiClient.provider.getBalance(account.getAddress());
+    var resp = await suiClient.getBalance(account.getAddress());
     _balance = resp.totalBalance;
     if (_balance <= BigInt.zero) {
       final faucet = FaucetClient(Constants.faucetDevAPI);
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     await Future.delayed(const Duration(seconds: 2));
 
-    resp = await suiClient.provider.getBalance(account.getAddress());
+    resp = await suiClient.getBalance(account.getAddress());
     _balance = resp.totalBalance;
 
     setState(() {

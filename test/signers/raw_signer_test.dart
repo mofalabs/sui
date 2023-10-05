@@ -75,7 +75,7 @@ void main() {
 
   test('transfer sui with ed25519 keypair', () async {
     final signer = RawSigner(ed25519Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final txn = TransferSuiTransaction(coins.data[0].coinObjectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
     expect(resp.digest.isNotEmpty, true);
@@ -83,7 +83,7 @@ void main() {
 
   test('transfer sui with secp256k1 keypair', () async {
     final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final txn = TransferSuiTransaction(coins.data[0].coinObjectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
     expect(resp.digest.isNotEmpty, true);
@@ -91,7 +91,7 @@ void main() {
 
   test('transfer sui with secp256r1 keypair', () async {
     final signer = RawSigner(secp256r1Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final txn = TransferSuiTransaction(coins.data[0].coinObjectId, DEFAULT_GAS_BUDGET, DEFAULT_RECIPIENT, 100);
     final resp = await signer.transferSui(txn);
     expect(resp.digest.isNotEmpty, true);
@@ -99,7 +99,7 @@ void main() {
 
   test('pay with secp256k1 keypair', () async {
     final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PayTransaction(
       inputObjectIds,
@@ -117,7 +117,7 @@ void main() {
   test('pay with secp256r1 keypair', () async {
     final signer = RawSigner(secp256r1Keypair, endpoint: Constants.devnetAPI);
     print(signer.getAddress());
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PayTransaction(
         inputObjectIds,
@@ -134,7 +134,7 @@ void main() {
 
   test('pay sui with secp256k1 keypair', () async {
     final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PaySuiTransaction(
       inputObjectIds,
@@ -149,7 +149,7 @@ void main() {
 
   test('pay all sui with secp256k1 keypair', () async {
     final signer = RawSigner(secp256k1Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PayAllSuiTransaction(
       inputObjectIds,
@@ -163,7 +163,7 @@ void main() {
 
   test('pay all sui with secp256r1 keypair', () async {
     final signer = RawSigner(secp256r1Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PayAllSuiTransaction(
         inputObjectIds,
@@ -177,7 +177,7 @@ void main() {
 
   test('test getGasCostEstimation', () async {
     final signer = RawSigner(ed25519Keypair, endpoint: Constants.devnetAPI);
-    final coins = await signer.provider.getCoins(signer.getAddress());
+    final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
 
     var txn = PaySuiTransaction(

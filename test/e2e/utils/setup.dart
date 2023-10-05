@@ -45,7 +45,7 @@ class TestToolbox {
 	}
 
 	Future<List<SuiValidatorSummary>> getActiveValidators() async {
-		return (await client.provider.getLatestSuiSystemState()).activeValidators;
+		return (await client.getLatestSuiSystemState()).activeValidators;
 	}
 }
 

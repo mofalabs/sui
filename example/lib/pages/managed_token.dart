@@ -132,7 +132,7 @@ class _ManagedTokenState extends State<ManagedToken> {
             final resp = await widget.client.executeMoveCall(callTx);
             if (resp.confirmedLocalExecution == true) {
               coinType = "${packageId!}::${transactionModule!}::MANAGED";
-              final balance = await widget.client.provider.getBalance(
+              final balance = await widget.client.getBalance(
                 widget.client.getAddress(), 
                 coinType: coinType!
               );

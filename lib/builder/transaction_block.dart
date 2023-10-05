@@ -473,7 +473,7 @@ class TransactionBlock {
 			return;
 		}
 
-    final gasPrice = await expectClient(options).provider.getReferenceGasPrice();
+    final gasPrice = await expectClient(options).getReferenceGasPrice();
 		setGasPrice(gasPrice);
 	}
 
@@ -552,7 +552,7 @@ class TransactionBlock {
         final moduleName = target[1];
         final functionName = target[2];
 
-        final normalized = await expectClient(options).provider.getNormalizedMoveFunction(
+        final normalized = await expectClient(options).getNormalizedMoveFunction(
           normalizeSuiObjectId(packageId),
           moduleName,
           functionName,
@@ -618,7 +618,7 @@ class TransactionBlock {
       final objects = (
         await Future.wait(
           objectChunks.map((chunk) =>
-            expectClient(options).provider.multiGetObjects(
+            expectClient(options).multiGetObjects(
               chunk,
               options: SuiObjectDataOptions(showOwner: true),
             ),
@@ -680,7 +680,7 @@ class TransactionBlock {
 		final client = options.client;
 
 		if (options.protocolConfig == null && options.limits == null && client != null) {
-			options.protocolConfig = await client.provider.getProtocolConfig();
+			options.protocolConfig = await client.getProtocolConfig();
 		}
 
     await Future.wait([_prepareGasPrice(options), _prepareTransactions(options)]);

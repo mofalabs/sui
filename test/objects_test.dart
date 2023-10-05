@@ -27,7 +27,7 @@ void main() {
       expect(gasObjects.isNotEmpty, true);
       final objectInfos = await Future.wait(
         gasObjects.map((gasObject) {
-          return toolbox.client.provider.getObject(
+          return toolbox.client.getObject(
             gasObject.objectId,
             options: SuiObjectDataOptions(showType: true)
           );
@@ -42,7 +42,7 @@ void main() {
       final gasObjects = await toolbox.getGasObjectsOwnedByAddress();
       expect(gasObjects.isNotEmpty, true);
       final gasObjectIds = gasObjects.map((gasObject) => gasObject.objectId).toList();
-      final objectInfos = await toolbox.client.provider.multiGetObjects(
+      final objectInfos = await toolbox.client.multiGetObjects(
         gasObjectIds,
         options: SuiObjectDataOptions(showType: true)
       );
@@ -55,7 +55,7 @@ void main() {
     });
 
     test('handles trying to get non-existent old objects', () async {
-      final res = await toolbox.client.provider.tryGetPastObject(
+      final res = await toolbox.client.tryGetPastObject(
         normalizeSuiAddress('0x9999'),
         0,
       );
@@ -69,7 +69,7 @@ void main() {
         coinType: SUI_TYPE_ARG,
       );
 
-      final res = await toolbox.client.provider.tryGetPastObject(
+      final res = await toolbox.client.tryGetPastObject(
         data.data[0].coinObjectId,
         data.data[0].version,
       );
@@ -83,7 +83,7 @@ void main() {
         coinType: SUI_TYPE_ARG,
       );
 
-      final res = await toolbox.client.provider.tryGetPastObject(
+      final res = await toolbox.client.tryGetPastObject(
         data.data[0].coinObjectId,
         data.data[0].version + 1,
       );
@@ -97,7 +97,7 @@ void main() {
         coinType: SUI_TYPE_ARG,
       );
 
-      final res = await toolbox.client.provider.tryGetPastObject(
+      final res = await toolbox.client.tryGetPastObject(
         data.data[0].coinObjectId,
         // NOTE: This works because we know that this is a fresh coin that hasn't been modified:
         data.data[0].version - 1,
@@ -121,7 +121,7 @@ void main() {
         tx,
       );
 
-      final res = await toolbox.client.provider.tryGetPastObject(
+      final res = await toolbox.client.tryGetPastObject(
         data.data[0].coinObjectId,
         // NOTE: This works because we know that this is a fresh coin that hasn't been modified:
         data.data[0].version,
