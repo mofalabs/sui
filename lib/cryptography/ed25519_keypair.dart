@@ -35,7 +35,7 @@ class Ed25519Keypair with Keypair {
 
   @override
   Uint8List getSecretKey() {
-    return Uint8List.fromList(_signingKeypair.privateKey.bytes);
+    return ed25519.seed(_signingKeypair.privateKey);
   }
 
   Uint8List publicKeyBytes() {
@@ -51,7 +51,7 @@ class Ed25519Keypair with Keypair {
   /// throws error if the provided secret key is invalid and validation is not skipped.
   factory Ed25519Keypair.fromSecretKey(
     Uint8List secretKey,
-    { bool? skipValidation }
+    { bool skipValidation = true }
   ) {
     if (secretKey.length == 32) {
       return Ed25519Keypair.fromSeed(secretKey);
@@ -61,7 +61,7 @@ class Ed25519Keypair with Keypair {
     final privateKey = ed25519.PrivateKey(secretKey);
     final publicKey = ed25519.public(privateKey);
 
-    if (skipValidation != null && !skipValidation) {
+    if (!skipValidation) {
       final msg =  Uint8List.fromList(utf8.encode('sui validation'));
       final signature = ed25519.sign(privateKey,msg);
       if (!ed25519.verify(publicKey, msg, signature)) {

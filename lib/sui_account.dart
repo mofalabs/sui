@@ -113,6 +113,10 @@ class SuiAccount {
     return _keypair.getSecretKey();
   }
 
+  String privateKeyHex() {
+    return Hex.encode(getSecretKey());
+  }
+
   Uint8List getPublicKey() {
     return _keypair.getPublicKey().toBytes();
   }
