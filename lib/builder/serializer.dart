@@ -91,7 +91,6 @@ String? getPureSerializationType(
 
 		final innerType = getPureSerializationType(
 			normalizedType["Vector"],
-			// undefined when argVal is empty
 			argVal ? argVal[0] : null,
 		);
 

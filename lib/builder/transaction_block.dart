@@ -24,6 +24,7 @@ class TransactionResult {
 
   Map<String, dynamic> get result => { "kind": 'Result', "index": index };
   final Map<String, dynamic> _nestedResult = <String, dynamic>{};
+
   Map<String, dynamic> nestedResult(subIndex) {
     final result = { "kind": 'NestedResult', "index": index, "resultIndex": subIndex };
     _nestedResult.addAll(result);
@@ -36,7 +37,9 @@ class TransactionResult {
     }
 
     final subIndex = int.tryParse(indexKey.toString());
-    if (subIndex == null || subIndex < 0) return;
+    if (subIndex == null || subIndex < 0) {
+      throw ArgumentError("Invalid index key $indexKey");
+    }
     return nestedResult(subIndex);
   }
 
@@ -169,7 +172,6 @@ class TransactionBlock {
 	}
 
 	void setGasPayment(List<SuiObjectRef> payments) {
-    // NOTE: subclass toJson() do not have objectId field
 		_blockData.gasConfig.payment = payments.map(
       (p) => SuiObjectRef(p.digest, p.objectId, p.version)
     ).toList();
