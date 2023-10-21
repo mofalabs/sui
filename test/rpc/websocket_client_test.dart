@@ -10,19 +10,19 @@ void main() {
 
   test('test websocket subscribeEvent', () async {
     final client = WebsocketClient(endpoint);
-    final subscription = client.subscribeEvent({"Sender": "0x3b3f93ca910c0789de02468aa90c4d6351cde714cec1c1ab1c42376abdeb3cbe"})
+    final subscription = client.subscribeEvent({"Sender": "0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331"})
     .listen((event) {
       debugPrint(event);
     }, onError: (e) {
-      debugPrint(e);
+      debugPrint(e.toString());
     });
 
-    await Future.delayed(const Duration(seconds: 30));
+    await Future.delayed(const Duration(seconds: 10));
 
     subscription.cancel();
     debugPrint("===> cancel");
 
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 5));
     debugPrint("===> finished");
   });
 
@@ -32,8 +32,8 @@ void main() {
         "FromAddress": "0x0000000000000000000000000000000000000000000000000000000000000000"
     }).listen((event) {
       debugPrint(event);
-    }, onError: (err) {
-      debugPrint(err);
+    }, onError: (e) {
+      debugPrint(e.toString());
     }, onDone: () {
       debugPrint("onDone");
     });
@@ -43,7 +43,7 @@ void main() {
     subscription.cancel();
     debugPrint("===> cancel");
 
-    await Future.delayed(const Duration(minutes: 5));
+    await Future.delayed(const Duration(seconds: 5));
     debugPrint("===> finished");
   });
 

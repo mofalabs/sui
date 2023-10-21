@@ -14,3 +14,4 @@ export 'sui_account.dart';
 export 'constants.dart';
 export 'rpc/client.dart';
 export 'rpc/faucet_client.dart';
+export 'rpc/websocket_client.dart';
