@@ -20,3 +20,7 @@
 * Refactor JsonRpcProvider
 * Add more rpc methods
 * Update readme
+
+## 0.1.1
+
+* Add Events API
