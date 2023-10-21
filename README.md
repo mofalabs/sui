@@ -224,4 +224,35 @@ final allCoins = await client.getAllCoins('0xa2d8bb82df40770ac5bc8628d8070b041a1
 final suiBalance = await client.getBalance('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
 ```
 
+### Events APIs
 
+#### Querying events
+
+```dart
+final client = SuiClient(Constants.devnetAPI);
+
+final events = await client.queryEvents(
+    {"Sender": "0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2"}, 
+    limit: 2
+);
+
+/// Or with EventFilter
+
+final events = await client.queryEventsByFilter(
+    EventFilter(sender: "0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2"), 
+    limit: 2
+);
+```
+
+#### WebsocketClient subscribeEvent
+
+```dart
+final client = WebsocketClient(Constants.websocketAPI);
+
+final subscription = client.subscribeEvent({"Sender": "0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2"})
+.listen((event) {
+    debugPrint(event);
+}, onError: (e) {
+    debugPrint(e.toString());
+});
+```
