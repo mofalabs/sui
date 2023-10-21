@@ -14,6 +14,7 @@ import 'package:sui/models/sui_event.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/types/coins.dart';
 import 'package:sui/types/common.dart';
+import 'package:sui/types/event_filter.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/normalized.dart';
 import 'package:sui/types/objects.dart';
@@ -515,7 +516,7 @@ mixin JsonRpcProvider {
   }
 
   Future<Paged<List<SuiEvent>>> queryEvents(
-    dynamic query,
+    Map query,
     {String? cursor,
     int? limit,
     bool descendingOrder = false}
@@ -534,6 +535,20 @@ mixin JsonRpcProvider {
       return (json as List).map((e) => SuiEvent.fromJson(e)).toList();
     });
     return events;
+  }
+
+  Future<Paged<List<SuiEvent>>> queryEventsByFilter(
+    EventFilter filter,
+    {String? cursor,
+    int? limit,
+    bool descendingOrder = false}
+  ) async {
+    return await queryEvents(
+      filter.toJson(), 
+      cursor: cursor, 
+      limit: limit, 
+      descendingOrder: descendingOrder
+    );
   }
 
   Future<Paged<List<SuiEvent>>> queryTransactionEvents(
