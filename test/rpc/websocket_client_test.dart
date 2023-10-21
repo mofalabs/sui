@@ -1,8 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/constants.dart';
-import 'package:sui/rpc/websocket_client.dart';
+import 'package:sui/sui.dart';
 
 void main() {
   
@@ -10,7 +9,15 @@ void main() {
 
   test('test websocket subscribeEvent', () async {
     final client = WebsocketClient(endpoint);
-    final subscription = client.subscribeEvent({"Sender": "0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331"})
+
+    // final subscription = client.subscribeEvent({"Sender": "0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331"})
+    // .listen((event) {
+    //   debugPrint(event);
+    // }, onError: (e) {
+    //   debugPrint(e.toString());
+    // });
+
+    final subscription = client.subscribeEventFilter(EventFilter(sender: "0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331"))
     .listen((event) {
       debugPrint(event);
     }, onError: (e) {

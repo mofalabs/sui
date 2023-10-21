@@ -38,23 +38,34 @@ class TimeRange {
   }
 }
 
+class MoveEventField {
+  final String path;
+  final dynamic value;
+  MoveEventField(this.path, this.value);
+
+  Map<String, dynamic> toJson() {
+    return {
+      "path": path,
+      "value": value
+    };
+  }
+}
+
 class EventFilter {
 
   String? transaction;
   String? package;
   String? moveEventType;
-  String? senderAddress;
   String? sender;
   MoveModule? moveModule;
   MoveEventModule? moveEventModule;
-  Map<String, String>? moveEventField;
+  MoveEventField? moveEventField;
   TimeRange? timeRange;
 
   EventFilter({
     this.transaction,
     this.package,
     this.moveEventType,
-    this.senderAddress,
     this.sender,
     this.moveModule,
     this.moveEventModule,
@@ -73,9 +84,6 @@ class EventFilter {
     if (moveEventType != null) {
       data.addAll({ "MoveEventType": moveEventType! });
     }
-    if (senderAddress != null) {
-      data.addAll({ "SenderAddress": senderAddress! });
-    }
     if (sender != null) {
       data.addAll({ "Sender": sender! });
     }
@@ -86,7 +94,7 @@ class EventFilter {
       data.addAll({ "MoveModule": moveEventModule!.toJson() });
     }
     if (moveEventField != null) {
-      data.addAll({ "MoveModule": moveEventField! });
+      data.addAll({ "MoveModule": moveEventField!.toJson() });
     }
     if (timeRange != null) {
       data.addAll({ "TimeRange": timeRange!.toJson() });

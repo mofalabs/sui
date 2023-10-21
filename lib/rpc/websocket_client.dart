@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:sui/types/event_filter.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebsocketClient {
@@ -83,6 +84,17 @@ class WebsocketClient {
       "id": _id,
       "method": "suix_subscribeEvent",
       "params": [filter]
+    };
+    return send(data);
+  }
+
+  Stream<dynamic> subscribeEventFilter(EventFilter filter) {
+    _id++;
+    final data = {
+      "jsonrpc": "2.0",
+      "id": _id,
+      "method": "suix_subscribeEvent",
+      "params": [filter.toJson()]
     };
     return send(data);
   }
