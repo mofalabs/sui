@@ -1,13 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/builder/transaction_block.dart';
-import 'package:sui/builder/transactions.dart';
-import 'package:sui/cryptography/signature.dart';
-import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/framework.dart';
-import 'package:sui/types/objects.dart';
-import 'package:sui/types/transactions.dart';
 
 void main() {
   const mnemonics = "describe beyond repair shuffle pluck during still prefer gravity film green master";
@@ -201,6 +194,18 @@ void main() {
 
   });
 
+  test('test querying events', () async {
+    final client = SuiClient(Constants.mainnetAPI);
+    final events = await client.queryEvents({ "Sender": "0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331" }, limit: 2);
+    debugPrint(events.data.length.toString());
+
+    final events2 = await client.queryEventsByFilter(
+      EventFilter(sender: "0x02a212de6a9dfa3a69e22387acfbafbb1a9e591bd9d636e7895dcfc8de05f331"), 
+      limit: 2
+    );
+    debugPrint(events2.data.length.toString());
+  });
+
   test('test ed25519 transfer sui', () async {
     const gasBudget = 2000000;
     final recipientAccount = SuiAccount.ed25519Account();
@@ -313,4 +318,5 @@ test('test programmable transaction blocks', () async {
     final waitForLocalExecutionTx = await client.signAndExecuteTransactionBlock(account, tx);
     debugPrint(waitForLocalExecutionTx.digest);
   });
+
 }

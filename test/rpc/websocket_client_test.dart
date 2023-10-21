@@ -41,8 +41,6 @@ void main() {
       debugPrint(event);
     }, onError: (e) {
       debugPrint(e.toString());
-    }, onDone: () {
-      debugPrint("onDone");
     });
 
     await Future.delayed(const Duration(seconds: 10));
