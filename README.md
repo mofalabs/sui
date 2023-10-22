@@ -256,3 +256,7 @@ final subscription = client.subscribeEvent({"Sender": "0xa2d8bb82df40770ac5bc862
     debugPrint(e.toString());
 });
 ```
+
+### Example
+
+https://sui-dart.pages.dev/

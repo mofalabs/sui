@@ -4,6 +4,8 @@ import 'package:focus_detector/focus_detector.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/types/faucet.dart';
 
+import 'helper/helper.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -35,15 +37,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   BigInt _balance = BigInt.zero;
-  late SuiAccount account = SuiAccount.ed25519Account();
-  late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
+  late SuiClient suiClient;
+  SuiAccount? account;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getLocalSuiAccount().then((value) {
+      setState(() {
+        account = value;
+        suiClient = SuiClient(Constants.devnetAPI, account: account);
+      });
+    });
+  }
 
   bool requestingFaucet = false;
 
   void _requestFaucet() async {
-    if (requestingFaucet) return;
+    if (requestingFaucet || account == null) return;
 
-    var resp = await suiClient.getBalance(account.getAddress());
+    var resp = await suiClient.getBalance(account!.getAddress());
     _balance = resp.totalBalance;
     if (_balance <= BigInt.zero) {
       setState(() {
@@ -52,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       try {
         final faucet = FaucetClient(Constants.faucetDevAPI);
-        final faucetResp = await faucet.requestSuiFromFaucetV1(account.getAddress());
+        final faucetResp = await faucet.requestSuiFromFaucetV1(account!.getAddress());
         if (faucetResp.task != null) {
           while(true) {
             final statusResp = await faucet.getFaucetRequestStatus(faucetResp.task!);
@@ -70,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    resp = await suiClient.getBalance(account.getAddress());
+    resp = await suiClient.getBalance(account!.getAddress());
     _balance = resp.totalBalance;
 
     setState(() {
@@ -108,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
-                child: SelectableText(account.getAddress()),
+                child: SelectableText(account?.getAddress() ?? ''),
               )
             ],
           ),
