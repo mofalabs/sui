@@ -38,6 +38,7 @@ dependencies:
   sui:
     path: ../
   another_flushbar: ^1.12.29
+  focus_detector: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,8 @@
 import 'package:example/pages/token_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:sui/sui.dart';
+import 'package:sui/types/faucet.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,14 +38,37 @@ class _MyHomePageState extends State<MyHomePage> {
   late SuiAccount account = SuiAccount.ed25519Account();
   late SuiClient suiClient = SuiClient(Constants.devnetAPI, account: account);
 
+  bool requestingFaucet = false;
+
   void _requestFaucet() async {
+    if (requestingFaucet) return;
+
     var resp = await suiClient.getBalance(account.getAddress());
     _balance = resp.totalBalance;
     if (_balance <= BigInt.zero) {
-      final faucet = FaucetClient(Constants.faucetDevAPI);
-      await faucet.requestSuiFromFaucetV1(account.getAddress());
+      setState(() {
+        requestingFaucet = true;
+      });
+
+      try {
+        final faucet = FaucetClient(Constants.faucetDevAPI);
+        final faucetResp = await faucet.requestSuiFromFaucetV1(account.getAddress());
+        if (faucetResp.task != null) {
+          while(true) {
+            final statusResp = await faucet.getFaucetRequestStatus(faucetResp.task!);
+            if (statusResp.status.status == BatchSendStatus.SUCCEEDED) {
+              break;
+            } else {
+              await Future.delayed(const Duration(seconds: 3));
+            }
+          }
+        } 
+      } finally {
+        setState(() {
+          requestingFaucet = false;
+        });
+      }
     }
-    await Future.delayed(const Duration(seconds: 2));
 
     resp = await suiClient.getBalance(account.getAddress());
     _balance = resp.totalBalance;
@@ -59,7 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FocusDetector(
+      onFocusGained: () {
+        _requestFaucet();
+      },
+      child:Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -69,11 +98,13 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: <Widget>[
               Text(
-                '${_balance.toString()} SUI',
+                '${_balance / BigInt.from(10).pow(9)} SUI',
                 style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: _requestFaucet, child: const Text("Faucet")),
+              ElevatedButton(
+                onPressed: _requestFaucet, 
+                child: Text(requestingFaucet ? "Inprogress" : "Faucet")),
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
@@ -88,6 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'TokenManager',
         child: const Icon(Icons.menu),
       ) : null,
-    );
+    ));
   }
 }

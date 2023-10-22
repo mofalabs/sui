@@ -28,8 +28,8 @@ class _ManagedNFTState extends State<ManagedNFT> {
   String? packageId;
   String? objectId;
   String? transactionModule;
-  List<SuiObject>? suiObjects;
   String? coinType;
+  final suiObjects = <SuiObject>[];
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +43,23 @@ class _ManagedNFTState extends State<ManagedNFT> {
         child: CustomScrollView(
           slivers:[
             sliverListButtons(context),
-            if (suiObjects != null) const SliverToBoxAdapter(
+            if (suiObjects.isNotEmpty) const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: Text("NFT List:", style: TextStyle(fontSize: 16)),
               )
             ),
-            if (suiObjects != null) SliverFixedExtentList(delegate: 
+            if (suiObjects.isNotEmpty) SliverFixedExtentList(delegate: 
               SliverChildBuilderDelegate(
                   (context1, index) => GestureDetector(
-                    child: ListTile(title: Text(suiObjects![index].objectId, overflow: TextOverflow.ellipsis,)),
+                    child: ListTile(title: Text(suiObjects[index].objectId, overflow: TextOverflow.ellipsis,)),
                     onTap: () async {
                       final txCall = MoveCallTransaction(
                         packageId!, 
                         transactionModule!, 
                         "burn", 
                         [], 
-                        [suiObjects![index].objectId],
+                        [suiObjects[index].objectId],
                         100000000
                       );
 
@@ -69,14 +69,14 @@ class _ManagedNFTState extends State<ManagedNFT> {
       
                         showSnackBar(context1, "Burned token object txn ${burnResp.digest}");
       
-                        suiObjects?.removeAt(index);
                         setState(() {
+                          suiObjects.removeAt(index);
                         });
       
                       }
                     },
                   ),
-                  childCount: suiObjects?.length ?? 0
+                  childCount: suiObjects.length
                 ),
                 itemExtent: 50,
               )
@@ -163,9 +163,10 @@ class _ManagedNFTState extends State<ManagedNFT> {
             if (resp.confirmedLocalExecution == true) {
               final createdObjs = resp.objectChanges?.where((e) => e["type"] == "created");
               final nftObjects = createdObjs?.map<SuiObject>((e) => SuiObject.fromJson(e)).toList();
-              suiObjects?.addAll(nftObjects ?? []);
 
-              setState(() {});
+              setState(() {
+                suiObjects.addAll(nftObjects ?? []);
+              });
             }
           },
           style: ElevatedButton.styleFrom(
