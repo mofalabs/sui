@@ -77,6 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           }
         } 
+      } catch(e) {
+        showSnackBar(context, e.toString());
       } finally {
         setState(() {
           requestingFaucet = false;

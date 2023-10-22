@@ -1,6 +1,7 @@
 
 import 'package:example/pages/managed_nft.dart';
 import 'package:example/pages/managed_token.dart';
+import 'package:example/pages/transfer_coin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sui/sui_client.dart';
@@ -26,9 +27,16 @@ class _TokenMenuState extends State<TokenMenu> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => TransferCoin(client: widget.client))
+                  );
+                }, child: const Text("Transfer SUI")),
+              const SizedBox(height: 60),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => ManagedToken(client: widget.client))
                   );
-                }, child: const Text("Mint Coin")),
+                }, child: const Text("Mint Token")),
               const SizedBox(height: 60),
               ElevatedButton(
                 onPressed: () {
