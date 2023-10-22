@@ -24,3 +24,7 @@
 ## 0.1.1
 
 * Add Events API
+
+## 0.1.2
+
+* Add Web Support
