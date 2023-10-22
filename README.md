@@ -3,6 +3,7 @@ Sui Dart SDK
 
 [![Pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/sui)
 
+
 Installation
 -
 
@@ -10,6 +11,11 @@ Installation
 dependencies:
   sui: ^0.1.2
 ```
+
+Example
+-
+
+https://sui-dart.pages.dev/
 
 Usage
 -
@@ -256,7 +262,3 @@ final subscription = client.subscribeEvent({"Sender": "0xa2d8bb82df40770ac5bc862
     debugPrint(e.toString());
 });
 ```
-
-### Example
-
-https://sui-dart.pages.dev/
