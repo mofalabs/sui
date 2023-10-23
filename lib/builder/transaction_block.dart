@@ -155,8 +155,8 @@ class TransactionBlock {
 		_blockData.sender ??= sender;
 	}
 
-	void setExpiration(TransactionExpiration? expiration) {
-		_blockData.expiration = expiration;
+	void setExpiration(int? epoch) {
+		_blockData.expiration = TransactionExpiration(epoch: epoch);
 	}
 
 	void setGasPrice(BigInt price) {
@@ -356,14 +356,14 @@ class TransactionBlock {
 		return jsonEncode(_blockData.snapshot());
 	}
 
-	_getConfig(dynamic key, BuildOptions options) {
+	String _getConfig(String key, BuildOptions options) {
 		// Use the limits definition if that exists:
 		if (options.limits != null && options.limits[key] is int) {
 			return options.limits[key]!;
 		}
 
 		if (options.protocolConfig == null) {
-			return DefaultOfflineLimits[key];
+			return DefaultOfflineLimits[key].toString();
 		}
 
 		// Fallback to protocol config:
@@ -372,15 +372,13 @@ class TransactionBlock {
 			throw ArgumentError('Missing expected protocol config: "${LIMITS[key]}"');
 		}
 
-		final value =
-			attribute.containsKey("u64") ? attribute["u64"] : attribute.containsKey("u32") ? attribute["u32"] : attribute["f64"];
-
+		final value = attribute["u64"] ?? (attribute["u32"] ?? attribute["f64"]);
 		if (value == null) {
 			throw ArgumentError('Unexpected protocol config value found for: "${LIMITS[key]}"');
 		}
 
 		// NOTE: Technically this is not a safe conversion, but we know all of the values in protocol config are safe
-		return value;
+		return value.toString();
 	}
 
 	/// Build the transaction to BCS bytes, and sign it with the provided keypair.
@@ -408,7 +406,7 @@ class TransactionBlock {
 	}
 
 	void _validate(BuildOptions options) {
-		final maxPureArgumentSize = int.parse(_getConfig('maxPureArgumentSize', options).toString());
+		final maxPureArgumentSize = int.parse(_getConfig('maxPureArgumentSize', options));
 		// Validate all inputs are the correct size:
     for (var i = 0; i < _blockData.inputs.length; i++) {
       final input = _blockData.inputs[i];
@@ -425,7 +423,7 @@ class TransactionBlock {
 	// The current default is just picking _all_ coins we can which may not be ideal.
 	Future<void> _prepareGasPayment(BuildOptions options) async {
 		if (_blockData.gasConfig.payment != null) {
-			final maxGasObjects = int.parse(_getConfig('maxGasObjects', options).toString());
+			final maxGasObjects = int.parse(_getConfig('maxGasObjects', options));
 			if (_blockData.gasConfig.payment!.length > maxGasObjects) {
 				throw ArgumentError("Payment objects exceed maximum amount: $maxGasObjects");
 			}
@@ -693,7 +691,7 @@ class TransactionBlock {
 			if (_blockData.gasConfig.budget == null) {
 				final dryRunResult = await expectClient(options).dryRunTransaction(
 					_blockData.build(
-						maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options).toString()),
+						maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options)),
             gasConfig: GasConfig(
               budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
               payment: []

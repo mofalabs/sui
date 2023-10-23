@@ -8,7 +8,15 @@ import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
 
-typedef TransactionExpiration = dynamic;
+class TransactionExpiration {
+  final int? epoch;
+  TransactionExpiration({this.epoch});
+
+  Map<String, dynamic> toJson() {
+    if (epoch == null) return { "None": null };
+    return { "Epoch": epoch };
+  }
+}
 
 class GasConfig {
   BigInt? budget;
@@ -41,7 +49,7 @@ class SerializedTransactionDataBuilder {
 	GasConfig gasConfig;
 	int version;
 	String? sender;
-	TransactionExpiration expiration;
+	TransactionExpiration? expiration;
 	List<Map<String, dynamic>>? inputs;
 	List<dynamic>? transactions;
 
@@ -221,7 +229,7 @@ class TransactionBlockDataBuilder {
 
 		final transactionData = {
 			"sender": prepareSuiAddress(senderValue),
-			"expiration": expirationValue ?? { "None": true },
+			"expiration": expirationValue?.toJson() ?? { "None": true },
 			"gasData": {
 				"payment": gasConfigValue["payment"],
 				"owner": prepareSuiAddress(this.gasConfig.owner ?? senderValue),

@@ -63,7 +63,7 @@ class Coin {
       return data.type;
     }
     if (data is SuiObjectResponse) {
-      return data.data?.content?.type;
+      return data.data?.type ?? data.data?.content?.type;
     }
     return null;
   }
