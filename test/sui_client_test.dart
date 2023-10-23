@@ -230,11 +230,7 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final coins = await client.getGasObjectsOwnedByAddress(sender);
-    final gasCoin = coins.last;
-
     final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(4000000));
 
     // final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000)]);
@@ -260,11 +256,9 @@ void main() {
     final receiver = SuiAccount.ed25519Account().getAddress();
 
     final coins = await client.getGasObjectsOwnedByAddress(sender);
-    final gasCoin = coins[0];
     final obj = coins[1];
 
     final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
     txb.transferObjects(
       [txb.objectRef(obj)],
@@ -285,12 +279,10 @@ void main() {
     final sender = signer.getAddress();
 
     final coins = await client.getGasObjectsOwnedByAddress(sender);
-    final gasCoin = coins.last;
     final destObj = coins.first;
     final srcObj = coins[1];
 
     final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
 
     txb.mergeCoins(txb.objectRef(destObj), [
@@ -310,10 +302,7 @@ void main() {
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    var gasCoin = (await client.getGasObjectsOwnedByAddress(sender)).last;
-
     var txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
@@ -331,10 +320,7 @@ void main() {
     final capObjectId = resp1.objectChanges!.firstWhere((e) => e["type"] == "created" && e["objectType"] != null && e["objectType"].toString().startsWith("0x2::coin::TreasuryCap"))["objectId"];
     final capObj = await client.getObject(capObjectId);
 
-    gasCoin = (await client.getGasObjectsOwnedByAddress(sender)).last;
-
     txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
     final coin = txb.moveCall(
@@ -366,10 +352,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    var gasCoin = (await client.getGasObjectsOwnedByAddress(sender)).last;
-
     var txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
@@ -387,10 +370,7 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final capObjectId = resp1.objectChanges!.firstWhere((e) => e["type"] == "created" && e["objectType"] != null && e["objectType"].toString().startsWith("0x2::coin::TreasuryCap"))["objectId"];
     final capObj = await client.getObject(capObjectId);
 
-    gasCoin = (await client.getGasObjectsOwnedByAddress(sender)).last;
-
     txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
     for (var i = 0; i < 3; i++) {
@@ -416,24 +396,17 @@ test('test transacitonblock publish package and multi mint move call', () async 
   test('test transacitonblock makeMoveVec', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
-    final sender = signer.getAddress();
-
-    final coins = await client.getGasObjectsOwnedByAddress(sender);
-    final gasCoin = coins[0];
 
     final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
 
-    final vec = txb.makeMoveVec(objects: [
-      txb.objectRef(coins[2]),
-      txb.objectRef(coins[3])
-    ]);
+    final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000)]);
+    final vec = txb.makeMoveVec(objects: [coin]);
 
     txb.moveCall(
       "0x2::pay::join_vec",
       typeArguments: ["0x2::sui::SUI"],
-      arguments: [txb.objectRef(coins[1]), vec]
+      arguments: [txb.gas, vec]
     );
 
     final resp = await client.signAndExecuteTransactionBlock(
@@ -449,17 +422,12 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final sender = signer.getAddress();
 
-    final ownedObjs = await client.getOwnedObjects(sender);
-    final coins = ownedObjs.data.where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false).toList();
-    final gasCoin = coins.first.data!;
-
-    final bytecodeStr = '{"modules":["oRzrCwYAAAAHAQAGAgYIAw4KBRgPByctCFRgDLQBDgAEAQMCBQEABwACAQIAAAIAAQAABAIBAAEHCAEABAgACAAIAAcIAQZTdHJpbmcJVHhDb250ZXh0BGluaXQGc3RyaW5nBHRlc3QKdHhfY29udGV4dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABAQIBAQQAAQECAA=="],"dependencies":["0x0000000000000000000000000000000000000000000000000000000000000001","0x0000000000000000000000000000000000000000000000000000000000000002"],"digest":[54,25,72,21,237,244,164,121,88,120,101,42,91,74,72,110,81,80,196,167,192,190,64,83,78,199,83,77,32,91,82,189]}';
+    const bytecodeStr = '{"modules":["oRzrCwYAAAAHAQAGAgYIAw4KBRgPByctCFRgDLQBDgAEAQMCBQEABwACAQIAAAIAAQAABAIBAAEHCAEABAgACAAIAAcIAQZTdHJpbmcJVHhDb250ZXh0BGluaXQGc3RyaW5nBHRlc3QKdHhfY29udGV4dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABAQIBAQQAAQECAA=="],"dependencies":["0x0000000000000000000000000000000000000000000000000000000000000001","0x0000000000000000000000000000000000000000000000000000000000000002"],"digest":[54,25,72,21,237,244,164,121,88,120,101,42,91,74,72,110,81,80,196,167,192,190,64,83,78,199,83,77,32,91,82,189]}';
     final bytecode = jsonDecode(bytecodeStr);
     final modules = bytecode["modules"].cast<String>();
     final dependencies = bytecode["dependencies"].cast<String>();
 
     final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
@@ -483,16 +451,9 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     final receiver = SuiAccount.ed25519Account();
-    final ownedObjs =
-        await client.getOwnedObjects(account.getAddress());
-    final coins = ownedObjs.data
-        .where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false)
-        .toList();
-    final gasCoin = coins.first.data!;
-    final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
-    txb.setGasBudget(BigInt.from(2000000));
 
+    final txb = TransactionBlock();
+    txb.setGasBudget(BigInt.from(2000000));
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000000)]);
     txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
 
@@ -510,14 +471,8 @@ test('test transacitonblock publish package and multi mint move call', () async 
   test('test transaction block move call pure values', () async {
     final account = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
-    final ownedObjs =
-        await client.getOwnedObjects(account.getAddress());
-    final coins = ownedObjs.data
-        .where((e) => e.data?.type?.contains(SUI_TYPE_ARG) ?? false)
-        .toList();
-    final gasCoin = coins.first.data!;
+    
     final txb = TransactionBlock();
-    txb.setGasPayment([gasCoin]);
     txb.setGasBudget(BigInt.from(2000000));
 
     final emptyVec = txb.moveCall("0x1::vector::empty", typeArguments: [BCS.U64]);
