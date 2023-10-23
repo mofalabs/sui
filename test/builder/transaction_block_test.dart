@@ -82,7 +82,7 @@ void main() {
 
     test('supports epoch expiration', () async {
       final tx = setup();
-      tx.setExpiration({ "Epoch": 1 });
+      tx.setExpiration(1);
       await tx.build();
     });
 
