@@ -100,13 +100,13 @@ List<List<T>> chunk<T>(List<T> arr, int size) {
 
 class BuildOptions {
 	SuiClient? client;
-	bool? onlyTransactionKind;
+	bool onlyTransactionKind;
 	/// Define a protocol config to build against, instead of having it fetched from the provider at build time.
 	dynamic protocolConfig;
 	/// Define limits that are used when building the transaction. In general, we recommend using the protocol configuration instead of defining limits.
 	Limits? limits;
 
-  BuildOptions({this.client, this.onlyTransactionKind, this.protocolConfig, this.limits});
+  BuildOptions({this.client, this.onlyTransactionKind = false, this.protocolConfig, this.limits});
 }
 
 class SignOptions extends BuildOptions {
@@ -430,7 +430,7 @@ class TransactionBlock {
 		}
 
 		// Early return if the payment is already set:
-		if ((options.onlyTransactionKind ?? false) || _blockData.gasConfig.payment != null) {
+		if ((options.onlyTransactionKind) || _blockData.gasConfig.payment != null) {
 			return;
 		}
 
@@ -469,7 +469,7 @@ class TransactionBlock {
 	}
 
 	Future<void> _prepareGasPrice(BuildOptions options) async {
-		if (options.onlyTransactionKind != null || _blockData.gasConfig.price != null) {
+		if (options.onlyTransactionKind || _blockData.gasConfig.price != null) {
 			return;
 		}
 
@@ -673,7 +673,7 @@ class TransactionBlock {
 	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
 	/// so that it can be built into bytes.
 	Future<void> _prepare(BuildOptions options) async {
-		if (options.onlyTransactionKind == null && _blockData.sender == null) {
+		if (options.onlyTransactionKind && _blockData.sender == null) {
 			throw ArgumentError('Missing transaction sender');
 		}
 

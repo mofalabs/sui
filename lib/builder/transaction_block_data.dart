@@ -179,7 +179,7 @@ class TransactionBlockDataBuilder {
 		String? sender,
     GasConfig? gasConfig,
     TransactionExpiration? expiration,
-		bool? onlyTransactionKind,
+		bool onlyTransactionKind = false,
 	}) {
 		// Resolve inputs down to values:
 		final inputs = this.inputs.map((input) => input["value"]);
@@ -191,7 +191,7 @@ class TransactionBlockDataBuilder {
 			},
 		};
 
-		if (onlyTransactionKind != null && onlyTransactionKind) {
+		if (onlyTransactionKind) {
       final options = BcsWriterOptions(maxSize: maxSizeBytes);
 			return builder.ser('TransactionKind', kind, options).toBytes();
 		}

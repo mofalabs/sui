@@ -299,17 +299,14 @@ test('test programmable transaction blocks', () async {
 
     final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
-    var coins = await client.getCoins(account.getAddress());
-    if (coins.data.isEmpty) {
+    final suiBalance = await client.getBalance(account.getAddress());
+    if (suiBalance.totalBalance == BigInt.zero) {
         final faucet = FaucetClient(Constants.faucetDevAPI);
         final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
         assert(resp.transferredGasObjects.isNotEmpty);
     }
 
-    final gasCoin = coins.data.first;
-
     final tx = TransactionBlock();
-    tx.setGasPayment([gasCoin]);
     tx.setGasBudget(BigInt.from(2000000));
 
     final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
