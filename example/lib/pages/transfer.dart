@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,8 @@ class _TransferState extends State<Transfer> {
 
   TextEditingController amountTextController = TextEditingController(text: "1");
   TextEditingController receiverTextController = TextEditingController();
+
+  bool sending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +46,23 @@ class _TransferState extends State<Transfer> {
               )
             ),
             const SizedBox(height: 50),
-            Button('Send', () async {
-              final amount = int.tryParse(amountTextController.text);
+            Button(sending ? 'Sending' : 'Send', () async {
+              var amount = double.tryParse(amountTextController.text);
               if (amount == null) return;
+              amount = amount * pow(10, 9);
 
               final receiver = receiverTextController.text;
               if (!SuiAccount.isValidAddress(receiver)) return;
 
               try {
+                if (sending) return;
+                setState(() {
+                  sending = true;
+                });
+
                 final txb = TransactionBlock();
                 txb.setGasBudget(BigInt.from(20000000));
-                final result = txb.splitCoins(txb.gas, [txb.pureInt(amount)]);
+                final result = txb.splitCoins(txb.gas, [txb.pureInt(amount.toInt())]);
                 txb.transferObjects([result], txb.pureAddress(receiver));
                 final resp = await suiClient.signAndExecuteTransactionBlock(
                   widget.account, 
@@ -66,6 +76,10 @@ class _TransferState extends State<Transfer> {
                 }
               } catch(e) {
                   showErrorToast(context, e.toString());
+              } finally {
+                setState(() {
+                  sending = false;
+                });
               }
             })
           ],

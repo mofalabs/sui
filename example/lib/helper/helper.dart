@@ -16,20 +16,18 @@ void showSnackBar(BuildContext context, String title, {int seconds = 3}) {
   ).show(context);
 }
 
-void showToast(BuildContext context, String title, {int seconds = 3, Color? color}) {
+void showToast(BuildContext context, String title, {int seconds = 3, bool success = true}) {
   Widget toast = Container(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
         decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
-        color: color ?? Colors.greenAccent,
+        color: success ? Colors.greenAccent : Colors.redAccent,
         ),
         child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-            Icon(Icons.check),
-            SizedBox(
-            width: 12.0,
-            ),
+            Icon(success ? Icons.check : Icons.close),
+            SizedBox(width: 12.0),
             Text(title),
         ],
         ),
@@ -42,7 +40,7 @@ void showToast(BuildContext context, String title, {int seconds = 3, Color? colo
 }
 
 void showErrorToast(BuildContext context, String title, {int seconds = 3}) {
-  showToast(context, title, seconds: seconds, color: Colors.redAccent);
+  showToast(context, title, seconds: seconds, success: false);
 }
 
 Future<SuiAccount> getLocalSuiAccount() async {

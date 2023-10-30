@@ -1,4 +1,5 @@
 import 'package:example/pages/faucet.dart';
+import 'package:example/pages/merge.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:focus_detector/focus_detector.dart';
@@ -67,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int menuIndex = 0;
 
-  Widget contentPage() {
+  Widget contentPage(int menuIndex) {
     switch(menuIndex) {
       case 0: 
         return const Center(
@@ -81,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       case 1: return Faucet(account);
       case 2: return Split(account);
+      case 3: return Merge(account);
       case 4: return Transfer(account);
     }
 
@@ -141,16 +143,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     menuClick(2);
                   },
                 ),
-                // ListTile(
-                //   title: const Text(("Merge Sui")),
-                //   onTap: () {
-                //     Navigator.pop(context);
-                //     menuClick(3);
-                //   },
-                // ),
+                ListTile(
+                  title: const Text(("Merge Sui")),
+                  onTap: () {
+                    Navigator.pop(context);
+                    menuClick(3);
+                  },
+                ),
                 ListTile(
                   title: const Text(("Transfer Sui")),
                   onTap: () {
+                    Navigator.pop(context);
                     menuClick(4);
                   },
                 ),
@@ -165,8 +168,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           body: Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 300.0),
-              child: contentPage()
+              padding: EdgeInsets.only(top: 300.0),
+              child: contentPage(menuIndex)
               // child: Column(
               //   children: <Widget>[
               //     Text(
