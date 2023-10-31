@@ -2,6 +2,7 @@ import 'package:example/components/wave.dart';
 import 'package:example/pages/faucet.dart';
 import 'package:example/pages/home.dart';
 import 'package:example/pages/merge.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:focus_detector/focus_detector.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sui Dart Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textSelectionTheme: const TextSelectionThemeData(
@@ -48,8 +50,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late SuiClient suiClient;
   late SuiAccount account;
+
+  String localNetwork = "devnet";
 
   @override
   void initState() {
@@ -58,7 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
     getLocalSuiAccount().then((value) {
       setState(() {
         account = value;
-        suiClient = SuiClient(Constants.devnetAPI, account: account);
       });
     });
   }
@@ -88,6 +90,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void switchNet(String network) {
+    switch(network) {
+      case "devnet":
+        suiClient = SuiClient(Constants.devnetAPI);
+        localNetwork = "devnet";
+        break;
+      case "testnet":
+        suiClient = SuiClient(Constants.testnetAPI);
+        localNetwork = "testnet";
+        break;
+      case "mainnet":
+        suiClient = SuiClient(Constants.mainnetAPI);
+        localNetwork = "mainnet";
+        break;
+    }
+
+    menuClick(0);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -98,6 +119,39 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(widget.title),
+            actions: [
+              MenuAnchor(
+                builder: (context, controller, child) {
+                  return CupertinoButton(onPressed: () {
+                    if(controller.isOpen) {
+                      controller.close();
+                    } else {
+                      controller.open();
+                    }
+                  }, child: Text(localNetwork, style: TextStyle(color: Colors.white)));
+                },
+                menuChildren: [
+                  MenuItemButton(
+                    child: SizedBox(child: Text("devnet", textAlign: TextAlign.center), width: 80),
+                    onPressed: () {
+                      switchNet("devnet");
+                    }
+                  ),
+                  MenuItemButton(
+                    child: SizedBox(child: Text("testnet", textAlign: TextAlign.center), width: 80), 
+                    onPressed: () {
+                      switchNet("testnet");
+                    }
+                  ),
+                  MenuItemButton(
+                    child: SizedBox(child: Text("mainnet", textAlign: TextAlign.center), width: 80),
+                    onPressed: () {
+                      switchNet("mainnet");
+                    }
+                  ),
+                ]),
+                
+            ]
           ),
           drawer: Drawer(
             child: ListView(

@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sui/sui.dart';
 
-final suiClient = SuiClient(Constants.devnetAPI);
+var suiClient = SuiClient(Constants.devnetAPI);
 
 void showSnackBar(BuildContext context, String title, {int seconds = 3}) {
   Flushbar(
