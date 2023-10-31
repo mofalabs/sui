@@ -76,10 +76,12 @@ class _FaucetState extends State<Faucet> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 40.0),
+          padding: EdgeInsets.only(top: size.height / 4),
           child: Column(
             children: <Widget>[
               Padding(

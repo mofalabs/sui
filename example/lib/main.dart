@@ -90,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return FocusDetector(
         onFocusGained: () {
           // _requestFaucet();
@@ -167,10 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           body: Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 300.0),
-              child: contentPage(menuIndex)
-            ),
+            child: contentPage(menuIndex)
           ),
         )
       );

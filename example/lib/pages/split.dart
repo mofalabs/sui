@@ -43,8 +43,16 @@ class _SplitState extends State<Split> {
       final coins = amounts.asMap().keys.map((key) => result[key]).toList();
       txb.transferObjects(coins, txb.pureAddress(to));
 
-      await suiClient.signAndExecuteTransactionBlock(widget.account, txb);
-      showToast(context, "Transaction Send Success");
+      final resp = await suiClient.signAndExecuteTransactionBlock(
+        widget.account, 
+        txb,
+        responseOptions: SuiTransactionBlockResponseOptions(showEffects: true)
+      );
+      if (resp.effects?.status.status == ExecutionStatusType.success) {
+        showToast(context, "Transaction Send Success");
+      } else {
+        showErrorToast(context, resp.effects?.status.error ?? "Split Coins Fail");
+      }
     } catch(e) {
       showErrorToast(context, e.toString());
     } finally {
@@ -54,22 +62,27 @@ class _SplitState extends State<Split> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
       width: 400,
-      child: Column(
-        children: [
-          TextField(
-            controller: amountTextController,
-            decoration: const InputDecoration(
-              suffixText: "SUI",
-              hintText: '1, 2, 3'
+      child: Padding(
+        padding: EdgeInsets.only(top: size.height / 4),
+        child: Column(
+          children: [
+            TextField(
+              controller: amountTextController,
+              decoration: const InputDecoration(
+                suffixText: "SUI",
+                hintText: '1, 2, 3'
+              ),
             ),
-          ),
-          const SizedBox(height: 50),
-          Button(sending ? 'Sending': 'Split', () {
-            splitSui(amountTextController.text, widget.account.getAddress());
-          })
-        ],
+            const SizedBox(height: 50),
+            Button(sending ? 'Sending': 'Split', () {
+              splitSui(amountTextController.text, widget.account.getAddress());
+            })
+          ],
+        ),
       ),
     );
   }
