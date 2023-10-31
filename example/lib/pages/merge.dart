@@ -76,9 +76,14 @@ class _MergeState extends State<Merge> {
       
                   final txb = TransactionBlock();
                   txb.setGasBudget(BigInt.from(20000000));
-                  final destCoin = txb.objectId(checkedCoins.first.coinObjectId);
-                  final sourceCoins = checkedCoins.skip(1).map((e) => txb.objectId(e.coinObjectId)).toList();
-                  txb.mergeCoins(destCoin, sourceCoins);
+                  if (coinsSelected.length == checkedCoins.length) {
+                    /// all remain coins as gas
+                    txb.mergeCoins(txb.gas, [txb.objectId(checkedCoins.first.coinObjectId)]);
+                  } else {
+                    final destCoin = txb.objectId(checkedCoins.first.coinObjectId);
+                    final sourceCoins = checkedCoins.skip(1).map((e) => txb.objectId(e.coinObjectId)).toList();
+                    txb.mergeCoins(destCoin, sourceCoins);
+                  }
                   final resp = await suiClient.signAndExecuteTransactionBlock(
                     widget.account, 
                     txb, 
@@ -114,11 +119,6 @@ class _MergeState extends State<Merge> {
             ),
             value: coinsSelected[index],
             onChanged: ((value) {
-              if (value == true && coinsSelected.where((e) => e == false).length <= 1) {
-                showErrorToast(context, "You have to leave on coin for gas");
-                return;
-              }
-      
               setState(() {
                 coinsSelected[index] = value!;
               });

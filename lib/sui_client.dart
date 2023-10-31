@@ -9,7 +9,7 @@ import 'package:sui/types/common.dart';
 import 'package:sui/types/transactions.dart';
 
 class SuiClient extends SignerWithProvider {
-  late final SuiAccount? _account;
+  late SuiAccount? _account;
 
   SuiClient(
     String endpoint,
