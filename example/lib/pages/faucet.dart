@@ -82,17 +82,18 @@ class _FaucetState extends State<Faucet> {
           padding: const EdgeInsets.only(top: 40.0),
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: SelectableText(widget.account.getAddress(), style: TextStyle(fontSize: 18)),
+              ),
+              const SizedBox(height: 20),
               Text(
                 '${balance / BigInt.from(10).pow(9)} SUI',
                 style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 20),
               Button(requestingFaucet ? "Fauceting" : "Faucet", _requestFaucet),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: SelectableText(widget.account.getAddress()),
-              )
+
             ],
           ),
         ),

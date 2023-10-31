@@ -1,4 +1,6 @@
+import 'package:example/components/wave.dart';
 import 'package:example/pages/faucet.dart';
+import 'package:example/pages/home.dart';
 import 'package:example/pages/merge.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -70,16 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget contentPage(int menuIndex) {
     switch(menuIndex) {
-      case 0: 
-        return const Center(
-          child: Column(
-            children: [
-              Text("Sui Dart SDK", style: TextStyle(fontSize: 35)),
-              SizedBox(height: 20),
-              Text("A cross-platform Sui SDK for Mobile, Web and Desktop", style: TextStyle(fontSize: 28), textAlign: TextAlign.center)
-            ],
-          )
-        );
+      case 0: return Home();
       case 1: return Faucet(account);
       case 2: return Split(account);
       case 3: return Merge(account);
@@ -130,6 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ),
                 ListTile(
+                  title: const Text("Home"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    menuClick(0);
+                  },
+                ),
+                ListTile(
                   title: const Text("Faucet"),
                   onTap: () {
                     Navigator.pop(context);
@@ -170,33 +170,9 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: EdgeInsets.only(top: 300.0),
               child: contentPage(menuIndex)
-              // child: Column(
-              //   children: <Widget>[
-              //     Text(
-              //       '${_balance / BigInt.from(10).pow(9)} SUI',
-              //       style: const TextStyle(fontSize: 20),
-              //     ),
-              //     const SizedBox(height: 20),
-              //     ElevatedButton(
-              //         onPressed: _requestFaucet,
-              //         child: Text(requestingFaucet ? "Inprogress" : "Faucet")),
-              //     const SizedBox(height: 20),
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 16, right: 16),
-              //       child: SelectableText(account?.getAddress() ?? ''),
-              //     )
-              //   ],
-              // ),
             ),
           ),
-          // floatingActionButton: balance != BigInt.zero
-          //     ? FloatingActionButton(
-          //         onPressed: _navigateToTokenManage,
-          //         tooltip: 'TokenManager',
-          //         child: const Icon(Icons.menu),
-          //       )
-          //     : null,
         )
-        );
+      );
   }
 }

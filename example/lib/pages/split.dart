@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:example/components/button.dart';
@@ -20,19 +21,28 @@ class _SplitState extends State<Split> {
   final amountTextController = TextEditingController();
   bool sending = false;
 
-  Future splitSui(String amount, String to) async {
-    double? value = double.tryParse(amount);
-    if(value == null) return;
-
+  Future splitSui(String amountArr, String to) async {
     if (sending) return;
-    setState(() {sending = true;});
-    
-    final amountValue = value * pow(10, 9);
-    final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(20000000));
-    final result = txb.splitCoins(txb.gas, [txb.pureInt(amountValue.toInt())]);
-    txb.transferObjects([result], txb.pureAddress(to));
+
+    List list;
     try {
+      list = jsonDecode("[$amountArr]") as List;
+    } catch(e) {
+      showErrorToast(context, e.toString());
+      return;
+    }
+
+    setState(() {sending = true;});
+
+    try {
+      final txb = TransactionBlock();
+      txb.setGasBudget(BigInt.from(20000000));
+
+      final amounts = list.map((e) => txb.pureInt((double.parse(e.toString()) * pow(10, 9)).toInt())).toList();
+      final result = txb.splitCoins(txb.gas, amounts);
+      final coins = amounts.asMap().keys.map((key) => result[key]).toList();
+      txb.transferObjects(coins, txb.pureAddress(to));
+
       await suiClient.signAndExecuteTransactionBlock(widget.account, txb);
       showToast(context, "Transaction Send Success");
     } catch(e) {
@@ -51,7 +61,8 @@ class _SplitState extends State<Split> {
           TextField(
             controller: amountTextController,
             decoration: const InputDecoration(
-              suffixText: "SUI"
+              suffixText: "SUI",
+              hintText: '1, 2, 3'
             ),
           ),
           const SizedBox(height: 50),

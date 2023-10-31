@@ -41,6 +41,7 @@ dependencies:
   focus_detector: ^2.0.1
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.2
+  wave: ^0.2.2
 
 dev_dependencies:
   flutter_test:
