@@ -48850,7 +48850,7 @@ $2(a,b){var s,r,q=null,p=this.a,o=p.d
 if(b===o.length){o=p.f?"Sending":"Merge"
 return A.ek(q,new A.pt(o,new A.aor(p,a),q),B.q,q,q,q,q,q,q,new A.aO(0,20,0,0),q,q,q,q)}s=A.bD(o[b].f,q)
 r=Math.pow(10,9)
-r=A.jJ(A.a([A.eU(o[b].e,q,q,q,q,B.cs,q),A.hN(q,8,q),A.eU("("+B.e.ad(s/r,10)+") SUI",q,q,q,q,B.cs,q)],t.p),B.aI,B.b0,B.bD)
+r=A.jJ(A.a([A.eU(o[b].e,q,q,q,q,B.cs,q),A.hN(q,8,q),A.eU("("+B.e.ad(s/r,10)+" SUI)",q,q,q,q,B.cs,q)],t.p),B.aI,B.b0,B.bD)
 return new A.yp(p.e[b],new A.aos(p,a,b),r,q)},
 $S:442}
 A.aor.prototype={
