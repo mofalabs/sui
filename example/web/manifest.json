@@ -1,11 +1,11 @@
 {
-    "name": "example",
-    "short_name": "example",
+    "name": "Sui Dart SDK",
+    "short_name": "Sui Dart SDK",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A cross-platform Sui SDK for Mobile, Web and Desktop.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

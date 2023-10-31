@@ -12,7 +12,7 @@ dependencies:
   sui: ^0.1.2
 ```
 
-Example
+Demo
 -
 
 https://sui-dart.pages.dev/
