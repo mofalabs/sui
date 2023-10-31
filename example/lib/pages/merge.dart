@@ -109,7 +109,7 @@ class _MergeState extends State<Merge> {
               children: [
                 Text(coins[index].coinObjectId, textAlign: TextAlign.center),
                 SizedBox(height: 8),
-                Text("(${bal.toStringAsFixed(10)}) SUI", textAlign: TextAlign.center),
+                Text("(${bal.toStringAsFixed(10)} SUI)", textAlign: TextAlign.center),
               ],
             ),
             value: coinsSelected[index],
