@@ -1,7 +1,7 @@
 Sui Dart SDK
 -
 
-[![Pub](https://img.shields.io/badge/pub-v0.1.2-blue)](https://pub.dev/packages/sui)
+[![Pub](https://img.shields.io/badge/pub-v0.1.3-blue)](https://pub.dev/packages/sui)
 
 
 Installation
@@ -9,7 +9,7 @@ Installation
 
 ```
 dependencies:
-  sui: ^0.1.2
+  sui: ^0.1.3
 ```
 
 Demo

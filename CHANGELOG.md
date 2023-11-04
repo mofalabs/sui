@@ -28,3 +28,9 @@
 ## 0.1.2
 
 * Add Web Support
+
+## 0.1.3
+
+* Fix query gas object
+* Fix setSigner
+* Add Web Demo
