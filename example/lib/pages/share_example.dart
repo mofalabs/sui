@@ -6,7 +6,7 @@ class ShareDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account example'),
+        title: const Text('Share example'),
       ),
       body: Column(
         children: [

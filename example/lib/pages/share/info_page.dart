@@ -41,9 +41,7 @@ class _InfoPageState extends State<InfoPage> {
               onPressed: () {
                 if (code.isNotEmpty) {
                   Clipboard.setData(ClipboardData(text: code));
-                  Fluttertoast.showToast(
-                    msg: 'copied!'
-                  );
+                  Fluttertoast.showToast(msg: 'copied!');
                 }
               },
             ),
@@ -58,7 +56,23 @@ class _InfoPageState extends State<InfoPage> {
           ),
         ],
       ),
-      body: showCode && code.isNotEmpty ? buildMarkdown() : widget.info.content,
+      // body: showCode && code.isNotEmpty ? buildMarkdown() : widget.info.content,
+      body: Stack(
+        children: [
+          widget.info.content,
+          if (showCode && code.isNotEmpty)
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: Container(
+                color: Colors.white,
+                child: buildMarkdown(),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
