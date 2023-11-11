@@ -14,9 +14,9 @@ class FirstShare extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          _button(context, 'Create Account', 0),
-          _button(context, 'Request Faucet', 1),
-          _button(context, 'Account Transfer', 2),
+          _button(context, 'Account', 0),
+          _button(context, 'Faucet', 1),
+          _button(context, 'Transfer', 2),
         ],
       ),
     );

@@ -11,7 +11,7 @@ class ShareDemo extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          _button(context, 'About Mnemonic/Account/Faucet/Transfer', 1),
+          _button(context, 'Mnemonic/Account/Faucet/Transfer', 1),
         ],
       ),
     );

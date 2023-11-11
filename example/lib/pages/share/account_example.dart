@@ -120,7 +120,7 @@ class _AccountExampleState extends State<AccountExample> {
                       ),
                       DropdownMenuItem(
                         value: SignatureScheme.ED25519,
-                        child: Text('ED25519'),
+                        child: Text('Ed25519'),
                       ),
                     ],
                     onChanged: (value) {

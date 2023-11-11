@@ -697,7 +697,7 @@ class TransactionBlock {
               payment: []
             )
 					),
-          _blockData.sender
+          signerAddress: _blockData.sender
 				);
 
 				if (dryRunResult.effects.status.status != ExecutionStatusType.success) {

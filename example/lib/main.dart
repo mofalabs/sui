@@ -49,7 +49,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late SuiAccount account;
+  SuiAccount? account;
 
   String localNetwork = "devnet";
 
@@ -72,17 +72,20 @@ class _MyHomePageState extends State<MyHomePage> {
   int menuIndex = 0;
 
   Widget contentPage(int menuIndex) {
+    if (account == null) return Container();
+    
+    final acc = account!;
     switch (menuIndex) {
       case 0:
         return Home();
       case 1:
-        return Faucet(account);
+        return Faucet(acc);
       case 2:
-        return Split(account);
+        return Split(acc);
       case 3:
-        return Merge(account);
+        return Merge(acc);
       case 4:
-        return Transfer(account);
+        return Transfer(acc);
     }
 
     return Container();
@@ -171,15 +174,16 @@ class _MyHomePageState extends State<MyHomePage> {
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white)),
                           const SizedBox(height: 30),
-                          SelectableText(
-                            account.getAddress(),
-                            showCursor: true,
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.white),
-                            onTap: () {
-                              print(account.getAddress());
-                            },
-                          ),
+                          if (account != null)
+                            SelectableText(
+                              account!.getAddress(),
+                              showCursor: true,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.white),
+                              onTap: () {
+                                print(account!.getAddress());
+                              },
+                            ),
                         ],
                       ),
                     )),
