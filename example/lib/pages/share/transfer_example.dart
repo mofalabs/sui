@@ -33,14 +33,10 @@ class _TransferExampleState extends State<TransferExample> {
   void initState() {
     super.initState();
     _getCode();
-    Future.delayed(const Duration(milliseconds: 250), () {
-      const mnemonic =
-          "buffalo apple awkward journey crystal unveil receive strategy worth link size orient";
-      account = SuiAccount.fromMnemonics(mnemonic, SignatureScheme.Secp256k1);
-      suiClient = SuiClient(Constants.faucetTestAPI, account: account);
-      setState(() {});
-      _getBalance();
-    });
+    account = SuiAccount.secp256k1Account();
+    suiClient = SuiClient(Constants.faucetTestAPI, account: account);
+    setState(() {});
+    _getBalance();
   }
 
   _getBalance() async {
@@ -121,7 +117,7 @@ class _TransferExampleState extends State<TransferExample> {
         requestingFaucet = true;
       });
       try {
-        final faucet = FaucetClient(Constants.faucetTestAPI);
+        final faucet = FaucetClient(Constants.faucetDevAPI);
         await faucet.requestSuiFromFaucetV1(address);
         _getBalance();
       } catch (e) {

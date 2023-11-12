@@ -16,9 +16,8 @@ class FaucetExample extends StatefulWidget {
 class _FaucetExampleState extends State<FaucetExample> {
   BigInt balance = BigInt.zero;
 
-  var mnemonic = '';
   var code = '';
-  late SuiAccount account;
+  SuiAccount? account;
 
   var network = 0;
   var showCode = false;
@@ -35,12 +34,9 @@ class _FaucetExampleState extends State<FaucetExample> {
   void initState() {
     super.initState();
     _getCode();
-    Future.delayed(const Duration(milliseconds: 250), () {
-      mnemonic = SuiAccount.generateMnemonic();
-      account = SuiAccount.fromMnemonics(mnemonic, SignatureScheme.Secp256k1);
-      setState(() {});
-      _getBalance();
-    });
+    account = SuiAccount.ed25519Account();
+    setState(() {});
+    _getBalance();
   }
 
   _getCode() async {
@@ -54,7 +50,7 @@ class _FaucetExampleState extends State<FaucetExample> {
 
   _getBalance() async {
     final coinBalance =
-        await SuiClient(rpcUrl[network]).getBalance(account.getAddress());
+        await SuiClient(rpcUrl[network]).getBalance(account!.getAddress());
     setState(() {
       balance = coinBalance.totalBalance;
     });
@@ -62,7 +58,7 @@ class _FaucetExampleState extends State<FaucetExample> {
 
   void _requestFaucet() async {
     if (requestingFaucet) return;
-    final address = account.getAddress();
+    final address = account!.getAddress();
     _getBalance();
     if (balance <= BigInt.zero) {
       setState(() {
@@ -96,7 +92,7 @@ class _FaucetExampleState extends State<FaucetExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: mnemonic.isEmpty ? Container() : _buildConnect(),
+      body: account == null ? Container() : _buildConnect(),
     );
   }
 
@@ -140,7 +136,7 @@ class _FaucetExampleState extends State<FaucetExample> {
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: SelectableText(
-            account.getAddress(),
+            account?.getAddress() ?? "",
             style: const TextStyle(fontSize: 18),
           ),
         ),
