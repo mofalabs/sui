@@ -35,7 +35,8 @@ class Ed25519Keypair with Keypair {
 
   @override
   Uint8List getSecretKey() {
-    return ed25519.seed(_signingKeypair.privateKey);
+    return Uint8List.fromList(_signingKeypair.privateKey.bytes);
+    // return ed25519.seed(_signingKeypair.privateKey);
   }
 
   Uint8List publicKeyBytes() {

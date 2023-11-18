@@ -19,11 +19,11 @@ class TypeTagSerializer {
       return { str: null };
     }
     
-    final vectorMatch = VECTOR_REGEX.allMatches(str).toList();
-    if (vectorMatch.isNotEmpty) {
+    final vectorMatch = VECTOR_REGEX.firstMatch(str);
+    if (vectorMatch != null) {
       return {
         "vector": TypeTagSerializer.parseFromStr(
-          vectorMatch[1][0]!,
+          vectorMatch.group(1)!,
           normalizeAddress,
         ),
       };

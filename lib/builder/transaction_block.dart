@@ -60,6 +60,18 @@ const DefaultOfflineLimits = {
 	"maxTxSizeBytes": 128 * 1024,
 };
 
+bool isReceivingType(SuiMoveNormalizedType normalizedType) {
+	final tag = extractStructTag(normalizedType);
+	if (tag != null && tag["Struct"] != null) {
+		return (
+			tag["Struct"]["address"] == '0x2' &&
+			tag["Struct"]["module"] == 'transfer' &&
+			tag["Struct"]["name"] == 'Receiving'
+		);
+	}
+	return false;
+}
+
 SuiClient expectClient(BuildOptions options) {
 	if (options.client == null) {
 		throw ArgumentError(
@@ -661,8 +673,10 @@ class TransactionBlock {
             "initialSharedVersion": initialSharedVersion,
             "mutable": mutable,
           });
-        } else {
-          input["value"] = Inputs.objectRef(getObjectReference(object as SuiObjectResponse)!);
+        } else if (normalizedType != null && isReceivingType(normalizedType)) {
+					input["value"] = Inputs.receivingRef(getObjectReference(object!)!);
+				} else {
+          input["value"] = Inputs.objectRef(getObjectReference(object!)!);
         }
 
       }
