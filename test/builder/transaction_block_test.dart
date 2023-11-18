@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:bcs/bcs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/builder/bcs.dart';
+import 'package:sui/bcs/bcs.dart';
 import 'package:sui/builder/inputs.dart';
 import 'package:sui/builder/transaction_block.dart';
 import 'package:sui/builder/transactions.dart';

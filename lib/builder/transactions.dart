@@ -1,6 +1,6 @@
 
 import 'package:bcs/bcs.dart';
-import 'package:sui/builder/type_tag_serializer.dart';
+import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/types/common.dart';
 
 /// Simple helpers used to construct transactions:

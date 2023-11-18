@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:sui/builder/bcs.dart';
+import 'package:sui/bcs/bcs.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 

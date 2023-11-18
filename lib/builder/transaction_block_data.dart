@@ -2,7 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
-import 'package:sui/builder/bcs.dart';
+import 'package:sui/bcs/bcs.dart';
 import 'package:sui/builder/hash.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
