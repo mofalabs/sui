@@ -119,7 +119,7 @@ class _AccountExampleState extends State<AccountExample> {
                         child: Text('Secp256r1'),
                       ),
                       DropdownMenuItem(
-                        value: SignatureScheme.ED25519,
+                        value: SignatureScheme.Ed25519,
                         child: Text('Ed25519'),
                       ),
                     ],

@@ -54,7 +54,7 @@ await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fe
 ```dart
 /// Ed25519 account
 final ed25519 = SuiAccount.ed25519Account();
-final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKeyHex(), SignatureScheme.ED25519);
+final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKeyHex(), SignatureScheme.Ed25519);
 
 /// Secp256k1 account
 final secp256k1 = SuiAccount.secp256k1Account();
@@ -72,7 +72,7 @@ final sepc256r1Import = SuiAccount.fromPrivateKey(secp256r1.privateKeyHex(), Sig
 final mnemonics = SuiAccount.generateMnemonic();
 
 /// Ed25519 account
-final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 
 /// Secp256k1 account
 final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
@@ -86,7 +86,7 @@ final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1)
 #### Transfer Object
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();
@@ -103,7 +103,7 @@ print(result.digest);
 #### Split and Transfer Coins
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();
@@ -121,7 +121,7 @@ print(result.digest);
 #### Merge Coins
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();
@@ -137,7 +137,7 @@ print(result.digest);
 #### Move Call
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 const packageObjectId = '0x...';
@@ -152,7 +152,7 @@ print(result.digest);
 #### Publish Modules
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 const moduels = <String>[];

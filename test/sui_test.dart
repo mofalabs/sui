@@ -33,7 +33,7 @@ void main() {
 
     final ed25519Import = SuiAccount.fromPrivateKey(
       ed25519.privateKeyHex(), 
-      SignatureScheme.ED25519
+      SignatureScheme.Ed25519
     );
     expect(ed25519.getAddress(), ed25519Import.getAddress());
 
@@ -53,13 +53,13 @@ void main() {
 
   test('test create sui from mnemonic', () {
     final mnemonics = SuiAccount.generateMnemonic();
-    final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
     final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
   });
 
   test('test transfer object', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
@@ -74,7 +74,7 @@ void main() {
   });
 
   test('test split and transfer sui', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
@@ -90,7 +90,7 @@ void main() {
   });
 
   test('test merge coins', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
@@ -104,7 +104,7 @@ void main() {
   });
 
   test('test move call', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     const packageObjectId = '0x...';
@@ -117,7 +117,7 @@ void main() {
   });
 
   test('test publish modules', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     const moduels = <String>[];
@@ -211,7 +211,7 @@ void main() {
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
@@ -297,7 +297,7 @@ test('test programmable transaction blocks', () async {
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     final suiBalance = await client.getBalance(account.getAddress());
     if (suiBalance.totalBalance == BigInt.zero) {

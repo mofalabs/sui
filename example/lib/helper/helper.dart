@@ -53,5 +53,5 @@ Future<SuiAccount> getLocalSuiAccount() async {
     await prefs.setString(suiAccountKey, priKeyHex);
     return account;
   }
-  return SuiAccount.fromPrivateKey(priKey, SignatureScheme.ED25519);
+  return SuiAccount.fromPrivateKey(priKey, SignatureScheme.Ed25519);
 }
