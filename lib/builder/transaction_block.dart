@@ -371,7 +371,7 @@ class TransactionBlock {
 	String _getConfig(String key, BuildOptions options) {
 		// Use the limits definition if that exists:
 		if (options.limits != null && options.limits[key] is int) {
-			return options.limits[key]!;
+			return options.limits[key]!.toString();
 		}
 
 		if (options.protocolConfig == null) {
@@ -687,7 +687,7 @@ class TransactionBlock {
 	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
 	/// so that it can be built into bytes.
 	Future<void> _prepare(BuildOptions options) async {
-		if (options.onlyTransactionKind && _blockData.sender == null) {
+		if (!options.onlyTransactionKind && _blockData.sender == null) {
 			throw ArgumentError('Missing transaction sender');
 		}
 
