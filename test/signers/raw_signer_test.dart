@@ -138,8 +138,8 @@ void main() {
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PaySuiTransaction(
       inputObjectIds,
-      [DEFAULT_RECIPIENT],
-      [1000],
+      [DEFAULT_RECIPIENT,DEFAULT_RECIPIENT_2],
+      [1000,1000],
       DEFAULT_GAS_BUDGET
     );
 

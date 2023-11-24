@@ -18,7 +18,7 @@ import 'package:sui/utils/hex.dart';
 /// create account
 /// scheme: SignatureScheme.Secp256k1
 ///         SignatureScheme.Secp256r1, 
-///         SignatureScheme.ED25519
+///         SignatureScheme.Ed25519
 var account = SuiAccount.fromMnemonics(mnemonic, SignatureScheme.Secp256k1);
 
 /// create account with private key 
@@ -48,7 +48,7 @@ await faucet.requestSuiFromFaucetV1(account.getAddress());
 ```
 ?
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();

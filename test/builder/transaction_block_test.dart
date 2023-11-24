@@ -64,9 +64,9 @@ void main() {
     final client = SuiClient(Constants.testnetAPI, account: account);
     final tx = TransactionBlock();
     tx.setSender(account.getAddress());
-    tx.setGasBudget(BigInt.parse('600000000'));
+    tx.setGasBudget(BigInt.from(2000000));
     final coin = tx.add(Transactions.splitCoins(
-        tx.gas, [tx.pureInt(3100000), tx.pureInt(2100000)]));
+        tx.gas, [tx.pureInt(3100000)]));
     tx.add(
       Transactions.transferObjects(
         [coin],
