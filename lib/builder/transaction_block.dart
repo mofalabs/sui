@@ -504,6 +504,15 @@ class TransactionBlock {
 		// We keep the input by-reference to avoid needing to re-resolve it:
 		final objectsToResolve = [];
 
+		for (var input in inputs) {
+			if (input['type'] is Map && input['value'] is String) {
+				// The input is a string that we need to resolve to an object reference:
+				objectsToResolve.add(
+						{"id": normalizeSuiAddress(input['value']), "input": input});
+				continue;
+			}
+		}
+
     for (var transaction in transactions) {
       if (transaction["kind"] == "MoveCall") {
         bool needsResolution = (transaction["arguments"] as List).any(
@@ -513,48 +522,29 @@ class TransactionBlock {
         if (needsResolution) {
           moveModulesToResolve.add(transaction);
         }
+			}
 
-        continue;
+			// Special handling for values that where previously encoded using the wellKnownEncoding pattern.
+			// This should only happen when transaction block data was hydrated from an old version of the SDK
+      if (transaction["kind"] == 'SplitCoins') {
+        for (var amount in (transaction["amounts"] as List)) {
+					if (amount["kind"] == 'Input') {
+						final input = inputs[amount['index']];
+						if (input["value"] is! Map) {
+							input['value'] = Inputs.pure(input['value'], BCS.U64);
+						}
+					}
+				}
       }
 
-      final transactionType = transaction["kind"];
-
-      (transaction as Map).forEach((key, value) {
-				if (key == 'kind') return;
-
-        var wellKnownEncoding = WellKnownEncoding.getWellKnownEncoding(transactionType, key);
-        if (wellKnownEncoding == null) return;
-        
-				void encodeInput(int index) {
-					if (inputs.length <= index) {
-						throw ArgumentError("Missing input ${value["index"]}");
-					}
-
-					final input = inputs[index];
-					// Input is fully resolved:
-					if (isBuilderCallArg(input["value"])) return;
-					if (wellKnownEncoding["kind"] == 'object' && input["value"] is String) {
-						// The input is a string that we need to resolve to an object reference:
-						objectsToResolve.add({ "id": input["value"], "input": input });
-					} else if (wellKnownEncoding["kind"] == 'pure') {
-						// Pure encoding, so construct BCS bytes:
-						input["value"] = Inputs.pure(input["value"], wellKnownEncoding["type"]);
-					} else {
-						throw ArgumentError('Unexpected input format.');
-					}
-				}
-
-				if (value is Iterable) {
-					for (var item in value) {
-						if (item["kind"] != 'Input') continue;
-						encodeInput(item["index"]);
-					}
-				} else {
-					if (value["kind"] != 'Input') return;
-					encodeInput(value["index"]);
-				}
-
-      });
+      if (transaction["kind"] == 'TransferObjects') {
+        if (transaction['address']['kind'] == 'Input') {
+          final input = inputs[transaction['address']['index']];
+          if (input["value"] is! Map) {
+            input['value'] = Inputs.pure(input['value'], BCS.ADDRESS);
+          }
+        }
+      }
     }
 
     if (moveModulesToResolve.isNotEmpty) {
@@ -602,7 +592,7 @@ class TransactionBlock {
           }
 
           final structVal = extractStructTag(param);
-          if (structVal != null || (param["TypeParameter"] != null)) {
+          if (structVal != null || (param is Map && param["TypeParameter"] != null)) {
             if (inputValue is! String) {
               throw ArgumentError(
                 "Expect the argument to be an object id string, got ${jsonEncode(inputValue)}",
