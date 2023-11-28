@@ -1,13 +1,13 @@
-
 import 'dart:math';
 
 import 'package:bcs/bcs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/builder/bcs.dart';
+import 'package:sui/bcs/bcs.dart';
 import 'package:sui/builder/inputs.dart';
 import 'package:sui/builder/transaction_block.dart';
 import 'package:sui/builder/transactions.dart';
+import 'package:sui/sui.dart';
 import 'package:sui/types/objects.dart';
 
 void main() {
@@ -54,6 +54,33 @@ void main() {
 
     expect(result0, registerResult[0]);
     expect(result1, registerResult[1]);
+  });
+
+  test('transfer split transactions', () async {
+    const mnemonics =
+        'local game polar color light add assault impact marine glass year unusual';
+    final account =
+        SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
+    final client = SuiClient(Constants.testnetAPI, account: account);
+    final tx = TransactionBlock();
+    tx.setSender(account.getAddress());
+    tx.setGasBudget(BigInt.from(2000000));
+    final coin = tx.add(Transactions.splitCoins(
+        tx.gas, [tx.pureInt(3100000)]));
+    tx.add(
+      Transactions.transferObjects(
+        [coin],
+        tx.pureAddress(
+          '0x79088c4883a33769473f548e738ec96bfa00cefbed34b4be0970dacda7135de4',
+        ),
+      ),
+    );
+    final waitForLocalExecutionTx = await client.signAndExecuteTransactionBlock(
+      account,
+      tx,
+      options: BuildOptions(client: client),
+    );
+    debugPrint('${waitForLocalExecutionTx.toJson()}');
   });
 
   group('offline build', () {

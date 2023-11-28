@@ -7,31 +7,23 @@ final STRUCT_REGEX = RegExp(r"^([^:]+)::([^:]+)::([^<]+)(<(.+)>)?");
 
 class TypeTagSerializer {
   static TypeTag parseFromStr(String str, [bool normalizeAddress = false]) {
-    if (str == 'address') {
-      return { "address": null };
-    } else if (str == 'bool') {
-      return { "bool": null };
-    } else if (str == 'u8') {
-      return { "u8": null };
-    } else if (str == 'u16') {
-      return { "u16": null };
-    } else if (str == 'u32') {
-      return { "u32": null };
-    } else if (str == 'u64') {
-      return { "u64": null };
-    } else if (str == 'u128') {
-      return { "u128": null };
-    } else if (str == 'u256') {
-      return { "u256": null };
-    } else if (str == 'signer') {
-      return { "signer": null };
+    if (str == "address" || 
+        str == "bool" || 
+        str == "u8" || 
+        str == "u16" || 
+        str == "u32" || 
+        str == "u64" || 
+        str == "u128" || 
+        str == "u256" || 
+        str == "signer") {
+      return { str: null };
     }
     
-    final vectorMatch = VECTOR_REGEX.allMatches(str).toList();
-    if (vectorMatch.isNotEmpty) {
+    final vectorMatch = VECTOR_REGEX.firstMatch(str);
+    if (vectorMatch != null) {
       return {
         "vector": TypeTagSerializer.parseFromStr(
-          vectorMatch[1][0]!,
+          vectorMatch.group(1)!,
           normalizeAddress,
         ),
       };

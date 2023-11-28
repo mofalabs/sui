@@ -74,6 +74,7 @@ final BCS_SPEC = BcsConfigTypes(
     "ObjectArg": {
       "ImmOrOwned": 'SuiObjectRef',
       "Shared": 'SharedObjectRef',
+      "Receiving": 'SuiObjectRef'
     },
     "CallArg": {
       "Pure": [VECTOR, BCS.U8],

@@ -33,7 +33,7 @@ void main() {
 
     final ed25519Import = SuiAccount.fromPrivateKey(
       ed25519.privateKeyHex(), 
-      SignatureScheme.ED25519
+      SignatureScheme.Ed25519
     );
     expect(ed25519.getAddress(), ed25519Import.getAddress());
 
@@ -53,17 +53,16 @@ void main() {
 
   test('test create sui from mnemonic', () {
     final mnemonics = SuiAccount.generateMnemonic();
-    final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
     final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
   });
 
   test('test transfer object', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     tx.transferObjects(
       [tx.objectId('0x2619f581cb1864d07c89453a69611202669fdc4784fb59b9cb4278ec60756011')], 
       tx.pureAddress(account.getAddress())
@@ -74,11 +73,10 @@ void main() {
   });
 
   test('test split and transfer sui', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     final coin = tx.splitCoins(tx.gas, [tx.pureInt(200000)]);
     tx.transferObjects(
       [coin],
@@ -90,11 +88,10 @@ void main() {
   });
 
   test('test merge coins', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     tx.mergeCoins(tx.objectId('0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'), 
       [tx.objectId('0x8dafc96dec7f8d635e052a6da9a4153e37bc4d59ed44c45006e4e9d17d07f80d')]
     );
@@ -104,12 +101,11 @@ void main() {
   });
 
   test('test move call', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     const packageObjectId = '0x...';
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     tx.moveCall('$packageObjectId::nft::mint', arguments: [tx.pureString('Example NFT')]);
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
@@ -117,13 +113,12 @@ void main() {
   });
 
   test('test publish modules', () async {
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI);
 
     const moduels = <String>[];
     const dependencies = <String>[];
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     final upgradeCap = tx.publish(moduels, dependencies);
     tx.transferObjects([upgradeCap], account.getAddress());
 
@@ -211,7 +206,7 @@ void main() {
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
@@ -297,7 +292,7 @@ test('test programmable transaction blocks', () async {
     final recipientAccount = SuiAccount.ed25519Account();
     final recipient = recipientAccount.getAddress();
 
-    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+    final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(Constants.devnetAPI, account: account);
     final suiBalance = await client.getBalance(account.getAddress());
     if (suiBalance.totalBalance == BigInt.zero) {
@@ -307,7 +302,6 @@ test('test programmable transaction blocks', () async {
     }
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(2000000));
 
     final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
     tx.add(Transactions.transferObjects([coin], tx.pureAddress(recipient)));

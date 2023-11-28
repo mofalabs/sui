@@ -1,7 +1,7 @@
 Sui Dart SDK
 -
 
-[![Pub](https://img.shields.io/badge/pub-v0.1.3-blue)](https://pub.dev/packages/sui)
+[![Pub](https://img.shields.io/badge/pub-v0.1.4-blue)](https://pub.dev/packages/sui)
 
 
 Installation
@@ -9,7 +9,7 @@ Installation
 
 ```
 dependencies:
-  sui: ^0.1.3
+  sui: ^0.1.4
 ```
 
 Demo
@@ -54,7 +54,7 @@ await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fe
 ```dart
 /// Ed25519 account
 final ed25519 = SuiAccount.ed25519Account();
-final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKeyHex(), SignatureScheme.ED25519);
+final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKeyHex(), SignatureScheme.Ed25519);
 
 /// Secp256k1 account
 final secp256k1 = SuiAccount.secp256k1Account();
@@ -72,7 +72,7 @@ final sepc256r1Import = SuiAccount.fromPrivateKey(secp256r1.privateKeyHex(), Sig
 final mnemonics = SuiAccount.generateMnemonic();
 
 /// Ed25519 account
-final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final ed25519 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 
 /// Secp256k1 account
 final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
@@ -86,11 +86,10 @@ final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1)
 #### Transfer Object
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();
-tx.setGasBudget(BigInt.from(20000000));
 tx.transferObjects(
     [tx.objectId('0x2619f581cb1864d07c89453a69611202669fdc4784fb59b9cb4278ec60756011')], 
     tx.pureAddress(account.getAddress())
@@ -103,11 +102,10 @@ print(result.digest);
 #### Split and Transfer Coins
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();
-tx.setGasBudget(BigInt.from(20000000));
 final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000)]);
 tx.transferObjects(
     [coin],
@@ -121,11 +119,10 @@ print(result.digest);
 #### Merge Coins
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 final tx = TransactionBlock();
-tx.setGasBudget(BigInt.from(20000000));
 tx.mergeCoins(tx.objectId('0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'), 
     [tx.objectId('0x8dafc96dec7f8d635e052a6da9a4153e37bc4d59ed44c45006e4e9d17d07f80d')]
 );
@@ -137,12 +134,11 @@ print(result.digest);
 #### Move Call
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 const packageObjectId = '0x...';
 final tx = TransactionBlock();
-tx.setGasBudget(BigInt.from(20000000));
 tx.moveCall('$packageObjectId::nft::mint', arguments: [tx.pureString('Example NFT')]);
 
 final result = await client.signAndExecuteTransactionBlock(account, tx);
@@ -152,13 +148,12 @@ print(result.digest);
 #### Publish Modules
 
 ```dart
-final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.ED25519);
+final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(Constants.devnetAPI);
 
 const moduels = <String>[];
 const dependencies = <String>[];
 final tx = TransactionBlock();
-tx.setGasBudget(BigInt.from(20000000));
 final upgradeCap = tx.publish(moduels, dependencies);
 tx.transferObjects([upgradeCap], account.getAddress());
 

@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:sui/builder/bcs.dart';
+import 'package:sui/bcs/bcs.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
@@ -53,6 +53,18 @@ class Inputs {
       },
     };
   }
+
+	static Map<String, dynamic> receivingRef(SuiObjectRef data) {
+		return {
+			"Object": {
+				"Receiving": {
+					"digest": data.digest,
+					"version": data.version,
+					"objectId": normalizeSuiAddress(data.objectId),
+				},
+			},
+		};
+	}
 }
 
 getIdFromCallArg(dynamic arg) {
@@ -62,6 +74,9 @@ getIdFromCallArg(dynamic arg) {
   if ((arg["Object"] as Map).containsKey("ImmOrOwned")) {
     return normalizeSuiAddress(arg["Object"]["ImmOrOwned"]["objectId"]);
   }
+	if ((arg["Object"] as Map).containsKey("Receiving")) {
+		return normalizeSuiAddress(arg["Object"]["Receiving"]["objectId"]);
+	}
   return normalizeSuiAddress(arg["Object"]["Shared"]["objectId"]);
 }
 

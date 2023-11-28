@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:bcs/index.dart';
-import 'package:sui/builder/type_tag_serializer.dart';
+import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/sui_bcs.dart';
 

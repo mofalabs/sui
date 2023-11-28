@@ -71,7 +71,7 @@ String? getPureSerializationType(
 			expectType('boolean', argVal);
 		} else if (normalizedType == 'Address') {
 			expectType('string', argVal);
-			if (argVal && !isValidSuiAddress(argVal)) {
+			if (argVal is String && !isValidSuiAddress(argVal)) {
 				throw ArgumentError('Invalid Sui Address');
 			}
 		}

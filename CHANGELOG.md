@@ -34,3 +34,8 @@
 * Fix query gas object
 * Fix setSigner
 * Add Web Demo
+
+## 0.1.4
+
+* Fix TransactionBlock
+* Rename ED25519 to Ed25519

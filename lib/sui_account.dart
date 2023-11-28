@@ -52,7 +52,7 @@ class SuiAccount {
           changeIndex: changeIndex,
         ));
         break;
-      case SignatureScheme.ED25519:
+      case SignatureScheme.Ed25519:
         account = SuiAccount(Ed25519Keypair.fromMnemonics(
           mnemonics,
           accountIndex: accountIndex,
@@ -81,7 +81,7 @@ class SuiAccount {
         account = SuiAccount(
             Secp256r1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
         break;
-      case SignatureScheme.ED25519:
+      case SignatureScheme.Ed25519:
         account =
             SuiAccount(Ed25519Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
         break;

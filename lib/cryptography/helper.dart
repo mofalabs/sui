@@ -23,7 +23,7 @@ FortunaRandom getRandom() {
   final seedSource = Random.secure();
   final seeds = <int>[];
   for (int i = 0; i < 32; i++) {
-    seeds.add(seedSource.nextInt(255));
+    seeds.add(seedSource.nextInt(256));
   }
   secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
   return secureRandom;

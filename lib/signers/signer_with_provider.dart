@@ -151,7 +151,7 @@ abstract class SignerWithProvider with JsonRpcProvider {
     }
   }
 
-  Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx, String? signerAddress) async {
+  Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx, {String? signerAddress}) async {
     final address = signerAddress ?? getAddress();
     Uint8List dryRunTxBytes;
     if (tx is Uint8List) {
@@ -388,7 +388,7 @@ abstract class SignerWithProvider with JsonRpcProvider {
       throw ArgumentError.notNull("signerAddress");
     }
 
-    final txEffects = await dryRunTransaction(tx, signerAddress);
+    final txEffects = await dryRunTransaction(tx, signerAddress: signerAddress);
     if (txEffects.effects.status.status == ExecutionStatusType.failure) {
       throw ArgumentError(txEffects.effects.status.error);
     }

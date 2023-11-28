@@ -28,7 +28,7 @@ void main() {
     'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIg==';
 
   const DEFAULT_RECIPIENT = '0x8113a0a7b6247da6c6535b51a10b439cc5d9899bdb2c52d5fa66d81ed4ac7fb7';
-  const DEFAULT_RECIPIENT_2 = '0x9fd5a804ed6b46d36949ff7434247f0fd594673973ece24aede6b86a7b5dae01';
+  const DEFAULT_RECIPIENT_2 = '0x79088c4883a33769473f548e738ec96bfa00cefbed34b4be0970dacda7135de4';
   const DEFAULT_GAS_BUDGET = 10000000;
 
   late Secp256k1Keypair secp256k1Keypair;
@@ -138,8 +138,8 @@ void main() {
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PaySuiTransaction(
       inputObjectIds,
-      [DEFAULT_RECIPIENT],
-      [1000],
+      [DEFAULT_RECIPIENT,DEFAULT_RECIPIENT_2],
+      [1000,1000],
       DEFAULT_GAS_BUDGET
     );
 
@@ -153,7 +153,7 @@ void main() {
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PayAllSuiTransaction(
       inputObjectIds,
-      DEFAULT_RECIPIENT,
+      DEFAULT_RECIPIENT_2,
       DEFAULT_GAS_BUDGET
     );
 
@@ -167,7 +167,7 @@ void main() {
     final inputObjectIds = coins.data.take(2).map((x) => x.coinObjectId).toList();
     final txn = PayAllSuiTransaction(
         inputObjectIds,
-        DEFAULT_RECIPIENT,
+        DEFAULT_RECIPIENT_2,
         DEFAULT_GAS_BUDGET
     );
 

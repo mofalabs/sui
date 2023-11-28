@@ -2,7 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
-import 'package:sui/builder/bcs.dart';
+import 'package:sui/bcs/bcs.dart';
 import 'package:sui/builder/hash.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
@@ -16,6 +16,16 @@ class TransactionExpiration {
     if (epoch == null) return { "None": null };
     return { "Epoch": epoch };
   }
+
+  factory TransactionExpiration.fromJson(Map<String, dynamic>? json) {
+    dynamic epoch = json?["Epoch"];
+    if (epoch != null) {
+      return TransactionExpiration(epoch: int.parse(epoch.toString()));
+    } else {
+      return TransactionExpiration(epoch: null);
+    }
+  }
+
 }
 
 class GasConfig {
@@ -51,7 +61,7 @@ class SerializedTransactionDataBuilder {
 	String? sender;
 	TransactionExpiration? expiration;
 	List<Map<String, dynamic>>? inputs;
-	List<dynamic>? transactions;
+	List<Map<dynamic, dynamic>>? transactions;
 
   SerializedTransactionDataBuilder({
     required this.gasConfig, 
@@ -76,9 +86,9 @@ class SerializedTransactionDataBuilder {
     return SerializedTransactionDataBuilder(
       gasConfig: GasConfig.fromJson(data["gasConfig"]),
       inputs: List<Map<String, dynamic>>.from(data["inputs"]),
-      transactions: data["transactions"],
+      transactions: (data["transactions"] as List).cast<Map<dynamic, dynamic>>(),
       sender: data["sender"],
-      expiration: data["expiration"]
+      expiration: TransactionExpiration.fromJson(data["expiration"])
     );
   }
 }
@@ -164,7 +174,7 @@ class TransactionBlockDataBuilder {
 	TransactionExpiration? expiration;
 	late GasConfig gasConfig;
 	late List<Map<String, dynamic>> inputs;
-	late List<dynamic> transactions;
+	late List<Map<dynamic, dynamic>> transactions;
 
 	TransactionBlockDataBuilder([SerializedTransactionDataBuilder? clone]) {
 		sender = clone?.sender;
@@ -261,7 +271,7 @@ class TransactionBlockDataBuilder {
       "transactions": transactions,
       "sender": sender,
       "version": version,
-      "expiration": expiration
+      "expiration": expiration?.toJson()
     });
   }
 

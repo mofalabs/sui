@@ -60,6 +60,18 @@ const DefaultOfflineLimits = {
 	"maxTxSizeBytes": 128 * 1024,
 };
 
+bool isReceivingType(SuiMoveNormalizedType normalizedType) {
+	final tag = extractStructTag(normalizedType);
+	if (tag != null && tag["Struct"] != null) {
+		return (
+			tag["Struct"]["address"] == '0x2' &&
+			tag["Struct"]["module"] == 'transfer' &&
+			tag["Struct"]["name"] == 'Receiving'
+		);
+	}
+	return false;
+}
+
 SuiClient expectClient(BuildOptions options) {
 	if (options.client == null) {
 		throw ArgumentError(
@@ -359,7 +371,7 @@ class TransactionBlock {
 	String _getConfig(String key, BuildOptions options) {
 		// Use the limits definition if that exists:
 		if (options.limits != null && options.limits[key] is int) {
-			return options.limits[key]!;
+			return options.limits[key]!.toString();
 		}
 
 		if (options.protocolConfig == null) {
@@ -492,6 +504,15 @@ class TransactionBlock {
 		// We keep the input by-reference to avoid needing to re-resolve it:
 		final objectsToResolve = [];
 
+		for (var input in inputs) {
+			if (input['type'] is Map && input['value'] is String) {
+				// The input is a string that we need to resolve to an object reference:
+				objectsToResolve.add(
+						{"id": normalizeSuiAddress(input['value']), "input": input});
+				continue;
+			}
+		}
+
     for (var transaction in transactions) {
       if (transaction["kind"] == "MoveCall") {
         bool needsResolution = (transaction["arguments"] as List).any(
@@ -501,48 +522,29 @@ class TransactionBlock {
         if (needsResolution) {
           moveModulesToResolve.add(transaction);
         }
+			}
 
-        continue;
+			// Special handling for values that where previously encoded using the wellKnownEncoding pattern.
+			// This should only happen when transaction block data was hydrated from an old version of the SDK
+      if (transaction["kind"] == 'SplitCoins') {
+        for (var amount in (transaction["amounts"] as List)) {
+					if (amount["kind"] == 'Input') {
+						final input = inputs[amount['index']];
+						if (input["value"] is! Map) {
+							input['value'] = Inputs.pure(input['value'], BCS.U64);
+						}
+					}
+				}
       }
 
-      final transactionType = transaction["kind"];
-
-      (transaction as Map).forEach((key, value) {
-				if (key == 'kind') return;
-
-        var wellKnownEncoding = WellKnownEncoding.getWellKnownEncoding(transactionType, key);
-        if (wellKnownEncoding == null) return;
-        
-				void encodeInput(int index) {
-					if (inputs.length <= index) {
-						throw ArgumentError("Missing input ${value["index"]}");
-					}
-
-					final input = inputs[index];
-					// Input is fully resolved:
-					if (isBuilderCallArg(input["value"])) return;
-					if (wellKnownEncoding["kind"] == 'object' && input["value"] is String) {
-						// The input is a string that we need to resolve to an object reference:
-						objectsToResolve.add({ "id": input["value"], "input": input });
-					} else if (wellKnownEncoding["kind"] == 'pure') {
-						// Pure encoding, so construct BCS bytes:
-						input["value"] = Inputs.pure(input["value"], wellKnownEncoding["type"]);
-					} else {
-						throw ArgumentError('Unexpected input format.');
-					}
-				}
-
-				if (value is Iterable) {
-					for (var item in value) {
-						if (item["kind"] != 'Input') continue;
-						encodeInput(item["index"]);
-					}
-				} else {
-					if (value["kind"] != 'Input') return;
-					encodeInput(value["index"]);
-				}
-
-      });
+      if (transaction["kind"] == 'TransferObjects') {
+        if (transaction['address']['kind'] == 'Input') {
+          final input = inputs[transaction['address']['index']];
+          if (input["value"] is! Map) {
+            input['value'] = Inputs.pure(input['value'], BCS.ADDRESS);
+          }
+        }
+      }
     }
 
     if (moveModulesToResolve.isNotEmpty) {
@@ -590,7 +592,7 @@ class TransactionBlock {
           }
 
           final structVal = extractStructTag(param);
-          if (structVal != null || (param["TypeParameter"] != null)) {
+          if (structVal != null || (param is Map && param["TypeParameter"] != null)) {
             if (inputValue is! String) {
               throw ArgumentError(
                 "Expect the argument to be an object id string, got ${jsonEncode(inputValue)}",
@@ -661,8 +663,10 @@ class TransactionBlock {
             "initialSharedVersion": initialSharedVersion,
             "mutable": mutable,
           });
-        } else {
-          input["value"] = Inputs.objectRef(getObjectReference(object as SuiObjectResponse)!);
+        } else if (normalizedType != null && isReceivingType(normalizedType)) {
+					input["value"] = Inputs.receivingRef(getObjectReference(object!)!);
+				} else {
+          input["value"] = Inputs.objectRef(getObjectReference(object!)!);
         }
 
       }
@@ -673,7 +677,7 @@ class TransactionBlock {
 	/// Prepare the transaction by valdiating the transaction data and resolving all inputs
 	/// so that it can be built into bytes.
 	Future<void> _prepare(BuildOptions options) async {
-		if (options.onlyTransactionKind && _blockData.sender == null) {
+		if (!options.onlyTransactionKind && _blockData.sender == null) {
 			throw ArgumentError('Missing transaction sender');
 		}
 
@@ -689,15 +693,9 @@ class TransactionBlock {
 			await _prepareGasPayment(options);
 
 			if (_blockData.gasConfig.budget == null) {
-				final dryRunResult = await expectClient(options).dryRunTransaction(
-					_blockData.build(
-						maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options)),
-            gasConfig: GasConfig(
-              budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
-              payment: []
-            )
-					),
-          _blockData.sender
+				final dryRunResult = await expectClient(options).devInspectTransactionBlock(
+          _blockData.sender!,
+					this,
 				);
 
 				if (dryRunResult.effects.status.status != ExecutionStatusType.success) {

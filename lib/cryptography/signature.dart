@@ -10,7 +10,7 @@ import 'package:sui/zklogin/jwt_utils.dart';
 import 'package:sui/zklogin/signature.dart';
 
 enum SignatureScheme {
-  ED25519,
+  Ed25519,
   Secp256k1,
   Secp256r1,
   MultiSig,
@@ -18,7 +18,7 @@ enum SignatureScheme {
 }
 
 abstract class SIGNATURE_SCHEME_TO_FLAG {
-  static const int ED25519 = 0x00;
+  static const int Ed25519 = 0x00;
   static const int Secp256k1 = 0x01;
   static const int Secp256r1 = 0x02;
   static const int MultiSig = 0x03;
@@ -26,8 +26,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
 
   static int schemeToFlag(SignatureScheme scheme) {
     switch (scheme) {
-      case SignatureScheme.ED25519:
-        return ED25519;
+      case SignatureScheme.Ed25519:
+        return Ed25519;
       case SignatureScheme.Secp256k1:
         return Secp256k1;
       case SignatureScheme.Secp256r1:
@@ -43,8 +43,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
 
   static SignatureScheme flagToScheme(int flag) {
     switch (flag) {
-      case ED25519:
-        return SignatureScheme.ED25519;
+      case Ed25519:
+        return SignatureScheme.Ed25519;
       case Secp256k1:
         return SignatureScheme.Secp256k1;
       case Secp256r1:
@@ -99,7 +99,7 @@ SignaturePubkeyPair parseSerializedSignature(
 
   PublicKey getPublicKey(SignatureScheme scheme, Uint8List bytes) {
     switch (scheme) {
-      case SignatureScheme.ED25519:
+      case SignatureScheme.Ed25519:
         return Ed25519PublicKey.fromBytes(bytes);
       case SignatureScheme.Secp256k1:
         return Secp256PublicKey.fromBytes(bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256k1);
@@ -112,7 +112,7 @@ SignaturePubkeyPair parseSerializedSignature(
 
   int getPublicKeySize(SignatureScheme scheme) {
     switch (scheme) {
-      case SignatureScheme.ED25519:
+      case SignatureScheme.Ed25519:
         return 32;
       case SignatureScheme.Secp256k1:
       case SignatureScheme.Secp256r1:

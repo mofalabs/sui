@@ -30,12 +30,13 @@ class Ed25519Keypair with Keypair {
 
   @override
   SignatureScheme getKeyScheme() {
-    return SignatureScheme.ED25519;
+    return SignatureScheme.Ed25519;
   }
 
   @override
   Uint8List getSecretKey() {
-    return ed25519.seed(_signingKeypair.privateKey);
+    return Uint8List.fromList(_signingKeypair.privateKey.bytes);
+    // return ed25519.seed(_signingKeypair.privateKey);
   }
 
   Uint8List publicKeyBytes() {
@@ -138,7 +139,7 @@ class Ed25519Keypair with Keypair {
   @override
   bool verifySerialized(Uint8List message, String signature, Uint8List publicKey) {
     final parsed = parseSerializedSignature(signature);
-    if (parsed.signatureScheme != SignatureScheme.ED25519) {
+    if (parsed.signatureScheme != SignatureScheme.Ed25519) {
       throw ArgumentError('Invalid signature scheme');
     }
 

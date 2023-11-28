@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:pointycastle/export.dart';
+import 'package:sui/cryptography/helper.dart';
 
 /// Parse and validate a path that is compliant to SLIP-0010 in form m/44'/784'/{account_index}'/{change_index}'/{address_index}'.
 ///
@@ -46,20 +47,9 @@ String mnemonicToSeedHex(String mnemonics) {
 }
 
 String generateMnemonic({int strength = 128 }) {
-  return bip39.generateMnemonic(strength: strength, randomBytes: _getRandom().nextBytes);
+  return bip39.generateMnemonic(strength: strength, randomBytes: getRandom().nextBytes);
 }
 
 bool isValidMnemonics(String mnemonics) {
   return bip39.validateMnemonic(mnemonics);
-}
-
-SecureRandom _getRandom() {
-  final secureRandom = FortunaRandom();
-  final seedSource = Random.secure();
-  final seeds = <int>[];
-  for (int i = 0; i < 32; i++) {
-    seeds.add(seedSource.nextInt(255));
-  }
-  secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
-  return secureRandom;
 }
