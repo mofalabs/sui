@@ -281,7 +281,6 @@ void main() {
     final srcObj = coins[1];
 
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(2000000));
 
     txb.mergeCoins(txb.objectRef(destObj), [
       txb.objectRef(srcObj),

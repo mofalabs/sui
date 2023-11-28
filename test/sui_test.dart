@@ -63,7 +63,6 @@ void main() {
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     tx.transferObjects(
       [tx.objectId('0x2619f581cb1864d07c89453a69611202669fdc4784fb59b9cb4278ec60756011')], 
       tx.pureAddress(account.getAddress())
@@ -78,7 +77,6 @@ void main() {
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     final coin = tx.splitCoins(tx.gas, [tx.pureInt(200000)]);
     tx.transferObjects(
       [coin],
@@ -94,7 +92,6 @@ void main() {
     final client = SuiClient(Constants.devnetAPI);
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     tx.mergeCoins(tx.objectId('0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'), 
       [tx.objectId('0x8dafc96dec7f8d635e052a6da9a4153e37bc4d59ed44c45006e4e9d17d07f80d')]
     );
@@ -109,7 +106,6 @@ void main() {
 
     const packageObjectId = '0x...';
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     tx.moveCall('$packageObjectId::nft::mint', arguments: [tx.pureString('Example NFT')]);
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
@@ -123,7 +119,6 @@ void main() {
     const moduels = <String>[];
     const dependencies = <String>[];
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(20000000));
     final upgradeCap = tx.publish(moduels, dependencies);
     tx.transferObjects([upgradeCap], account.getAddress());
 
@@ -307,7 +302,6 @@ test('test programmable transaction blocks', () async {
     }
 
     final tx = TransactionBlock();
-    tx.setGasBudget(BigInt.from(2000000));
 
     final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
     tx.add(Transactions.transferObjects([coin], tx.pureAddress(recipient)));
