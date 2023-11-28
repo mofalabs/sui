@@ -231,7 +231,6 @@ void main() {
     final sender = signer.getAddress();
 
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(4000000));
 
     // final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000)]);
     // txb.transferObjects([coin], txb.pureAddress(sender));
@@ -259,7 +258,6 @@ void main() {
     final obj = coins[1];
 
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(2000000));
     txb.transferObjects(
       [txb.objectRef(obj)],
       txb.pureAddress(receiver),
@@ -303,7 +301,6 @@ void main() {
     final sender = signer.getAddress();
 
     var txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
@@ -321,7 +318,6 @@ void main() {
     final capObj = await client.getObject(capObjectId);
 
     txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(100000000));
 
     final coin = txb.moveCall(
       "$packageId::managed::mint",
@@ -353,7 +349,6 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final sender = signer.getAddress();
 
     var txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
@@ -371,7 +366,6 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final capObj = await client.getObject(capObjectId);
 
     txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(100000000));
 
     for (var i = 0; i < 3; i++) {
       final coin = txb.moveCall(
@@ -398,7 +392,6 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
 
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(100000000));
 
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000)]);
     final vec = txb.makeMoveVec(objects: [coin]);
@@ -428,7 +421,6 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final dependencies = bytecode["dependencies"].cast<String>();
 
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(100000000));
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
@@ -453,7 +445,6 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final receiver = SuiAccount.ed25519Account();
 
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(2000000));
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000000)]);
     txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
 
@@ -473,7 +464,6 @@ test('test transacitonblock publish package and multi mint move call', () async 
     final client = SuiClient(Constants.devnetAPI, account: account);
     
     final txb = TransactionBlock();
-    txb.setGasBudget(BigInt.from(2000000));
 
     final emptyVec = txb.moveCall("0x1::vector::empty", typeArguments: [BCS.U64]);
     txb.moveCall(
