@@ -654,8 +654,13 @@ class TransactionBlock {
           // There could be multiple transactions that reference the same shared object.
           // If one of them is a mutable reference, then we should mark the input
           // as mutable.
+					final isByValue =
+						normalizedType != null &&
+						extractMutableReference(normalizedType) == null &&
+						extractReference(normalizedType) == null;
           final mutable =
             isMutableSharedObjectInput(input["value"]) ||
+            isByValue ||
             (normalizedType != null && extractMutableReference(normalizedType) != null);
 
           input["value"] = Inputs.sharedObjectRef({
