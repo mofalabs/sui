@@ -141,7 +141,7 @@ class SuiMoveNormalizedFunction {
 
     List<SuiMoveNormalizedType> returns = [];
     for (var type in data['return']) {
-      parameters.add(type);
+      returns.add(type);
     }
 
     return SuiMoveNormalizedFunction(
@@ -218,11 +218,11 @@ dynamic extractStructTag(
   final ref = extractReference(normalizedType);
   final mutRef = extractMutableReference(normalizedType);
 
-  if (ref != null && ref["Struct"] != null) {
+  if (ref is Map && ref.containsKey('Struct')) {
     return ref;
   }
 
-  if (mutRef != null && mutRef["Struct"] != null) {
+  if (mutRef is Map && mutRef.containsKey('Struct')) {
     return mutRef;
   }
 

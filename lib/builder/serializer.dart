@@ -50,12 +50,21 @@ bool isTxContext(SuiMoveNormalizedType param) {
 }
 
 void expectType(String typeName, SuiJsonValue? argVal) {
-	if (argVal == null) {
-		return;
-	}
-	if (argVal is! String) {
-		throw ArgumentError("Expect $argVal to be $typeName, received ${argVal.runtimeType}");
-	}
+  if (argVal == null) {
+    return;
+  }
+  bool isError = false;
+  if (typeName == 'boolean') {
+    isError = argVal is! String && argVal is! bool;
+  } else if (typeName == 'number') {
+    isError = argVal is! String && argVal is! num &&
+        argVal is! int && argVal is! BigInt;
+  } else {
+    isError = argVal is! String;
+  }
+  if (isError) {
+    throw ArgumentError("Expect $argVal to be $typeName, received ${argVal.runtimeType}");
+  }
 }
 
 const allowedTypes = ['Address', 'Bool', 'U8', 'U16', 'U32', 'U64', 'U128', 'U256'];

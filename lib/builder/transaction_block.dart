@@ -698,12 +698,16 @@ class TransactionBlock {
 			await _prepareGasPayment(options);
 
 			if (_blockData.gasConfig.budget == null) {
-				final dryRunResult = await expectClient(options).devInspectTransactionBlock(
-          _blockData.sender!,
-					this,
-				);
+        final dryRunResult = await expectClient(options).dryRunTransaction(
+          _blockData.build(
+              maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options)),
+              gasConfig: GasConfig(
+                  budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
+                  payment: [])),
+          signerAddress: _blockData.sender,
+        );
 
-				if (dryRunResult.effects.status.status != ExecutionStatusType.success) {
+        if (dryRunResult.effects.status.status != ExecutionStatusType.success) {
 					throw ArgumentError(
 						"Dry run failed, could not automatically determine a budget: ${dryRunResult.effects.status.error}"
 					);
