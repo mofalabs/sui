@@ -505,7 +505,7 @@ class TransactionBlock {
 		final objectsToResolve = [];
 
 		for (var input in inputs) {
-			if (input['type'] is Map && input['value'] is String) {
+			if (input['type'] == 'object' && input['value'] is String) {
 				// The input is a string that we need to resolve to an object reference:
 				objectsToResolve.add(
 						{"id": normalizeSuiAddress(input['value']), "input": input});
