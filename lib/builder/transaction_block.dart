@@ -505,7 +505,7 @@ class TransactionBlock {
 		final objectsToResolve = [];
 
 		for (var input in inputs) {
-			if (input['type'] is Map && input['value'] is String) {
+			if (input['type'] == 'object' && input['value'] is String) {
 				// The input is a string that we need to resolve to an object reference:
 				objectsToResolve.add(
 						{"id": normalizeSuiAddress(input['value']), "input": input});
@@ -654,8 +654,13 @@ class TransactionBlock {
           // There could be multiple transactions that reference the same shared object.
           // If one of them is a mutable reference, then we should mark the input
           // as mutable.
+					final isByValue =
+						normalizedType != null &&
+						extractMutableReference(normalizedType) == null &&
+						extractReference(normalizedType) == null;
           final mutable =
             isMutableSharedObjectInput(input["value"]) ||
+            isByValue ||
             (normalizedType != null && extractMutableReference(normalizedType) != null);
 
           input["value"] = Inputs.sharedObjectRef({
@@ -693,12 +698,16 @@ class TransactionBlock {
 			await _prepareGasPayment(options);
 
 			if (_blockData.gasConfig.budget == null) {
-				final dryRunResult = await expectClient(options).devInspectTransactionBlock(
-          _blockData.sender!,
-					this,
-				);
+        final dryRunResult = await expectClient(options).dryRunTransaction(
+          _blockData.build(
+              maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options)),
+              gasConfig: GasConfig(
+                  budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
+                  payment: [])),
+          signerAddress: _blockData.sender,
+        );
 
-				if (dryRunResult.effects.status.status != ExecutionStatusType.success) {
+        if (dryRunResult.effects.status.status != ExecutionStatusType.success) {
 					throw ArgumentError(
 						"Dry run failed, could not automatically determine a budget: ${dryRunResult.effects.status.error}"
 					);

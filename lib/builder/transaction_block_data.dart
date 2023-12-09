@@ -13,7 +13,7 @@ class TransactionExpiration {
   TransactionExpiration({this.epoch});
 
   Map<String, dynamic> toJson() {
-    if (epoch == null) return { "None": null };
+    if (epoch == null) return { "None": true };
     return { "Epoch": epoch };
   }
 
@@ -212,10 +212,7 @@ class TransactionBlockDataBuilder {
     final gasConfigValue = this.gasConfig.toJson();
     if (gasConfig != null) {
       gasConfig.toJson().forEach((key, value) {
-        if ((value is Iterable && value.isNotEmpty)) {
-            gasConfigValue[key] = value;
-        }
-        if (value != null && value is! Iterable) {
+        if (value != null) {
           gasConfigValue[key] = value;
         }
       });

@@ -225,29 +225,6 @@ void main() {
     expect(functionArgTypes.length >= 3, true);
   });
 
-  test('test transacitonblock SplitCoins', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
-    final sender = signer.getAddress();
-
-    final txb = TransactionBlock();
-
-    // final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000)]);
-    // txb.transferObjects([coin], txb.pureAddress(sender));
-
-    final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000), txb.pureInt(100000000)]);
-    txb.transferObjects([coin[0], coin[1]], txb.pureAddress(sender));
-    // txb.transferObjects([coin[0]], txb.pureAddress(sender));
-    // txb.transferObjects([coin[1]], txb.pureAddress(sender));
-
-    final resp = await client.signAndExecuteTransactionBlock(
-      signer, 
-      txb,
-      requestType: ExecuteTransaction.WaitForLocalExecution);
-    expect(resp.confirmedLocalExecution, true);
-  });
-
-
   test('test transacitonblock transferObjects', () async {
     final client = SuiClient(Constants.devnetAPI);
     final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
@@ -270,6 +247,45 @@ void main() {
     print(resp);
   });
 
+  test('test transacitonblock SplitCoins', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
+    final sender = signer.getAddress();
+
+    final txb = TransactionBlock();
+
+    // final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000)]);
+    // txb.transferObjects([coin], txb.pureAddress(sender));
+
+    final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000), txb.pureInt(100000000)]);
+    txb.transferObjects([coin[0], coin[1]], txb.pureAddress(sender));
+    // txb.transferObjects([coin[0]], txb.pureAddress(sender));
+    // txb.transferObjects([coin[1]], txb.pureAddress(sender));
+
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer, 
+      txb,
+      requestType: ExecuteTransaction.WaitForLocalExecution);
+    expect(resp.confirmedLocalExecution, true);
+  });
+
+  test('test transacitonblock mergeCoins by objects id', () async {
+    final client = SuiClient(Constants.devnetAPI);
+    final signer = SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
+    final sender = signer.getAddress();
+    final coins = await client.getGasObjectsOwnedByAddress(sender);
+    final destObj = coins.first;
+    final srcObj = coins[1];
+    final txb = TransactionBlock();
+    txb.mergeCoins(txb.objectId(destObj.objectId), [
+      txb.objectId(srcObj.objectId),
+    ]);
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer,
+      txb,
+    );
+    print(resp);
+  });
 
   test('test transacitonblock mergeCoins', () async {
     final client = SuiClient(Constants.devnetAPI);

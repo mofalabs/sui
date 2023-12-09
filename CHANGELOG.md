@@ -39,3 +39,7 @@
 
 * Fix TransactionBlock
 * Rename ED25519 to Ed25519
+
+## 0.1.5
+
+* Fix TransactionBlock Input Type, Estimate Gas
