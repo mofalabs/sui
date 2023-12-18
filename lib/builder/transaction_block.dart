@@ -229,6 +229,10 @@ class TransactionBlock {
 
 	/// Add a new object input to the transaction.
 	Map<String, dynamic> object(dynamic value) {
+    if (value is Map && value.containsKey('kind')) {
+			return value as Map<String, dynamic>;
+		}
+
 		final id = getIdFromCallArg(value);
 		// deduplicate
 		final inserted = _blockData.inputs.firstWhere(
