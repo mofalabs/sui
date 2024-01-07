@@ -36,6 +36,15 @@ class StructTag {
   List<TypeTag> typeParams;
 
   StructTag(this.address, this.module, this.name, this.typeParams);
+
+  Map<String, dynamic> toJson() {
+    return {
+      "address": address,
+      "module": module,
+      "name": name,
+      "typeParams": typeParams
+    };
+  }
 }
 
 /// Sui TypeTag object. A decoupled `0x...::module::Type<???>` parameter.

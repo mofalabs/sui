@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'sui_bcs.dart';
 
 /// Base64 string representing the object digest
 typedef TransactionDigest = String;
@@ -67,6 +68,85 @@ bool isValidSuiAddress(String value) {
 
 bool isValidSuiObjectId(String value) {
   return isValidSuiAddress(value);
+}
+
+List<String> splitGenericParameters(
+	String str,
+	[(String, String) genericSeparators = ('<', '>')]
+) {
+	final (left, right) = genericSeparators;
+	final tok = <String>[];
+	String word = '';
+	int nestedAngleBrackets = 0;
+
+	for (int i = 0; i < str.length; i++) {
+		final char = str[i];
+		if (char == left) {
+			nestedAngleBrackets++;
+		}
+		if (char == right) {
+			nestedAngleBrackets--;
+		}
+		if (nestedAngleBrackets == 0 && char == ',') {
+			tok.add(word.trim());
+			word = '';
+			continue;
+		}
+		word += char;
+	}
+
+	tok.add(word.trim());
+
+	return tok;
+}
+
+dynamic parseTypeTag(String type) {
+	if (!type.contains('::')) return type;
+
+	return parseStructTag(type);
+}
+
+StructTag parseStructTag(String type) {
+	final result = type.split('::');
+  final address = result[0];
+  final module = result[1];
+
+	final rest = type.substring(address.length + module.length + 4);
+	final name = rest.contains('<') ? rest.substring(0, rest.indexOf('<')) : rest;
+	final typeParams = rest.contains('<')
+		? splitGenericParameters(rest.substring(rest.indexOf('<') + 1, rest.lastIndexOf('>'))).map(
+				(typeParam) => parseTypeTag(typeParam.trim()),
+		  ).toList()
+		: [];
+
+	return StructTag(
+		normalizeSuiAddress(address),
+		module,
+		name,
+		typeParams
+  );
+}
+
+String normalizeStructTag(StructTag type) {
+  final address = type.address;
+  final module = type.module;
+  final name = type.name;
+  final typeParams = type.typeParams;
+
+	final formattedTypeParams =
+		typeParams.isNotEmpty
+			? "<${typeParams
+					.map((typeParam) =>
+						typeParam is String ? typeParam : normalizeStructTag(typeParam),
+					)
+					.join(',')}>"
+			: "";
+
+	return "$address::$module::$name$formattedTypeParams";
+}
+
+String normalizeStructTagString(String type) {
+  return normalizeStructTag(parseStructTag(type));
 }
 
 /// Perform the following operations:
