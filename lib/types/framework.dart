@@ -2,8 +2,15 @@ import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/sui_bcs.dart';
 
-const SUI_FRAMEWORK_ADDRESS = '0x2';
+const SUI_DECIMALS = 9;
+const MIST_PER_SUI = 1000000000;
+
 const MOVE_STDLIB_ADDRESS = '0x1';
+const SUI_FRAMEWORK_ADDRESS = '0x2';
+const SUI_SYSTEM_ADDRESS = '0x3';
+final SUI_SYSTEM_STATE_OBJECT_ID = normalizeSuiObjectId('0x5');
+final SUI_CLOCK_OBJECT_ID = normalizeSuiObjectId('0x6');
+const SUI_SYSTEM_MODULE_NAME = 'sui_system';
 const OBJECT_MODULE_NAME = 'object';
 const UID_STRUCT_NAME = 'UID';
 const ID_STRUCT_NAME = 'ID';
