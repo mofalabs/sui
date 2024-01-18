@@ -18,7 +18,7 @@ export 'rpc/client.dart';
 export 'rpc/faucet_client.dart';
 export 'rpc/websocket_client.dart';
 export 'types/event_filter.dart';
-export 'types/framework.dart';
+export 'types/framework.dart' hide MIST_PER_SUI;
 export 'types/coins.dart';
 export 'types/objects.dart';
 export 'types/transactions.dart';
