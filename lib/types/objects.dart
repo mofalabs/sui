@@ -144,8 +144,6 @@ class SuiRawMoveObject {
   }
 }
 
-final MIST_PER_SUI = BigInt.from(1000000000);
-
 class CoinDenominationInfoResponse {
   /// Coin type like "0x2::sui::SUI"
   String coinType;

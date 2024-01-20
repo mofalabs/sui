@@ -15,6 +15,7 @@ const OBJECT_MODULE_NAME = 'object';
 const UID_STRUCT_NAME = 'UID';
 const ID_STRUCT_NAME = 'ID';
 const SUI_TYPE_ARG = "$SUI_FRAMEWORK_ADDRESS::sui::SUI";
+final NORMALIZE_SUI_TYPE_ARG = "${normalizeSuiObjectId(SUI_FRAMEWORK_ADDRESS)}::sui::SUI";
 const COIN_TYPE = "$SUI_FRAMEWORK_ADDRESS::coin::Coin";
 
 const PAY_MODULE_NAME = 'pay';
