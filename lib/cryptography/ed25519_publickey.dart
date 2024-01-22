@@ -56,14 +56,6 @@ class Ed25519PublicKey with PublicKey {
     return zeroPad;
   }
 
-  @override
-  Uint8List toSuiBytes() {
-    final tmp = Uint8List(PUBLIC_KEY_SIZE + 1);
-    tmp[0] = SIGNATURE_SCHEME_TO_FLAG.Ed25519;
-    tmp.setAll(1, toBytes());
-    return tmp;
-  }
-
   /// Return the base-64 representation of the Ed25519 public key
   @override
   String toString() {

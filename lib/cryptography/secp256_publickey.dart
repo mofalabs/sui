@@ -60,14 +60,6 @@ class Secp256PublicKey with PublicKey {
     return zeroPad;
   }
 
-  @override
-  Uint8List toSuiBytes() {
-    final tmp = Uint8List(SECP256_PUBLIC_KEY_SIZE + 1);
-    tmp[0] = _flag;
-    tmp.setAll(1, toBytes());
-    return tmp;
-  }
-
   /// Return the base-64 representation of the Secp256 public key
   @override
   String toString() {

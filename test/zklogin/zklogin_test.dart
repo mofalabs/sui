@@ -11,7 +11,7 @@ void main() {
   const int maxEpoch = 1442;
   const String randomness = '14752559325642415408119996554694955254';
 
-  setUp(() {
+  setUpAll(() {
     var privateKey =
         base64Decode('OHEvQmt8QMPX/nug6VvBDCJH1DnVvNMbVn1IYqkzGe0=');
     var publicKey =
