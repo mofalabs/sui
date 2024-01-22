@@ -114,6 +114,10 @@ mixin PublicKey {
   /// Return the byte array representation of the public key
   Uint8List toBytes();
 
+	///  Returns the bytes representation of the public key
+	///  prefixed with the signature scheme flag
+	Uint8List toSuiBytes();
+
 	/// Return the Sui representation of the public key encoded in
 	/// base-64. A Sui public key is formed by the concatenation
 	/// of the scheme flag with the raw bytes of the public key

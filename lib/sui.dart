@@ -25,3 +25,4 @@ export 'types/transactions.dart';
 export 'builder/transactions.dart';
 export 'builder/transaction_block.dart';
 export 'builder/transaction_block_data.dart';
+export 'zklogin/zklogin.dart';
