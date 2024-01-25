@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:sui/zklogin/types.dart';
 
@@ -109,11 +108,4 @@ R extractClaimValue<R>(Claim claim, String claimName) {
     throw ArgumentError("Invalid field name: found $name expected $claimName");
   }
   return value;
-}
-
-String jwtBase64UrlEncode(Uint8List input) {
-  return base64UrlEncode(input)
-      .replaceAll('=', '')
-      .replaceAll('+', '-')
-      .replaceAll('/', '_');
 }

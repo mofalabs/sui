@@ -8,7 +8,10 @@ import 'package:sui/utils/sha.dart';
 import 'package:sui/zklogin/utils.dart';
 
 String computeZkLoginAddressFromSeed(BigInt addressSeed, String iss) {
-	final addressSeedBytesBigEndian = toBufferBE(addressSeed, 32);
+	final addressSeedBytesBigEndian = toBigEndianBytes(addressSeed, 32);
+	if (iss == 'accounts.google.com') {
+		iss = 'https://accounts.google.com';
+	}
 	final addressParamBytes = utf8.encode(iss);
 	final tmp = Uint8List(2 + addressSeedBytesBigEndian.length + addressParamBytes.length);
 
