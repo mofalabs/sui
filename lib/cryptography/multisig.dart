@@ -40,9 +40,9 @@ class MultiSig {
     int i = 3;
     for (var pk in pks) {
       tmp.setAll(i, [pk.pubKey.flag()]);
-      tmp.setAll(i + 1, pk.pubKey.toBytes());
-      tmp.setAll(i + 1 + pk.pubKey.toBytes().length, [pk.weight]);
-      i += pk.pubKey.toBytes().length + 2;
+      tmp.setAll(i + 1, pk.pubKey.toRawBytes());
+      tmp.setAll(i + 1 + pk.pubKey.toRawBytes().length, [pk.weight]);
+      i += pk.pubKey.toRawBytes().length + 2;
     }
     return normalizeSuiAddress(
       Hex.encode(blake2b(tmp.sublist(0, i))),

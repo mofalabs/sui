@@ -74,7 +74,7 @@ mixin Keypair {
 		final intentMessage = messageWithIntent(intent, bytes);
 		final digest = blake2b(intentMessage);
 
-		return verifySerialized(digest, signature, getPublicKey().toBytes());
+		return verifySerialized(digest, signature, getPublicKey().toRawBytes());
 	}
 
   /// Verifies that the signature is valid for for the provided PersonalMessage
@@ -112,12 +112,12 @@ mixin PublicKey {
   String toBase64();
 
   /// Return the byte array representation of the public key
-  Uint8List toBytes();
+  Uint8List toRawBytes();
 
 	/// Returns the bytes representation of the public key
 	/// prefixed with the signature scheme flag
 	Uint8List toSuiBytes() {
-		final bytes = toBytes();
+		final bytes = toRawBytes();
 		final suiPublicKey = Uint8List(bytes.length + 1);
 		suiPublicKey.setAll(0, [flag()]);
 		suiPublicKey.setAll(1, bytes);

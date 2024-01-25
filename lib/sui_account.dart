@@ -118,7 +118,7 @@ class SuiAccount {
   }
 
   Uint8List getPublicKey() {
-    return _keypair.getPublicKey().toBytes();
+    return _keypair.getPublicKey().toRawBytes();
   }
 
   SuiAddress getAddress() {

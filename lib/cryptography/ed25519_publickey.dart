@@ -41,11 +41,11 @@ class Ed25519PublicKey with PublicKey {
 
   @override
   String toBase64() {
-    return base64Encode(toBytes());
+    return base64Encode(toRawBytes());
   }
 
   @override
-  Uint8List toBytes() {
+  Uint8List toRawBytes() {
     Uint8List buffer = encodeBigIntAsUnsigned(_bn);
     if (buffer.length == PUBLIC_KEY_SIZE) {
       return buffer;
@@ -67,7 +67,7 @@ class Ed25519PublicKey with PublicKey {
   String toSuiAddress() {
     final tmp = Uint8List(PUBLIC_KEY_SIZE + 1);
     tmp[0] = SIGNATURE_SCHEME_TO_FLAG.Ed25519;
-    tmp.setAll(1, toBytes());
+    tmp.setAll(1, toRawBytes());
     final publicKey = Hex.encode(blake2b(tmp));
     return normalizeSuiAddress(publicKey.substring(0, SUI_ADDRESS_LENGTH * 2));
   }

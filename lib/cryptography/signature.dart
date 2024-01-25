@@ -65,11 +65,11 @@ String toSerializedSignature(
   PublicKey pubKey,
 ) {
   final serializedSignature = Uint8List(
-    1 + signature.length + pubKey.toBytes().length,
+    1 + signature.length + pubKey.toRawBytes().length,
   );
   serializedSignature.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme)]);
   serializedSignature.setAll(1, signature);
-  serializedSignature.setAll(1 + signature.length, pubKey.toBytes());
+  serializedSignature.setAll(1 + signature.length, pubKey.toRawBytes());
   return base64Encode(serializedSignature);
 }
 
