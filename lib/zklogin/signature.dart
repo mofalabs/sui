@@ -12,7 +12,7 @@ Uint8List getZkLoginSignatureBytes(ZkLoginSignature signature) {
       .ser(
           'ZkLoginSignature',
           {
-            "inputs": signature.inputs,
+            "inputs": signature.inputs.toJson(),
             "maxEpoch": signature.maxEpoch,
             "userSignature": signature.userSignature,
           },
@@ -29,5 +29,6 @@ String getZkLoginSignature(ZkLoginSignature signature) {
 }
 
 ZkLoginDeserializedSignature parseZkLoginSignature(Uint8List signature) {
-  return zkLoginSignature.de('ZkLoginSignature', signature);
+  final sig = zkLoginSignature.de('ZkLoginSignature', signature);
+  return ZkLoginDeserializedSignature.fromJson(sig);
 }

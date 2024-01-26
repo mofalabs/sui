@@ -42,12 +42,14 @@ const anEphemeralSignature =
     'AEp+O5GEAF/5tKNDdWBObNf/1uIrbOJmE+xpnlBD2Vikqhbd0zLrQ2NJyquYXp4KrvWUOl7Hso+OK0eiV97ffwucM8VdtG2hjf/RUGNO5JNUH+D/gHtE9sHe6ZEnxwZL7g==';
 
 void main() {
+
   test('test is parsed successfully', () async {
     final result = parseZkLoginSignature(fromB64(aSignature).sublist(1));
     final isValid = result.maxEpoch == 174 &&
-        result.userSignature == fromB64(anEphemeralSignature);
+        toB64(result.userSignature) == anEphemeralSignature;
     expect(isValid, true);
   });
+
   test('test is serialized successfully', () async {
     final result = getZkLoginSignature(
       ZkLoginSignature(
