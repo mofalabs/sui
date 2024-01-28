@@ -81,8 +81,8 @@ void main() {
     test('toBuffer', () {
       final pubKeyBase64 = base64Encode(VALID_SECP256K1_PUBLIC_KEY);
       final key = Secp256PublicKey.fromString(pubKeyBase64, SIGNATURE_SCHEME_TO_FLAG.Secp256k1);
-      expect(key.toBytes().length == 33, true);
-      expect(Secp256PublicKey.fromBytes(key.toBytes(), SIGNATURE_SCHEME_TO_FLAG.Secp256k1).equals(key), true);
+      expect(key.toRawBytes().length == 33, true);
+      expect(Secp256PublicKey.fromBytes(key.toRawBytes(), SIGNATURE_SCHEME_TO_FLAG.Secp256k1).equals(key), true);
     });
 
     SECP_TEST_CASES.forEach((data) {

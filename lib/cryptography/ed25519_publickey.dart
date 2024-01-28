@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -12,25 +11,23 @@ import 'package:sui/utils/sha.dart';
 const PUBLIC_KEY_SIZE = 32;
 
 class Ed25519PublicKey with PublicKey {
-
- late BigInt _bn;
+  late BigInt _bn;
 
   Ed25519PublicKey._(BigInt bn) {
-      _bn = bn;
+    _bn = bn;
   }
 
   factory Ed25519PublicKey.fromBytes(List<int> publicKey) {
     final buffer = Uint8List.fromList(publicKey);
     if (buffer.length != PUBLIC_KEY_SIZE) {
       throw ArgumentError(
-        "Invalid public key input. Expected $PUBLIC_KEY_SIZE bytes, got ${buffer.length}"
-      );
+          "Invalid public key input. Expected $PUBLIC_KEY_SIZE bytes, got ${buffer.length}");
     }
     return Ed25519PublicKey._(decodeBigIntToUnsigned(buffer));
   }
 
   /// Create a new Ed25519PublicKey object.
-  /// 
+  ///
   /// ed25519 [publicKey] as base-64 encoded string.
   factory Ed25519PublicKey.fromString(String publicKeyBase64) {
     Uint8List buffer = base64Decode(publicKeyBase64);
@@ -44,11 +41,11 @@ class Ed25519PublicKey with PublicKey {
 
   @override
   String toBase64() {
-    return base64Encode(toBytes());
+    return base64Encode(toRawBytes());
   }
 
   @override
-  Uint8List toBytes() {
+  Uint8List toRawBytes() {
     Uint8List buffer = encodeBigIntAsUnsigned(_bn);
     if (buffer.length == PUBLIC_KEY_SIZE) {
       return buffer;
@@ -70,7 +67,7 @@ class Ed25519PublicKey with PublicKey {
   String toSuiAddress() {
     final tmp = Uint8List(PUBLIC_KEY_SIZE + 1);
     tmp[0] = SIGNATURE_SCHEME_TO_FLAG.Ed25519;
-    tmp.setAll(1, toBytes());
+    tmp.setAll(1, toRawBytes());
     final publicKey = Hex.encode(blake2b(tmp));
     return normalizeSuiAddress(publicKey.substring(0, SUI_ADDRESS_LENGTH * 2));
   }

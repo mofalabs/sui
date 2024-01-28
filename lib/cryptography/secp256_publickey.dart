@@ -44,12 +44,12 @@ class Secp256PublicKey with PublicKey {
 
   @override
   String toBase64() {
-    return base64Encode(toBytes());
+    return base64Encode(toRawBytes());
   }
 
   /// Return the byte array representation of the Secp256 public key
   @override
-  Uint8List toBytes() {
+  Uint8List toRawBytes() {
     Uint8List buffer = encodeBigIntAsUnsigned(_bn);
     if (buffer.length == SECP256_PUBLIC_KEY_SIZE) {
       return buffer;
@@ -72,7 +72,7 @@ class Secp256PublicKey with PublicKey {
   String toSuiAddress() {
     final tmp = Uint8List(SECP256_PUBLIC_KEY_SIZE + 1);
     tmp[0] = _flag;
-    tmp.setAll(1, toBytes());
+    tmp.setAll(1, toRawBytes());
     final publicKey = Hex.encode(blake2b(tmp));
     return normalizeSuiAddress(publicKey.substring(0, SUI_ADDRESS_LENGTH * 2));
   }

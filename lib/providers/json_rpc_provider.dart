@@ -491,7 +491,7 @@ mixin JsonRpcProvider {
     final serializedSig = <int>[];
     serializedSig.add(SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme));
     serializedSig.addAll(signature);
-    serializedSig.addAll(pubkey.toBytes());
+    serializedSig.addAll(pubkey.toRawBytes());
     final result = await executeTransactionBlock(
       base64Encode(txnBytes),
       [base64Encode(serializedSig)],

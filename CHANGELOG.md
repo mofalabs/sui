@@ -43,3 +43,7 @@
 ## 0.1.5
 
 * Fix TransactionBlock Input Type, Estimate Gas
+
+## 0.1.6
+
+* Add zkLogin

@@ -57,8 +57,8 @@ void main() {
 
     test('toBuffer', () {
       final key = Ed25519PublicKey.fromString(VALID_KEY_BASE64);
-      expect(key.toBytes().length == 32, true);
-      expect(Ed25519PublicKey.fromBytes(key.toBytes()).equals(key), true);
+      expect(key.toRawBytes().length == 32, true);
+      expect(Ed25519PublicKey.fromBytes(key.toRawBytes()).equals(key), true);
     });
 
     test('toSuiAddress', () {
