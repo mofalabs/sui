@@ -13,8 +13,9 @@ int findFirstNonZeroIndex(Uint8List bytes) {
 /// Derive bytearray from num where the bytearray is padded to the left with 0s to the specified width.
 Uint8List toPaddedBigEndianBytes(BigInt num, int width) {
   String hex = num.toRadixString(16);
+  String paddedHex = hex.padLeft(width * 2, '0');
   return Hex.decode(
-      hex.padLeft(width * 2, '0').substring(hex.length - width * 2));
+      paddedHex.substring(paddedHex.length - width * 2));
 }
 
 /// Derive bytearray from num where the bytearray is not padded with 0.

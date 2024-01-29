@@ -17,11 +17,11 @@ void main() {
       () async {
     final result = computeZkLoginAddressFromSeed(
       BigInt.parse(
-          '38070455685353315235024069816770440552997345767097222361875524992982855100600'),
+          '380704556853533152350240698167704405529973457670972223618755249929828551006'),
       'https://accounts.google.com',
     );
     final isValid = result ==
-        '0x947652eca856ec647422a99f6aaf59698403fe73cd633e5bd5ada0e0e26931f9';
+        '0xbd8b8ed42d90aebc71518385d8a899af14cef8b5a171c380434dd6f5bbfe7bf3';
     expect(isValid, true);
   });
 }

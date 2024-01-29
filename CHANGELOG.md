@@ -47,3 +47,7 @@
 ## 0.1.6
 
 * Add zkLogin
+
+## 0.1.7
+
+* Fix hex pad
