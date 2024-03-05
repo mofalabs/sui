@@ -35,7 +35,7 @@ mixin JsonRpcProvider {
   ) async {
     final txBase64 = base64Encode(txBytes);
 
-    final result = await client.request('sui_devInspectTransactionBlock', 
+    final result = await client.request('sui_devInspectTransactionBlock',
       [
         sender,
         txBase64,
@@ -222,7 +222,7 @@ mixin JsonRpcProvider {
   }
 
   /// Objects
-  
+
   Future<PaginatedObjectsResponse> getOwnedObjects(
     String address, {
     SuiObjectDataOptions? options,
@@ -279,7 +279,7 @@ mixin JsonRpcProvider {
   }
 
 	Future<ObjectRead> tryGetPastObject(
-    String id, 
+    String id,
     int version, {
       SuiObjectDataOptions? options
     }
@@ -508,7 +508,7 @@ mixin JsonRpcProvider {
   }
 
   /// Events
-  
+
   Future<List<SuiEvent>> getEvents(String txDigest) async {
     final result = await client.request('sui_getEvents', [txDigest]);
     final events = (result as List).map((e) => SuiEvent.fromJson(e)).toList();
@@ -544,9 +544,9 @@ mixin JsonRpcProvider {
     bool descendingOrder = false}
   ) async {
     return await queryEvents(
-      filter.toJson(), 
-      cursor: cursor, 
-      limit: limit, 
+      filter.toJson(),
+      cursor: cursor,
+      limit: limit,
       descendingOrder: descendingOrder
     );
   }
@@ -559,9 +559,9 @@ mixin JsonRpcProvider {
   ) async {
     final query = { "Transaction": digest };
     final result = await queryEvents(
-      query, 
-      limit: limit, 
-      descendingOrder: descendingOrder, 
+      query,
+      limit: limit,
+      descendingOrder: descendingOrder,
       cursor: cursor
     );
     return result;
@@ -576,8 +576,8 @@ mixin JsonRpcProvider {
   }
 
   Future<SuiObjectResponse> getDynamicFieldObject(
-    String parentObjectId, 
-    String nameType, 
+    String parentObjectId,
+    String nameType,
     String nameValue
   ) async {
     final params = {"type": nameType, "value": nameValue};

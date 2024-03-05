@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:sui/http/http.dart';
 import 'package:sui/utils/error.dart';
 
@@ -51,7 +52,12 @@ class JsonRpcClient {
       message["params"] = parameters;
     }
 
-    var data = (await http.post(url, data: message)).data;
+    var data = (await http.post(
+      url,
+      data: message,
+      options: Options(headers: headers),
+    ))
+        .data;
     if (data is String) {
       if (data.isEmpty) return data;
       data = jsonDecode(data);
