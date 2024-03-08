@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -13,7 +12,9 @@ class ApiInterceptor extends InterceptorsWrapper {
       debugPrint("--------------- request ---------------");
       debugPrint(options.uri.toString());
       debugPrint(options.headers.toString());
-      debugPrint(options.contentType == "application/json" ? jsonEncode(options.data) : options.data.toString());
+      debugPrint(options.contentType == "application/json"
+          ? jsonEncode(options.data)
+          : options.data.toString());
       debugPrint("--------------- request end -------------");
       debugPrint("");
     }

@@ -34,7 +34,7 @@ class _TransferExampleState extends State<TransferExample> {
     super.initState();
     _getCode();
     account = SuiAccount.secp256k1Account();
-    suiClient = SuiClient(Constants.faucetTestAPI, account: account);
+    suiClient = SuiClient(SuiUrls.faucetTestAPI, account: account);
     setState(() {});
     _getBalance();
   }
@@ -117,7 +117,7 @@ class _TransferExampleState extends State<TransferExample> {
         requestingFaucet = true;
       });
       try {
-        final faucet = FaucetClient(Constants.faucetDevAPI);
+        final faucet = FaucetClient(SuiUrls.faucetDevAPI);
         await faucet.requestSuiFromFaucetV1(address);
         _getBalance();
       } catch (e) {

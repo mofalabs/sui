@@ -5,19 +5,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/bcs/bcs.dart';
 import 'package:sui/builder/inputs.dart';
-import 'package:sui/builder/transaction_block.dart';
-import 'package:sui/builder/transactions.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/objects.dart';
 
 void main() {
-
   test('can construct and serialize an empty tranaction', () {
     final tx = TransactionBlock();
     expect(() => tx.serialize(), returnsNormally);
   });
 
-  test('can be serialized and deserialized to the same values with onlyTransactionKind', () async {
+  test(
+      'can be serialized and deserialized to the same values with onlyTransactionKind',
+      () async {
     final tx = TransactionBlock();
     tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(100)]));
     final bytes = await tx.build(BuildOptions(onlyTransactionKind: true));
@@ -41,13 +39,12 @@ void main() {
     debugPrint(tx.serialize());
   });
 
-  test('supports nested results through either array index or destructuring', () {
+  test('supports nested results through either array index or destructuring',
+      () {
     final tx = TransactionBlock();
-    final registerResult = tx.add(
-      Transactions.moveCall(
-        target: '0x2::game::register',
-      )
-    );
+    final registerResult = tx.add(Transactions.moveCall(
+      target: '0x2::game::register',
+    ));
 
     final result0 = {"kind": "NestedResult", "index": 0, "resultIndex": 0};
     final result1 = {"kind": "NestedResult", "index": 0, "resultIndex": 1};
@@ -61,12 +58,11 @@ void main() {
         'local game polar color light add assault impact marine glass year unusual';
     final account =
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-    final client = SuiClient(Constants.testnetAPI, account: account);
+    final client = SuiClient(SuiUrls.testnetAPI, account: account);
     final tx = TransactionBlock();
     tx.setSender(account.getAddress());
     tx.setGasBudget(BigInt.from(2000000));
-    final coin = tx.add(Transactions.splitCoins(
-        tx.gas, [tx.pureInt(3100000)]));
+    final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(3100000)]));
     tx.add(
       Transactions.transferObjects(
         [coin],
@@ -84,13 +80,12 @@ void main() {
   });
 
   group('offline build', () {
-
     SuiObjectRef ref() {
       return SuiObjectRef(
-        toB58(Uint8List.fromList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
-        (Random().nextDouble() * 100000).toStringAsFixed(0).padRight(64, '0'),
-        (Random().nextDouble() * 100000).toInt()
-      );
+          toB58(Uint8List.fromList(
+              [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
+          (Random().nextDouble() * 100000).toStringAsFixed(0).padRight(64, '0'),
+          (Random().nextDouble() * 100000).toInt());
     }
 
     TransactionBlock setup() {
@@ -102,7 +97,8 @@ void main() {
       return tx;
     }
 
-    test('builds an empty transaction offline when provided sufficient data', () async {
+    test('builds an empty transaction offline when provided sufficient data',
+        () async {
       final tx = setup();
       await tx.build();
     });
@@ -115,7 +111,8 @@ void main() {
 
     test('builds a split transaction', () async {
       final tx = setup();
-      tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(
+          Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
       await tx.build();
     });
 
@@ -133,10 +130,12 @@ void main() {
       expect(tx.blockData.gasConfig, isNot(same(tx.blockData.gasConfig)));
     });
 
-    test('can determine the type of inputs for built-in transactions', () async {
+    test('can determine the type of inputs for built-in transactions',
+        () async {
       final tx = setup();
       tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(100)]));
-      tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, BCS.U64))]));
+      tx.add(Transactions.splitCoins(
+          tx.gas, [tx.pure(Inputs.pure(100, BCS.U64))]));
       await tx.build();
     });
 
@@ -146,14 +145,17 @@ void main() {
       // Use bytes directly in pure value:
       tx.add(Transactions.splitCoins(tx.gas, [tx.pureBytes(inputBytes)]));
       // Use bytes in input helper:
-      tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(inputBytes))]));
+      tx.add(
+          Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(inputBytes))]));
       await tx.build();
     });
 
     test('builds a more complex interaction', () async {
       final tx = setup();
-      final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
-      tx.add(Transactions.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
+      final coin = tx.add(
+          Transactions.splitCoins(tx.gas, [tx.pure(Inputs.pure(100, 'u64'))]));
+      tx.add(Transactions.mergeCoins(
+          tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
         Transactions.moveCall(
           target: '0x2::devnet_nft::mint',
@@ -172,7 +174,5 @@ void main() {
 
       expect(bytes, bytes2);
     });
-
   });
-
 }

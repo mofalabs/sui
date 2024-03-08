@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/constants.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/transactions.dart';
 
 void main() {
   const address =
@@ -10,7 +8,7 @@ void main() {
   List<SuiTransactionBlockResponse> transactions = [];
 
   setUp(() async {
-    client = SuiClient(Constants.devnetAPI);
+    client = SuiClient(SuiUrls.devnetAPI);
     var list = await client
         .queryTransactionBlocks({'FromAddress': address}, limit: 10);
     transactions.addAll(list.data);
@@ -29,12 +27,12 @@ void main() {
 
   test('Multi Get Pay Transactions', () async {
     var options = SuiTransactionBlockResponseOptions(showBalanceChanges: true);
-    List<SuiTransactionBlockResponse> ts =
-        (await client.queryTransactionBlocks(
+    List<SuiTransactionBlockResponse> ts = (await client.queryTransactionBlocks(
       {'FromAddress': address},
       options: options,
       limit: 10,
-    )).data;
+    ))
+        .data;
     final digests = ts.map((t) => t.digest).toList();
     final txns =
         await client.multiGetTransactionBlocks(digests, options: options);

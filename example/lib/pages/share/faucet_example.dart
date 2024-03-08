@@ -22,12 +22,12 @@ class _FaucetExampleState extends State<FaucetExample> {
   var network = 0;
   var showCode = false;
   final rpcUrl = [
-    Constants.devnetAPI,
-    Constants.testnetAPI,
+    SuiUrls.devnetAPI,
+    SuiUrls.testnetAPI,
   ];
   final faucetUrl = [
-    Constants.faucetDevAPI,
-    Constants.faucetTestAPI,
+    SuiUrls.faucetDevAPI,
+    SuiUrls.faucetTestAPI,
   ];
 
   @override

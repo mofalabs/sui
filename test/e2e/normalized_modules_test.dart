@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/constants.dart';
+import 'package:sui/sui_urls.dart';
 import 'package:sui/sui_client.dart';
 
 void main() {
@@ -9,7 +9,7 @@ void main() {
   const DEFAULT_STRUCT = 'Coin';
 
   test('test getMoveFunctionArgTypes', () async {
-    final client = SuiClient(Constants.devnetAPI);
+    final client = SuiClient(SuiUrls.devnetAPI);
     final functionArgTypes = await client.getMoveFunctionArgTypes(
       packageId: DEFAULT_PACKAGE,
       moduleName: DEFAULT_MODULE,
@@ -19,22 +19,22 @@ void main() {
   });
 
   test('test getNormalizedMoveModulesByPackage', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveModules = await client
-        .getNormalizedMoveModulesByPackage(DEFAULT_PACKAGE);
+    final client = SuiClient(SuiUrls.devnetAPI);
+    final moveModules =
+        await client.getNormalizedMoveModulesByPackage(DEFAULT_PACKAGE);
     expect(moveModules.keys.contains(DEFAULT_MODULE), true);
     expect(moveModules.keys.isNotEmpty, true);
   });
 
   test('test getNormalizedMoveModule', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveModule = await client
-        .getNormalizedMoveModule(DEFAULT_PACKAGE, DEFAULT_MODULE);
+    final client = SuiClient(SuiUrls.devnetAPI);
+    final moveModule =
+        await client.getNormalizedMoveModule(DEFAULT_PACKAGE, DEFAULT_MODULE);
     expect(moveModule.exposedFunctions.containsKey(DEFAULT_FUNCTION), true);
   });
 
   test('test getNormalizedMoveFunction', () async {
-    final client = SuiClient(Constants.devnetAPI);
+    final client = SuiClient(SuiUrls.devnetAPI);
     final moveFunction = await client.getNormalizedMoveFunction(
       DEFAULT_PACKAGE,
       DEFAULT_MODULE,
@@ -44,7 +44,7 @@ void main() {
   });
 
   test('test getNormalizedMoveStruct', () async {
-    final client = SuiClient(Constants.devnetAPI);
+    final client = SuiClient(SuiUrls.devnetAPI);
     final moveStruct = await client.getNormalizedMoveStruct(
       DEFAULT_PACKAGE,
       DEFAULT_MODULE,

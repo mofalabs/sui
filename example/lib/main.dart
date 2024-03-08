@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color.fromRGBO(84, 150, 229, 1),
-            selectionColor: Colors.yellow,
-            selectionHandleColor: Colors.black,
-          ),
+          cursorColor: Color.fromRGBO(84, 150, 229, 1),
+          selectionColor: Colors.yellow,
+          selectionHandleColor: Colors.black,
+        ),
       ),
       home: const MyHomePage(title: 'Sui Dart Demo'),
       builder: FToastBuilder(),
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget contentPage(int menuIndex) {
     if (account == null) return Container();
-    
+
     final acc = account!;
     switch (menuIndex) {
       case 0:
@@ -100,15 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void switchNet(String network) {
     switch (network) {
       case "devnet":
-        suiClient = SuiClient(Constants.devnetAPI);
+        suiClient = SuiClient(SuiUrls.devnetAPI);
         localNetwork = "devnet";
         break;
       case "testnet":
-        suiClient = SuiClient(Constants.testnetAPI);
+        suiClient = SuiClient(SuiUrls.testnetAPI);
         localNetwork = "testnet";
         break;
       case "mainnet":
-        suiClient = SuiClient(Constants.mainnetAPI);
+        suiClient = SuiClient(SuiUrls.mainnetAPI);
         localNetwork = "mainnet";
         break;
     }

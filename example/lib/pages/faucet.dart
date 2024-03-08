@@ -1,4 +1,3 @@
-
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +11,9 @@ class Faucet extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _FaucetState();
-
 }
 
 class _FaucetState extends State<Faucet> {
-
   BigInt balance = BigInt.zero;
 
   @override
@@ -45,9 +42,8 @@ class _FaucetState extends State<Faucet> {
       });
 
       try {
-        final faucet = FaucetClient(Constants.faucetDevAPI);
-        final faucetResp =
-            await faucet.requestSuiFromFaucetV1(address);
+        final faucet = FaucetClient(SuiUrls.faucetDevAPI);
+        final faucetResp = await faucet.requestSuiFromFaucetV1(address);
         if (faucetResp.task != null) {
           while (true) {
             final statusResp =
@@ -86,7 +82,8 @@ class _FaucetState extends State<Faucet> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
-                child: SelectableText(widget.account.getAddress(), style: TextStyle(fontSize: 18)),
+                child: SelectableText(widget.account.getAddress(),
+                    style: TextStyle(fontSize: 18)),
               ),
               const SizedBox(height: 20),
               Text(
@@ -95,12 +92,10 @@ class _FaucetState extends State<Faucet> {
               ),
               const SizedBox(height: 20),
               Button(requestingFaucet ? "Fauceting" : "Faucet", _requestFaucet),
-
             ],
           ),
         ),
       ),
     );
   }
-
 }
