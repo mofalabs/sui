@@ -143,7 +143,7 @@ class Ed25519Keypair with Keypair {
       throw ArgumentError('Invalid signature scheme');
     }
 
-    if (base64Encode(publicKey) != parsed.pubKey.toBase64()) {
+    if (base64Encode(publicKey) != parsed.pubKey!.toBase64()) {
       throw ArgumentError('Signature does not match public key');
     }
 

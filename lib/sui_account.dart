@@ -134,7 +134,7 @@ class SuiAccount {
   }
 
   bool verify(Uint8List data, SignaturePubkeyPair signature) {
-    bool success = _keypair.verify(data, signature.signature, signature.pubKey.toBytes());
+    bool success = _keypair.verify(data, signature.signature, signature.pubKey!.toRawBytes());
     return success;
   }
 }

@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
 import 'package:sui/rpc/client.dart';
@@ -17,8 +18,8 @@ import 'package:sui/utils/sha.dart';
 class SignaturePubkeyPair {
   SignatureScheme signatureScheme;
   Uint8List signature;
-  dynamic pubKey;
-  dynamic zkLogin;
+  PublicKey? pubKey;
+  Map<String, dynamic>? zkLogin;
 
   SignaturePubkeyPair(this.signatureScheme, this.signature, {this.pubKey, this.zkLogin});
 }
@@ -61,7 +62,7 @@ abstract class SignerWithProvider with JsonRpcProvider {
         txnBytes: transaction,
         signatureScheme: sig.signatureScheme,
         signature: sig.signature,
-        pubkey: sig.pubKey,
+        pubkey: sig.pubKey!,
         requestType: requestType
       );
   }
