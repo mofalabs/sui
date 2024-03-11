@@ -39,17 +39,17 @@ import 'package:sui/sui.dart';
 import 'package:sui/types/faucet.dart';
 
 final account = SuiAccount.ed25519Account();
-final suiClient = SuiClient(Constants.devnetAPI);
+final suiClient = SuiClient(SuiUrls.devnet);
 final coinBalance = await suiClient.getBalance(account.getAddress());
 final balance = coinBalance.totalBalance;
 
-final faucet = FaucetClient(Constants.faucetDevAPI);
+final faucet = FaucetClient(SuiUrls.faucetDev);
 await faucet.requestSuiFromFaucetV1(account.getAddress());
 ```
 ?
 ```dart
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final tx = TransactionBlock();
 tx.setGasBudget(BigInt.from(20000000));

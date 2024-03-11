@@ -24,26 +24,26 @@ Usage
 
 ```dart
 /// connect to devnet
-final devnetClient = SuiClient(Constants.devnetAPI);
+final devnetClient = SuiClient(SuiUrls.devnet);
 
 /// connect to testnet
-final testnetClient = SuiClient(Constants.testnetAPI);
+final testnetClient = SuiClient(SuiUrls.testnet);
 
 /// connect to mainnet
-final mainnetClient = SuiClient(Constants.mainnetAPI);
+final mainnetClient = SuiClient(SuiUrls.mainnet);
 ```
 
 ### Getting coins from the faucet
 
 #### Faucet V0
 ```dart
-final faucet = FaucetClient(Constants.faucetDevAPI);
+final faucet = FaucetClient(SuiUrls.faucetDev);
 await faucet.requestSuiFromFaucetV0('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
 ```
 
 #### Faucet V1
 ```dart
-final faucet = FaucetClient(Constants.faucetDevAPI);
+final faucet = FaucetClient(SuiUrls.faucetDev);
 await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
 ```
 
@@ -87,7 +87,7 @@ final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1)
 
 ```dart
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final tx = TransactionBlock();
 tx.transferObjects(
@@ -103,7 +103,7 @@ print(result.digest);
 
 ```dart
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final tx = TransactionBlock();
 final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000)]);
@@ -120,7 +120,7 @@ print(result.digest);
 
 ```dart
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final tx = TransactionBlock();
 tx.mergeCoins(tx.objectId('0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'), 
@@ -135,7 +135,7 @@ print(result.digest);
 
 ```dart
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 const packageObjectId = '0x...';
 final tx = TransactionBlock();
@@ -149,7 +149,7 @@ print(result.digest);
 
 ```dart
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 const moduels = <String>[];
 const dependencies = <String>[];
@@ -166,7 +166,7 @@ print(result.digest);
 #### Get Owned Objects
 
 ```dart
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final objects = await client.getOwnedObjects('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
 ```
@@ -174,7 +174,7 @@ final objects = await client.getOwnedObjects('0xa2d8bb82df40770ac5bc8628d8070b04
 #### Get Objects
 
 ```dart
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final obj = await client.getObject('0x0d49dbda185cd0941b71315edb594276731f21b2232d8713f319b02c462a2da7',
     options: SuiObjectDataOptions(showContent: true)
@@ -189,7 +189,7 @@ final objs = await client.multiGetObjects([
 #### Get Transaction
 
 ```dart
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final txn = await client.getTransactionBlock('6oH779AUs2WpwW77xCVGbYqK1FYVamRqHjV6A5wCV8Qj',
     options: SuiTransactionBlockResponseOptions(showEffects: true)
@@ -204,7 +204,7 @@ final txns = await client.multiGetTransactionBlocks([
 #### Get Checkpoints
 
 ```dart
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final checkpoint = await client.getCheckpoint('338000');
 
@@ -214,7 +214,7 @@ final checkpoints = await client.getCheckpoints(descendingOrder: true);
 #### Get Coins
 
 ```dart
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final coins = await client.getCoins(
     '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2',
@@ -230,7 +230,7 @@ final suiBalance = await client.getBalance('0xa2d8bb82df40770ac5bc8628d8070b041a
 #### Querying events
 
 ```dart
-final client = SuiClient(Constants.devnetAPI);
+final client = SuiClient(SuiUrls.devnet);
 
 final events = await client.queryEvents(
     {"Sender": "0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2"}, 
@@ -248,7 +248,7 @@ final events = await client.queryEventsByFilter(
 #### WebsocketClient subscribeEvent
 
 ```dart
-final client = WebsocketClient(Constants.websocketAPI);
+final client = WebsocketClient(SuiUrls.webSocketDevnet);
 
 final subscription = client.subscribeEvent({"Sender": "0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2"})
 .listen((event) {
