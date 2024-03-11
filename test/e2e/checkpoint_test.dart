@@ -1,19 +1,17 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
 
 void main() {
-
   group('Checkpoints Reading API', () {
-
     late SuiClient client;
 
     setUpAll(() async {
-      client = SuiClient(Constants.devnetAPI);
+      client = SuiClient(SuiUrls.devnet);
     });
 
     test('Get latest checkpoint sequence number', () async {
-      final checkpointSequenceNumber = await client.getLatestCheckpointSequenceNumber();
+      final checkpointSequenceNumber =
+          await client.getLatestCheckpointSequenceNumber();
       expect(checkpointSequenceNumber > BigInt.zero, true);
     });
 
@@ -34,11 +32,9 @@ void main() {
       expect(checkpointResp.digest, resp.digest);
     });
 
-    test('getCheckpoints',  () async {
-      final checkpoints = await client.getCheckpoints(
-        descendingOrder: false,
-        limit: 1
-      );
+    test('getCheckpoints', () async {
+      final checkpoints =
+          await client.getCheckpoints(descendingOrder: false, limit: 1);
 
       expect(checkpoints.nextCursor, '0');
       expect(checkpoints.data.length, 1);
@@ -54,5 +50,4 @@ void main() {
       expect(checkpoints1.hasNextPage, true);
     });
   });
-
 }

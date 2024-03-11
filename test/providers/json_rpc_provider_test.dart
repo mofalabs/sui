@@ -1,15 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/constants.dart';
 import 'package:sui/sui.dart';
 
 void main() {
-
-  const address = '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973';
+  const address =
+      '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973';
 
   late SuiClient client;
 
   setUp(() {
-    client = SuiClient(Constants.mainnetAPI);
+    client = SuiClient(SuiUrls.mainnet);
   });
 
   test('test getChainIdentifier', () async {
@@ -46,17 +45,14 @@ void main() {
   });
 
   test('test getMoveFunctionArgTypes', () async {
-    const package = "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1";
+    const package =
+        "0xee496a0cc04d06a345982ba6697c90c619020de9e274408c7819f787ff66e1a1";
     const module = "suifrens";
     const function = "burn";
     final resp = await client.getMoveFunctionArgTypes(
-      packageId: package,
-      moduleName: module,
-      functionName: function
-    );
+        packageId: package, moduleName: module, functionName: function);
     expect(resp.isNotEmpty, true);
   });
-
 
   test('test getRpcApiVersion', () async {
     final resp = await client.getRpcApiVersion();
@@ -74,7 +70,6 @@ void main() {
     final resp = await client.getAllCoins(address);
     expect(resp.data.isNotEmpty, true);
   });
-
 
   test('test getTransactions', () async {
     final resp = await client.getTransactions(address);
@@ -119,8 +114,10 @@ void main() {
 
   test('test getObjectBatch', () async {
     final objResp = await client.getOwnedObjects(address);
-    final ids = objResp.data.where((x) => x.data?.objectId != null)
-                            .map((obj) => obj.data!.objectId).toList();
+    final ids = objResp.data
+        .where((x) => x.data?.objectId != null)
+        .map((obj) => obj.data!.objectId)
+        .toList();
     final resp = await client.getObjectBatch(ids);
     expect(resp.length == ids.length, true);
   });
@@ -143,28 +140,29 @@ void main() {
   });
 
   test('test getEvents', () async {
-    final resp = await client.getEvents("D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb");
+    final resp =
+        await client.getEvents("D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb");
     expect(resp.isNotEmpty, true);
   });
 
   test('test query all events', () async {
-    final result = await client.queryEvents({ "All": []});
+    final result = await client.queryEvents({"All": []});
     expect(result.data.isNotEmpty, true);
   });
 
   test('test query all events paged', () async {
-    final result = await client.queryEvents({ "All": []}, limit: 2);
+    final result = await client.queryEvents({"All": []}, limit: 2);
     expect(result.data.isNotEmpty, true);
     expect(result.nextCursor != null, true);
   });
 
   test('test query events by sender paginated', () async {
-    final result = await client.queryEvents({ "Sender": address});
+    final result = await client.queryEvents({"Sender": address});
     expect(result.data.isNotEmpty, true);
   });
 
   test('test query all events', () async {
-    final result = await client.queryEvents({ "All": []});
+    final result = await client.queryEvents({"All": []});
     expect(result.data.isNotEmpty, true);
   });
 
@@ -227,11 +225,15 @@ void main() {
 
   test('test resolveNameServiceAddress', () async {
     final result = await client.resolveNameServiceAddress('blockchain.sui');
-    expect(result == '0x57514a8dd8f08724d01954953721b738adecb29bca613b0b351adf76e7233bac', true);
+    expect(
+        result ==
+            '0x57514a8dd8f08724d01954953721b738adecb29bca613b0b351adf76e7233bac',
+        true);
   });
 
   test('test resolveNameServiceNames', () async {
-    final result = await client.resolveNameServiceNames('0x57514a8dd8f08724d01954953721b738adecb29bca613b0b351adf76e7233bac');
+    final result = await client.resolveNameServiceNames(
+        '0x57514a8dd8f08724d01954953721b738adecb29bca613b0b351adf76e7233bac');
     expect(result!.data.first == 'blockchain.sui', true);
     expect(result.hasNextPage == false, true);
   });

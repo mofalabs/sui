@@ -1,54 +1,54 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/constants.dart';
+import 'package:sui/sui_urls.dart';
 import 'package:sui/sui_client.dart';
 
 void main() {
-  const DEFAULT_PACKAGE = '0x2';
-  const DEFAULT_MODULE = 'coin';
-  const DEFAULT_FUNCTION = 'balance';
-  const DEFAULT_STRUCT = 'Coin';
+  const defaultPackage = '0x2';
+  const defaultModule = 'coin';
+  const defaultFunction = 'balance';
+  const defaultStruct = 'Coin';
 
   test('test getMoveFunctionArgTypes', () async {
-    final client = SuiClient(Constants.devnetAPI);
+    final client = SuiClient(SuiUrls.devnet);
     final functionArgTypes = await client.getMoveFunctionArgTypes(
-      packageId: DEFAULT_PACKAGE,
-      moduleName: DEFAULT_MODULE,
-      functionName: DEFAULT_FUNCTION,
+      packageId: defaultPackage,
+      moduleName: defaultModule,
+      functionName: defaultFunction,
     );
     expect(functionArgTypes[0]['Object'] == 'ByImmutableReference', true);
   });
 
   test('test getNormalizedMoveModulesByPackage', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveModules = await client
-        .getNormalizedMoveModulesByPackage(DEFAULT_PACKAGE);
-    expect(moveModules.keys.contains(DEFAULT_MODULE), true);
+    final client = SuiClient(SuiUrls.devnet);
+    final moveModules =
+        await client.getNormalizedMoveModulesByPackage(defaultPackage);
+    expect(moveModules.keys.contains(defaultModule), true);
     expect(moveModules.keys.isNotEmpty, true);
   });
 
   test('test getNormalizedMoveModule', () async {
-    final client = SuiClient(Constants.devnetAPI);
-    final moveModule = await client
-        .getNormalizedMoveModule(DEFAULT_PACKAGE, DEFAULT_MODULE);
-    expect(moveModule.exposedFunctions.containsKey(DEFAULT_FUNCTION), true);
+    final client = SuiClient(SuiUrls.devnet);
+    final moveModule =
+        await client.getNormalizedMoveModule(defaultPackage, defaultModule);
+    expect(moveModule.exposedFunctions.containsKey(defaultFunction), true);
   });
 
   test('test getNormalizedMoveFunction', () async {
-    final client = SuiClient(Constants.devnetAPI);
+    final client = SuiClient(SuiUrls.devnet);
     final moveFunction = await client.getNormalizedMoveFunction(
-      DEFAULT_PACKAGE,
-      DEFAULT_MODULE,
-      DEFAULT_FUNCTION,
+      defaultPackage,
+      defaultModule,
+      defaultFunction,
     );
     expect(moveFunction.isEntry == false, true);
   });
 
   test('test getNormalizedMoveStruct', () async {
-    final client = SuiClient(Constants.devnetAPI);
+    final client = SuiClient(SuiUrls.devnet);
     final moveStruct = await client.getNormalizedMoveStruct(
-      DEFAULT_PACKAGE,
-      DEFAULT_MODULE,
-      DEFAULT_STRUCT,
+      defaultPackage,
+      defaultModule,
+      defaultStruct,
     );
     expect(moveStruct.fields.length > 1, true);
   });

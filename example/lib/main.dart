@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color.fromRGBO(84, 150, 229, 1),
-            selectionColor: Colors.yellow,
-            selectionHandleColor: Colors.black,
-          ),
+          cursorColor: Color.fromRGBO(84, 150, 229, 1),
+          selectionColor: Colors.yellow,
+          selectionHandleColor: Colors.black,
+        ),
       ),
       home: const MyHomePage(title: 'Sui Dart Demo'),
       builder: FToastBuilder(),
@@ -73,11 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget contentPage(int menuIndex) {
     if (account == null) return Container();
-    
+
     final acc = account!;
     switch (menuIndex) {
       case 0:
-        return Home();
+        return const Home();
       case 1:
         return Faucet(acc);
       case 2:
@@ -100,15 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void switchNet(String network) {
     switch (network) {
       case "devnet":
-        suiClient = SuiClient(Constants.devnetAPI);
+        suiClient = SuiClient(SuiUrls.devnet);
         localNetwork = "devnet";
         break;
       case "testnet":
-        suiClient = SuiClient(Constants.testnetAPI);
+        suiClient = SuiClient(SuiUrls.testnet);
         localNetwork = "testnet";
         break;
       case "mainnet":
-        suiClient = SuiClient(Constants.mainnetAPI);
+        suiClient = SuiClient(SuiUrls.mainnet);
         localNetwork = "mainnet";
         break;
     }
@@ -135,27 +135,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                       },
                       child: Text(localNetwork,
-                          style: TextStyle(color: Colors.white)));
+                          style: const TextStyle(color: Colors.white)));
                 },
                 menuChildren: [
                   MenuItemButton(
-                      child: SizedBox(
-                          child: Text("devnet", textAlign: TextAlign.center),
-                          width: 80),
+                      child: const SizedBox(
+                          width: 80,
+                          child: Text("devnet", textAlign: TextAlign.center)),
                       onPressed: () {
                         switchNet("devnet");
                       }),
                   MenuItemButton(
-                      child: SizedBox(
-                          child: Text("testnet", textAlign: TextAlign.center),
-                          width: 80),
+                      child: const SizedBox(
+                          width: 80,
+                          child: Text("testnet", textAlign: TextAlign.center)),
                       onPressed: () {
                         switchNet("testnet");
                       }),
                   MenuItemButton(
-                      child: SizedBox(
-                          child: Text("mainnet", textAlign: TextAlign.center),
-                          width: 80),
+                      child: const SizedBox(
+                          width: 80,
+                          child: Text("mainnet", textAlign: TextAlign.center)),
                       onPressed: () {
                         switchNet("mainnet");
                       }),

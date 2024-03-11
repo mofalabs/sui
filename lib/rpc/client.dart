@@ -1,33 +1,36 @@
-
 import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:sui/http/http.dart';
 import 'package:sui/utils/error.dart';
 
 class JsonRpcClient {
-  var _id = 0;
-  final String url;
+  JsonRpcClient(
+    this.url, {
+    this.headers,
+  });
 
-  JsonRpcClient(this.url);
+  final String url;
+  Map<String, dynamic>? headers;
 
   String get rpcVersion => "2.0";
-  Map<String, dynamic> get headers => {};
 
-  Future<dynamic> request(
-    String method,
-    [List<dynamic>? args]
-  ) async {
+  var _id = 0;
+
+  Future<dynamic> request(String method, [List<dynamic>? args]) async {
     final result = await sendRequest(method, args ?? []);
+
     return result;
   }
 
-  Future<dynamic> batchRequest(
-    Iterable<Map<String, dynamic>> requests
-  ) async {
+  Future<dynamic> batchRequest(Iterable<Map<String, dynamic>> requests) async {
     final batchResult = <dynamic>[];
+
     for (var item in requests) {
       final resp = await request(item['method'], item['args']);
       batchResult.add(resp);
     }
+
     return batchResult;
   }
 
@@ -38,28 +41,39 @@ class JsonRpcClient {
           'parameters, was "$parameters".');
     }
 
-    var message = <String, dynamic>{"jsonrpc": rpcVersion, "method": method, "id": _id};
+    var message = <String, dynamic>{
+      "jsonrpc": rpcVersion,
+      "method": method,
+      "id": _id
+    };
     _id++;
+
     if (parameters != null) {
       message["params"] = parameters;
     }
 
-    var data = (await http.post(url, data: message)).data;
+    var data = (await http.post(
+      url,
+      data: message,
+      options: Options(headers: headers),
+    ))
+        .data;
     if (data is String) {
       if (data.isEmpty) return data;
       data = jsonDecode(data);
     }
+
     if (data.containsKey("error") && data["error"] != null) {
       final error = data["error"];
+
       throw RPCError(
         RPCErrorRequest(method, parameters),
         error["code"],
         error["message"],
-        error["data"]
+        error["data"],
       );
     } else {
       return data["result"];
     }
   }
-
 }
