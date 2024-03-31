@@ -132,7 +132,7 @@ void main() {
       final multisig = multiSigPublicKey.combinePartialSignatures([sig1.signature, sig2.signature]);
       final parsed = parseSerializedSignature(multisig);
 
-      final publicKey = MultiSigPublicKey(MultiSigPublicKeyStruct.fromJson(parsed.multisig["multisig_pk"]));
+      final publicKey = MultiSigPublicKey(parsed.multisig!.multisigPK);
       final pks = publicKey.publicKeys;
       expect(pks.length, 3);
       expect(pks[0].weight, 1);
@@ -201,7 +201,7 @@ void main() {
         final sig2 = k2.signPersonalMessage(data);
 
         final multisig = multiSigPublicKey.combinePartialSignatures([sig1.signature, sig2.signature]);
-        final rawBytes = base64Decode(multisig).sublist(134);  // ?
+        final rawBytes = base64Decode(multisig).sublist(134);
 
         expect(multiSigPublicKey.toRawBytes(), rawBytes);
         expect(multiSigPublicKey.toRawBytes(),
@@ -281,7 +281,7 @@ void main() {
       final multisig = multiSigPublicKey.combinePartialSignatures([sig1.signature, sig2.signature]);
 
       final bytes = base64Decode(multisig);
-      final multiSigStruct = bcs.de('MultiSig', bytes.sublist(1));
+      final multiSigStruct = MultiSigStruct.fromJson(bcs.de('MultiSig', bytes.sublist(1)));
 
       final parsedPartialSignatures = parsePartialSignatures(multiSigStruct);
 

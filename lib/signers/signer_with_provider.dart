@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/signature.dart';
+import 'package:sui/multisig/multsig_publickey.dart';
 import 'package:sui/providers/json_rpc_provider.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/signers/txn_data_serializers/rpc_txn_data_serializer.dart';
@@ -20,7 +21,7 @@ class SignaturePubkeyPair {
   Uint8List signature;
   PublicKey? pubKey;
   Map<String, dynamic>? zkLogin;
-  dynamic multisig;
+  MultiSigStruct? multisig;
 
   SignaturePubkeyPair(this.signatureScheme, this.signature, {this.pubKey, this.zkLogin, this.multisig});
 }

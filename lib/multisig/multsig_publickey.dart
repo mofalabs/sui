@@ -41,10 +41,10 @@ class PubkeyEnumWeightPair {
 }
 
 class MultiSigPublicKeyStruct {
-	List<PubkeyEnumWeightPair> pk_map;
+	List<PubkeyEnumWeightPair> pks;
 	int threshold;
 
-  MultiSigPublicKeyStruct(this.pk_map, this.threshold);
+  MultiSigPublicKeyStruct(this.pks, this.threshold);
 
   factory MultiSigPublicKeyStruct.fromJson(Map<String, dynamic> data) {
     var tmp = <PubkeyEnumWeightPair>[];
@@ -60,8 +60,32 @@ class MultiSigPublicKeyStruct {
 
   Map<String, dynamic> toJson() {
     return {
-      "pk_map": pk_map,
+      "pk_map": pks,
       "threshold": threshold,
+    };
+  }
+}
+
+class MultiSigStruct {
+	List<Map<String, dynamic>> sigs;
+	int bitmap;
+	MultiSigPublicKeyStruct multisigPK;
+
+  MultiSigStruct(this.sigs, this.bitmap, this.multisigPK);
+
+  factory MultiSigStruct.fromJson(Map<String, dynamic> data) {
+    return MultiSigStruct(
+      (data["sigs"] as List).map((e) => Map<String, dynamic>.of(e)).toList(),
+      data["bitmap"],
+      MultiSigPublicKeyStruct.fromJson(data["multisig_pk"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "sigs": sigs,
+      "bitmap": bitmap,
+      "multisig_pk": multisigPK,
     };
   }
 }
@@ -100,7 +124,7 @@ class MultiSigPublicKey with PublicKey {
 
     final seenPublicKeys = <String>{};
 
-    publicKeys = _multisigPublicKey.pk_map.map((e) {
+    publicKeys = _multisigPublicKey.pks.map((e) {
       final scheme = e.pubKey.keys.first;
       final bytes = e.pubKey[scheme].cast<int>();
       final publicKeyStr = Uint8List.fromList(bytes).toString();
@@ -202,7 +226,7 @@ class MultiSigPublicKey with PublicKey {
 		if (
 			!bytesEqual(
         bcs.ser("MultiSigPublicKey", _multisigPublicKey).toBytes(),
-        bcs.ser("MultiSigPublicKey", multisig["multisig_pk"]).toBytes(),
+        bcs.ser("MultiSigPublicKey", multisig!.multisigPK).toBytes(),
 			)
 		) {
 			return false;
@@ -288,17 +312,17 @@ class MultiSigPublicKey with PublicKey {
 }
 
 /// Parse multisig structure into an array of individual signatures: signature scheme, the actual individual signature, public key and its weight.
-List<ParsedPartialMultiSigSignature> parsePartialSignatures(dynamic multisig) {
-  final sigs = multisig["sigs"];
+List<ParsedPartialMultiSigSignature> parsePartialSignatures(MultiSigStruct multisig) {
+  final sigs = multisig.sigs;
   final len = sigs.length;
   final res = <ParsedPartialMultiSigSignature>[];
 	for (int i = 0; i < len; i++) {
-    final sss = (sigs[i] as Map).entries.first;
+    final sss = sigs[i].entries.first;
     final signatureScheme = sss.key;
     final signature = sss.value.cast<int>();
-		final pkIndex = asIndices(multisig["bitmap"])[i];
-		final pair = multisig["multisig_pk"]["pk_map"][pkIndex];
-    final pkBytes = (pair["pubKey"] as Map).entries.first.value.cast<int>();
+		final pkIndex = asIndices(multisig.bitmap)[i];
+		final pair = multisig.multisigPK.pks[pkIndex];
+    final pkBytes = pair.pubKey.entries.first.value.cast<int>();
 
 		if (signatureScheme == SignatureScheme.MultiSig.name) {
 			throw ArgumentError("MultiSig is not supported inside MultiSig");
@@ -310,7 +334,7 @@ List<ParsedPartialMultiSigSignature> parsePartialSignatures(dynamic multisig) {
 			signatureScheme: SignatureScheme.values.byName(signatureScheme),
 			signature: Uint8List.fromList(signature),
 			publicKey: publicKey,
-			weight: pair["weight"],
+			weight: pair.weight,
     );
     res.add(parsedSign);
 	}

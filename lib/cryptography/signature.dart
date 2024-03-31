@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:sui/cryptography/ed25519_publickey.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/secp256_publickey.dart';
+import 'package:sui/multisig/multsig_publickey.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/zklogin/address.dart';
 import 'package:sui/zklogin/jwt_utils.dart';
@@ -82,7 +83,7 @@ SignaturePubkeyPair parseSerializedSignature(
   final signatureScheme = SIGNATURE_SCHEME_TO_FLAG.flagToScheme(bytes[0]);
   if (signatureScheme == SignatureScheme.MultiSig) {
     final signature = bytes.sublist(1);
-    final multisig = bcs.de('MultiSig', signature);
+    final multisig = MultiSigStruct.fromJson(bcs.de('MultiSig', signature));
     return SignaturePubkeyPair(signatureScheme, signature, multisig: multisig);
   }
 
