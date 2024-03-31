@@ -4,6 +4,8 @@ import 'dart:typed_data';
 
 import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
+import 'package:sui/cryptography/secp256.dart';
+import 'package:sui/cryptography/signature.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
@@ -79,4 +81,20 @@ class Secp256PublicKey with PublicKey {
 
   @override
   int flag() => _flag;
+  
+  @override
+  bool verify(Uint8List data, Uint8List signature) {
+    final msgHash = sha256(data);
+    if (signature.length != 64) {
+      signature = parseSerializedSignature(base64Encode(signature)).signature;
+    }
+    switch (flag()) {
+      case SIGNATURE_SCHEME_TO_FLAG.Secp256k1:
+        return Secp256.fromSecp256k1().verifySignature(msgHash, SignatureData.fromBytes(signature), toRawBytes());
+      case SIGNATURE_SCHEME_TO_FLAG.Secp256r1:
+        return Secp256.fromSecp256r1().verifySignature(msgHash, SignatureData.fromBytes(signature), toRawBytes());
+      default:
+        throw ArgumentError("Invalid flag ${flag()}");
+    }
+  }
 }

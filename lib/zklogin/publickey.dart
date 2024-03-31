@@ -17,6 +17,10 @@ class ZkLoginPublicIdentifier with PublicKey {
     _bn = bn;
   }
 
+  factory ZkLoginPublicIdentifier.fromBytes(Uint8List publicKey) {
+    return ZkLoginPublicIdentifier._(decodeBigIntToUnsigned(publicKey));
+  }
+
   @override
   bool equals(PublicKey publicKey) {
     return _bn == (publicKey as ZkLoginPublicIdentifier)._bn;
@@ -25,13 +29,7 @@ class ZkLoginPublicIdentifier with PublicKey {
   @override
   Uint8List toRawBytes() {
     Uint8List buffer = encodeBigIntAsUnsigned(_bn);
-    if (buffer.length == PUBLIC_KEY_SIZE) {
-      return buffer;
-    }
-
-    final zeroPad = Uint8List(PUBLIC_KEY_SIZE);
-    zeroPad.setAll(PUBLIC_KEY_SIZE - buffer.length, buffer);
-    return zeroPad;
+    return buffer;
   }
 
   @override
@@ -54,7 +52,8 @@ class ZkLoginPublicIdentifier with PublicKey {
   }
 
   /// Verifies that the signature is valid for for the provided PersonalMessage
-  Future<bool> verify(Uint8List message, dynamic signature) async {
+  @override
+  bool verify(Uint8List data, Uint8List signature) {
     throw Exception('does not support');
   }
 }

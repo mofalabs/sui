@@ -20,8 +20,9 @@ class SignaturePubkeyPair {
   Uint8List signature;
   PublicKey? pubKey;
   Map<String, dynamic>? zkLogin;
+  dynamic multisig;
 
-  SignaturePubkeyPair(this.signatureScheme, this.signature, {this.pubKey, this.zkLogin});
+  SignaturePubkeyPair(this.signatureScheme, this.signature, {this.pubKey, this.zkLogin, this.multisig});
 }
 
 // This is currently hardcoded with [IntentScope::TransactionData = 0, Version::V0 = 0, AppId::Sui = 0]

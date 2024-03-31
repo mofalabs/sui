@@ -102,11 +102,28 @@ mixin Keypair {
 
 }
 
+bool bytesEqual(Uint8List a, Uint8List b) {
+	if (a == b) return true;
+
+	if (a.length != b.length) {
+		return false;
+	}
+
+	for (int i = 0; i < a.length; i++) {
+		if (a[i] != b[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
 
 mixin PublicKey {
 
   /// Checks if two public keys are equal
-  bool equals(PublicKey publicKey);
+  bool equals(PublicKey publicKey) {
+    return bytesEqual(toRawBytes(), publicKey.toRawBytes());
+  }
 
   /// Return the base-64 representation of the public key
   String toBase64();
@@ -131,6 +148,39 @@ mixin PublicKey {
 		return base64Encode(toSuiBytes());
 	}
 
+	bool verifyWithIntent(
+		Uint8List bytes,
+		String signature,
+		IntentScope intent,
+	) {
+		final intentMessage = messageWithIntent(intent, bytes);
+		final digest = blake2b(intentMessage);
+
+		return verify(digest, base64Decode(signature));
+	}
+
+	bool verifyPersonalMessage(
+		Uint8List message,
+		String signature,
+	) {
+		return verifyWithIntent(
+      bcs.ser('vector<u8>', message).toBytes(),
+			signature,
+			IntentScope.personalMessage,
+		);
+	}
+
+  bool verifyTransactionBlock(
+		Uint8List transactionBlock,
+		String signature,
+	) {
+		return verifyWithIntent(
+      transactionBlock, 
+      signature, 
+      IntentScope.transactionData
+    );
+	}
+
   /// Return the base-64 representation of the public key
   String toString();
 
@@ -139,4 +189,7 @@ mixin PublicKey {
 
   /// Return signature scheme flag of the public key
   int flag();
+
+	/// Verifies that the signature is valid for for the provided message
+	bool verify(Uint8List data, Uint8List signature);
 }

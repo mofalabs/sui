@@ -7,6 +7,7 @@ import 'package:sui/cryptography/signature.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
+import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 
 const PUBLIC_KEY_SIZE = 32;
 
@@ -74,4 +75,12 @@ class Ed25519PublicKey with PublicKey {
 
   @override
   int flag() => SIGNATURE_SCHEME_TO_FLAG.Ed25519;
+  
+  @override
+  bool verify(Uint8List data, Uint8List signature) {
+    if (signature.length != 64) {
+      signature = parseSerializedSignature(base64Encode(signature)).signature;
+    }
+    return ed25519.verify(ed25519.PublicKey(toRawBytes()), data, signature);
+  }
 }

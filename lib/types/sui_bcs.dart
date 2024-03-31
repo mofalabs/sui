@@ -62,9 +62,6 @@ class GasData {
 
 typedef TransactionExpiration = dynamic;
 
-// Move name of the Vector type.
-const VECTOR = 'vector';
-
 // Imported to explicitly tell typescript that types match
 class TypeSchema {
   Map<String, StructTypeDefinition>? structs;
@@ -86,9 +83,9 @@ final BCS_SPEC = BcsConfigTypes(
       "Receiving": 'SuiObjectRef'
     },
     "CallArg": {
-      "Pure": [VECTOR, BCS.U8],
+      "Pure": [BCS.VECTOR, BCS.U8],
       "Object": 'ObjectArg',
-      "ObjVec": [VECTOR, 'ObjectArg'],
+      "ObjVec": [BCS.VECTOR, 'ObjectArg'],
     },
     "TypeTag": {
       "bool": null,
@@ -118,6 +115,18 @@ final BCS_SPEC = BcsConfigTypes(
     "TransactionData": {
       "V1": 'TransactionDataV1',
     },
+    "CompressedSignature": {
+	    "Ed25519": [BCS.FixedArray, BCS.U8, 64],
+	    "Secp256k1": [BCS.FixedArray, BCS.U8, 64],
+	    "Secp256r1": [BCS.FixedArray, BCS.U8, 64],
+	    "ZkLogin": [BCS.VECTOR, BCS.U8],
+    },
+    "PublicKey": {
+      "Ed25519": [BCS.FixedArray, BCS.U8, 32],
+      "Secp256k1": [BCS.FixedArray, BCS.U8, 33],
+      "Secp256r1": [BCS.FixedArray, BCS.U8, 33],
+      "ZkLogin": [BCS.VECTOR, BCS.U8],
+    },
   },
   structs: {
     "SuiObjectRef": {
@@ -134,10 +143,10 @@ final BCS_SPEC = BcsConfigTypes(
       "address": BCS.ADDRESS,
       "module": BCS.STRING,
       "name": BCS.STRING,
-      "typeParams": [VECTOR, 'TypeTag'],
+      "typeParams": [BCS.VECTOR, 'TypeTag'],
     },
     "GasData": {
-      "payment": [VECTOR, 'SuiObjectRef'],
+      "payment": [BCS.VECTOR, 'SuiObjectRef'],
       "owner": BCS.ADDRESS,
       "price": BCS.U64,
       "budget": BCS.U64,
@@ -145,13 +154,26 @@ final BCS_SPEC = BcsConfigTypes(
     // Signed transaction data needed to generate transaction digest.
     "SenderSignedData": {
       "data": 'TransactionData',
-      "txSignatures": [VECTOR, [VECTOR, BCS.U8]],
+      "txSignatures": [BCS.VECTOR, [BCS.VECTOR, BCS.U8]],
     },
     "TransactionDataV1": {
       "kind": 'TransactionKind',
       "sender": BCS.ADDRESS,
       "gasData": 'GasData',
       "expiration": 'TransactionExpiration',
+    },
+    "MultiSigPkMap": {
+      "pubKey": "PublicKey",
+      "weight": BCS.U8,
+    },
+    "MultiSigPublicKey": {
+	    "pk_map": [BCS.VECTOR, "MultiSigPkMap"],
+	    "threshold": BCS.U16,
+    },
+    "MultiSig": {
+      "sigs": [BCS.VECTOR, "CompressedSignature"],
+      "bitmap": BCS.U16,
+      "multisig_pk": "MultiSigPublicKey",
     }
   },
   aliases: {

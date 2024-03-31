@@ -9,6 +9,8 @@ import 'package:sui/zklogin/address.dart';
 import 'package:sui/zklogin/jwt_utils.dart';
 import 'package:sui/zklogin/signature.dart';
 
+import '../types/sui_bcs.dart';
+
 enum SignatureScheme {
   Ed25519,
   Secp256k1,
@@ -79,22 +81,26 @@ SignaturePubkeyPair parseSerializedSignature(
   final bytes = base64Decode(serializedSignature);
   final signatureScheme = SIGNATURE_SCHEME_TO_FLAG.flagToScheme(bytes[0]);
   if (signatureScheme == SignatureScheme.MultiSig) {
-    throw ArgumentError('MultiSig is not supported');
+    final signature = bytes.sublist(1);
+    final multisig = bcs.de('MultiSig', signature);
+    return SignaturePubkeyPair(signatureScheme, signature, multisig: multisig);
   }
 
   if (signatureScheme == SignatureScheme.ZkLogin) {
 		final signatureBytes = bytes.sublist(1);
 		final signature = parseZkLoginSignature(signatureBytes);
 		final iss = extractClaimValue<String>(signature.inputs.issBase64Details, 'iss');
-		final address = computeZkLoginAddressFromSeed(BigInt.parse(signature.inputs.addressSeed), iss);
+    final addressSeed = BigInt.parse(signature.inputs.addressSeed);
+		final address = computeZkLoginAddressFromSeed(addressSeed, iss);
     final zkLgoin = {
 				"inputs": signature.inputs,
 				"maxEpoch": signature.maxEpoch,
 				"userSignature": signature.userSignature,
 				"iss": iss,
 				"address": address,
+        "addressSeed": addressSeed,
 		};
-    return SignaturePubkeyPair(signatureScheme, signatureBytes, zkLogin: zkLgoin);
+    return SignaturePubkeyPair(signatureScheme, bytes, zkLogin: zkLgoin);
   }
 
   PublicKey getPublicKey(SignatureScheme scheme, Uint8List bytes) {
