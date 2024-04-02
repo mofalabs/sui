@@ -51,3 +51,8 @@
 ## 0.1.7
 
 * Fix hex pad
+
+## 0.1.8
+
+* Add MultiSig
+* Add zkLogin Test
