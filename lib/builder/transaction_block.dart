@@ -124,8 +124,9 @@ class BuildOptions {
 class SignOptions extends BuildOptions {
 	Keypair signer;
 
-  SignOptions(this.signer,
-    { 
+  SignOptions(
+    {
+      required this.signer,
       super.client, 
       super.onlyTransactionKind,
       super.protocolConfig, 
