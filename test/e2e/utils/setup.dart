@@ -57,6 +57,24 @@ Future<TestToolbox> setup([int faucetCount = 1]) async {
   return TestToolbox(keypair, client);
 }
 
+Future<TestToolbox> setupWithFundedAddress(
+    Ed25519Keypair keypair,
+    String address,
+    [int faucetCount = 1]) async {
+  final client = SuiClient(DEFAULT_FULLNODE_URL);
+  final faucetClient = FaucetClient(DEFAULT_FAUCET_URL);
+  for (var i = 0; i < faucetCount; i++) {
+    try {
+      await faucetClient.requestSuiFromFaucetV0(address);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    await Future.delayed(const Duration(seconds: 3));
+  }
+
+  return TestToolbox(keypair, client);
+}
+
 Future<SuiExecuteTransactionResponse> paySui(SuiClient client, Keypair signer,
     List<String> recipients, List<int> amounts, String? coinId,
     [int numRecipients = 1]) async {
@@ -65,8 +83,9 @@ Future<SuiExecuteTransactionResponse> paySui(SuiClient client, Keypair signer,
   recipients = recipients;
   amounts = amounts;
 
-  if (recipients.length != amounts.length)
+  if (recipients.length != amounts.length) {
     throw ArgumentError('recipients and amounts must be the same length');
+  }
 
   coinId = coinId ??
       (await client.getCoins(

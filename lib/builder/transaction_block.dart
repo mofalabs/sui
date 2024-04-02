@@ -124,7 +124,14 @@ class BuildOptions {
 class SignOptions extends BuildOptions {
 	Keypair signer;
 
-  SignOptions(this.signer);
+  SignOptions(this.signer,
+    { 
+      super.client, 
+      super.onlyTransactionKind,
+      super.protocolConfig, 
+      super.limits 
+    }
+  );
 }
 
 class TransactionBlock {
