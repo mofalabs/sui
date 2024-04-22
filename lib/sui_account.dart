@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:sui/cryptography/ed25519_keypair.dart';
+import 'package:sui/cryptography/helper.dart';
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/secp256k1_keypair.dart';
 import 'package:sui/cryptography/secp256r1_keypair.dart';
@@ -91,6 +92,12 @@ class SuiAccount {
     return account;
   }
 
+  /// Bech32 encoded string starting with `suiprivkey`.
+  factory SuiAccount.fromPrivKey(String privateKey) {
+    final (scheme, privKey) = decodeSuiPrivateKey(privateKey);
+    return SuiAccount.fromPrivateKey(Hex.encode(privKey), scheme);
+  }
+
   static String generateMnemonic({int strength = 128 }) {
     return mnemonic.generateMnemonic(strength: strength);
   }
@@ -113,8 +120,14 @@ class SuiAccount {
     return _keypair.getSecretKey();
   }
 
+  @Deprecated('Use privateKey() instead')
   String privateKeyHex() {
     return Hex.encode(getSecretKey());
+  }
+
+  /// This returns the Bech32 secret key string for this keypair.
+  String privateKey() {
+    return encodeSuiPrivateKey(_keypair.getSecretKey(), _keypair.getKeyScheme());
   }
 
   Uint8List getPublicKey() {
