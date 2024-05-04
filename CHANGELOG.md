@@ -56,3 +56,7 @@
 
 * Add MultiSig
 * Add zkLogin Test
+
+## 0.2.1
+
+* export bech32 private key
