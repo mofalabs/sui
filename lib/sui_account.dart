@@ -11,6 +11,7 @@ import 'package:sui/cryptography/signature.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
+import 'package:sui/utils/suins.dart';
 
 class SuiAccount {
   late final Keypair _keypair;
@@ -111,9 +112,7 @@ class SuiAccount {
   }
 
   static bool isValidSuiNS(String name) {
-    if (name.endsWith('-.sui')) return false;
-    if (name.contains('--')) return false;
-    return RegExp(r"^[a-z0-9][a-z0-9-]{2,62}.sui$").hasMatch(name);
+    return isValidSuiNSName(name);
   }
 
   Uint8List getSecretKey() {

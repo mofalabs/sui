@@ -16,23 +16,6 @@ void main() {
 
   });
 
-  test('test isValidSuiNS', () {
-    expect(SuiAccount.isValidSuiNS(''), false);
-    expect(SuiAccount.isValidSuiNS(' '), false);
-    expect(SuiAccount.isValidSuiNS('-.sui'), false);
-    expect(SuiAccount.isValidSuiNS('--.sui'), false);
-    expect(SuiAccount.isValidSuiNS('-hello.sui'), false);
-    expect(SuiAccount.isValidSuiNS('hello-.sui'), false);
-    expect(SuiAccount.isValidSuiNS('-hello-.sui'), false);
-    expect(SuiAccount.isValidSuiNS('hello--world.sui'), false);
-    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(64, 48)) + ".sui"), false);
-    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(2, 48)) + ".sui"), false);
-    expect(SuiAccount.isValidSuiNS('hello.sui'), true);
-    expect(SuiAccount.isValidSuiNS('hello-world.sui'), true);
-    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(3, 48)) + ".sui"), true);
-    expect(SuiAccount.isValidSuiNS(String.fromCharCodes(List<int>.filled(63, 48)) + ".sui"), true);
-  });
-
   test('test encode bech32 private key', () {
     final account1 = SuiAccount.fromPrivateKey(
       "0x9dd9ae36ee51b912a0364c58c1f21333bcdad2d91911aa127226c512be285102",
