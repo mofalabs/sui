@@ -1,7 +1,7 @@
 
 import 'dart:typed_data';
 
-import 'package:sui/builder/transaction_block.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/models/dev_inspect_results.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
@@ -43,7 +43,7 @@ class SuiClient extends SignerWithProvider {
 
   Future<SuiTransactionBlockResponse> signAndExecuteTransactionBlock(
     SuiAccount signer,
-    TransactionBlock transactionBlock,
+    Transaction transaction,
     {
       BuildOptions? options,
       ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
@@ -57,8 +57,8 @@ class SuiClient extends SignerWithProvider {
       requestType = ExecuteTransaction.WaitForLocalExecution;
     }
 
-    transactionBlock.setSenderIfNotSet(signer.getAddress());
-    final transactionBytes = await transactionBlock.build(options);
+    transaction.setSenderIfNotSet(signer.getAddress());
+    final transactionBytes = await transaction.build(options);
     final signWithBytes = signer.keyPair.signTransactionBlock(transactionBytes);
     return await executeTransactionBlock(
       signWithBytes.bytes, 
@@ -70,13 +70,13 @@ class SuiClient extends SignerWithProvider {
 
   Future<DevInspectResults> devInspectTransactionBlock(
     String sender,
-    TransactionBlock transactionBlock, {
+    Transaction transaction, {
       BigInt? gasPrice,
       String? epoch
     }
   ) async {
-    transactionBlock.setSenderIfNotSet(sender);
-    final txBytes = await transactionBlock.build(
+    transaction.setSenderIfNotSet(sender);
+    final txBytes = await transaction.build(
       BuildOptions(client: this, onlyTransactionKind: true)
     );
     final result = await devInspectTransaction(

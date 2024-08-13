@@ -1,14 +1,16 @@
 
 import 'dart:convert';
 
+import 'package:bcs/Bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
+import 'package:sui/bcs/sui_bcs.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/sui_bcs.dart';
 
 void main() {
   
@@ -30,13 +32,13 @@ void main() {
         PublicKeyWeight(3, pk3),
       ];
 
-      final txb = TransactionBlock();
+      final txb = Transaction();
       txb.setSender(k3.getPublicKey().toSuiAddress());
       txb.setGasPrice(BigInt.from(5));
       txb.setGasBudget(BigInt.from(100));
       txb.setGasPayment([
         SuiObjectRef(
-          base58Encode(Uint8List.fromList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])),
+          toB58(Uint8List.fromList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2,])),
           (Random().nextDouble() * 100000).toStringAsFixed(0).padRight(64, '0'),
           (Random().nextDouble() * 10000).toInt(),
         )
@@ -52,13 +54,13 @@ void main() {
 
       final multisig = publicKey.combinePartialSignatures([signature]);
 
-      expect(k3.getPublicKey().verifyTransactionBlock(bytes, signature), true);
+      expect(k3.getPublicKey().verifyTransaction(bytes, signature), true);
 
       final parsed = parseSerializedSignature(multisig);
       final publicKey2 = MultiSigPublicKey(parsed.multisig!.multisigPK);
 
       // multisig (sig3 weight 3 >= threshold ) verifies ok
-      expect(publicKey2.verifyTransactionBlock(bytes, multisig), true);
+      expect(publicKey2.verifyTransaction(bytes, multisig), true);
     });
 
 
@@ -101,10 +103,10 @@ void main() {
         },
       ];
 
-      final bytes = bcs.ser('MultiSig', {
+      final bytes = SuiBcs.MultiSig.serialize({
         "sigs": compressedSignatures,
         "bitmap": 5,
-        "multisig_pk": bcs.de('MultiSigPublicKey', multiSigPublicKey.toRawBytes()),
+        "multisig_pk": SuiBcs.MultiSigPublicKey.parse(multiSigPublicKey.toRawBytes()),
       }).toBytes();
 
       final tmp = Uint8List(bytes.length + 1);
@@ -226,8 +228,8 @@ void main() {
       final publicKey = MultiSigPublicKey(parsed.multisig!.multisigPK);
 
       // Invalid intentScope.
-      expect(() => publicKey.verifyTransactionBlock(signData, multisig), throwsException);
-      expect(() => multiSigPublicKey.verifyTransactionBlock(signData, multisig), throwsException);
+      expect(() => publicKey.verifyTransaction(signData, multisig), throwsException);
+      expect(() => multiSigPublicKey.verifyTransaction(signData, multisig), throwsException);
     });
 
     test('providing empty values', () {
@@ -261,8 +263,8 @@ void main() {
       final parsed = parseSerializedSignature(multisig);
       final publicKey = MultiSigPublicKey(parsed.multisig!.multisigPK);
 
-      expect(publicKey.verifyTransactionBlock(signData, multisig), false);
-      expect(multiSigPublicKey.verifyTransactionBlock(signData, multisig), false);
+      expect(publicKey.verifyTransaction(signData, multisig), false);
+      expect(multiSigPublicKey.verifyTransaction(signData, multisig), false);
     });
 
   });
@@ -349,7 +351,7 @@ void main() {
         'AwIAcAEsWrZtlsE3AdGUKJAPag8Tu6HPfMW7gEemeneO9fmNGiJP/rDZu/tL75lr8A22eFDx9K2G1DL4v8XlmuTtCgOaBwUDTTE3MzE4MDg5MTI1OTUyNDIxNzM2MzQyMjYzNzE3OTMyNzE5NDM3NzE3ODQ0MjgyNDEwMTg3OTU3OTg0NzUxOTM5OTQyODk4MjUxMjUwTTExMzczOTY2NjQ1NDY5MTIyNTgyMDc0MDgyMjk1OTg1Mzg4MjU4ODQwNjgxNjE4MjY4NTkzOTc2Njk3MzI1ODkyMjgwOTE1NjgxMjA3ATEDAkw1OTM5ODcxMTQ3MzQ4ODM0OTk3MzYxNzIwMTIyMjM4OTgwMTc3MTUyMzAzMjc0MzExMDQ3MjQ5OTA1OTQyMzg0OTE1NzY4NjkwODk1TDQ1MzM1NjgyNzExMzQ3ODUyNzg3MzEyMzQ1NzAzNjE0ODI2NTE5OTY3NDA3OTE4ODgyODU4NjQ5NjY4ODQwMzI3MTcwNDk4MTE3MDgCTTEwNTY0Mzg3Mjg1MDcxNTU1NDY5NzUzOTkwNjYxNDEwODQwMTE4NjM1OTI1NDY2NTk3MDM3MDE4MDU4NzcwMDQxMzQ3NTE4NDYxMzY4TTEyNTk3MzIzNTQ3Mjc3NTc5MTQ0Njk4NDk2MzcyMjQyNjE1MzY4MDg1ODAxMzEzMzQzMTU1NzM1NTExMzMwMDAzODg0NzY3OTU3ODU0AgExATADTTE1NzkxNTg5NDcyNTU2ODI2MjYzMjMxNjQ0NzI4ODczMzM3NjI5MDE1MjY5OTg0Njk5NDA0MDczNjIzNjAzMzUyNTM3Njc4ODEzMTcxTDQ1NDc4NjY0OTkyNDg4ODE0NDk2NzYxNjExNTgwMjQ3NDgwNjA0ODUzNzMyNTAwMjk0MjM5MDQxMTMwMTc0MjI1MzkwMzcxNjI1MjcBMTF3aWFYTnpJam9pYUhSMGNITTZMeTlwWkM1MGQybDBZMmd1ZEhZdmIyRjFkR2d5SWl3AjJleUpoYkdjaU9pSlNVekkxTmlJc0luUjVjQ0k2SWtwWFZDSXNJbXRwWkNJNklqRWlmUU0yMDc5NDc4ODU1OTYyMDY2OTU5NjIwNjQ1NzAyMjk2NjE3Njk4NjY4ODcyNzg3NjEyODIyMzYyODExMzkxNjM4MDkyNzUwMjczNzkxMQoAAAAAAAAAYQAR6ZEOSb8am6giraofTNFOXN6N5etgegC1TsTKup7HNMtyZWPBn9WaDwPe+naJustyRgVE7K8umsX6h3Fa7UQMucbuFjDvPnERRKZI2wa7sihPcnTPvuU//O5QPMGkkgADAAIADX2rNYyNrapO+gBJp1sHQ2VVsQo2ghm7aA9wVxNJ13UBAzwbaHR0cHM6Ly9pZC50d2l0Y2gudHYvb2F1dGgyLflu6Eag/zG3tLd5CtZRYx9p1t34RovVSn/+uHFiYfcBAQA=',
       );
 
-      final decoded = parsePartialSignatures(MultiSigStruct.fromJson(bcs.de('MultiSig', fromB64(multisig).sublist(1))));
+      final decoded = parsePartialSignatures(MultiSigStruct.fromJson(SuiBcs.MultiSig.parse(fromB64(multisig).sublist(1))));
 
       final origin0 = ParsedPartialMultiSigSignature(
         signatureScheme: k6.getKeyScheme(), 

@@ -1,11 +1,9 @@
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/builder/transaction_block.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/models/object_read.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/types/common.dart';
-import 'package:sui/types/framework.dart';
-import 'package:sui/types/objects.dart';
 
 import 'e2e/utils/setup.dart';
 
@@ -112,9 +110,9 @@ void main() {
         coinType: SUI_TYPE_ARG,
       );
 
-      final tx = TransactionBlock();
+      final tx = Transaction();
       // Transfer the entire gas object:
-      tx.transferObjects([tx.gas], tx.pure(normalizeSuiAddress('0x2')));
+      tx.transferObjects([tx.gas], tx.pure.address(normalizeSuiAddress('0x2')));
 
       await toolbox.client.signAndExecuteTransactionBlock(
         SuiAccount(toolbox.keypair),

@@ -1,5 +1,6 @@
 
 import 'package:bcs/bcs.dart';
+import 'package:bcs/utils.dart';
 import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/types/common.dart';
 

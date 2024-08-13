@@ -3,14 +3,9 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/builder/transaction_block.dart';
-import 'package:sui/cryptography/signature.dart';
-import 'package:sui/rpc/faucet_client.dart';
-import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
-import 'package:sui/sui_account.dart';
-import 'package:sui/sui_client.dart';
-import 'package:sui/sui_urls.dart';
-import 'package:sui/types/transactions.dart';
+import 'package:sui/bcs/sui_bcs.dart';
+import 'package:sui/builder/transaction.dart';
+import 'package:sui/sui.dart';
 
 const modules = [
   "oRzrCwYAAAAKAQAMAgwkAzBDBHMOBYEBqAEHqQLdAQiGBGAG5gQPCvUEBQz6BFYADAERAggCFQIWAhcAAgIAAQMHAQAAAgAMAQABAgEMAQABAgQMAQABBAUCAAUGBwAACwABAAAPAgEAAA0DBAAABwUBAAEQAQgBAAIHFRYBAAIJCgsBAgINExQBAAIOEgEBAAMSDQEBDAMTEQEBDAQUDg8ABAcGCQkMChAICQcJBQkCCAAHCAUABAcLBAEIAAMFBwgFAwcLBAEIAAMHCAUBCwIBCAACBwsEAQgACwIBCAACCwMBCAALBAEIAAEIBgELAQEJAAEIAAcJAAIKAgoCCgILAQEIBgcIBQILBAEJAAsDAQkAAQsDAQgAAQkAAQYIBQEFAQsEAQgAAgkABQQHCwQBCQADBQcIBQMHCwQBCQADBwgFAQsCAQkAAgcLBAEJAAsCAQkAAQMEQ29pbgxDb2luTWV0YWRhdGEHTUFOQUdFRAZPcHRpb24LVHJlYXN1cnlDYXAJVHhDb250ZXh0A1VybARidXJuBGNvaW4PY3JlYXRlX2N1cnJlbmN5C2R1bW15X2ZpZWxkBGluaXQHbWFuYWdlZARtaW50EW1pbnRfYW5kX3RyYW5zZmVyB21pbnRfdG8Ebm9uZQZvcHRpb24UcHVibGljX2ZyZWV6ZV9vYmplY3QPcHVibGljX3RyYW5zZmVyBnNlbmRlcgh0cmFuc2Zlcgp0eF9jb250ZXh0A3VybAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgoCCAdNQU5BR0VECgIBAAACAQoBAAAAAAYSCwAxAgcABwEHATgACgE4AQwCDAMLAjgCCwMLAS4RCzgDAgEBBAABBgsACwELAgsDOAQCAgEAAAEFCwALAQsCOAUCAwEEAAEFCwALATgGAQIA"
@@ -247,7 +242,7 @@ void main() {
     final coins = await client.getGasObjectsOwnedByAddress(sender);
     final obj = coins[1];
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
     txb.transferObjects(
       [txb.objectRef(obj)],
       txb.pureAddress(receiver),
@@ -266,7 +261,7 @@ void main() {
         SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
     final sender = signer.getAddress();
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
 
     // final coin = txb.splitCoins(txb.gas, [txb.pureInt(100000000)]);
     // txb.transferObjects([coin], txb.pureAddress(sender));
@@ -290,7 +285,7 @@ void main() {
     final coins = await client.getGasObjectsOwnedByAddress(sender);
     final destObj = coins.first;
     final srcObj = coins[1];
-    final txb = TransactionBlock();
+    final txb = Transaction();
     txb.mergeCoins(txb.objectId(destObj.objectId), [
       txb.objectId(srcObj.objectId),
     ]);
@@ -311,7 +306,7 @@ void main() {
     final destObj = coins.first;
     final srcObj = coins[1];
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
 
     txb.mergeCoins(txb.objectRef(destObj), [
       txb.objectRef(srcObj),
@@ -330,7 +325,7 @@ void main() {
         SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
     final sender = signer.getAddress();
 
-    var txb = TransactionBlock();
+    var txb = Transaction();
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
@@ -351,7 +346,7 @@ void main() {
             .startsWith("0x2::coin::TreasuryCap"))["objectId"];
     final capObj = await client.getObject(capObjectId);
 
-    txb = TransactionBlock();
+    txb = Transaction();
 
     final coin = txb.moveCall("$packageId::managed::mint", arguments: [
       // txb.pure(capObjectId), txb.pureInt(1000)
@@ -377,7 +372,7 @@ void main() {
         SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
     final sender = signer.getAddress();
 
-    var txb = TransactionBlock();
+    var txb = Transaction();
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
@@ -398,7 +393,7 @@ void main() {
             .startsWith("0x2::coin::TreasuryCap"))["objectId"];
     final capObj = await client.getObject(capObjectId);
 
-    txb = TransactionBlock();
+    txb = Transaction();
 
     for (var i = 0; i < 3; i++) {
       final coin = txb.moveCall("$packageId::managed::mint", arguments: [
@@ -421,7 +416,7 @@ void main() {
     final signer =
         SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
 
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000)]);
     final vec = txb.makeMoveVec(objects: [coin]);
@@ -448,7 +443,7 @@ void main() {
     final modules = bytecode["modules"].cast<String>();
     final dependencies = bytecode["dependencies"].cast<String>();
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
     final cap = txb.publish(modules, dependencies);
     txb.transferObjects([cap], txb.pureAddress(sender));
 
@@ -469,7 +464,7 @@ void main() {
     final client = SuiClient(SuiUrls.devnet, account: account);
     final receiver = SuiAccount.ed25519Account();
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(10000000)]);
     txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
 
@@ -490,15 +485,15 @@ void main() {
         SuiAccount.fromMnemonics(test_mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(SuiUrls.devnet, account: account);
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
 
     final emptyVec =
-        txb.moveCall("0x1::vector::empty", typeArguments: [BCS.U64]);
+        txb.moveCall("0x1::vector::empty", typeArguments: [LegacyBCS.U64]);
     txb.moveCall("0x1::vector::append", typeArguments: [
-      BCS.U64
+      LegacyBCS.U64
     ], arguments: [
       emptyVec,
-      txb.pureVector([1, 2, 3], BCS.U64)
+      txb.pureVector([1, 2, 3])
     ]);
 
     final resp = await client.signAndExecuteTransactionBlock(account, txb);
@@ -541,9 +536,9 @@ void main() {
       ]
     };
 
-    final transactionBlock = TransactionBlock.from(jsonEncode(txJson));
-    transactionBlock.setSender(address);
-    var txBytes = await transactionBlock.build(BuildOptions(client: client));
+    final transaction = Transaction.from(jsonEncode(txJson));
+    transaction.setSender(address);
+    var txBytes = await transaction.build(BuildOptions(client: client));
     print(txBytes);
 
     final resp = await client.signAndExecuteTransaction(transaction: txBytes);

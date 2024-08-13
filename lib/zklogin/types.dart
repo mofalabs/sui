@@ -100,7 +100,7 @@ class ZkLoginDeserializedSignature extends ZkLoginSignature {
     return ZkLoginDeserializedSignature(
       Uint8List.fromList(List<int>.from(data["userSignature"])),
       ZkLoginSignatureInputs.fromJson(data["inputs"]),
-      int.parse(data["maxEpoch"])
+      int.parse(data["maxEpoch"].toString())
     );
   }
 }

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/sui_bcs.dart';
@@ -60,7 +61,7 @@ class MultiSigPublicKeyStruct {
 
   Map<String, dynamic> toJson() {
     return {
-      "pk_map": pks,
+      "pk_map": pks.map((pk) => pk.toJson()).toList(),
       "threshold": threshold,
     };
   }
@@ -116,7 +117,7 @@ class MultiSigPublicKey with PublicKey {
   
   MultiSigPublicKey(MultiSigPublicKeyStruct value) {
     _multisigPublicKey = value;
-    _rawBytes = bcs.ser("MultiSigPublicKey", value).toBytes();
+    _rawBytes = SuiBcs.MultiSigPublicKey.serialize(value.toJson()).toBytes();
 
     if (_multisigPublicKey.threshold < 1) {
       throw ArgumentError("Invalid threshold");
@@ -171,7 +172,7 @@ class MultiSigPublicKey with PublicKey {
   }
 
   factory MultiSigPublicKey.fromBytes(Uint8List publicKey) {
-    final pubkeyStruct = MultiSigPublicKeyStruct.fromJson(bcs.de("MultiSigPublicKey", publicKey));
+    final pubkeyStruct = MultiSigPublicKeyStruct.fromJson(SuiBcs.MultiSigPublicKey.parse(publicKey));
     return MultiSigPublicKey(pubkeyStruct);
   }
 
@@ -196,7 +197,8 @@ class MultiSigPublicKey with PublicKey {
 		const maxLength = 1 + (64 + 1) * MAX_SIGNER_IN_MULTISIG + 2;
 		final tmp = Uint8List(maxLength);
 		tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.MultiSig]);
-		tmp.setAll(1, bcs.ser('u16', _multisigPublicKey.threshold).toBytes());
+		// tmp.setAll(1, bcs.ser('u16', _multisigPublicKey.threshold).toBytes());
+    tmp.setAll(1, Bcs.u16().serialize(_multisigPublicKey.threshold).toBytes());
 		// The initial value 3 ensures that following data will be after the flag byte and threshold bytes
 		int i = 3;
     for (var item in publicKeys) {
@@ -223,10 +225,10 @@ class MultiSigPublicKey with PublicKey {
 
 		int signatureWeight = 0;
 
-		if (
+    if ( 
 			!bytesEqual(
-        bcs.ser("MultiSigPublicKey", _multisigPublicKey).toBytes(),
-        bcs.ser("MultiSigPublicKey", multisig!.multisigPK).toBytes(),
+        SuiBcs.MultiSigPublicKey.serialize(_multisigPublicKey.toJson()).toBytes(),
+        SuiBcs.MultiSigPublicKey.serialize(multisig!.multisigPK.toJson()).toBytes(),
 			)
 		) {
 			return false;
@@ -301,9 +303,9 @@ class MultiSigPublicKey with PublicKey {
 		final multisig = {
 			"sigs": compressedSignatures,
 			"bitmap": bitmap,
-			"multisig_pk": _multisigPublicKey,
+			"multisig_pk": _multisigPublicKey.toJson(),
 		};
-    final bytes = bcs.ser('MultiSig', multisig, BcsWriterOptions(maxSize: 8192)).toBytes();
+    final bytes = SuiBcs.MultiSig.serialize(multisig, options: BcsWriterOptions(maxSize: 8192)).toBytes();
     var tmp = Uint8List(bytes.length + 1);
     tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.MultiSig]);
     tmp.setAll(1, bytes);

@@ -8,15 +8,13 @@ import 'package:sui/zklogin/types.dart';
 import 'bcs.dart';
 
 Uint8List getZkLoginSignatureBytes(ZkLoginSignature signature) {
-  return zkLoginSignature
-      .ser(
-          'ZkLoginSignature',
+  return zkLoginSignature.serialize(
           {
             "inputs": signature.inputs.toJson(),
             "maxEpoch": signature.maxEpoch,
             "userSignature": signature.userSignature,
           },
-          BcsWriterOptions(maxSize: 2048))
+          options: BcsWriterOptions(maxSize: 2048))
       .toBytes();
 }
 
@@ -29,6 +27,6 @@ String getZkLoginSignature(ZkLoginSignature signature) {
 }
 
 ZkLoginDeserializedSignature parseZkLoginSignature(Uint8List signature) {
-  final sig = zkLoginSignature.de('ZkLoginSignature', signature);
+  final sig = zkLoginSignature.parse(signature);
   return ZkLoginDeserializedSignature.fromJson(sig);
 }

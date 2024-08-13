@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 void main() {
@@ -62,7 +63,7 @@ void main() {
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(SuiUrls.devnet);
 
-    final tx = TransactionBlock();
+    final tx = Transaction();
     tx.transferObjects([
       tx.objectId(
           '0x2619f581cb1864d07c89453a69611202669fdc4784fb59b9cb4278ec60756011')
@@ -77,7 +78,7 @@ void main() {
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(SuiUrls.devnet);
 
-    final tx = TransactionBlock();
+    final tx = Transaction();
     final coin = tx.splitCoins(tx.gas, [tx.pureInt(200000)]);
     tx.transferObjects([coin], tx.pureAddress(account.getAddress()));
 
@@ -90,7 +91,7 @@ void main() {
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
     final client = SuiClient(SuiUrls.devnet);
 
-    final tx = TransactionBlock();
+    final tx = Transaction();
     tx.mergeCoins(
         tx.objectId(
             '0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'),
@@ -109,7 +110,7 @@ void main() {
     final client = SuiClient(SuiUrls.devnet);
 
     const packageObjectId = '0x...';
-    final tx = TransactionBlock();
+    final tx = Transaction();
     tx.moveCall('$packageObjectId::nft::mint',
         arguments: [tx.pureString('Example NFT')]);
 
@@ -124,7 +125,7 @@ void main() {
 
     const moduels = <String>[];
     const dependencies = <String>[];
-    final tx = TransactionBlock();
+    final tx = Transaction();
     final upgradeCap = tx.publish(moduels, dependencies);
     tx.transferObjects([upgradeCap], account.getAddress());
 
@@ -304,7 +305,7 @@ void main() {
       assert(resp.transferredGasObjects.isNotEmpty);
     }
 
-    final tx = TransactionBlock();
+    final tx = Transaction();
 
     final coin = tx.add(Transactions.splitCoins(tx.gas, [tx.pureInt(1000)]));
     tx.add(Transactions.transferObjects([coin], tx.pureAddress(recipient)));

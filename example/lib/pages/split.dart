@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 class Split extends StatefulWidget {
@@ -35,7 +36,7 @@ class _SplitState extends State<Split> {
     setState(() {sending = true;});
 
     try {
-      final txb = TransactionBlock();
+      final txb = Transaction();
       txb.setGasBudget(BigInt.from(20000000));
 
       final amounts = list.map((e) => txb.pureInt((double.parse(e.toString()) * pow(10, 9)).toInt())).toList();
