@@ -24,8 +24,8 @@ class TransactionDataV1 {
     return {
       "version": version,
       "sender": sender,
-      "expiration": expiration,
-      "gasConfig": gasConfig,
+      "expiration": expiration?.toJson(),
+      "gasConfig": gasConfig.toJson(),
       "inputs": inputs,
       "transactions": transactions
     };
@@ -44,7 +44,7 @@ class TransactionDataV1 {
 }
 
 TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
-  final inputs = List<Map<String, dynamic>>.empty();
+  final inputs = <Map<String, dynamic>>[];
   final len = transactionData.inputs?.length ?? 0;
   for (var index = 0; index < len; index++) {
     final input = transactionData.inputs![index];
@@ -176,16 +176,16 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
 }
 
 dynamic convertTransactionArgument(dynamic arg, dynamic inputs) {
-	if (arg["\$kind"] == 'GasCoin') {
+	if (arg["\$kind"] == 'GasCoin' || arg["GasCoin"] != null) {
 		return { "kind": 'GasCoin' };
 	}
-	if (arg["\$kind"] == 'Result') {
+	if (arg["\$kind"] == 'Result' || arg["Result"] != null) {
 		return { "kind": 'Result', "index": arg["Result"] };
 	}
-	if (arg["\$kind"] == 'NestedResult') {
+	if (arg["\$kind"] == 'NestedResult' || arg["NestedResult"] != null) {
 		return { "kind": 'NestedResult', "index": arg["NestedResult"][0], "resultIndex": arg["NestedResult"][1] };
 	}
-	if (arg["\$kind"] == 'Input') {
+	if (arg["\$kind"] == 'Input' || arg["Input"] != null) {
 		return inputs[arg["Input"]];
 	}
 

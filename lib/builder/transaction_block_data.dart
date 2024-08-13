@@ -77,8 +77,8 @@ class TransactionData {
     return {
       "version": version,
       "sender": sender,
-      "expiration": expiration,
-      "gasData": gasData,
+      "expiration": expiration?.toJson(),
+      "gasData": gasData.toJson(),
       "inputs": inputs,
       "commands": commands
     };
