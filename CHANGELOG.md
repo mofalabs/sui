@@ -60,3 +60,7 @@
 ## 0.2.1
 
 * export bech32 private key
+
+## 0.3.0
+
+* Refactor Transaction & BCS

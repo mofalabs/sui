@@ -1,6 +1,9 @@
 
 import 'dart:convert';
+import 'dart:typed_data';
 
+import 'package:bcs/bcs_type.dart';
+import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/normalized.dart';
@@ -41,12 +44,82 @@ const RESOLVED_STD_OPTION = {
 bool isSameStruct(a, b) =>
 	a["address"] == b["address"] && a["module"] == b["module"] && a["name"] == b["name"];
 
-bool isTxContext(SuiMoveNormalizedType param) {
-	final struct = extractStructTag(param)?["Struct"];
-  if (struct == null) return false;
+bool isTxContext(dynamic param) {
+	final struct = param?["body"] is Map ? param["body"]["datatype"] : null;
+
 	return (
-		struct["address"] == '0x2' && struct["module"] == 'tx_context' && struct["name"] == 'TxContext'
+		struct != null &&
+		normalizeSuiAddress(struct["package"]) == normalizeSuiAddress('0x2') &&
+		struct["module"] == 'tx_context' &&
+		struct["type"] == 'TxContext'
 	);
+}
+
+BcsType? getPureBcsSchema(dynamic typeSignature) {
+	if (typeSignature is String) {
+		switch (typeSignature) {
+			case 'address':
+				return SuiBcs.Address;
+			case 'bool':
+				return SuiBcs.BOOL;
+			case 'u8':
+				return SuiBcs.U8;
+			case 'u16':
+				return SuiBcs.U16;
+			case 'u32':
+				return SuiBcs.U32;
+			case 'u64':
+				return SuiBcs.U64;
+			case 'u128':
+				return SuiBcs.U128;
+			case 'u256':
+				return SuiBcs.U256;
+			default:
+				throw ArgumentError("Unknown type signature $typeSignature");
+		}
+	}
+
+  if (typeSignature is Map<String, dynamic> && typeSignature.containsKey('vector')) {
+    if (typeSignature['vector'] == 'u8') {
+      return SuiBcs.VECTOR(SuiBcs.U8).transform(
+        input: (dynamic val) => val is String ? Uint8List.fromList(val.codeUnits) : val,
+        output: (val) => val,
+      );
+    }
+    final type = getPureBcsSchema(typeSignature['vector']);
+    return type != null ? SuiBcs.VECTOR(type) : null;
+  }
+
+  if (typeSignature is Map<String, dynamic> && typeSignature.containsKey('datatype')) {
+    final datatypeInfo = typeSignature['datatype'] as Map<String, dynamic>;
+    final pkg = normalizeSuiAddress(datatypeInfo['package']);
+
+    if (pkg == normalizeSuiAddress(MOVE_STDLIB_ADDRESS)) {
+      if (datatypeInfo['module'] == STD_ASCII_MODULE_NAME &&
+          datatypeInfo['type'] == STD_ASCII_STRUCT_NAME) {
+        return SuiBcs.STRING;
+      }
+
+      if (datatypeInfo['module'] == STD_UTF8_MODULE_NAME &&
+          datatypeInfo['type'] == STD_UTF8_STRUCT_NAME) {
+        return SuiBcs.STRING;
+      }
+
+      if (datatypeInfo['module'] == STD_OPTION_MODULE_NAME &&
+          datatypeInfo['type'] == STD_OPTION_STRUCT_NAME) {
+        final type = getPureBcsSchema(datatypeInfo['typeParameters'][0]);
+        return type != null ? SuiBcs.VECTOR(type) : null;
+      }
+    }
+
+    if (pkg == normalizeSuiAddress(SUI_FRAMEWORK_ADDRESS) &&
+        datatypeInfo['module'] == OBJECT_MODULE_NAME &&
+        datatypeInfo['type'] == ID_STRUCT_NAME) {
+      return SuiBcs.Address;
+    }
+  }
+
+  return null;
 }
 
 void expectType(String typeName, SuiJsonValue? argVal) {
@@ -126,4 +199,74 @@ String? getPureSerializationType(
 	}
 
 	return null;
+}
+
+dynamic normalizedTypeToMoveTypeSignature(
+	SuiMoveNormalizedType type
+) {
+	if (type is Map && type['Reference'] != null) {
+		return {
+			"ref": '&',
+			"body": normalizedTypeToMoveTypeSignatureBody(type["Reference"]),
+		};
+	}
+	if (type is Map && type['MutableReference'] != null) {
+		return {
+			"ref": '&mut',
+			"body": normalizedTypeToMoveTypeSignatureBody(type["MutableReference"]),
+		};
+	}
+
+	return {
+		"ref": null,
+		"body": normalizedTypeToMoveTypeSignatureBody(type),
+	};
+}
+
+dynamic normalizedTypeToMoveTypeSignatureBody(
+	SuiMoveNormalizedType type
+) {
+	if (type is String) {
+		switch (type) {
+			case 'Address':
+				return 'address';
+			case 'Bool':
+				return 'bool';
+			case 'U8':
+				return 'u8';
+			case 'U16':
+				return 'u16';
+			case 'U32':
+				return 'u32';
+			case 'U64':
+				return 'u64';
+			case 'U128':
+				return 'u128';
+			case 'U256':
+				return 'u256';
+			default:
+				throw ArgumentError("Unexpected type $type");
+		}
+	}
+
+	if (type['Vector'] != null) {
+		return { "vector": normalizedTypeToMoveTypeSignatureBody(type["Vector"]) };
+	}
+
+	if (type['Struct'] != null) {
+		return {
+			"datatype": {
+				"package": type["Struct"]["address"],
+				"module": type["Struct"]["module"],
+				"type": type["Struct"]["name"],
+				"typeParameters": type["Struct"]["typeArguments"].map(normalizedTypeToMoveTypeSignatureBody),
+			},
+		};
+	}
+
+	if (type['TypeParameter'] != null) {
+		return { "typeParameter": type["TypeParameter"] };
+	}
+
+	throw ArgumentError("Unexpected type $type");
 }

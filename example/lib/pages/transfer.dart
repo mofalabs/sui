@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 class Transfer extends StatefulWidget {
@@ -64,10 +65,10 @@ class _TransferState extends State<Transfer> {
                     sending = true;
                   });
       
-                  final txb = TransactionBlock();
+                  final txb = Transaction();
                   txb.setGasBudget(BigInt.from(20000000));
-                  final result = txb.splitCoins(txb.gas, [txb.pureInt(amount.toInt())]);
-                  txb.transferObjects([result], txb.pureAddress(receiver));
+                  final result = txb.splitCoins(txb.gas, [txb.pure.u64(BigInt.from(amount))]);
+                  txb.transferObjects([result], txb.pure.address(receiver));
                   final resp = await suiClient.signAndExecuteTransactionBlock(
                     widget.account, 
                     txb,

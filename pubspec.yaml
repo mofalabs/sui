@@ -1,6 +1,6 @@
 name: sui
 description: Sui Dart SDK.
-version: 0.2.1
+version: 0.3.0
 homepage: https://github.com/mofalabs/sui
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
   bip39: 1.0.6
   ed25519_edwards: 0.3.1
   pointycastle: 3.7.3
-  bcs: ^0.0.6
+  bcs: ^0.1.0
   dio: ^5.1.2
   hex: ^0.2.0
   freezed_annotation: ^2.2.0

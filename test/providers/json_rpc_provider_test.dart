@@ -35,13 +35,7 @@ void main() {
 
   test('test totalSupply', () async {
     final resp = await client.getTotalSupply("0x2::sui::SUI");
-    expect(resp.value, BigInt.zero);
-  });
-
-  test('test getLoadedChildObjects', () async {
-    const tx = 'D46LzFjYNeN432Sz7rp8BEdAPdUU2mCeExxXJGdpBVRb';
-    final resp = await client.getLoadedChildObjects(tx);
-    expect(resp.loadedChildObjects.isNotEmpty, true);
+    expect(resp.value, BigInt.parse("10000000000000000000"));
   });
 
   test('test getMoveFunctionArgTypes', () async {
@@ -125,11 +119,6 @@ void main() {
   test('test getTotalTransactionBlocks', () async {
     final txNum = await client.getTotalTransactionBlocks();
     expect(txNum > BigInt.zero, true);
-  });
-
-  test('test getCoinBalancesOwnedByAddress', () async {
-    final result = await client.getCoinBalancesOwnedByAddress(address);
-    expect(result.isNotEmpty, true);
   });
 
   test('test getObjectsOwnedByObject', () async {

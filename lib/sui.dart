@@ -1,6 +1,5 @@
 library sui;
 
-export 'builder/transaction_block.dart';
 export 'builder/transaction_block_data.dart';
 export 'builder/transactions.dart';
 export 'cryptography/ed25519_keypair.dart';

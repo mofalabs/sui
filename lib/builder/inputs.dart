@@ -1,27 +1,27 @@
 import 'dart:typed_data';
 
-import 'package:sui/bcs/bcs.dart';
+import 'package:bcs/bcs_type.dart';
+import 'package:bcs/utils.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
 class Inputs {
-  static Map<String, dynamic> pure(dynamic data, [String? type]) {
-    if (data is! Uint8List && type == null) {
-      throw ArgumentError.notNull("type");
-    }
 
+  static Map<String, dynamic> pure(dynamic data, [String? type]) {
     return {
-      "Pure": List<int>.from(data is Uint8List
-          ? data
-          : // NOTE: We explicitly set this to be growable to infinity, because we have maxSize validation at the builder-level:
-          builder.ser(type, data).toBytes())
+		  "\$kind": 'Pure',
+		  "Pure": {
+  			"bytes": data is Uint8List ? toB64(data) : (data as SerializedBcs).toBase64(),
+		  },
     };
   }
 
   static Map<String, dynamic> objectRef(SuiObjectRef data) {
     return {
+      "\$kind": 'Object',
       "Object": {
-        "ImmOrOwned": {
+        "\$kind": 'ImmOrOwnedObject',
+        "ImmOrOwnedObject": {
           "digest": data.digest,
           "version": data.version,
           "objectId": normalizeSuiAddress(data.objectId),
@@ -44,8 +44,10 @@ class Inputs {
       objectId = data["objectId"];
     }
     return {
+      "\$kind": 'Object',
       "Object": {
-        "Shared": {
+        "\$kind": 'SharedObject',
+        "SharedObject": {
           "mutable": mutable,
           "initialSharedVersion": initialSharedVersion,
           "objectId": normalizeSuiAddress(objectId),
@@ -56,7 +58,9 @@ class Inputs {
 
 	static Map<String, dynamic> receivingRef(SuiObjectRef data) {
 		return {
+      "\$kind": 'Object',
 			"Object": {
+        "\$kind": 'Receiving',
 				"Receiving": {
 					"digest": data.digest,
 					"version": data.version,
@@ -67,25 +71,32 @@ class Inputs {
 	}
 }
 
-getIdFromCallArg(dynamic arg) {
+dynamic getIdFromCallArg(dynamic arg) {
   if (arg is String) {
     return normalizeSuiAddress(arg);
   }
-  if ((arg["Object"] as Map).containsKey("ImmOrOwned")) {
-    return normalizeSuiAddress(arg["Object"]["ImmOrOwned"]["objectId"]);
+
+  if (arg["Object"] != null) {
+    if (arg["Object"]["ImmOrOwnedObject"] != null) {
+      return normalizeSuiAddress(arg["Object"]["ImmOrOwnedObject"]["objectId"]);  
+    } 
+    if (arg["Object"]["Receiving"] != null) {
+      return normalizeSuiAddress(arg["Object"]["Receiving"]["objectId"]);
+    }
+    if (arg["Object"]["SharedObject"] != null) {
+      return normalizeSuiAddress(arg["Object"]["SharedObject"]["objectId"]);
+    }
+  } 
+
+  if (arg["UnresolvedObject"] != null) {
+    return arg["UnresolvedObject"]["objectId"];
   }
-	if ((arg["Object"] as Map).containsKey("Receiving")) {
-		return normalizeSuiAddress(arg["Object"]["Receiving"]["objectId"]);
-	}
-  return normalizeSuiAddress(arg["Object"]["Shared"]["objectId"]);
+
+  return null;
 }
 
 dynamic getSharedObjectInput(dynamic arg) {
-  if (arg is Map) {
-    return arg["Object"]?["Shared"];
-  } else {
-    return null;
-  }
+  return arg["Object"]?["SharedObject"];
 }
 
 bool isSharedObjectInput(dynamic arg) {

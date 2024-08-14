@@ -51,7 +51,7 @@ await faucet.requestSuiFromFaucetV1(account.getAddress());
 final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(SuiUrls.devnet);
 
-final tx = TransactionBlock();
+final tx = Transaction();
 tx.setGasBudget(BigInt.from(20000000));
 final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000)]);
 tx.transferObjects(

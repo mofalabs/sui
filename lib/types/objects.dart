@@ -54,6 +54,16 @@ class SuiObjectError {
       data['error'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'digest': digest,
+      'object_id': objectId,
+      'version': version,
+      'error': error
+    };
+  }
 }
 
 // class SuiObjectInfo extends SuiObjectRef {

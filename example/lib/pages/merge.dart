@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 class Merge extends StatefulWidget {
@@ -74,7 +75,7 @@ class _MergeState extends State<Merge> {
                     }
                   }
       
-                  final txb = TransactionBlock();
+                  final txb = Transaction();
                   txb.setGasBudget(BigInt.from(20000000));
                   if (coinsSelected.length == checkedCoins.length) {
                     /// all remain coins as gas

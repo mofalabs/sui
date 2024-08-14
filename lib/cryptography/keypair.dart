@@ -2,9 +2,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:bcs/bcs.dart';
 import 'package:sui/cryptography/intent.dart';
 import 'package:sui/cryptography/signature.dart';
-import 'package:sui/types/sui_bcs.dart';
 import 'package:sui/utils/sha.dart';
 
 class SignatureWithBytes {
@@ -26,7 +26,7 @@ mixin Keypair {
   /// Return the signature for the data
   Uint8List signData(Uint8List data);
 
-  /// Get the key scheme of the keypair: Secp256k1 or ED25519
+  /// Get the key scheme of the keypair: Secp256k1 or Ed25519
   SignatureScheme getKeyScheme();
 
   /// Verify signature
@@ -61,7 +61,7 @@ mixin Keypair {
 
 	SignatureWithBytes signPersonalMessage(Uint8List bytes) {
 		return signWithIntent(
-			bcs.ser(['vector', 'u8'], bytes).toBytes(),
+			Bcs.vector(Bcs.u8()).serialize(bytes).toBytes(),
 			IntentScope.personalMessage
 		);
 	}
@@ -83,18 +83,18 @@ mixin Keypair {
 		String signature
 	)  {
 		return verifyWithIntent(
-			bcs.ser(['vector', 'u8'], message).toBytes(),
+      Bcs.vector(Bcs.u8()).serialize(message).toBytes(),
 			signature,
 			IntentScope.personalMessage,
 		);
 	}
 
-	bool verifyTransactionBlock(
-		Uint8List transactionBlock,
+	bool verifyTransaction(
+		Uint8List transaction,
 		String signature
 	) {
 		return verifyWithIntent(
-      transactionBlock, 
+      transaction, 
       signature, 
       IntentScope.transactionData
     );
@@ -164,18 +164,18 @@ mixin PublicKey {
 		String signature,
 	) {
 		return verifyWithIntent(
-      bcs.ser('vector<u8>', message).toBytes(),
+      Bcs.vector(Bcs.u8()).serialize(message).toBytes(),
 			signature,
 			IntentScope.personalMessage,
 		);
 	}
 
-  bool verifyTransactionBlock(
-		Uint8List transactionBlock,
+  bool verifyTransaction(
+		Uint8List transaction,
 		String signature,
 	) {
 		return verifyWithIntent(
-      transactionBlock, 
+      transaction, 
       signature, 
       IntentScope.transactionData
     );

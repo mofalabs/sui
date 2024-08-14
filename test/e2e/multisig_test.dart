@@ -1,8 +1,9 @@
 
 import 'dart:typed_data';
 
-import 'package:bcs/index.dart';
+import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 import 'utils/setup.dart';
@@ -44,7 +45,7 @@ void main() {
       final toolbox = await setupWithFundedAddress(kp, multisigAddr);
 
       // construct a transfer from the multisig address.
-      final txb = TransactionBlock();
+      final txb = Transaction();
       txb.setSenderIfNotSet(multisigAddr);
       final coin = txb.splitCoins(txb.gas, [txb.pureInt(1)]);
       txb.transferObjects([coin], txb.pureAddress(DEFAULT_RECIPIENT));

@@ -2,11 +2,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/cryptography/intent.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/types/common.dart';
-import 'package:sui/types/sui_bcs.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
 
@@ -229,7 +230,7 @@ void main() {
       const maxLength = 1 + (64 + 1) * MAX_SIGNER_IN_MULTISIG + 2;
       final tmp = Uint8List(maxLength);
       tmp.setAll(0, [0x03]);
-      tmp.setAll(1, bcs.ser('u16', 3).toBytes());
+      tmp.setAll(1, SuiBcs.U16.serialize(3).toBytes());
       int i = 3;
       for (var item in multiSigPublicKey.publicKeys) {
         final publicKey = item.publicKey;
@@ -281,7 +282,7 @@ void main() {
       final multisig = multiSigPublicKey.combinePartialSignatures([sig1.signature, sig2.signature]);
 
       final bytes = base64Decode(multisig);
-      final multiSigStruct = MultiSigStruct.fromJson(bcs.de('MultiSig', bytes.sublist(1)));
+      final multiSigStruct = MultiSigStruct.fromJson(SuiBcs.MultiSig.parse(bytes.sublist(1)));
 
       final parsedPartialSignatures = parsePartialSignatures(multiSigStruct);
 
@@ -320,7 +321,7 @@ void main() {
 
       final intentMessage = messageWithIntent(
         IntentScope.personalMessage,
-        bcs.ser(['vector', 'u8'], data).toBytes(),
+        Bcs.vector(Bcs.u8()).serialize(data).toBytes()
       );
       final digest = blake2b(intentMessage);
 
@@ -346,7 +347,7 @@ void main() {
 
       final intentMessage = messageWithIntent(
         IntentScope.personalMessage,
-        bcs.ser(['vector', 'u8'], data).toBytes(),
+        Bcs.vector(Bcs.u8()).serialize(data).toBytes()
       );
       final digest = blake2b(intentMessage);
 
@@ -374,15 +375,17 @@ void main() {
 			  'AwIANe9gJJmT5m1UvpV8Hj7nOyif76rS5Zgg1bi7VApts+KwtSc2Bg8WJ6LBfGnZKugrOqtQsk5d2Q+IMRLD4hYmBQFYlrlXc01/ZSdgwSD3eGEdm6kxwtOwAvTWdb2wNZP2Hnkgrh+indYN4s2Qd99iYCz+xsY6aT5lpOBsDZb2x9LyAwADAFriILSy9l6XfBLt5hV5/1FwtsIsAGFow3tefGGvAYCDAQECHRUjB8a3Kw7QQYsOcM2A5/UpW42G9XItP1IT+9I5TzYCAgInMis6iRoKKA1rwfssuyPSj1SQb9ZAf190H23vV2JgmgMDAA==',
 		  );
 
-      final decoded = bcs.de("MultiSig", base64Decode(multisig).sublist(1));
+      final decoded = SuiBcs.MultiSig.parse(base64Decode(multisig).sublist(1));
       expect(decoded["bitmap"], 3);
-      expect(decoded["multisig_pk"], bcs.de("MultiSigPublicKey", multiSigPublicKey.toRawBytes()));
+      expect(decoded["multisig_pk"], SuiBcs.MultiSigPublicKey.parse(multiSigPublicKey.toRawBytes()));
       expect(decoded["sigs"], [
         {
           "Ed25519": parseSerializedSignature((k1.signPersonalMessage(data)).signature).signature,
+          "\$kind": "Ed25519"
         },
         {
           "Secp256k1": parseSerializedSignature((k2.signPersonalMessage(data)).signature).signature!,
+          "\$kind": "Secp256k1"
         }
       ]);
     });

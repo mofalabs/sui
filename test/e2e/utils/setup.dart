@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/types/validator.dart';
 
@@ -78,7 +79,7 @@ Future<TestToolbox> setupWithFundedAddress(
 Future<SuiExecuteTransactionResponse> paySui(SuiClient client, Keypair signer,
     List<String> recipients, List<int> amounts, String? coinId,
     [int numRecipients = 1]) async {
-  final tx = TransactionBlock();
+  final tx = Transaction();
 
   recipients = recipients;
   amounts = amounts;
