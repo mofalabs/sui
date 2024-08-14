@@ -56,3 +56,7 @@
 
 * Add MultiSig
 * Add zkLogin Test
+
+## 0.3.0
+
+* Refactor Transaction & BCS
