@@ -276,12 +276,12 @@ mapArguments(dynamic Function(dynamic arg, dynamic command) fn) {
 					);
       } else if (command["Upgrade"] != null) {
         command["Upgrade"]["ticket"] = fn(command["Upgrade"]["ticket"], command);
-      } else if (command["Intent"] != null) {
-					final inputs = command["Intent"]["inputs"];
-					command["Intent"]["inputs"] = {};
+      } else if (command["\$Intent"] != null) {
+					final inputs = command["\$Intent"]["inputs"];
+					command["\$Intent"]["inputs"] = {};
 
 					for (final [key, value] in inputs) {
-						command["Intent"]["inputs"][key] = value is Iterable
+						command["\$Intent"]["inputs"][key] = value is Iterable
 							? value.map((arg) => fn(arg, command))
 							: fn(value, command);
 					}

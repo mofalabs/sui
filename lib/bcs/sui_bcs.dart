@@ -9,6 +9,17 @@ class SuiBcs {
 
   static const SUI_ADDRESS_LENGTH = 32;
 
+	static final U8 = Bcs.u8();
+	static final U16 = Bcs.u16();
+	static final U32 = Bcs.u32();
+	static final U64 = Bcs.u64();
+	static final U128 = Bcs.u128();
+	static final U256 = Bcs.u256();
+	static final ULEB128 = Bcs.uleb128();
+  static final BOOL = Bcs.boolean();
+	static final STRING = Bcs.string();
+  static final VECTOR = Bcs.vector;
+
   static BcsType<int, dynamic> unsafe_u64([BcsTypeOptions<int, dynamic>? options]) {
     return Bcs.u64(
       BcsTypeOptions(
@@ -270,14 +281,4 @@ class SuiBcs {
 
   static final SenderSignedData = Bcs.vector(SenderSignedTransaction, BcsTypeOptions(name: 'SenderSignedData'));
 
-	static final U8 = Bcs.u8();
-	static final U16 = Bcs.u16();
-	static final U32 = Bcs.u32();
-	static final U64 = Bcs.u64();
-	static final U128 = Bcs.u128();
-	static final U256 = Bcs.u256();
-	static final ULEB128 = Bcs.uleb128();
-  static final BOOL = Bcs.boolean();
-	static final STRING = Bcs.string();
-  static final VECTOR = Bcs.vector;
 }

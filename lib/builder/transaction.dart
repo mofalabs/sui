@@ -445,8 +445,7 @@ class Transaction {
 	}
 
 	String toJson([SerializeTransactionOptions? options]) {
-		// await prepareForSerialization(options);
-    return _blockData.snapshot().toJson().toString();
+    return jsonEncode(_blockData.snapshot());
 	}
 
 	String _getConfig(String key, BuildOptions options) {

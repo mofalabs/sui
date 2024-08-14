@@ -7,7 +7,6 @@ import 'package:sui/cryptography/signature.dart';
 import 'package:sui/models/checkpoint.dart';
 import 'package:sui/models/dev_inspect_results.dart';
 import 'package:sui/models/dynamic_field.dart';
-import 'package:sui/models/loaded_child_objects.dart';
 import 'package:sui/models/object_read.dart';
 import 'package:sui/models/paged.dart';
 import 'package:sui/models/sui_event.dart';
@@ -71,11 +70,6 @@ mixin JsonRpcProvider {
   Future<BigInt> getLatestCheckpointSequenceNumber() async {
     final result = await client.request('sui_getLatestCheckpointSequenceNumber', []);
     return BigInt.parse(result);
-  }
-
-  Future<LoadedChildObjects> getLoadedChildObjects(String txDigest) async {
-    final result = await client.request('sui_getLoadedChildObjects', [txDigest]);
-    return LoadedChildObjects.fromJson(result);
   }
 
   Future<RpcApiVersion> getRpcApiVersion() async {
@@ -247,21 +241,6 @@ mixin JsonRpcProvider {
       .where((x) => Coin.isSUI(x))
       .map((y) => y.data!);
     return result.toList();
-  }
-
-  Future<List<SuiObjectResponse>> getCoinBalancesOwnedByAddress(
-    String address,
-    {String? typeArg}
-  ) async {
-    final objects = await getOwnedObjects(address);
-    final coinIds = objects
-      .data
-      .where((x) => Coin.isCoin(x)
-                && (typeArg == null || typeArg == Coin.getCoinTypeArg(x)))
-      .map((y) => y.data!.objectId);
-
-    final result = await getObjectBatch(coinIds.toList());
-    return result;
   }
 
   Future<List<SuiObject>> getObjectsOwnedByObject(String objectId) async {
