@@ -9,7 +9,6 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:sui/bcs/sui_bcs.dart';
-import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 void main() {

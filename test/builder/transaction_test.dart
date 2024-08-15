@@ -4,12 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bcs/utils.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/bcs/sui_bcs.dart';
-import 'package:sui/builder/commands.dart';
-import 'package:sui/builder/inputs.dart';
-import 'package:sui/builder/transaction.dart';
-import 'package:sui/types/common.dart';
-import 'package:sui/types/objects.dart';
+import 'package:sui/sui.dart';
 
 void main() {
   test('can construct and serialize an empty transaction', () {

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 void main() {

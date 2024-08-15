@@ -1,7 +1,11 @@
 library sui;
 
+export 'bcs/sui_bcs.dart';
 export 'builder/transaction_block_data.dart';
 export 'builder/transactions.dart';
+export 'builder/transaction.dart';
+export 'builder/commands.dart';
+export 'builder/inputs.dart';
 export 'cryptography/ed25519_keypair.dart';
 export 'cryptography/ed25519_publickey.dart';
 export 'cryptography/helper.dart';
@@ -24,6 +28,9 @@ export 'types/coins.dart';
 export 'types/event_filter.dart';
 export 'types/framework.dart';
 export 'types/objects.dart';
+export 'types/common.dart';
+export 'types/faucet.dart';
 export 'types/transactions.dart';
 export 'zklogin/zklogin.dart';
 export 'multisig/multsig_publickey.dart';
+export 'utils/suins.dart';

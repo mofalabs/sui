@@ -4,10 +4,8 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/cryptography/intent.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/common.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
 
