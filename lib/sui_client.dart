@@ -46,17 +46,13 @@ class SuiClient extends SignerWithProvider {
     Transaction transaction,
     {
       BuildOptions? options,
-      ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
-      SuiTransactionBlockResponseOptions? responseOptions
+      SuiTransactionBlockResponseOptions? responseOptions,
+      @Deprecated('requestType will be ignored by JSON RPC in the future')
+      ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert
     }
   ) async {
     options ??= BuildOptions(client: this);
     options.client ??= this;
-
-    if(responseOptions != null) {
-      requestType = ExecuteTransaction.WaitForLocalExecution;
-    }
-
     transaction.setSenderIfNotSet(signer.getAddress());
     final transactionBytes = await transaction.build(options);
     final signWithBytes = signer.keyPair.signTransactionBlock(transactionBytes);

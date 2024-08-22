@@ -1,13 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
 
+import 'utils/setup.dart';
+
 void main() {
   const address =
       '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973';
   late SuiClient client;
+  late TestToolbox toolbox;
   List<SuiTransactionBlockResponse> transactions = [];
 
   setUp(() async {
+    toolbox = await setup();
     client = SuiClient(SuiUrls.devnet);
     var list = await client
         .queryTransactionBlocks({'FromAddress': address}, limit: 10);
@@ -18,6 +22,37 @@ void main() {
     final numTransactions = await client.getTotalTransactionBlocks();
     expect(numTransactions > BigInt.zero, true);
   });
+
+  group('waitForTransaction', () {
+		Future<SuiExecuteTransactionResponse> setupTransaction() {
+			final tx = Transaction();
+			final coin = tx.splitCoins(tx.gas, [tx.pureInt(1)]);
+			tx.transferObjects([coin], tx.pureAddress(toolbox.address()));
+			return toolbox.client.signAndExecuteTransactionBlock(
+				SuiAccount(toolbox.keypair),
+				tx
+			);
+		}
+
+		test('can wait for transactions with WaitForEffectsCert', () async {
+			final result = await setupTransaction();
+
+			// Should succeed using wait
+			final waited = await toolbox.client.waitForTransaction(result.digest);
+			expect(waited.digest, result.digest);
+		});
+
+		test('abort signal doesnt throw after transaction is received', () async {
+			final result = await setupTransaction();
+
+			final waited = await toolbox.client.waitForTransaction(result.digest);
+			final secondWait = await toolbox.client.waitForTransaction(result.digest, timeout: 2000);
+			// wait for timeout to expire incase it causes an unhandled rejection
+			await Future.delayed(const Duration(milliseconds: 2100));
+			expect(waited.digest, result.digest);
+			expect(secondWait.digest, result.digest);
+		});
+	});
 
   test('Get Transactions', () async {
     final digest = transactions[0].digest;

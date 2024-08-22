@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -323,14 +324,25 @@ mixin JsonRpcProvider {
     String transactionBlockBase64,
     List<String> signature, {
     SuiTransactionBlockResponseOptions? options,
+    @Deprecated('requestType will be ignored by JSON RPC in the future')
     ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
   }) async {
     final data = await client.request('sui_executeTransactionBlock', [
       transactionBlockBase64,
       signature,
-      options?.toJson(),
-      requestType.name,
+      options?.toJson()
     ]);
+
+    final result = SuiTransactionBlockResponse.fromJson(data);
+    
+    if (requestType == ExecuteTransaction.WaitForLocalExecution) {
+      try {
+        await waitForTransaction(result.digest);
+      } catch (e) {
+        // Ignore error while waiting for transaction
+      }
+    }
+    
     return SuiTransactionBlockResponse.fromJson(data);
   }
 
@@ -465,6 +477,7 @@ mixin JsonRpcProvider {
     required Uint8List signature,
     required PublicKey pubkey,
     SuiTransactionBlockResponseOptions? options,
+    @Deprecated('requestType will be ignored by JSON RPC in the future')
     ExecuteTransaction requestType = ExecuteTransaction.WaitForEffectsCert,
   }) async {
     final serializedSig = <int>[];
@@ -608,5 +621,27 @@ mixin JsonRpcProvider {
 			[version]
 		);
 	}
+
+  Future<SuiTransactionBlockResponse> waitForTransaction(
+    TransactionDigest digest, {
+    SuiTransactionBlockResponseOptions? options,
+    int timeout = 60 * 1000,
+    int pollInterval = 2 * 1000
+  }) async {
+    SuiTransactionBlockResponse? resp;
+    final timeoutDuration = Duration(milliseconds: timeout);
+
+    await Future.doWhile(() async {
+      try {
+        resp = await getTransactionBlock(digest, options: options);
+        return false;
+      } catch (e) {
+        await Future.delayed(Duration(milliseconds: pollInterval));
+        return true;
+      }
+    }).timeout(timeoutDuration);
+
+    return resp ?? (throw TimeoutException('Operation timed out', timeoutDuration));
+  }
 
 }
