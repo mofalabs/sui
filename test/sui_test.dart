@@ -34,13 +34,13 @@ void main() {
     final secp256k1 = SuiAccount.secp256k1Account();
     final secp256r1 = SuiAccount.secp256r1Account();
 
-    final ed25519Import = SuiAccount.fromPrivKey(ed25519.privateKey());
+    final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKey());
     expect(ed25519.getAddress(), ed25519Import.getAddress());
 
-    final sepc256k1Import = SuiAccount.fromPrivKey(secp256k1.privateKey());
+    final sepc256k1Import = SuiAccount.fromPrivateKey(secp256k1.privateKey());
     expect(secp256k1.getAddress(), sepc256k1Import.getAddress());
 
-    final sepc256r1Import = SuiAccount.fromPrivKey(secp256r1.privateKey());
+    final sepc256r1Import = SuiAccount.fromPrivateKey(secp256r1.privateKey());
     expect(secp256r1.getAddress(), sepc256r1Import.getAddress());
   });
 
@@ -75,8 +75,8 @@ void main() {
     final client = SuiClient(SuiUrls.devnet);
 
     final tx = Transaction();
-    final coin = tx.splitCoins(tx.gas, [tx.pureInt(200000)]);
-    tx.transferObjects([coin], tx.pureAddress(account.getAddress()));
+    final coin = tx.splitCoins(tx.gas, [100, "200", BigInt.from(300)]);
+    tx.transferObjects([coin[0], coin[1], coin[2]], account.getAddress());
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
     print(result.digest);

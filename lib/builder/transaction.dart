@@ -381,7 +381,8 @@ class Transaction {
 	// Method shorthands:
 
 	TransactionResult splitCoins(Map<String, dynamic> coin, List<dynamic> amounts) {
-		return add(Commands.splitCoins(coin, amounts));
+    final result = amounts.map((x) => x is! Map ? pure.u64(BigInt.parse(x.toString())) : x).toList();
+		return add(Commands.splitCoins(coin, result));
 	}
 
 	TransactionResult mergeCoins(Map<String, dynamic> destination, List<Map<String, dynamic>> sources) {
@@ -419,7 +420,8 @@ class Transaction {
 	}
 
 	TransactionResult transferObjects(List<dynamic> objects, dynamic address) {
-		return add(Commands.transferObjects(objects, address));
+    final result = address is! Map ? pure.address(address) : address;
+		return add(Commands.transferObjects(objects, result));
 	}
 
 	TransactionResult makeMoveVec({

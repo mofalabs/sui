@@ -55,31 +55,31 @@ void main() {
   });
 
   test('test decode bech32 private key', () {
-    final account1 = SuiAccount.fromPrivKey(
+    final account1 = SuiAccount.fromPrivateKey(
       "suiprivkey1qzwant3kaegmjy4qxex93s0jzvemekkjmyv3r2sjwgnv2y479pgsywhveae"
     );
     expect(account1.privateKey(), "suiprivkey1qzwant3kaegmjy4qxex93s0jzvemekkjmyv3r2sjwgnv2y479pgsywhveae");
     expect(account1.getAddress(), "0x90f3e6d73b5730f16974f4df1d3441394ebae62186baf83608599f226455afa7");
 
-    final account2 = SuiAccount.fromPrivKey(
+    final account2 = SuiAccount.fromPrivateKey(
       "suiprivkey1qrh2sjl88rze74hwjndw3l26dqyz63tea5u9frtwcsqhmfk9vxdlx8cpv0g"
     );
     expect(account2.privateKey(), "suiprivkey1qrh2sjl88rze74hwjndw3l26dqyz63tea5u9frtwcsqhmfk9vxdlx8cpv0g");
     expect(account2.getAddress(), "0xfd233cd9a5dd7e577f16fa523427c75fbc382af1583c39fdf1c6747d2ed807a3");
 
-    final account3 = SuiAccount.fromPrivKey(
+    final account3 = SuiAccount.fromPrivateKey(
       "suiprivkey1qzg73qyvfz0wpnyectkl08nrhe4pgnu0vqx8gydu96qx7uj4wyr8gcrjlh3"
     );
     expect(account3.privateKey(), "suiprivkey1qzg73qyvfz0wpnyectkl08nrhe4pgnu0vqx8gydu96qx7uj4wyr8gcrjlh3");
     expect(account3.getAddress(), "0x81aaefa4a883e72e8b6ccd3bec307e25fe3d79b14e43b778695c55dcec42f4f0");
 
-    final account4 = SuiAccount.fromPrivKey(
+    final account4 = SuiAccount.fromPrivateKey(
       "suiprivkey1qxpfcxdsdqnjgkyt70z6s3jsvap7nwyt52evl6st599gtyt6274ej2j4nvj"
     );
     expect(account4.privateKey(), "suiprivkey1qxpfcxdsdqnjgkyt70z6s3jsvap7nwyt52evl6st599gtyt6274ej2j4nvj");
     expect(account4.getAddress(), "0x538aecb0f3bad974ff1a8c1d3c23210cffb9f6f43370e5ebf25ef19e30018ed6");
 
-    final account5 = SuiAccount.fromPrivKey(
+    final account5 = SuiAccount.fromPrivateKey(
       "suiprivkey1qg6xjw8zlkht6uupavqdg49jrt5tmss3hh94c57ywm086ufrjw65j0lwsdz"
     );
     expect(account5.privateKey(), "suiprivkey1qg6xjw8zlkht6uupavqdg49jrt5tmss3hh94c57ywm086ufrjw65j0lwsdz");

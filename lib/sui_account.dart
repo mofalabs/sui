@@ -68,13 +68,21 @@ class SuiAccount {
     return account;
   }
 
-  factory SuiAccount.fromPrivateKey(String privateKey, SignatureScheme scheme) {
-    final privateKeyHex = Hex.trimHex(Hex.prefixHex(privateKey));
+  factory SuiAccount.fromPrivateKey(String privateKey, [SignatureScheme? scheme]) {
+    String sk = privateKey;
+    SignatureScheme? se = scheme;
+    if (privateKey.startsWith('suiprivkey')) {
+      final (scheme, privKey) = decodeSuiPrivateKey(privateKey);
+      se = scheme;
+      sk = Hex.encode(privKey);
+    }
+
+    final privateKeyHex = Hex.trimHex(Hex.prefixHex(sk));
     if (privateKeyHex.length != 64 && privateKeyHex.length != 128) {
       throw ArgumentError("Invalid private key length ${privateKeyHex.length}");
     }
     SuiAccount account;
-    switch (scheme) {
+    switch (se) {
       case SignatureScheme.Secp256k1:
         account = SuiAccount(
             Secp256k1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
@@ -88,12 +96,13 @@ class SuiAccount {
             SuiAccount(Ed25519Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
         break;
       default:
-        throw ArgumentError('Undefined SignatureScheme $scheme');
+        throw ArgumentError('Undefined SignatureScheme $se');
     }
     return account;
   }
 
   /// Bech32 encoded string starting with `suiprivkey`.
+  @Deprecated('Use fromPrivateKey() instead')
   factory SuiAccount.fromPrivKey(String privateKey) {
     final (scheme, privKey) = decodeSuiPrivateKey(privateKey);
     return SuiAccount.fromPrivateKey(Hex.encode(privKey), scheme);

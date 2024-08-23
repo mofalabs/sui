@@ -54,15 +54,15 @@ await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fe
 ```dart
 /// Ed25519 account
 final ed25519 = SuiAccount.ed25519Account();
-final ed25519Import = SuiAccount.fromPrivKey(ed25519.privateKey());
+final ed25519Import = SuiAccount.fromPrivateKey(ed25519.privateKey());
 
 /// Secp256k1 account
 final secp256k1 = SuiAccount.secp256k1Account();
-final sepc256k1Import = SuiAccount.fromPrivKey(secp256k1.privateKey());
+final sepc256k1Import = SuiAccount.fromPrivateKey(secp256k1.privateKey());
 
 /// Secp256r1 account
 final secp256r1 = SuiAccount.secp256r1Account();
-final sepc256r1Import = SuiAccount.fromPrivKey(secp256r1.privateKey());
+final sepc256r1Import = SuiAccount.fromPrivateKey(secp256r1.privateKey());
 ```
 
 #### Create account with mnemonic
@@ -92,7 +92,7 @@ final client = SuiClient(SuiUrls.devnet);
 final tx = Transaction();
 tx.transferObjects(
     [tx.objectId('0x2619f581cb1864d07c89453a69611202669fdc4784fb59b9cb4278ec60756011')], 
-    tx.pureAddress(account.getAddress())
+    account.getAddress()
 );
 
 final result = await client.signAndExecuteTransactionBlock(account, tx);
@@ -106,10 +106,10 @@ final account = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
 final client = SuiClient(SuiUrls.devnet);
 
 final tx = Transaction();
-final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000)]);
+final coin = tx.splitCoins(tx.gas, [1000]);
 tx.transferObjects(
     [coin],
-    tx.pureAddress(account.getAddress())
+    account.getAddress()
 );
 
 final result = await client.signAndExecuteTransactionBlock(account, tx);
