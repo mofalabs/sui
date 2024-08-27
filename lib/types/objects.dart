@@ -66,32 +66,6 @@ class SuiObjectError {
   }
 }
 
-// class SuiObjectInfo extends SuiObjectRef {
-//   String type;
-//   String owner;
-//   TransactionDigest previousTransaction;
-
-//   SuiObjectInfo(this.type,
-//       this.owner,
-//       this.previousTransaction,
-//       TransactionDigest digest,
-//       String objectId,
-//       int version) : super(digest, objectId, version);
-
-//   factory SuiObjectInfo.fromJson(dynamic data) {
-//     return SuiObjectInfo(
-//       data['type'] ?? "",
-//       data['owner']?['AddressOwner'] ?? "",
-//       data['previousTransaction'] ?? "",
-//       data['digest'] ?? "",
-//       data['objectId'] ?? "",
-//       int.parse(data['version'] ?? '0'),
-//     );
-//   }
-// }
-
-// typedef ObjectContentFields = Record<String, dynamic>;
-// typedef MovePackageContent = Record<String, String>;
 typedef ObjectContentFields = dynamic;
 typedef MovePackageContent = dynamic;
 

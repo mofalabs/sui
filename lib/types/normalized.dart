@@ -165,14 +165,6 @@ class SuiMoveAbilitySet {
 
 typedef SuiMoveNormalizedType = dynamic;
 
-// export type SuiMoveNormalizedType =
-//   | string
-//   | SuiMoveNormalizedTypeParameterType
-//   | { Reference: SuiMoveNormalizedType }
-//   | { MutableReference: SuiMoveNormalizedType }
-//   | { Vector: SuiMoveNormalizedType }
-//   | SuiMoveNormalizedStructType;
-
 class SuiMoveNormalizedTypeParameterType {
   SuiMoveTypeParameterIndex TypeParameter;
 

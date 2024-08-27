@@ -24,7 +24,7 @@ const PAY_JOIN_COIN_FUNC_NAME = 'join';
 final COIN_TYPE_ARG_REGEX = RegExp(r'^0x2::coin::Coin<(.+)>$');
 
 
-typedef ObjectData = dynamic; // SuiObjectResponse || SuiMoveObject || SuiObjectInfo
+typedef ObjectData = dynamic;
 
 class Coin {
   static bool isCoin(ObjectData data) {

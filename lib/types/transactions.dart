@@ -30,30 +30,6 @@ dynamic getTransactionKind(SuiTransactionBlockResponse data){
   return data.transaction?.data.transaction;
 }
 
-//  class TxCert {
-//    CertifiedTransaction certificate;
-
-//    TxCert(this.certificate);
-
-//    factory TxCert.fromJson(dynamic data) {
-//     return TxCert(
-//       CertifiedTransaction.fromJson(data['certificate'])
-//     );
-//    }
-// }
-
-// class SuiCertifiedTransactionEffects {
-//   TransactionEffects effects;
-
-//   SuiCertifiedTransactionEffects(this.effects);
-
-//   factory SuiCertifiedTransactionEffects.fromJson(dynamic data) {
-//     return SuiCertifiedTransactionEffects(
-//       TransactionEffects.fromJson(data['effects'])
-//     );
-//   }
-// }
-
 class PaginatedTransactionResponse {
   List<SuiTransactionBlockResponse> data;
   String? nextCursor;

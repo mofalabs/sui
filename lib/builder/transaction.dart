@@ -64,18 +64,6 @@ const DefaultOfflineLimits = {
 	"maxTxSizeBytes": 128 * 1024,
 };
 
-bool isReceivingType(SuiMoveNormalizedType normalizedType) {
-	final tag = extractStructTag(normalizedType);
-	if (tag != null && tag["Struct"] != null) {
-		return (
-			tag["Struct"]["address"] == '0x2' &&
-			tag["Struct"]["module"] == 'transfer' &&
-			tag["Struct"]["name"] == 'Receiving'
-		);
-	}
-	return false;
-}
-
 SuiClient expectClient(BuildOptions options) {
 	if (options.client == null) {
 		throw ArgumentError(
@@ -97,7 +85,6 @@ const LIMITS = {
 	"maxPureArgumentSize": 'max_pure_argument_size',
 };
 
-// type Limits = Partial<Record<keyof typeof LIMITS, number>>;
 typedef Limits = dynamic;
 
 // An amount of gas (in gas units) that is added to transactions as an overhead to ensure transactions do not fail.
@@ -154,6 +141,7 @@ class SignOptions extends BuildOptions {
 }
 
 class Transaction {
+	late TransactionBlockDataBuilder _blockData;
 
 	/// Converts from a serialize transaction kind (built with `build({ onlyTransactionKind: true })`) to a `Transaction` class.
 	/// Supports either a byte array, or base64-encoded bytes.
@@ -214,8 +202,6 @@ class Transaction {
       (p) => SuiObjectRef(p.digest, p.objectId, p.version)
     ).toList();
 	}
-
-	late TransactionBlockDataBuilder _blockData;
 
   @Deprecated('Use getData() instead')
 	TransactionDataV1 get blockData {
@@ -486,7 +472,6 @@ class Transaction {
     options ??= BuildOptions();
 		await _prepare(options);
 		return _blockData.build(
-			maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options).toString()),
 			onlyTransactionKind: options.onlyTransactionKind,
 		);
 	}
@@ -750,7 +735,6 @@ class Transaction {
         if (schema != null) {
           arg["type"] = 'pure';
           inputs[inputs.indexOf(input)] = Inputs.pure(schema.serialize(inputValue));
-          // inputs[inputs.indexOf(input)] = Inputs.pure(inputValue, schema);
           continue;
         }
 
@@ -1043,7 +1027,6 @@ class Transaction {
 			if (_blockData.gasData.budget == null) {
         final dryRunResult = await expectClient(options).dryRunTransaction(
           _blockData.build(
-              maxSizeBytes: int.parse(_getConfig('maxTxSizeBytes', options)),
               gasConfig: GasConfig(
                   budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
                   payment: [])),
@@ -1119,4 +1102,5 @@ class Transaction {
       type["body"]["datatype"]["type"] == 'Receiving'
     );
   }
+
 }
