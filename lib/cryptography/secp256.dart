@@ -72,10 +72,6 @@ class Secp256 {
     [bool isCompressed = false, 
     bool isEthereum = false]
   ) {
-
-    Uint8List r = padLeftUint8List(encodeBigIntAsUnsigned(signature.r));
-    Uint8List s = padLeftUint8List(encodeBigIntAsUnsigned(signature.s));
-
     var header = recId & 0xFF;
     // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
     //                  0x1D = second key with even y, 0x1E = second key with odd y

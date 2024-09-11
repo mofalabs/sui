@@ -11,8 +11,6 @@ import 'package:sui/zklogin/address.dart';
 import 'package:sui/zklogin/jwt_utils.dart';
 import 'package:sui/zklogin/signature.dart';
 
-import '../types/sui_bcs.dart';
-
 enum SignatureScheme {
   Ed25519,
   Secp256k1,
