@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
-import 'package:flutter/foundation.dart';
 import 'package:sui/http/interceptor.dart';
 
 class Http extends DioForNative {
@@ -20,11 +17,6 @@ class Http extends DioForNative {
 
     options.headers["Content-Type"] = "application/json; charset=UTF-8";
 
-    (transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
     interceptors.add(ApiInterceptor());
   }
 }
-
-_parseAndDecode(String response) => jsonDecode(response);
-
-parseJson(String text) => compute(_parseAndDecode, text);

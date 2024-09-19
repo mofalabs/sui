@@ -1,6 +1,6 @@
 name: sui
 description: Sui Dart SDK.
-version: 0.3.0
+version: 0.3.1
 homepage: https://github.com/mofalabs/sui
 
 environment:
