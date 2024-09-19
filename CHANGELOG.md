@@ -64,3 +64,7 @@
 ## 0.3.0
 
 * Refactor Transaction & BCS
+
+## 0.3.1
+
+* Fix dio use default transformer
