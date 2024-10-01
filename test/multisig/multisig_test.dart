@@ -1,14 +1,12 @@
 
 import 'dart:convert';
 
-import 'package:bcs/Bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
-import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/sui.dart';
 
 void main() {

@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:bcs/bcs.dart';
 import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/builder/transaction_block_data.dart';
@@ -152,7 +154,7 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
 					"coin": convertTransactionArgument(command["SplitCoins"]["coin"], inputs),
 					"amounts": command["SplitCoins"]["amounts"].map((arg) => convertTransactionArgument(arg, inputs)),
 				};
-			} else if (command["TransferObjects"]) {
+			} else if (command["TransferObjects"] != null) {
 				return {
 					"kind": 'TransferObjects',
 					"objects": command["TransferObjects"]["objects"].map((arg) =>
@@ -193,7 +195,6 @@ dynamic convertTransactionArgument(dynamic arg, dynamic inputs) {
 }
 
 dynamic transactionDataFromV1(dynamic data) {
-
   dynamic expiration;
   if (data["expiration"] != null) {
     if (data["expiration"]["Epoch"] != null) {
@@ -220,7 +221,7 @@ dynamic transactionDataFromV1(dynamic data) {
 		},
 		"inputs": data["inputs"]?.map((input) {
 			if (input["kind"] == 'Input') {
-				if (input["value"] == "Object" || input["value"] == "Pure") {
+        if (input["value"] is Map && (input["value"]["Object"] != null || input["value"]["Pure"] != null)) {
           final value = input["value"];
 
 					if (value["Object"] != null) {
@@ -263,8 +264,7 @@ dynamic transactionDataFromV1(dynamic data) {
 
 					return {
 						"Pure": {
-              "bytes": toB64(value["Pure"]),
-							// "bytes": toB64(new Uint8Array(value.Pure)),
+              "bytes": toB64(Uint8List.fromList(value["Pure"].cast<int>())),
 						},
 					};
 				}
