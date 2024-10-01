@@ -68,3 +68,7 @@
 ## 0.3.1
 
 * Fix dio use default transformer
+
+## 0.3.2
+
+* Fix bugs
