@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 class Transfer extends StatefulWidget {
@@ -71,10 +70,9 @@ class _TransferState extends State<Transfer> {
                   txb.transferObjects([result], txb.pure.address(receiver));
                   final resp = await suiClient.signAndExecuteTransactionBlock(
                     widget.account, 
-                    txb,
-                    requestType: ExecuteTransaction.WaitForLocalExecution
+                    txb
                   );
-                  if(resp.confirmedLocalExecution == true) {
+                  if(resp.digest.isNotEmpty) {
                     showToast(context, "Transaction Send Success");
                   } else {
                     showErrorToast(context, "Transaction Send Failed");

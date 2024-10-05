@@ -1,5 +1,5 @@
 name: sui
-description: Sui Dart SDK.
+description: A cross-platform Sui SDK for Mobile, Web and Desktop.
 version: 0.3.2
 homepage: https://github.com/mofalabs/sui
 
