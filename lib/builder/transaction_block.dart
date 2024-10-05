@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
@@ -560,7 +559,7 @@ class TransactionBlock {
     }
 
     if (moveModulesToResolve.isNotEmpty) {
-      for (var moveCall in moveModulesToResolve) {
+      final resolveResults = await Future.wait(moveModulesToResolve.map((moveCall) async {
         final target = moveCall["target"].split('::');
         final packageId = target[0];
         final moduleName = target[1];
@@ -586,6 +585,8 @@ class TransactionBlock {
           throw ArgumentError('Incorrect number of arguments.');
         }
 
+        final localObjectsToResolve = [];
+
         for (int i = 0; i < params.length; i++) {
           final param = params[i];
           final arg = moveCall["arguments"][i];
@@ -610,7 +611,7 @@ class TransactionBlock {
                 "Expect the argument to be an object id string, got ${jsonEncode(inputValue)}",
               );
             }
-            objectsToResolve.add({
+            localObjectsToResolve.add({
               "id": inputValue,
               "input": input,
               "normalizedType": param,
@@ -622,9 +623,13 @@ class TransactionBlock {
           }
         }
 
+        return localObjectsToResolve;
+      }));
+
+      for (var result in resolveResults) {
+        objectsToResolve.addAll(result);
       }
     }
-
 
     if (objectsToResolve.isNotEmpty) {
       final dedupedIds = Set<String>.from(objectsToResolve.map((o) => o["id"])).toList();
