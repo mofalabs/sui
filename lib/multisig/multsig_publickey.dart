@@ -4,10 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/common.dart';
-import 'package:sui/types/sui_bcs.dart';
 import 'package:sui/utils/hex.dart';
 import 'package:sui/utils/sha.dart';
 

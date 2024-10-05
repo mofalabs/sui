@@ -46,41 +46,41 @@ void main() {
   ];
 
   // Corresponding to the secret key above.
-  const validSecp256k1PublicKey = [
-    2,
-    29,
-    21,
-    35,
-    7,
-    198,
-    183,
-    43,
-    14,
-    208,
-    65,
-    139,
-    14,
-    112,
-    205,
-    128,
-    231,
-    245,
-    41,
-    91,
-    141,
-    134,
-    245,
-    114,
-    45,
-    63,
-    82,
-    19,
-    251,
-    210,
-    57,
-    79,
-    54,
-  ];
+  // const validSecp256k1PublicKey = [
+  //   2,
+  //   29,
+  //   21,
+  //   35,
+  //   7,
+  //   198,
+  //   183,
+  //   43,
+  //   14,
+  //   208,
+  //   65,
+  //   139,
+  //   14,
+  //   112,
+  //   205,
+  //   128,
+  //   231,
+  //   245,
+  //   41,
+  //   91,
+  //   141,
+  //   134,
+  //   245,
+  //   114,
+  //   45,
+  //   63,
+  //   82,
+  //   19,
+  //   251,
+  //   210,
+  //   57,
+  //   79,
+  //   54,
+  // ];
 
   const validEd25519SecretKey =
       'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIg==';
@@ -97,7 +97,7 @@ void main() {
 
   setUp(() {
     final secretKey = Uint8List.fromList(validSecp256k1SecretKey);
-    final pubKey = Uint8List.fromList(validSecp256k1PublicKey);
+    // final pubKey = Uint8List.fromList(validSecp256k1PublicKey);
     secp256k1Keypair = Secp256k1Keypair.fromSecretKey(secretKey);
     secp256r1Keypair = Secp256r1Keypair.fromSecretKey(secretKey);
 
@@ -173,7 +173,6 @@ void main() {
 
   test('pay with secp256r1 keypair', () async {
     final signer = RawSigner(secp256r1Keypair, endpoint: SuiUrls.devnet);
-    print(signer.getAddress());
     final coins = await signer.getCoins(signer.getAddress());
     final inputObjectIds =
         coins.data.take(2).map((x) => x.coinObjectId).toList();

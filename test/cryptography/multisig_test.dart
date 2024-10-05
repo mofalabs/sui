@@ -1,9 +1,8 @@
 
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/cryptography/multisig.dart';
-import 'package:sui/cryptography/signature.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/utils/sha.dart';
 
@@ -34,9 +33,11 @@ void main() {
       final data = Uint8List.fromList([0, 0, 0, 5, 72, 101, 108, 108, 111]);
       final digest = blake2b(data);
 
-      final ser_sig1 = toSerializedSignature(k1.getKeyScheme(), k1.signData(digest), pk1);
+      final serSig1 = toSerializedSignature(k1.getKeyScheme(), k1.signData(digest), pk1);
+      debugPrint(serSig1.toString());
 
-      final ser_sig2 = toSerializedSignature(k2.getKeyScheme(), k2.signData(digest), pk2);
+      final serSig2 = toSerializedSignature(k2.getKeyScheme(), k2.signData(digest), pk2);
+      debugPrint(serSig2.toString());
 
     });
 

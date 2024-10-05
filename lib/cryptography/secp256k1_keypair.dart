@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bip32/bip32.dart';
-import 'package:pointycastle/src/utils.dart' as utils;
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
 import 'package:sui/cryptography/secp256.dart';

@@ -1,9 +1,7 @@
 
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:pointycastle/export.dart';
 import 'package:sui/cryptography/helper.dart';
 
 /// Parse and validate a path that is compliant to SLIP-0010 in form m/44'/784'/{account_index}'/{change_index}'/{address_index}'.

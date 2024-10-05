@@ -25,9 +25,6 @@ void main() {
   // Invalid private key with incorrect length
   final INVALID_SECP256K1_SECRET_KEY = Uint8List.fromList(List<int>.filled(31, 1));
 
-  // Invalid public key with incorrect length
-  final INVALID_SECP256K1_PUBLIC_KEY = Uint8List.fromList(List<int>.filled(32, 1));
-
   const TEST_MNEMONIC =
     'result crisp session latin must fruit genuine question prevent start coconut brave speak student dismiss';
 

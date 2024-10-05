@@ -9,12 +9,15 @@ void main() {
   test('test connecting to sui network', () async {
     /// connect to devnet
     final devnetClient = SuiClient(SuiUrls.devnet);
+    debugPrint(devnetClient.client.url);
 
     /// connect to  testnet
     final testnetClient = SuiClient(SuiUrls.testnet);
+    debugPrint(testnetClient.client.url);
 
     /// connect to  mainnet
     final mainnetClient = SuiClient(SuiUrls.mainnet);
+    debugPrint(mainnetClient.client.url);
   });
 
   test('test Getting coins from the faucet v0', () async {
@@ -48,10 +51,13 @@ void main() {
     final mnemonics = SuiAccount.generateMnemonic();
     final ed25519 =
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Ed25519);
+    debugPrint(ed25519.getAddress());
     final secp256k1 =
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1);
+    debugPrint(secp256k1.getAddress());
     final secp256r1 =
         SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
+    debugPrint(secp256r1.getAddress());
   });
 
   test('test transfer object', () async {
@@ -66,7 +72,7 @@ void main() {
     ], tx.pureAddress(account.getAddress()));
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
-    print(result.digest);
+    debugPrint(result.digest);
   });
 
   test('test split and transfer sui', () async {
@@ -79,7 +85,7 @@ void main() {
     tx.transferObjects([coin[0], coin[1], coin[2]], account.getAddress());
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
-    print(result.digest);
+    debugPrint(result.digest);
   });
 
   test('test merge coins', () async {
@@ -97,7 +103,7 @@ void main() {
         ]);
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
-    print(result.digest);
+    debugPrint(result.digest);
   });
 
   test('test move call', () async {
@@ -111,7 +117,7 @@ void main() {
         arguments: [tx.pureString('Example NFT')]);
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
-    print(result.digest);
+    debugPrint(result.digest);
   });
 
   test('test publish modules', () async {
@@ -126,13 +132,14 @@ void main() {
     tx.transferObjects([upgradeCap], account.getAddress());
 
     final result = await client.signAndExecuteTransactionBlock(account, tx);
-    print(result.digest);
+    debugPrint(result.digest);
   });
 
   test('test get owned objects', () async {
     final client = SuiClient(SuiUrls.devnet);
     final objects = await client.getOwnedObjects(
         '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+    debugPrint(objects.data.length.toString());
   });
 
   test('test get objects', () async {
@@ -141,11 +148,13 @@ void main() {
     final obj = await client.getObject(
         '0x0d49dbda185cd0941b71315edb594276731f21b2232d8713f319b02c462a2da7',
         options: SuiObjectDataOptions(showContent: true));
+    debugPrint(obj.data?.objectId.toString());
 
     final objs = await client.multiGetObjects([
       '0x0d49dbda185cd0941b71315edb594276731f21b2232d8713f319b02c462a2da7',
       '0x922ec73939b3288f6da39ebefb0cb88c6c54817441254d448bd2491ac4dd0cbd'
     ], options: SuiObjectDataOptions(showType: true));
+    debugPrint(objs.length.toString());
   });
 
   test('test get transaction', () async {
@@ -154,6 +163,7 @@ void main() {
     final txn = await client.getTransactionBlock(
         '6oH779AUs2WpwW77xCVGbYqK1FYVamRqHjV6A5wCV8Qj',
         options: SuiTransactionBlockResponseOptions(showEffects: true));
+    debugPrint(txn.digest);
 
     final txns = await client.multiGetTransactionBlocks([
       '9znMGToLRRa8yZvjCUfj1FJmq4gpb8QwpibFAUffuto1',
@@ -161,21 +171,22 @@ void main() {
     ],
         options: SuiTransactionBlockResponseOptions(
             showInput: true, showEffects: true));
+    debugPrint(txns.length.toString());
   });
 
   test('test get checkpoints', () async {
     final client = SuiClient(SuiUrls.devnet);
 
     final checkpoint = await client.getCheckpoint('338000');
-    print(checkpoint.sequenceNumber);
-    print(checkpoint.timestampMs);
-    print(checkpoint.transactions.length);
+    debugPrint(checkpoint.sequenceNumber);
+    debugPrint(checkpoint.timestampMs);
+    debugPrint(checkpoint.transactions.length.toString());
 
     final checkpoints = await client.getCheckpoints(descendingOrder: true);
     for (var cp in checkpoints.data) {
-      print(cp.sequenceNumber);
-      print(cp.timestampMs);
-      print(cp.transactions.length);
+      debugPrint(cp.sequenceNumber);
+      debugPrint(cp.timestampMs);
+      debugPrint(cp.transactions.length.toString());
     }
   });
 
@@ -185,12 +196,15 @@ void main() {
     final coins = await client.getCoins(
         '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2',
         coinType: SUI_TYPE_ARG);
+    debugPrint(coins.data.length.toString());
 
     final allCoins = await client.getAllCoins(
         '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+    debugPrint(allCoins.data.length.toString());
 
     final suiBalance = await client.getBalance(
         '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+    debugPrint(suiBalance.totalBalance.toString());
   });
 
   test('test querying events', () async {

@@ -382,7 +382,7 @@ void main() {
           "\$kind": "Ed25519"
         },
         {
-          "Secp256k1": parseSerializedSignature((k2.signPersonalMessage(data)).signature).signature!,
+          "Secp256k1": parseSerializedSignature((k2.signPersonalMessage(data)).signature).signature,
           "\$kind": "Secp256k1"
         }
       ]);

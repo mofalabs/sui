@@ -21,31 +21,6 @@ void main() {
   /// Invalid private key with incorrect length
   final INVALID_SECP256R1_SECRET_KEY = Uint8List.fromList(List<int>.filled(31, 1));
 
-  /// Invalid public key with incorrect length
-  final INVALID_SECP256R1_PUBLIC_KEY = Uint8List.fromList(List<int>.filled(32, 1));
-
-  /// Test case generated against rust keytool cli. See https://github.com/MystenLabs/sui/blob/edd2cd31e0b05d336b1b03b6e79a67d8dd00d06b/crates/sui/src/unit_tests/keytool_tests.rs#L165
-  final TEST_CASES = [
-    [
-      'act wing dilemma glory episode region allow mad tourist humble muffin oblige',
-      'AiWmZXUcFpUF75H082F2RVJAABS5kcrvb8o09IPH9yUw',
-      '0x4a822457f1970468d38dae8e63fb60eefdaa497d74d781f581ea2d137ec36f3a',
-      'AgLL1StURWGAemn/8rFn3FsRDVfO/Ssf+bbFaugGBtd70w==',
-    ],
-    [
-      'flag rebel cabbage captain minimum purpose long already valley horn enrich salt',
-      'AjaB6aLp4fQabx4NglfGz2Bf01TGKArV80NEOnqDwqNN',
-      '0xcd43ecb9dd32249ff5748f5e4d51855b01c9b1b8bbe7f8638bb8ab4cb463b920',
-      'AgM2aZKpmTrKs8HuyvOZQ2TCQ0s7ql5Agf4giTcu6FtPHA==',
-    ],
-    [
-      'area renew bar language pudding trial small host remind supreme cabbage era',
-      'AtSIEzVpJv+bJH3XptEq63vsuK+te1KRSY7JsiuJfcdK',
-      '0x0d9047b7e7b698cc09c955ea97b0c68c2be7fb3aebeb59edcc84b1fb87e0f28e',
-      'AgJ0BrsxGK2gI3pl7m6L67IXusKo99w4tMDDZCwXhnUm/Q==',
-    ],
-  ];
-
   const TEST_MNEMONIC =
       'open genre century trouble allow pioneer love task chat salt drive income';
 

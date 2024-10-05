@@ -2,26 +2,17 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sui/cryptography/signature.dart';
 import 'package:sui/sui.dart';
 import 'package:sui/utils/hex.dart';
 
 void main() {
-
-  const VALID_SECP256R1_SECRET_KEY = [
-    66, 37, 141, 205, 161, 76, 241, 17, 198, 2, 184, 151, 27, 140, 200, 67, 233,
-    30, 70, 202, 144, 81, 81, 192, 39, 68, 166, 176, 23, 230, 147, 22,
-  ];
 
   // Corresponding to the secret key above.
   const VALID_SECP256R1_PUBLIC_KEY = [
     2, 39, 50, 43, 58, 137, 26, 10, 40, 13, 107, 193, 251, 44, 187, 35, 210, 143,
     84, 144, 111, 214, 64, 127, 95, 116, 31, 109, 239, 87, 98, 96, 154,
   ];
-
-  // Invalid private key with incorrect length
-  final INVALID_SECP256K1_SECRET_KEY = Uint8List.fromList(List<int>.filled(31, 1));
-
+  
   // Invalid public key with incorrect length
   final INVALID_SECP256R1_PUBLIC_KEY = Uint8List.fromList(List<int>.filled(32, 1));
 
