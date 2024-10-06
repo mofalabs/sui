@@ -5,19 +5,18 @@ import 'dart:math';
 import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
-class Split extends StatefulWidget {
-  const Split(this.account, { Key? key }) : super(key: key);
+class SplitPage extends StatefulWidget {
+  const SplitPage(this.account, { Key? key }) : super(key: key);
 
   final SuiAccount account;
 
   @override
-  _SplitState createState() => _SplitState();
+  _SplitPageState createState() => _SplitPageState();
 }
 
-class _SplitState extends State<Split> {
+class _SplitPageState extends State<SplitPage> {
 
   final amountTextController = TextEditingController();
   bool sending = false;

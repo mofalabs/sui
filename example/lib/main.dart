@@ -2,6 +2,7 @@ import 'package:example/pages/faucet.dart';
 import 'package:example/pages/home.dart';
 import 'package:example/pages/merge.dart';
 import 'package:example/pages/share_example.dart';
+import 'package:example/pages/split_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,7 +10,6 @@ import 'package:focus_detector_v2/focus_detector_v2.dart';
 import 'package:sui/sui.dart';
 
 import 'helper/helper.dart';
-import 'pages/split.dart';
 import 'pages/token_menu.dart';
 import 'pages/transfer.dart';
 
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         return Faucet(acc);
       case 2:
-        return Split(acc);
+        return SplitPage(acc);
       case 3:
         return Merge(acc);
       case 4:
