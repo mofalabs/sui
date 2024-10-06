@@ -77,3 +77,8 @@
 
 * Fix example
 * Clean code
+
+## 0.3.4
+
+* Perf: resolve move modules
+* Bump BCS
