@@ -511,18 +511,8 @@ class TransactionBlock {
 
     final moveModulesToResolve = [];
 
-		// Keep track of the object references that will need to be resolved at the end of the transaction.
-		// We keep the input by-reference to avoid needing to re-resolve it:
+		// Keep track of the object references that will need to be resolved.
 		final objectsToResolve = [];
-
-		for (var input in inputs) {
-			if (input['type'] == 'object' && input['value'] is String) {
-				// The input is a string that we need to resolve to an object reference:
-				objectsToResolve.add(
-						{"id": normalizeSuiAddress(input['value']), "input": input});
-				continue;
-			}
-		}
 
     for (var transaction in transactions) {
       if (transaction["kind"] == "MoveCall") {
