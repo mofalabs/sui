@@ -9,7 +9,10 @@ Installation
 
 ```
 dependencies:
-  sui: ^0.2.1
+  sui:
+    git:
+      url: https://github.com/mofalabs/sui.git
+      ref: v1
 ```
 
 Demo
