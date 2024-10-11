@@ -3,6 +3,7 @@ Sui Dart SDK
 
 [![Pub](https://img.shields.io/badge/pub-v0.3.4-blue)](https://pub.dev/packages/sui)
 
+> Note: This branch is in active development and may introduce breaking changes. If you don’t need Transaction v2 feature, use the `v1` branch.
 
 Installation
 -
