@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         return Faucet(acc);
       case 2:
-        return Split(acc);
+        return SplitPage(acc);
       case 3:
         return Merge(acc);
       case 4:
