@@ -626,12 +626,8 @@ class TransactionBlock {
         return localObjectsToResolve;
       }));
 
-      // MoveCall inputs are resolved, replace the input in objectsToResolve
-      for (var input in resolveResults.expand((x) => x)) {
-        final index = objectsToResolve.indexWhere((x) => x["id"] == input["id"]);
-        if (index != -1) {
-          objectsToResolve[index] = input;
-        }
+      for (var input in resolveResults) {
+        objectsToResolve.addAll(input);
       }
     }
 
