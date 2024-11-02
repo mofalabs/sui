@@ -256,7 +256,7 @@ class TransactionBlockDataBuilder {
 mapArguments(dynamic Function(dynamic arg, dynamic command) fn) {
 		for (final command in commands) {
       if (command["MoveCall"] != null) {
-        command["MoveCall"]["arguments"] = command["MoveCall"]["arguments"].map((arg) => fn(arg, command));
+        command["MoveCall"]["arguments"] = command["MoveCall"]["arguments"].map((arg) => fn(arg, command)).toList();
       } else if (command["TransferObjects"] != null) {
 					command["TransferObjects"]["objects"] = command["TransferObjects"]["objects"].map((arg) =>
 						fn(arg, command),
@@ -265,11 +265,9 @@ mapArguments(dynamic Function(dynamic arg, dynamic command) fn) {
       } else if (command["SplitCoins"] != null) {
 					command["SplitCoins"]["coin"] = fn(command["SplitCoins"]["coin"], command);
 					command["SplitCoins"]["amounts"] = command["SplitCoins"]["amounts"].map((arg) => fn(arg, command));
-					break;
       } else if (command["MergeCoins"] != null) {
 					command["MergeCoins"]["destination"] = fn(command["MergeCoins"]["destination"], command);
 					command["MergeCoins"]["sources"] = command["MergeCoins"]["sources"].map((arg) => fn(arg, command));
-					break;
       } else if (command["MakeMoveVec"] != null) {
 					command["MakeMoveVec"]["elements"] = command["MakeMoveVec"]["elements"].map((arg) =>
 						fn(arg, command),

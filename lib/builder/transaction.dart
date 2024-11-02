@@ -1068,13 +1068,11 @@ class Transaction {
   bool isUsedAsMutable(TransactionBlockDataBuilder transactionData, int index) {
     var usedAsMutable = false;
 
-    transactionData.getInputUses(index, (arg, tx) {
+  transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
-        final argIndex = tx["MoveCall"]["arguments"].indexOf(arg);
+        final argIndex = (tx["MoveCall"]["arguments"] as List<dynamic>).indexOf(arg);
         usedAsMutable = tx["MoveCall"]["_argumentTypes"][argIndex]["ref"] != '&' || usedAsMutable;
-      }
-
-      if (tx["MakeMoveVec"] != null || tx["MergeCoins"] == null || tx["SplitCoins"] == null) {
+      }else if (tx["MakeMoveVec"] != null || tx["MergeCoins"] == null || tx["SplitCoins"] == null) {
         usedAsMutable = true;
       }
     });
@@ -1088,7 +1086,7 @@ class Transaction {
 
     transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
-        final argIndex = tx["MoveCall"]["arguments"].indexOf(arg);
+        final argIndex = (tx["MoveCall"]["arguments"] as List<dynamic>).indexOf(arg);
         usedAsReceiving = isReceivingType(tx["MoveCall"]["_argumentTypes"][argIndex]) || usedAsReceiving;
       }
     });
