@@ -82,3 +82,7 @@
 
 * Perf: resolve move modules
 * Bump BCS
+
+## 0.3.5
+
+* Fix map equality in transaction arguments
