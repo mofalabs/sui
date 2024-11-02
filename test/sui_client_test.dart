@@ -466,7 +466,7 @@ void main() {
     txb.transferObjects([coin], txb.pureAddress(receiver.getAddress()));
 
     txb.moveCall(
-        '0xb1d6722effda483fdee29fb26460906f188c9cb8c41f428bc42676d093cd08cf::test::test',
+        '0x69e06dbaf4532817130233a6187d683e5d9eb8364ded9d67ae1bcee6b3d467a::test::test',
         arguments: [
           txb.pureString('demo'),
           txb.pureString('string'),
@@ -539,6 +539,7 @@ void main() {
     debugPrint(txBytes.toString());
 
     final resp = await client.signAndExecuteTransaction(transaction: txBytes);
-    expect(resp.confirmedLocalExecution, true);
+    expect(resp.effects?.status.status, ExecutionStatusType.success);
   });
+
 }
