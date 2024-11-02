@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
 import 'package:bcs/bcs_type.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/builder/commands.dart';
 import 'package:sui/builder/inputs.dart';
@@ -1070,8 +1071,13 @@ class Transaction {
 
     transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
-        final argIndex = tx["MoveCall"]["arguments"].toList().indexOf(arg);
-        usedAsMutable = tx["MoveCall"]["_argumentTypes"][argIndex]["ref"] != '&' || usedAsMutable;
+        final arguments = tx["MoveCall"]["arguments"].toList();
+        final argIndex = arguments.indexWhere((element) => 
+          DeepCollectionEquality().equals(element, arg)
+        );
+        if (argIndex != -1) {
+          usedAsMutable = tx["MoveCall"]["_argumentTypes"][argIndex]["ref"] != '&' || usedAsMutable;
+        }
       } else if (tx["MakeMoveVec"] != null || tx["MergeCoins"] == null || tx["SplitCoins"] == null) {
         usedAsMutable = true;
       }
@@ -1080,14 +1086,18 @@ class Transaction {
     return usedAsMutable;
   }
 
-
   bool isUsedAsReceiving(TransactionBlockDataBuilder transactionData, int index) {
     var usedAsReceiving = false;
 
     transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
-        final argIndex = tx["MoveCall"]["arguments"].toList().indexOf(arg);
-        usedAsReceiving = isReceivingType(tx["MoveCall"]["_argumentTypes"][argIndex]) || usedAsReceiving;
+        final arguments = tx["MoveCall"]["arguments"].toList();
+        final argIndex = arguments.indexWhere((element) => 
+          DeepCollectionEquality().equals(element, arg)
+        );
+        if (argIndex != -1) {
+          usedAsReceiving = isReceivingType(tx["MoveCall"]["_argumentTypes"][argIndex]) || usedAsReceiving;
+        }
       }
     });
 
