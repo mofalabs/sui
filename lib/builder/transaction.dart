@@ -1095,7 +1095,7 @@ class Transaction {
   }
 
   bool isReceivingType(dynamic type) {
-    if (type?["body"]?["datatype"] == null) {
+    if (type["body"] is! Map || type["body"]["datatype"] is! Map) {
       return false;
     }
 
