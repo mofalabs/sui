@@ -639,7 +639,7 @@ class Transaction {
         }
 
         final inputs = (command["MoveCall"]["arguments"] as Iterable).map((arg) {
-          if (arg["Input"] != null) {
+          if (arg is Map && arg["Input"] != null) {
             return _blockData.inputs[arg["Input"]];
           }
           return null;
@@ -1070,7 +1070,7 @@ class Transaction {
 
     transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
-        final argIndex = (tx["MoveCall"]["arguments"] as List<dynamic>).indexOf(arg);
+        final argIndex = tx["MoveCall"]["arguments"].toList().indexOf(arg);
         usedAsMutable = tx["MoveCall"]["_argumentTypes"][argIndex]["ref"] != '&' || usedAsMutable;
       } else if (tx["MakeMoveVec"] != null || tx["MergeCoins"] == null || tx["SplitCoins"] == null) {
         usedAsMutable = true;
@@ -1086,7 +1086,7 @@ class Transaction {
 
     transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
-        final argIndex = (tx["MoveCall"]["arguments"] as List<dynamic>).indexOf(arg);
+        final argIndex = tx["MoveCall"]["arguments"].toList().indexOf(arg);
         usedAsReceiving = isReceivingType(tx["MoveCall"]["_argumentTypes"][argIndex]) || usedAsReceiving;
       }
     });
