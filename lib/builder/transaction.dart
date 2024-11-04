@@ -41,7 +41,8 @@ class TransactionResult {
     }
 
     final subIndex = int.tryParse(indexKey.toString());
-    if (subIndex == null || subIndex < 0) {
+    if (subIndex == null) return null;
+    if (subIndex < 0) {
       throw ArgumentError("Invalid index key $indexKey");
     }
     return nestedResult(subIndex);
