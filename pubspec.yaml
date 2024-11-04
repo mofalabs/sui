@@ -1,5 +1,5 @@
 name: sui
-description: A cross-platform Sui SDK for Mobile, Web and Desktop.
+description: A cross-platform SDK for Sui blockchain, supporting Mobile, Web and Desktop.
 version: 0.3.5
 homepage: https://github.com/mofalabs/sui
 
