@@ -86,3 +86,7 @@
 ## 0.3.5
 
 * Fix map equality in transaction arguments
+
+## 0.3.6
+
+* Fix parse subIndex failed
