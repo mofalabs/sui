@@ -270,7 +270,13 @@ void main() {
     // txb.transferObjects([coin[0]], txb.pureAddress(sender));
     // txb.transferObjects([coin[1]], txb.pureAddress(sender));
 
-    final resp = await client.signAndExecuteTransactionBlock(signer, txb);
+    final resp = await client.signAndExecuteTransactionBlock(
+      signer, 
+      txb,
+      responseOptions: SuiTransactionBlockResponseOptions(
+        showEffects: true
+      ),
+    );
     expect(resp.effects?.status.status, ExecutionStatusType.success);
   });
 
