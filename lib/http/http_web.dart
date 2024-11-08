@@ -12,9 +12,6 @@ class Http extends DioForBrowser {
   Http._();
 
   _init() {
-    options.connectTimeout = const Duration(seconds: 5);
-    options.receiveTimeout = const Duration(seconds: 10);
-
     options.headers["Content-Type"] = "application/json; charset=UTF-8";
 
     interceptors.add(ApiInterceptor());

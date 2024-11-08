@@ -33,10 +33,13 @@ abstract class SignerWithProvider with JsonRpcProvider {
   late final JsonRpcClient rpcClient;
   late final TxnDataSerializer serializer;
 
-  SignerWithProvider(String endpoint, [TxnDataSerializer? serializer]) {
-    rpcClient = JsonRpcClient(endpoint);
-    this.serializer =
-      serializer ?? RpcTxnDataSerializer(endpoint);
+  SignerWithProvider({
+    required String endpoint,
+    RequestOptions? options,
+    TxnDataSerializer? serializer
+  }) {
+    rpcClient = JsonRpcClient(endpoint, options: options);
+    this.serializer = serializer ?? RpcTxnDataSerializer(endpoint);
   }
 
 

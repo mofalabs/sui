@@ -14,7 +14,7 @@ class RawSigner extends SignerWithProvider {
     Keypair keypair,
     {String? endpoint,
     TxnDataSerializer? serializer}
-  ): super(endpoint ?? "", serializer) {
+  ): super(endpoint: endpoint ?? '', serializer: serializer) {
     _keypair = keypair;
   }
 

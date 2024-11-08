@@ -4,14 +4,22 @@ import 'package:dio/dio.dart';
 import 'package:sui/http/http.dart';
 import 'package:sui/utils/error.dart';
 
+class RequestOptions {
+  Map<String, dynamic>? headers;
+  Duration? connectTimeout;
+  Duration? sendTimeout;
+  Duration? receiveTimeout;
+  RequestOptions({this.headers, this.connectTimeout, this.sendTimeout, this.receiveTimeout});
+}
+
 class JsonRpcClient {
   JsonRpcClient(
     this.url, {
-    this.headers,
+    this.options,
   });
 
   final String url;
-  Map<String, dynamic>? headers;
+  RequestOptions? options;
 
   String get rpcVersion => "2.0";
 
@@ -52,12 +60,20 @@ class JsonRpcClient {
       message["params"] = parameters;
     }
 
+    final dioOptions = Options(
+      sendTimeout: options?.sendTimeout,
+      receiveTimeout: options?.receiveTimeout,
+      headers: options?.headers
+    );
+
+    http.options.connectTimeout = options?.connectTimeout ?? const Duration(seconds: 60);
+
     var data = (await http.post(
       url,
       data: message,
-      options: Options(headers: headers),
-    ))
-        .data;
+      options: dioOptions,
+    )).data;
+
     if (data is String) {
       if (data.isEmpty) return data;
       data = jsonDecode(data);

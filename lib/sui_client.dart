@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:sui/builder/transaction.dart';
 import 'package:sui/models/dev_inspect_results.dart';
+import 'package:sui/rpc/client.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
@@ -12,9 +13,13 @@ class SuiClient extends SignerWithProvider {
   late SuiAccount? _account;
 
   SuiClient(
-    String endpoint,
-    {SuiAccount? account}
-  ): super(endpoint) {
+    String endpoint, {
+    SuiAccount? account,
+    RequestOptions? options
+  }): super(
+    endpoint: endpoint,
+    options: options
+  ) {
     _account = account;
   }
 
