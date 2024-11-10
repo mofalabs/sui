@@ -90,3 +90,7 @@
 ## 0.3.6
 
 * Fix parse subIndex failed
+
+## 0.3.7
+
+* Config request options

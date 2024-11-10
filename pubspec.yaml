@@ -1,6 +1,6 @@
 name: sui
 description: A cross-platform SDK for Sui blockchain, supporting Mobile, Web and Desktop.
-version: 0.3.6
+version: 0.3.7
 homepage: https://github.com/mofalabs/sui
 
 environment:
