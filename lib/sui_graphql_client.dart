@@ -10,9 +10,9 @@ class SuiGraphQLClient {
   }
 
   Future<dynamic> query(
-    String document,
-    [Map<String, dynamic> variables = const {}]
-  ) async {
+    String document, {
+    Map<String, dynamic> variables = const {}
+  }) async {
     final options = QueryOptions(document: gql(document), variables: variables);
     final resp = await client.query(options);
     if(resp.hasException) {
@@ -22,9 +22,9 @@ class SuiGraphQLClient {
   }
 
   Future<dynamic> mutate(
-    String document,
-    [Map<String, dynamic> variables = const {}]
-  ) async {
+    String document,{
+    Map<String, dynamic> variables = const {}
+  }) async {
     final options = MutationOptions(document: gql(document), variables: variables);
     final resp = await client.mutate(options);
     if(resp.hasException) {
@@ -41,6 +41,19 @@ class SuiGraphQLClient {
     ''';
     final data = await query(doc);
     return data['chainIdentifier'];
+  }
+
+  Future<int> getReferenceGasPrice() async {
+    const doc = '''
+      query GetReferenceGasPrice {
+        epoch {
+          referenceGasPrice
+        }
+      }
+    ''';
+    final data = await query(doc);
+    final gasPrice = data['epoch']['referenceGasPrice'];
+    return int.parse(gasPrice);
   }
 
 
