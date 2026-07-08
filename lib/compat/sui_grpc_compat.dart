@@ -134,8 +134,20 @@ class SuiGrpcCompat {
 
   Future<SuiObjectResponse> getObject(String objectId,
       {SuiObjectDataOptions? options}) async {
-    final o = await grpc.getObject(objectId, readMask: _objectMask(options));
-    return SuiObjectResponse.fromJson({'data': _objectToJson(o)});
+    try {
+      final o = await grpc.getObject(objectId, readMask: _objectMask(options));
+      return SuiObjectResponse.fromJson({'data': _objectToJson(o)});
+    } catch (e) {
+      // A missing object is a normal result in JSON-RPC ({error: notExists}),
+      // not an exception. gRPC throws NOT_FOUND, so translate it back; only
+      // swallow the not-found case and let real errors propagate.
+      if (e.toString().toLowerCase().contains('not found')) {
+        return SuiObjectResponse.fromJson({
+          'error': {'code': 'notExists', 'object_id': objectId}
+        });
+      }
+      rethrow;
+    }
   }
 
   Future<List<SuiObjectResponse>> multiGetObjects(List<String> objectIds,
@@ -504,7 +516,10 @@ class SuiGrpcCompat {
   Map<String, dynamic> _effectsJson(dynamic executed) {
     final st = executed.effects.status;
     final g = executed.effects.gasUsed;
+    const zero =
+        '0x0000000000000000000000000000000000000000000000000000000000000000';
     return {
+      'messageVersion': 'v1',
       'status': {
         'status': st.success ? 'success' : 'failure',
         if (!st.success) 'error': st.error.description,
@@ -514,6 +529,15 @@ class SuiGrpcCompat {
         'storageCost': g.storageCost.toInt().toString(),
         'storageRebate': g.storageRebate.toInt().toString(),
         'nonRefundableStorageFee': '0',
+      },
+      'transactionDigest': executed.digest,
+      'gasObject': {
+        'owner': {'AddressOwner': zero},
+        'reference': {
+          'objectId': zero,
+          'version': 0,
+          'digest': '11111111111111111111111111111111',
+        }
       },
     };
   }

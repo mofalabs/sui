@@ -87,4 +87,15 @@ void main() {
     expect(txs, isNotEmpty);
     expect(txs.first.digest, isNotEmpty);
   });
+
+  test('getObject on a non-existent id -> notExists (no throw)', () async {
+    // Regression: a missing object must return {error: notExists} like the
+    // legacy JSON-RPC SuiClient, not throw — wallets rely on this to tell an
+    // account address (no object) apart from an object address.
+    const missing =
+        '0x9f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a';
+    final r = await client.getObject(missing);
+    expect(r.data, isNull);
+    expect(r.error, isNotNull);
+  });
 }
