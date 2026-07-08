@@ -134,6 +134,7 @@ class SuiGraphQLClient {
     int first = 50,
     String? after,
   }) async {
+    // The endpoint caps page size at 50; paginate internally to gather all.
     const q = r'''
       query ($id: UInt53, $first: Int!, $after: String) {
         epoch(epochId: $id) {
@@ -146,18 +147,26 @@ class SuiGraphQLClient {
         }
       }
     ''';
-    final data = await transport.query(q, variables: {
-      if (epochId != null) 'id': epochId,
-      'first': first,
-      if (after != null) 'after': after,
-    });
-    final nodes = (((data['epoch'] as Map)['validatorSet']
-        as Map)['activeValidators'] as Map)['nodes'] as List;
-    return nodes
-        .map((n) => ValidatorInfo._fromJson(
-            (n as Map<String, dynamic>)['contents']['json']
-                as Map<String, dynamic>))
-        .toList();
+    final pageSize = first > 50 ? 50 : first;
+    final out = <ValidatorInfo>[];
+    String? cursor = after;
+    while (true) {
+      final data = await transport.query(q, variables: {
+        if (epochId != null) 'id': epochId,
+        'first': pageSize,
+        if (cursor != null) 'after': cursor,
+      });
+      final vs = (((data['epoch'] as Map)['validatorSet']
+          as Map)['activeValidators'] as Map);
+      out.addAll((vs['nodes'] as List).map((n) => ValidatorInfo._fromJson(
+          (n as Map<String, dynamic>)['contents']['json']
+              as Map<String, dynamic>)));
+      final pageInfo = vs['pageInfo'] as Map<String, dynamic>;
+      if (pageInfo['hasNextPage'] != true) break;
+      cursor = pageInfo['endCursor'] as String?;
+      if (cursor == null) break;
+    }
+    return out;
   }
 
   /// Staked SUI objects owned by [owner] (`0x3::staking_pool::StakedSui`).

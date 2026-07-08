@@ -15,6 +15,7 @@ export 'builder/transaction_builder_client.dart';
 export 'graphql/graphql_transport.dart';
 export 'graphql/sui_graphql_client.dart';
 export 'compat/legacy_names.dart';
+export 'compat/sui_grpc_compat.dart';
 
 export 'bcs/sui_bcs.dart';
 export 'builder/transaction_block_data.dart';
