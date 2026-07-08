@@ -6,6 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:sui/types/event_filter.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+/// Legacy JSON-RPC WebSocket subscription client.
+///
+/// JSON-RPC (and its WebSocket subscriptions) is being decommissioned. Use
+/// `SuiGrpcClient.subscribeCheckpoints` for checkpoint streaming; event
+/// subscriptions move to Sui GraphQL. See the migration guide in the README.
+@Deprecated(
+  'JSON-RPC WebSocket subscriptions are being removed. Use '
+  'SuiGrpcClient.subscribeCheckpoints; event subscriptions move to GraphQL.',
+)
 class WebsocketClient {
 
   WebSocketChannel? _webSocketChannel;

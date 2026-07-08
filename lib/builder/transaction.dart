@@ -11,9 +11,9 @@ import 'package:sui/builder/inputs.dart';
 import 'package:sui/builder/pure.dart';
 import 'package:sui/builder/serializer.dart';
 import 'package:sui/builder/transaction_block_data.dart';
+import 'package:sui/builder/transaction_builder_client.dart';
 import 'package:sui/builder/v1.dart';
 import 'package:sui/cryptography/keypair.dart';
-import 'package:sui/sui_client.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/normalized.dart';
@@ -65,7 +65,7 @@ const DefaultOfflineLimits = {
 	"maxTxSizeBytes": 128 * 1024,
 };
 
-SuiClient expectClient(BuildOptions options) {
+TransactionBuilderClient expectClient(BuildOptions options) {
 	if (options.client == null) {
 		throw ArgumentError(
 			"No provider passed to Transaction#build, but transaction data was not sufficient to build offline.",
@@ -103,7 +103,7 @@ List<List<T>> chunk<T>(List<T> arr, int size) {
 }
 
 class BuildOptions {
-	SuiClient? client;
+	TransactionBuilderClient? client;
 	bool onlyTransactionKind;
 	/// Define a protocol config to build against, instead of having it fetched from the provider at build time.
 	dynamic protocolConfig;
@@ -211,6 +211,59 @@ class Transaction {
 
 	TransactionData getData() {
 		return _blockData.snapshot();
+	}
+
+	/// Resolve Move Registry (`@org/app`) names in this transaction's `moveCall`
+	/// commands — both the package name and any type arguments — using the given
+	/// resolver callbacks. Rewrites the commands in place. No-op if no MVR names
+	/// are present. Mirrors the TypeScript SDK's NamedPackagesPlugin.
+	Future<void> resolveNames({
+		required Future<String> Function(String package) resolvePackage,
+		required Future<String> Function(String type) resolveType,
+	}) async {
+		final commands = _blockData.commands;
+		final packages = <String>{};
+		final types = <String>{};
+		for (final cmd in commands) {
+			final mc = cmd['MoveCall'];
+			if (mc == null) continue;
+			final pkg = mc['package'];
+			if (pkg is String && pkg.contains('@')) packages.add(pkg);
+			final typeArgs = mc['typeArguments'];
+			if (typeArgs is List) {
+				for (final t in typeArgs) {
+					if (t is String && t.contains('@')) types.add(t);
+				}
+			}
+		}
+		if (packages.isEmpty && types.isEmpty) return;
+
+		final pkgMap = <String, String>{};
+		for (final p in packages) {
+			pkgMap[p] = await resolvePackage(p);
+		}
+		final typeMap = <String, String>{};
+		for (final t in types) {
+			typeMap[t] = await resolveType(t);
+		}
+
+		for (final cmd in commands) {
+			final mc = cmd['MoveCall'];
+			if (mc == null) continue;
+			final pkg = mc['package'];
+			if (pkg is String && pkgMap.containsKey(pkg)) {
+				mc['package'] = pkgMap[pkg];
+			}
+			final typeArgs = mc['typeArguments'];
+			if (typeArgs is List) {
+				for (var i = 0; i < typeArgs.length; i++) {
+					final t = typeArgs[i];
+					if (t is String && typeMap.containsKey(t)) {
+						typeArgs[i] = typeMap[t];
+					}
+				}
+			}
+		}
 	}
 
   Pure? _pure;

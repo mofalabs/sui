@@ -1,7 +1,12 @@
 Sui Dart SDK
 -
 
-[![Pub](https://img.shields.io/badge/pub-v0.3.7-blue)](https://pub.dev/packages/sui)
+[![Pub](https://img.shields.io/badge/pub-v0.4.0-blue)](https://pub.dev/packages/sui)
+
+> ⚠️ **JSON-RPC is being decommissioned by Sui (public endpoints shut down July 2026, fully off 2026-07-31).**
+> Use the new **gRPC-web** client (`SuiGrpcClient`) for reads/writes and **GraphQL** (`SuiGraphQLClient`)
+> for advanced queries — see [gRPC-web API (recommended)](#grpc-web-api-recommended) below.
+> The legacy `SuiClient` (JSON-RPC) API is kept for compatibility but is `@Deprecated` and will stop working.
 
 > Note: This branch is in active development and may introduce breaking changes. If you don’t need Transaction v2 feature, use the `v1` branch.
 
@@ -10,7 +15,7 @@ Installation
 
 ```
 dependencies:
-  sui: ^0.3.7
+  sui: ^0.4.0
 ```
 
 Demo
@@ -18,37 +23,10 @@ Demo
 
 https://sui-dart.pages.dev/
 
-Usage
+Accounts
 -
 
-### Connecting to Sui Network
-
-```dart
-/// connect to devnet
-final devnetClient = SuiClient(SuiUrls.devnet);
-
-/// connect to testnet
-final testnetClient = SuiClient(SuiUrls.testnet);
-
-/// connect to mainnet
-final mainnetClient = SuiClient(SuiUrls.mainnet);
-```
-
-### Getting coins from the faucet
-
-#### Faucet V0
-```dart
-final faucet = FaucetClient(SuiUrls.faucetDev);
-await faucet.requestSuiFromFaucetV0('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
-```
-
-#### Faucet V1
-```dart
-final faucet = FaucetClient(SuiUrls.faucetDev);
-await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
-```
-
-### Sui Account
+`SuiAccount` is transport-agnostic — it works with both the new and legacy clients.
 
 #### Create account with private key
 
@@ -80,6 +58,161 @@ final secp256k1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256k1)
 
 /// Secp256r1 account
 final secp256r1 = SuiAccount.fromMnemonics(mnemonics, SignatureScheme.Secp256r1);
+```
+
+gRPC-web API (recommended)
+-
+
+The `SuiGrpcClient` talks to Sui full nodes over **gRPC-web** — it works uniformly on
+Mobile, Web and Desktop (no proxy required) and replaces the deprecated JSON-RPC client.
+
+### Connecting
+
+```dart
+import 'package:sui/sui.dart';
+
+final client = SuiGrpcClient(network: SuiNetwork.testnet);
+// networks: SuiNetwork.mainnet | testnet | devnet | localnet
+```
+
+### Faucet (testnet)
+
+> The faucet only serves `/v2/gas` now (v0/v1 are removed) and is rate-limited.
+
+```dart
+import 'package:dio/dio.dart';
+
+await Dio().post('https://faucet.testnet.sui.io/v2/gas',
+    data: {'FixedAmountRequest': {'recipient': account.getAddress()}});
+```
+
+### Reading
+
+```dart
+// Balance / coins (transport-neutral models)
+final balance = await client.balanceOf(owner);        // SuiBalance
+final coins   = await client.listCoins(owner);        // SuiCoinPage
+
+// Objects
+final object  = await client.objectInfo(objectId);    // SuiObjectInfo
+final objects = await client.getObjects([id1, id2]);  // raw proto (batch)
+
+// Transactions
+final tx = await client.getTransaction(digest);
+await client.waitForTransaction(digest);              // poll until available
+
+// Chain / system
+final gasPrice    = await client.getReferenceGasPrice();
+final systemState = await client.getCurrentSystemState();
+final epoch       = await client.getEpoch();
+
+// Dynamic fields (name derived on-chain)
+final field = await client.getDynamicFieldObject(parentId, 'u64', nameBcs);
+```
+
+### Writing (auto gas)
+
+`signAndExecuteTransaction` handles gas price, gas-coin selection and budget
+estimation (via `simulateTransaction`) for you.
+
+```dart
+final account = SuiAccount.ed25519Account(); // fund it first (see Faucet above)
+
+final tx = Transaction();
+final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000000)]);
+tx.transferObjects([coin], tx.pureAddress(account.getAddress()));
+
+final executed = await client.signAndExecuteTransaction(account, tx);
+print('${executed.digest} success=${executed.effects.status.success}');
+```
+
+Move call (with an object argument, and optional Move Registry `@org/app` names):
+
+```dart
+final tx = Transaction();
+tx.moveCall('0x2::clock::timestamp_ms', arguments: [tx.object('0x6')]);
+// MVR names like '@org/app::module::fn' are auto-resolved on build.
+final executed = await client.signAndExecuteTransaction(account, tx);
+```
+
+### Subscriptions (checkpoints)
+
+Replaces the deprecated JSON-RPC WebSocket subscriptions.
+
+```dart
+final sub = client.subscribeCheckpoints().listen((res) {
+  print('checkpoint ${res.checkpoint.sequenceNumber}');
+});
+// later: await sub.cancel();
+```
+
+### Signature verification
+
+```dart
+final signed = account.keyPair.signPersonalMessage(message);
+final result = await client.verifySignature(
+  message,
+  Uint8List.fromList(base64Decode(signed.signature)),
+  intentScope: IntentScope.personalMessage,
+  address: account.getAddress(),
+);
+print(result.isValid);
+```
+
+### Move Registry (MVR)
+
+```dart
+final pkg = await client.mvr?.resolvePackage('@mvr/core'); // -> 0x…
+```
+
+GraphQL (advanced queries)
+-
+
+GraphQL is served by an indexer (not full nodes) and covers query patterns gRPC can't —
+filtered transaction/event queries, validators, stakes. Public endpoints:
+`graphql.<network>.sui.io/graphql`.
+
+```dart
+final gql = SuiGraphQLClient.forNetwork(SuiNetwork.testnet);
+
+final page   = await gql.queryTransactionsBySender(address, first: 10);
+final events = await gql.queryEventsByModule('0x2', 'coin', first: 10);
+final vals   = await gql.getActiveValidators(first: 5);
+final stakes = await gql.getStakes(address);
+final epoch  = await gql.getEpochSummary();
+```
+
+Legacy API (JSON-RPC — deprecated)
+-
+
+> ⚠️ The `SuiClient` API below uses **JSON-RPC**, which Sui removes on **2026-07-31**.
+> New code should use `SuiGrpcClient` / `SuiGraphQLClient` above. Kept for reference and migration.
+
+### Connecting to Sui Network
+
+```dart
+/// connect to devnet
+final devnetClient = SuiClient(SuiUrls.devnet);
+
+/// connect to testnet
+final testnetClient = SuiClient(SuiUrls.testnet);
+
+/// connect to mainnet
+final mainnetClient = SuiClient(SuiUrls.mainnet);
+```
+
+### Getting coins from the faucet
+
+#### Faucet V0
+```dart
+final faucet = FaucetClient(SuiUrls.faucetDev);
+await faucet.requestSuiFromFaucetV0('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+```
+
+#### Faucet V1
+```dart
+final faucet = FaucetClient(SuiUrls.faucetDev);
+await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
 ```
 
 ### Writing APIs

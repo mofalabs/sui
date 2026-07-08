@@ -1,5 +1,21 @@
 library sui;
 
+// New gRPC-web / GraphQL transports (JSON-RPC migration).
+export 'client/network.dart';
+export 'client/core_client.dart';
+export 'client/sui_models.dart';
+export 'client/mvr_client.dart';
+export 'utils/dynamic_fields.dart';
+export 'grpc/sui_grpc_client.dart';
+export 'grpc/grpc_core_client.dart';
+export 'grpc/grpc_transaction_executor.dart';
+export 'grpc/grpc_builder_adapter.dart';
+export 'grpc/transport/grpc_web_transport.dart';
+export 'builder/transaction_builder_client.dart';
+export 'graphql/graphql_transport.dart';
+export 'graphql/sui_graphql_client.dart';
+export 'compat/legacy_names.dart';
+
 export 'bcs/sui_bcs.dart';
 export 'builder/transaction_block_data.dart';
 export 'builder/transactions.dart';

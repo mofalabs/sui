@@ -22,6 +22,17 @@ import 'package:sui/types/transactions.dart';
 import 'package:sui/types/validator.dart';
 import 'package:sui/types/version.dart';
 
+/// Legacy JSON-RPC data provider.
+///
+/// Sui is decommissioning JSON-RPC (public endpoints shut down July 2026, fully
+/// off 2026-07-31). Migrate to [SuiGrpcClient] (gRPC-web) for reads/writes and
+/// [SuiGraphQLClient] for filtered queries; use
+/// `SuiGrpcClient.subscribeCheckpoints` instead of WebSocket subscriptions.
+/// See the migration guide in the README.
+@Deprecated(
+  'JSON-RPC is being decommissioned (2026-07-31). Migrate to SuiGrpcClient '
+  '(gRPC-web) / SuiGraphQLClient. See the README migration guide.',
+)
 mixin JsonRpcProvider {
 
   JsonRpcClient get client;

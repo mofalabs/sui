@@ -1,6 +1,6 @@
 name: sui
 description: A cross-platform SDK for Sui blockchain, supporting Mobile, Web and Desktop.
-version: 0.3.7
+version: 0.4.0
 homepage: https://github.com/mofalabs/sui
 
 environment:
@@ -10,16 +10,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bip32: 2.0.0
-  bip39: 1.0.6
+  bip32:
+    git:
+      url: https://github.com/mofalabs/bip32.git
+      ref: v2.0.1
+  bip39:
+    git:
+      url: https://github.com/mofalabs/bip39.git
+      ref: v1.0.7
   ed25519_edwards: 0.3.1
-  pointycastle: '>=3.7.3 <5.0.0'
+  pointycastle: 4.0.0
   bcs: ^0.1.1
   dio: ^5.1.2
   hex: ^0.2.0
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
   web_socket_channel: ^2.4.0
+  protobuf: ^4.1.0
+  fixnum: ^1.1.1
 
 dev_dependencies:
   flutter_test:

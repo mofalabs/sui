@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:sui/builder/transaction.dart';
+import 'package:sui/builder/transaction_builder_client.dart';
 import 'package:sui/models/dev_inspect_results.dart';
 import 'package:sui/rpc/client.dart';
 import 'package:sui/signers/signer_with_provider.dart';
@@ -9,7 +10,7 @@ import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/transactions.dart';
 
-class SuiClient extends SignerWithProvider {
+class SuiClient extends SignerWithProvider implements TransactionBuilderClient {
   late SuiAccount? _account;
 
   SuiClient(

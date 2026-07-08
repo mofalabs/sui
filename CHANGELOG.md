@@ -94,3 +94,27 @@
 ## 0.3.7
 
 * Config request options
+
+## 0.4.0
+
+Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-07-31).
+
+* Add **gRPC-web** transport (`SuiGrpcClient`) — works on Mobile/Web/Desktop with no proxy:
+  * Reads: `getObject(s)`, `listOwnedObjects`, `getBalance`/`listBalances`/`listCoins`,
+    `getCoinInfo`, `getTransaction`, `getCheckpoint`, `getEpoch`, `getCurrentSystemState`,
+    `getPackage`/`getFunction`, `listDynamicFields`, `getDynamicFieldObject`/`getDynamicObjectField`,
+    name service.
+  * Writes: `simulateTransaction`, `executeTransaction`, and one-call
+    `signAndExecuteTransaction` with automatic gas price / coin selection / budget estimation.
+  * `moveCall` with object arguments now resolves objects and Move signatures over gRPC.
+  * `waitForTransaction`, `subscribeCheckpoints` (server-streaming, replaces WebSocket),
+    `verifySignature`.
+* Add **GraphQL** client (`SuiGraphQLClient`) for advanced queries: filtered transactions,
+  events, active validators, stakes, epoch summary.
+* Add **Move Registry (MVR)** resolution (`@org/app` names) wired into `moveCall`, `listCoins`
+  and dynamic-field lookups.
+* Add transport-neutral models (`SuiBalance`, `SuiCoin`, `SuiObjectInfo`, `SuiExecutionResult`, …)
+  and `deriveDynamicFieldID`.
+* Deprecate the JSON-RPC stack (`JsonRpcProvider`, `SuiClient` JSON-RPC methods, `WebsocketClient`).
+  Kept for compatibility; will stop working when Sui removes JSON-RPC.
+* Deps: add `protobuf` and `fixnum`; bump `bcs` and `dio`.
