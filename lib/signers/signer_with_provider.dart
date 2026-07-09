@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use_from_same_package
 
 import 'dart:convert';
 import 'dart:typed_data';
@@ -150,6 +151,7 @@ abstract class SignerWithProvider with JsonRpcProvider {
             options: options,
             requestType: requestType
         );
+      // ignore: unreachable_switch_default
       default:
         throw ArgumentError(
           'Error, unknown transaction kind: "${transaction.kind}"'

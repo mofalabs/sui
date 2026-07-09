@@ -1,5 +1,11 @@
 targets:
   $default:
+    # Only generate for the package's own sources; the bundled example app
+    # pulls in plugin symlinks that must not be processed by the generators.
+    sources:
+      - lib/**
+      - test/**
+      - pubspec.yaml
     builders:
       freezed:
         options:

@@ -14,7 +14,7 @@ class FaucetClient {
       }
     };
 
-    final resp = await http.post(endpoint + "/gas", data: data);
+    final resp = await http.post("$endpoint/gas", data: data);
     return FaucetResponse.fromJson(resp.data);
   }
 
@@ -25,12 +25,12 @@ class FaucetClient {
       }
     };
 
-    final resp = await http.post(endpoint + "/v1/gas", data: data);
+    final resp = await http.post("$endpoint/v1/gas", data: data);
     return BatchFaucetResponse.fromJson(resp.data);
   }
 
   Future<BatchStatusFaucetResponse> getFaucetRequestStatus(String taskId) async {
-    final resp = await http.get(endpoint + "/v1/status/$taskId");
+    final resp = await http.get("$endpoint/v1/status/$taskId");
     return BatchStatusFaucetResponse.fromJson(resp.data);
   }
 

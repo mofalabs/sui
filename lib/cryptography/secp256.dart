@@ -188,7 +188,7 @@ class Secp256 {
 
 class SignatureData extends ECSignature {
   
-  SignatureData(BigInt r, BigInt s): super(r, s);
+  SignatureData(super.r, super.s);
 
   factory SignatureData.fromBytes(Uint8List data) {
     if (data.length != 64) {

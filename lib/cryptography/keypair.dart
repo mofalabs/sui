@@ -182,6 +182,7 @@ mixin PublicKey {
 	}
 
   /// Return the base-64 representation of the public key
+  @override
   String toString();
 
   /// Return the Sui address associated with this public key

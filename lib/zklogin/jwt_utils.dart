@@ -4,7 +4,7 @@ import 'package:sui/zklogin/types.dart';
 
 List<int> base64UrlCharTo6Bits(String base64UrlChar) {
   if (base64UrlChar.length != 1) {
-    throw ArgumentError('Invalid base64Url character: ' + base64UrlChar);
+    throw ArgumentError('Invalid base64Url character: $base64UrlChar');
   }
 
   // Define the base64URL character set
@@ -15,7 +15,7 @@ List<int> base64UrlCharTo6Bits(String base64UrlChar) {
   final index = base64UrlCharacterSet.indexOf(base64UrlChar);
 
   if (index == -1) {
-    throw ArgumentError('Invalid base64Url character: ' + base64UrlChar);
+    throw ArgumentError('Invalid base64Url character: $base64UrlChar');
   }
 
   // Convert the index to a 6-bit binary string
@@ -40,7 +40,7 @@ List<int> base64UrlStringToBitVector(String base64UrlString) {
 String decodeBase64URL(String s, int i) {
   if (s.length < 2) {
     throw ArgumentError(
-        "Input (s = ${s}) is not tightly packed because s.length < 2");
+        "Input (s = $s) is not tightly packed because s.length < 2");
   }
   List<int> bits = base64UrlStringToBitVector(s);
 
@@ -54,7 +54,7 @@ String decodeBase64URL(String s, int i) {
   } else {
     // (offset == 3)
     throw ArgumentError(
-        "Input (s = ${s}) is not tightly packed because i%4 = 3 (i = ${i}))");
+        "Input (s = $s) is not tightly packed because i%4 = 3 (i = $i))");
   }
 
   final lastCharOffset = (i + s.length - 1) % 4;
@@ -67,7 +67,7 @@ String decodeBase64URL(String s, int i) {
   } else {
     // (offset == 0)
     throw ArgumentError(
-      "Input (s = ${s}) is not tightly packed because (i + s.length - 1)%4 = 0 (i = ${i}))",
+      "Input (s = $s) is not tightly packed because (i + s.length - 1)%4 = 0 (i = $i))",
     );
   }
 
@@ -93,7 +93,7 @@ String decodeBase64URL(String s, int i) {
     throw ArgumentError('Invalid claim');
   }
 
-  Map json = jsonDecode('{' + claim.substring(0, claim.length - 1) + '}');
+  Map json = jsonDecode('{${claim.substring(0, claim.length - 1)}}');
   if (json.length != 1) {
     throw ArgumentError('Invalid claim');
   }

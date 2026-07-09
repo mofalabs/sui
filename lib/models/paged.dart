@@ -5,7 +5,7 @@ part 'paged.freezed.dart';
 part 'paged.g.dart';
 
 @Freezed(genericArgumentFactories: true)
-class Paged<T> with _$Paged<T>{
+abstract class Paged<T> with _$Paged<T>{
   const factory Paged({
     required T data,
     dynamic nextCursor,  // NextCursor or String
@@ -16,7 +16,7 @@ class Paged<T> with _$Paged<T>{
 }
 
 @freezed
-class NextCursor with _$NextCursor{
+abstract class NextCursor with _$NextCursor{
   const factory NextCursor({
     required String txDigest,
     required String eventSeq

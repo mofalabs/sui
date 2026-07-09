@@ -6,3 +6,12 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   errors:
     invalid_annotation_target: ignore
+
+linter:
+  rules:
+    # This SDK mirrors Sui protocol / BCS / TypeScript-SDK identifiers verbatim
+    # (e.g. SIGNATURE_SCHEME_TO_FLAG, SUI_TYPE_ARG, generated struct fields), so
+    # the standard Dart naming conventions are intentionally not enforced on the
+    # public API — renaming would break wire/spec compatibility.
+    constant_identifier_names: false
+    non_constant_identifier_names: false

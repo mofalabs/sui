@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/signers/signer_with_provider.dart';
-import 'package:sui/signers/txn_data_serializers/txn_data_serializer.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
 
@@ -13,8 +12,8 @@ class RawSigner extends SignerWithProvider {
   RawSigner(
     Keypair keypair,
     {String? endpoint,
-    TxnDataSerializer? serializer}
-  ): super(endpoint: endpoint ?? '', serializer: serializer) {
+    super.serializer}
+  ): super(endpoint: endpoint ?? '') {
     _keypair = keypair;
   }
 

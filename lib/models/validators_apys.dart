@@ -5,7 +5,7 @@ part 'validators_apys.freezed.dart';
 part 'validators_apys.g.dart';
 
 @freezed
-class ValidatorsApys with _$ValidatorsApys {
+abstract class ValidatorsApys with _$ValidatorsApys {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ValidatorsApys({
     required List<ValidatorApy> apys,
@@ -16,7 +16,7 @@ class ValidatorsApys with _$ValidatorsApys {
 }
 
 @freezed
-class ValidatorApy with _$ValidatorApy {
+abstract class ValidatorApy with _$ValidatorApy {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ValidatorApy({
     required String address,

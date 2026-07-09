@@ -18,10 +18,10 @@ class ValidatorsApy {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['apys'] = apys.map((e) => e.toJson()).toList();
-    _data['epoch'] = epoch;
-    return _data;
+    final data = <String, dynamic>{};
+    data['apys'] = apys.map((e) => e.toJson()).toList();
+    data['epoch'] = epoch;
+    return data;
   }
 }
 
@@ -40,10 +40,10 @@ class Apys {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['address'] = address;
-    _data['apy'] = apy;
-    return _data;
+    final data = <String, dynamic>{};
+    data['address'] = address;
+    data['apy'] = apy;
+    return data;
   }
 }
 
@@ -173,47 +173,47 @@ class SuiValidatorSummary {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['suiAddress'] = suiAddress;
-    _data['protocolPubkeyBytes'] = protocolPubkeyBytes;
-    _data['networkPubkeyBytes'] = networkPubkeyBytes;
-    _data['workerPubkeyBytes'] = workerPubkeyBytes;
-    _data['proofOfPossessionBytes'] = proofOfPossessionBytes;
-    _data['name'] = name;
-    _data['description'] = description;
-    _data['imageUrl'] = imageUrl;
-    _data['projectUrl'] = projectUrl;
-    _data['netAddress'] = netAddress;
-    _data['p2pAddress'] = p2pAddress;
-    _data['primaryAddress'] = primaryAddress;
-    _data['workerAddress'] = workerAddress;
-    _data['nextEpochProtocolPubkeyBytes'] = nextEpochProtocolPubkeyBytes;
-    _data['nextEpochProofOfPossession'] = nextEpochProofOfPossession;
-    _data['nextEpochNetworkPubkeyBytes'] = nextEpochNetworkPubkeyBytes;
-    _data['nextEpochWorkerPubkeyBytes'] = nextEpochWorkerPubkeyBytes;
-    _data['nextEpochNetAddress'] = nextEpochNetAddress;
-    _data['nextEpochP2pAddress'] = nextEpochP2pAddress;
-    _data['nextEpochPrimaryAddress'] = nextEpochPrimaryAddress;
-    _data['nextEpochWorkerAddress'] = nextEpochWorkerAddress;
-    _data['votingPower'] = votingPower;
-    _data['operationCapId'] = operationCapId;
-    _data['gasPrice'] = gasPrice;
-    _data['commissionRate'] = commissionRate;
-    _data['nextEpochStake'] = nextEpochStake;
-    _data['nextEpochGasPrice'] = nextEpochGasPrice;
-    _data['nextEpochCommissionRate'] = nextEpochCommissionRate;
-    _data['stakingPoolId'] = stakingPoolId;
-    _data['stakingPoolActivationEpoch'] = stakingPoolActivationEpoch;
-    _data['stakingPoolDeactivationEpoch'] = stakingPoolDeactivationEpoch;
-    _data['stakingPoolSuiBalance'] = stakingPoolSuiBalance;
-    _data['rewardsPool'] = rewardsPool;
-    _data['poolTokenBalance'] = poolTokenBalance;
-    _data['pendingStake'] = pendingStake;
-    _data['pendingTotalSuiWithdraw'] = pendingTotalSuiWithdraw;
-    _data['pendingPoolTokenWithdraw'] = pendingPoolTokenWithdraw;
-    _data['exchangeRatesId'] = exchangeRatesId;
-    _data['exchangeRatesSize'] = exchangeRatesSize;
-    return _data;
+    final data = <String, dynamic>{};
+    data['suiAddress'] = suiAddress;
+    data['protocolPubkeyBytes'] = protocolPubkeyBytes;
+    data['networkPubkeyBytes'] = networkPubkeyBytes;
+    data['workerPubkeyBytes'] = workerPubkeyBytes;
+    data['proofOfPossessionBytes'] = proofOfPossessionBytes;
+    data['name'] = name;
+    data['description'] = description;
+    data['imageUrl'] = imageUrl;
+    data['projectUrl'] = projectUrl;
+    data['netAddress'] = netAddress;
+    data['p2pAddress'] = p2pAddress;
+    data['primaryAddress'] = primaryAddress;
+    data['workerAddress'] = workerAddress;
+    data['nextEpochProtocolPubkeyBytes'] = nextEpochProtocolPubkeyBytes;
+    data['nextEpochProofOfPossession'] = nextEpochProofOfPossession;
+    data['nextEpochNetworkPubkeyBytes'] = nextEpochNetworkPubkeyBytes;
+    data['nextEpochWorkerPubkeyBytes'] = nextEpochWorkerPubkeyBytes;
+    data['nextEpochNetAddress'] = nextEpochNetAddress;
+    data['nextEpochP2pAddress'] = nextEpochP2pAddress;
+    data['nextEpochPrimaryAddress'] = nextEpochPrimaryAddress;
+    data['nextEpochWorkerAddress'] = nextEpochWorkerAddress;
+    data['votingPower'] = votingPower;
+    data['operationCapId'] = operationCapId;
+    data['gasPrice'] = gasPrice;
+    data['commissionRate'] = commissionRate;
+    data['nextEpochStake'] = nextEpochStake;
+    data['nextEpochGasPrice'] = nextEpochGasPrice;
+    data['nextEpochCommissionRate'] = nextEpochCommissionRate;
+    data['stakingPoolId'] = stakingPoolId;
+    data['stakingPoolActivationEpoch'] = stakingPoolActivationEpoch;
+    data['stakingPoolDeactivationEpoch'] = stakingPoolDeactivationEpoch;
+    data['stakingPoolSuiBalance'] = stakingPoolSuiBalance;
+    data['rewardsPool'] = rewardsPool;
+    data['poolTokenBalance'] = poolTokenBalance;
+    data['pendingStake'] = pendingStake;
+    data['pendingTotalSuiWithdraw'] = pendingTotalSuiWithdraw;
+    data['pendingPoolTokenWithdraw'] = pendingPoolTokenWithdraw;
+    data['exchangeRatesId'] = exchangeRatesId;
+    data['exchangeRatesSize'] = exchangeRatesSize;
+    return data;
   }
 }
 
@@ -344,48 +344,48 @@ class SuiSystemStateSummary {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['epoch'] = epoch;
-    _data['protocolVersion'] = protocolVersion;
-    _data['systemStateVersion'] = systemStateVersion;
-    _data['storageFundTotalObjectStorageRebates'] =
+    final data = <String, dynamic>{};
+    data['epoch'] = epoch;
+    data['protocolVersion'] = protocolVersion;
+    data['systemStateVersion'] = systemStateVersion;
+    data['storageFundTotalObjectStorageRebates'] =
         storageFundTotalObjectStorageRebates;
-    _data['storageFundNonRefundableBalance'] = storageFundNonRefundableBalance;
-    _data['referenceGasPrice'] = referenceGasPrice;
-    _data['safeMode'] = safeMode;
-    _data['safeModeStorageRewards'] = safeModeStorageRewards;
-    _data['safeModeComputationRewards'] = safeModeComputationRewards;
-    _data['safeModeStorageRebates'] = safeModeStorageRebates;
-    _data['safeModeNonRefundableStorageFee'] = safeModeNonRefundableStorageFee;
-    _data['epochStartTimestampMs'] = epochStartTimestampMs;
-    _data['epochDurationMs'] = epochDurationMs;
-    _data['stakeSubsidyStartEpoch'] = stakeSubsidyStartEpoch;
-    _data['maxValidatorCount'] = maxValidatorCount;
-    _data['minValidatorJoiningStake'] = minValidatorJoiningStake;
-    _data['validatorLowStakeThreshold'] = validatorLowStakeThreshold;
-    _data['validatorVeryLowStakeThreshold'] = validatorVeryLowStakeThreshold;
-    _data['validatorLowStakeGracePeriod'] = validatorLowStakeGracePeriod;
-    _data['stakeSubsidyBalance'] = stakeSubsidyBalance;
-    _data['stakeSubsidyDistributionCounter'] = stakeSubsidyDistributionCounter;
-    _data['stakeSubsidyCurrentDistributionAmount'] =
+    data['storageFundNonRefundableBalance'] = storageFundNonRefundableBalance;
+    data['referenceGasPrice'] = referenceGasPrice;
+    data['safeMode'] = safeMode;
+    data['safeModeStorageRewards'] = safeModeStorageRewards;
+    data['safeModeComputationRewards'] = safeModeComputationRewards;
+    data['safeModeStorageRebates'] = safeModeStorageRebates;
+    data['safeModeNonRefundableStorageFee'] = safeModeNonRefundableStorageFee;
+    data['epochStartTimestampMs'] = epochStartTimestampMs;
+    data['epochDurationMs'] = epochDurationMs;
+    data['stakeSubsidyStartEpoch'] = stakeSubsidyStartEpoch;
+    data['maxValidatorCount'] = maxValidatorCount;
+    data['minValidatorJoiningStake'] = minValidatorJoiningStake;
+    data['validatorLowStakeThreshold'] = validatorLowStakeThreshold;
+    data['validatorVeryLowStakeThreshold'] = validatorVeryLowStakeThreshold;
+    data['validatorLowStakeGracePeriod'] = validatorLowStakeGracePeriod;
+    data['stakeSubsidyBalance'] = stakeSubsidyBalance;
+    data['stakeSubsidyDistributionCounter'] = stakeSubsidyDistributionCounter;
+    data['stakeSubsidyCurrentDistributionAmount'] =
         stakeSubsidyCurrentDistributionAmount;
-    _data['stakeSubsidyPeriodLength'] = stakeSubsidyPeriodLength;
-    _data['stakeSubsidyDecreaseRate'] = stakeSubsidyDecreaseRate;
-    _data['totalStake'] = totalStake;
-    _data['pendingActiveValidatorsId'] = pendingActiveValidatorsId;
-    _data['pendingActiveValidatorsSize'] = pendingActiveValidatorsSize;
-    _data['pendingRemovals'] = pendingRemovals;
-    _data['stakingPoolMappingsId'] = stakingPoolMappingsId;
-    _data['stakingPoolMappingsSize'] = stakingPoolMappingsSize;
-    _data['inactivePoolsId'] = inactivePoolsId;
-    _data['inactivePoolsSize'] = inactivePoolsSize;
-    _data['validatorCandidatesId'] = validatorCandidatesId;
-    _data['validatorCandidatesSize'] = validatorCandidatesSize;
-    _data['atRiskValidators'] = atRiskValidators;
-    _data['validatorReportRecords'] = validatorReportRecords;
-    _data['activeValidators'] =
+    data['stakeSubsidyPeriodLength'] = stakeSubsidyPeriodLength;
+    data['stakeSubsidyDecreaseRate'] = stakeSubsidyDecreaseRate;
+    data['totalStake'] = totalStake;
+    data['pendingActiveValidatorsId'] = pendingActiveValidatorsId;
+    data['pendingActiveValidatorsSize'] = pendingActiveValidatorsSize;
+    data['pendingRemovals'] = pendingRemovals;
+    data['stakingPoolMappingsId'] = stakingPoolMappingsId;
+    data['stakingPoolMappingsSize'] = stakingPoolMappingsSize;
+    data['inactivePoolsId'] = inactivePoolsId;
+    data['inactivePoolsSize'] = inactivePoolsSize;
+    data['validatorCandidatesId'] = validatorCandidatesId;
+    data['validatorCandidatesSize'] = validatorCandidatesSize;
+    data['atRiskValidators'] = atRiskValidators;
+    data['validatorReportRecords'] = validatorReportRecords;
+    data['activeValidators'] =
         activeValidators.map((e) => e.toJson()).toList();
-    return _data;
+    return data;
   }
 }
 
@@ -416,14 +416,14 @@ class StakeObject {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['stakedSuiId'] = stakedSuiId;
-    _data['stakeRequestEpoch'] = stakeRequestEpoch;
-    _data['stakeActiveEpoch'] = stakeActiveEpoch;
-    _data['principal'] = principal;
-    _data['status'] = status;
-    _data['estimatedReward'] = estimatedReward;
-    return _data;
+    final data = <String, dynamic>{};
+    data['stakedSuiId'] = stakedSuiId;
+    data['stakeRequestEpoch'] = stakeRequestEpoch;
+    data['stakeActiveEpoch'] = stakeActiveEpoch;
+    data['principal'] = principal;
+    data['status'] = status;
+    data['estimatedReward'] = estimatedReward;
+    return data;
   }
 }
 
@@ -446,11 +446,11 @@ class DelegatedStake {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['validatorAddress'] = validatorAddress;
-    _data['stakingPool'] = stakingPool;
-    _data['stakes'] = stakes.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['validatorAddress'] = validatorAddress;
+    data['stakingPool'] = stakingPool;
+    data['stakes'] = stakes.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -472,9 +472,9 @@ class CommitteeInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['epoch'] = epoch;
-    _data['validators'] = validators;
-    return _data;
+    final data = <String, dynamic>{};
+    data['epoch'] = epoch;
+    data['validators'] = validators;
+    return data;
   }
 }

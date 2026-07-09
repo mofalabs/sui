@@ -34,7 +34,7 @@ class ApiInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     if (Constants.enableDebugLog) {
       debugPrint("");
       debugPrint("--------------- error ---------------");

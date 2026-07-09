@@ -5,7 +5,7 @@ part 'dynamic_field.freezed.dart';
 part 'dynamic_field.g.dart';
 
 @freezed
-class DynamicFieldPage with _$DynamicFieldPage {
+abstract class DynamicFieldPage with _$DynamicFieldPage {
   const factory DynamicFieldPage({
     required List<DynamicFieldInfo> data,
     String? nextCursor,
@@ -17,7 +17,7 @@ class DynamicFieldPage with _$DynamicFieldPage {
 }
 
 @freezed
-class DynamicFieldInfo with _$DynamicFieldInfo {
+abstract class DynamicFieldInfo with _$DynamicFieldInfo {
   const factory DynamicFieldInfo({
     required DynamicFieldName name,
     required String bcsName,
@@ -33,7 +33,7 @@ class DynamicFieldInfo with _$DynamicFieldInfo {
 }
 
 @freezed
-class DynamicFieldName with _$DynamicFieldName {
+abstract class DynamicFieldName with _$DynamicFieldName {
   const factory DynamicFieldName({
     required String type,
     dynamic value,

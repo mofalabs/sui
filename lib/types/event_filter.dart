@@ -14,8 +14,7 @@ class MoveModule {
 
 class MoveEventModule extends MoveModule {
   final String event;
-  MoveEventModule(String package, String module, this.event)
-    :super(package, module);
+  MoveEventModule(super.package, super.module, this.event);
 
   @override
   Map<String, String> toJson() {

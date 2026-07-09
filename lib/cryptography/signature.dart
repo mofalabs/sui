@@ -19,6 +19,7 @@ enum SignatureScheme {
   ZkLogin,
 }
 
+// ignore: camel_case_types
 abstract class SIGNATURE_SCHEME_TO_FLAG {
   static const int Ed25519 = 0x00;
   static const int Secp256k1 = 0x01;
@@ -38,6 +39,7 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
         return MultiSig;
       case SignatureScheme.ZkLogin:
         return ZkLogin;
+      // ignore: unreachable_switch_default
       default:
         throw ArgumentError("Undefined Signature Scheme $scheme");
     }

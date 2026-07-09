@@ -310,6 +310,7 @@ class Transaction {
 	///
 	/// For `Uint8Array` type automatically convert the input into a `Pure` CallArg, since this
 	/// is the format required for custom serialization.
+	// ignore: unused_element
 	Map<String, dynamic> _input(String type, dynamic value) {
 		final index = _blockData.inputs.length;
 		final input =
@@ -740,7 +741,7 @@ class Transaction {
     }
 
     if (moveCallsToResolve.isNotEmpty) {
-      moveCallsToResolve.forEach((moveCall) {
+      for (var moveCall in moveCallsToResolve) {
         final parameters = moveFunctionParameters["${moveCall["package"]}::${moveCall["module"]}::${moveCall["function"]}"];
         if (parameters != null && parameters.isNotEmpty) {
           // Entry functions can have a mutable reference to an instance of the TxContext
@@ -751,7 +752,7 @@ class Transaction {
 
           moveCall["_argumentTypes"] = params;
         }
-      });
+      }
     }
 
     for (var command in commands) {
@@ -1127,7 +1128,7 @@ class Transaction {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
         final arguments = tx["MoveCall"]["arguments"].toList();
         final argIndex = arguments.indexWhere((element) => 
-          DeepCollectionEquality().equals(element, arg)
+          const DeepCollectionEquality().equals(element, arg)
         );
         if (argIndex != -1) {
           usedAsMutable = tx["MoveCall"]["_argumentTypes"][argIndex]["ref"] != '&' || usedAsMutable;
@@ -1147,7 +1148,7 @@ class Transaction {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
         final arguments = tx["MoveCall"]["arguments"].toList();
         final argIndex = arguments.indexWhere((element) => 
-          DeepCollectionEquality().equals(element, arg)
+          const DeepCollectionEquality().equals(element, arg)
         );
         if (argIndex != -1) {
           usedAsReceiving = isReceivingType(tx["MoveCall"]["_argumentTypes"][argIndex]) || usedAsReceiving;

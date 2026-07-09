@@ -7,6 +7,7 @@ import 'package:sui/cryptography/keypair.dart';
 import 'package:sui/cryptography/mnemonics.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 import 'package:sui/cryptography/signature.dart';
+// ignore: library_prefixes
 import 'package:sui/utils/ed25519_hd_key.dart' as ed25519HDKey;
 
 const DEFAULT_ED25519_DERIVATION_PATH = "m/44'/784'/0'/0'/0'";

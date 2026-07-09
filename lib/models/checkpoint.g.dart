@@ -6,8 +6,7 @@ part of 'checkpoint.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Checkpoint _$$_CheckpointFromJson(Map<String, dynamic> json) =>
-    _$_Checkpoint(
+_Checkpoint _$CheckpointFromJson(Map<String, dynamic> json) => _Checkpoint(
       epoch: json['epoch'] as String,
       sequenceNumber: json['sequenceNumber'] as String,
       digest: json['digest'] as String,
@@ -23,7 +22,7 @@ _$_Checkpoint _$$_CheckpointFromJson(Map<String, dynamic> json) =>
       validatorSignature: json['validatorSignature'] as String,
     );
 
-Map<String, dynamic> _$$_CheckpointToJson(_$_Checkpoint instance) =>
+Map<String, dynamic> _$CheckpointToJson(_Checkpoint instance) =>
     <String, dynamic>{
       'epoch': instance.epoch,
       'sequenceNumber': instance.sequenceNumber,
@@ -37,17 +36,17 @@ Map<String, dynamic> _$$_CheckpointToJson(_$_Checkpoint instance) =>
       'validatorSignature': instance.validatorSignature,
     };
 
-_$_EpochRollingGasCostSummary _$$_EpochRollingGasCostSummaryFromJson(
+_EpochRollingGasCostSummary _$EpochRollingGasCostSummaryFromJson(
         Map<String, dynamic> json) =>
-    _$_EpochRollingGasCostSummary(
+    _EpochRollingGasCostSummary(
       computationCost: json['computationCost'] as String,
       storageCost: json['storageCost'] as String,
       storageRebate: json['storageRebate'] as String,
       nonRefundableStorageFee: json['nonRefundableStorageFee'] as String,
     );
 
-Map<String, dynamic> _$$_EpochRollingGasCostSummaryToJson(
-        _$_EpochRollingGasCostSummary instance) =>
+Map<String, dynamic> _$EpochRollingGasCostSummaryToJson(
+        _EpochRollingGasCostSummary instance) =>
     <String, dynamic>{
       'computationCost': instance.computationCost,
       'storageCost': instance.storageCost,

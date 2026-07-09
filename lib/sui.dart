@@ -1,4 +1,4 @@
-library sui;
+library;
 
 // New gRPC-web / GraphQL transports (JSON-RPC migration).
 export 'client/network.dart';

@@ -6,8 +6,8 @@ part of 'dynamic_field.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_DynamicFieldPage _$$_DynamicFieldPageFromJson(Map<String, dynamic> json) =>
-    _$_DynamicFieldPage(
+_DynamicFieldPage _$DynamicFieldPageFromJson(Map<String, dynamic> json) =>
+    _DynamicFieldPage(
       data: (json['data'] as List<dynamic>)
           .map((e) => DynamicFieldInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -15,25 +15,25 @@ _$_DynamicFieldPage _$$_DynamicFieldPageFromJson(Map<String, dynamic> json) =>
       hasNextPage: json['hasNextPage'] as bool,
     );
 
-Map<String, dynamic> _$$_DynamicFieldPageToJson(_$_DynamicFieldPage instance) =>
+Map<String, dynamic> _$DynamicFieldPageToJson(_DynamicFieldPage instance) =>
     <String, dynamic>{
       'data': instance.data,
       'nextCursor': instance.nextCursor,
       'hasNextPage': instance.hasNextPage,
     };
 
-_$_DynamicFieldInfo _$$_DynamicFieldInfoFromJson(Map<String, dynamic> json) =>
-    _$_DynamicFieldInfo(
+_DynamicFieldInfo _$DynamicFieldInfoFromJson(Map<String, dynamic> json) =>
+    _DynamicFieldInfo(
       name: DynamicFieldName.fromJson(json['name'] as Map<String, dynamic>),
       bcsName: json['bcsName'] as String,
       type: json['type'] as String,
       objectType: json['objectType'] as String,
       objectId: json['objectId'] as String,
-      version: json['version'] as int,
+      version: (json['version'] as num).toInt(),
       digest: json['digest'] as String,
     );
 
-Map<String, dynamic> _$$_DynamicFieldInfoToJson(_$_DynamicFieldInfo instance) =>
+Map<String, dynamic> _$DynamicFieldInfoToJson(_DynamicFieldInfo instance) =>
     <String, dynamic>{
       'name': instance.name,
       'bcsName': instance.bcsName,
@@ -44,13 +44,13 @@ Map<String, dynamic> _$$_DynamicFieldInfoToJson(_$_DynamicFieldInfo instance) =>
       'digest': instance.digest,
     };
 
-_$_DynamicFieldName _$$_DynamicFieldNameFromJson(Map<String, dynamic> json) =>
-    _$_DynamicFieldName(
+_DynamicFieldName _$DynamicFieldNameFromJson(Map<String, dynamic> json) =>
+    _DynamicFieldName(
       type: json['type'] as String,
       value: json['value'],
     );
 
-Map<String, dynamic> _$$_DynamicFieldNameToJson(_$_DynamicFieldName instance) =>
+Map<String, dynamic> _$DynamicFieldNameToJson(_DynamicFieldName instance) =>
     <String, dynamic>{
       'type': instance.type,
       'value': instance.value,

@@ -18,7 +18,7 @@ class SuiBcs {
 	static final ULEB128 = Bcs.uleb128();
   static final BOOL = Bcs.boolean();
 	static final STRING = Bcs.string();
-  static final VECTOR = Bcs.vector;
+  static const VECTOR = Bcs.vector;
 
   static BcsType<int, dynamic> unsafe_u64([BcsTypeOptions<int, dynamic>? options]) {
     return Bcs.u64(

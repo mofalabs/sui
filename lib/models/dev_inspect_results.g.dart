@@ -6,22 +6,20 @@ part of 'dev_inspect_results.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SuiExecutionResult _$$_SuiExecutionResultFromJson(
-        Map<String, dynamic> json) =>
-    _$_SuiExecutionResult(
+_SuiExecutionResult _$SuiExecutionResultFromJson(Map<String, dynamic> json) =>
+    _SuiExecutionResult(
       mutableReferenceOutputs: json['mutableReferenceOutputs'],
       returnValues: json['returnValues'],
     );
 
-Map<String, dynamic> _$$_SuiExecutionResultToJson(
-        _$_SuiExecutionResult instance) =>
+Map<String, dynamic> _$SuiExecutionResultToJson(_SuiExecutionResult instance) =>
     <String, dynamic>{
       'mutableReferenceOutputs': instance.mutableReferenceOutputs,
       'returnValues': instance.returnValues,
     };
 
-_$_DevInspectResults _$$_DevInspectResultsFromJson(Map<String, dynamic> json) =>
-    _$_DevInspectResults(
+_DevInspectResults _$DevInspectResultsFromJson(Map<String, dynamic> json) =>
+    _DevInspectResults(
       effects: TransactionEffects.fromJson(json['effects']),
       events: (json['events'] as List<dynamic>)
           .map((e) => SuiEvent.fromJson(e as Map<String, dynamic>))
@@ -32,8 +30,7 @@ _$_DevInspectResults _$$_DevInspectResultsFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_DevInspectResultsToJson(
-        _$_DevInspectResults instance) =>
+Map<String, dynamic> _$DevInspectResultsToJson(_DevInspectResults instance) =>
     <String, dynamic>{
       'effects': instance.effects,
       'events': instance.events,

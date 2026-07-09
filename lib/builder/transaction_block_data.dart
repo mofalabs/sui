@@ -189,7 +189,7 @@ class TransactionBlockDataBuilder {
 		final expirationValue = expiration ?? this.expiration;
 		final senderValue = sender ?? this.sender;
     
-    final gasConfigValue = this.gasData.toJson();
+    final gasConfigValue = gasData.toJson();
     if (gasConfig != null) {
       gasConfig.toJson().forEach((key, value) {
         if (value != null) {
@@ -219,7 +219,7 @@ class TransactionBlockDataBuilder {
 			"expiration": expirationValue?.toJson() ?? { "None": true },
 			"gasData": {
 				"payment": gasConfigValue["payment"],
-				"owner": prepareSuiAddress(this.gasData.owner ?? senderValue),
+				"owner": prepareSuiAddress(gasData.owner ?? senderValue),
 				"price": BigInt.parse(gasConfigValue["price"].toString()),
 				"budget": BigInt.parse(gasConfigValue["budget"].toString()),
 			},

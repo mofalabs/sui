@@ -7,7 +7,7 @@ part 'dev_inspect_results.freezed.dart';
 part 'dev_inspect_results.g.dart';
 
 @freezed
-class SuiExecutionResult with _$SuiExecutionResult{
+abstract class SuiExecutionResult with _$SuiExecutionResult{
   const factory SuiExecutionResult({
     dynamic mutableReferenceOutputs,
     dynamic returnValues
@@ -17,7 +17,7 @@ class SuiExecutionResult with _$SuiExecutionResult{
 }
 
 @freezed
-class DevInspectResults with _$DevInspectResults{
+abstract class DevInspectResults with _$DevInspectResults{
   const factory DevInspectResults({
     required TransactionEffects effects,
     required List<SuiEvent> events,

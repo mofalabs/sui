@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:sui/builder/transaction.dart';
 import 'package:sui/builder/transaction_builder_client.dart';
 import 'package:sui/models/dev_inspect_results.dart';
-import 'package:sui/rpc/client.dart';
 import 'package:sui/signers/signer_with_provider.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/types/common.dart';
@@ -16,10 +15,9 @@ class SuiClient extends SignerWithProvider implements TransactionBuilderClient {
   SuiClient(
     String endpoint, {
     SuiAccount? account,
-    RequestOptions? options
+    super.options
   }): super(
-    endpoint: endpoint,
-    options: options
+    endpoint: endpoint
   ) {
     _account = account;
   }
@@ -66,6 +64,7 @@ class SuiClient extends SignerWithProvider implements TransactionBuilderClient {
       signWithBytes.bytes, 
       [signWithBytes.signature],
       options: responseOptions,
+      // ignore: deprecated_member_use_from_same_package
       requestType: requestType
     );
   }

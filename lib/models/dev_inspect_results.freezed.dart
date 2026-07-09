@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,31 +10,29 @@ part of 'dev_inspect_results.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-SuiExecutionResult _$SuiExecutionResultFromJson(Map<String, dynamic> json) {
-  return _SuiExecutionResult.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SuiExecutionResult {
-  dynamic get mutableReferenceOutputs => throw _privateConstructorUsedError;
-  dynamic get returnValues => throw _privateConstructorUsedError;
+  dynamic get mutableReferenceOutputs;
+  dynamic get returnValues;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  /// Serializes this SuiExecutionResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  String toString() {
+    return 'SuiExecutionResult(mutableReferenceOutputs: $mutableReferenceOutputs, returnValues: $returnValues)';
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuiExecutionResult implements _SuiExecutionResult {
-  const _$_SuiExecutionResult(
-      {this.mutableReferenceOutputs, this.returnValues});
-
-  factory _$_SuiExecutionResult.fromJson(Map<String, dynamic> json) =>
-      _$$_SuiExecutionResultFromJson(json);
+class _SuiExecutionResult implements SuiExecutionResult {
+  const _SuiExecutionResult({this.mutableReferenceOutputs, this.returnValues});
+  factory _SuiExecutionResult.fromJson(Map<String, dynamic> json) =>
+      _$SuiExecutionResultFromJson(json);
 
   @override
   final dynamic mutableReferenceOutputs;
@@ -41,59 +40,46 @@ class _$_SuiExecutionResult implements _SuiExecutionResult {
   final dynamic returnValues;
 
   @override
-  String toString() {
-    return 'SuiExecutionResult(mutableReferenceOutputs: $mutableReferenceOutputs, returnValues: $returnValues)';
-  }
-
-  @override
   Map<String, dynamic> toJson() {
-    return _$$_SuiExecutionResultToJson(
+    return _$SuiExecutionResultToJson(
       this,
     );
   }
-}
-
-abstract class _SuiExecutionResult implements SuiExecutionResult {
-  const factory _SuiExecutionResult(
-      {final dynamic mutableReferenceOutputs,
-      final dynamic returnValues}) = _$_SuiExecutionResult;
-
-  factory _SuiExecutionResult.fromJson(Map<String, dynamic> json) =
-      _$_SuiExecutionResult.fromJson;
 
   @override
-  dynamic get mutableReferenceOutputs;
-  @override
-  dynamic get returnValues;
-}
-
-DevInspectResults _$DevInspectResultsFromJson(Map<String, dynamic> json) {
-  return _DevInspectResults.fromJson(json);
+  String toString() {
+    return 'SuiExecutionResult(mutableReferenceOutputs: $mutableReferenceOutputs, returnValues: $returnValues)';
+  }
 }
 
 /// @nodoc
 mixin _$DevInspectResults {
-  TransactionEffects get effects => throw _privateConstructorUsedError;
-  List<SuiEvent> get events => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
-  List<SuiExecutionResult>? get results => throw _privateConstructorUsedError;
+  TransactionEffects get effects;
+  List<SuiEvent> get events;
+  String? get error;
+  List<SuiExecutionResult>? get results;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  /// Serializes this DevInspectResults to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  String toString() {
+    return 'DevInspectResults(effects: $effects, events: $events, error: $error, results: $results)';
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_DevInspectResults implements _DevInspectResults {
-  const _$_DevInspectResults(
+class _DevInspectResults implements DevInspectResults {
+  const _DevInspectResults(
       {required this.effects,
       required final List<SuiEvent> events,
       this.error,
       final List<SuiExecutionResult>? results})
       : _events = events,
         _results = results;
-
-  factory _$_DevInspectResults.fromJson(Map<String, dynamic> json) =>
-      _$$_DevInspectResultsFromJson(json);
+  factory _DevInspectResults.fromJson(Map<String, dynamic> json) =>
+      _$DevInspectResultsFromJson(json);
 
   @override
   final TransactionEffects effects;
@@ -118,34 +104,16 @@ class _$_DevInspectResults implements _DevInspectResults {
   }
 
   @override
-  String toString() {
-    return 'DevInspectResults(effects: $effects, events: $events, error: $error, results: $results)';
-  }
-
-  @override
   Map<String, dynamic> toJson() {
-    return _$$_DevInspectResultsToJson(
+    return _$DevInspectResultsToJson(
       this,
     );
   }
+
+  @override
+  String toString() {
+    return 'DevInspectResults(effects: $effects, events: $events, error: $error, results: $results)';
+  }
 }
 
-abstract class _DevInspectResults implements DevInspectResults {
-  const factory _DevInspectResults(
-      {required final TransactionEffects effects,
-      required final List<SuiEvent> events,
-      final String? error,
-      final List<SuiExecutionResult>? results}) = _$_DevInspectResults;
-
-  factory _DevInspectResults.fromJson(Map<String, dynamic> json) =
-      _$_DevInspectResults.fromJson;
-
-  @override
-  TransactionEffects get effects;
-  @override
-  List<SuiEvent> get events;
-  @override
-  String? get error;
-  @override
-  List<SuiExecutionResult>? get results;
-}
+// dart format on

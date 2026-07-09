@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,32 +10,32 @@ part of 'sui_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-SuiEvent _$SuiEventFromJson(Map<String, dynamic> json) {
-  return _SuiEvent.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SuiEvent {
-  EventId get id => throw _privateConstructorUsedError;
-  String get packageId => throw _privateConstructorUsedError;
-  String get transactionModule => throw _privateConstructorUsedError;
-  String get sender => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get parsedJson => throw _privateConstructorUsedError;
-  String? get bcs => throw _privateConstructorUsedError;
+  EventId get id;
+  String get packageId;
+  String get transactionModule;
+  String get sender;
+  String get type;
+  Map<String, dynamic>? get parsedJson;
+  String? get bcs;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  /// Serializes this SuiEvent to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  String toString() {
+    return 'SuiEvent(id: $id, packageId: $packageId, transactionModule: $transactionModule, sender: $sender, type: $type, parsedJson: $parsedJson, bcs: $bcs)';
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuiEvent implements _SuiEvent {
-  const _$_SuiEvent(
+class _SuiEvent implements SuiEvent {
+  const _SuiEvent(
       {required this.id,
       required this.packageId,
       required this.transactionModule,
@@ -43,9 +44,8 @@ class _$_SuiEvent implements _SuiEvent {
       required final Map<String, dynamic>? parsedJson,
       required this.bcs})
       : _parsedJson = parsedJson;
-
-  factory _$_SuiEvent.fromJson(Map<String, dynamic> json) =>
-      _$$_SuiEventFromJson(json);
+  factory _SuiEvent.fromJson(Map<String, dynamic> json) =>
+      _$SuiEventFromJson(json);
 
   @override
   final EventId id;
@@ -71,65 +71,38 @@ class _$_SuiEvent implements _SuiEvent {
   final String? bcs;
 
   @override
-  String toString() {
-    return 'SuiEvent(id: $id, packageId: $packageId, transactionModule: $transactionModule, sender: $sender, type: $type, parsedJson: $parsedJson, bcs: $bcs)';
-  }
-
-  @override
   Map<String, dynamic> toJson() {
-    return _$$_SuiEventToJson(
+    return _$SuiEventToJson(
       this,
     );
   }
-}
-
-abstract class _SuiEvent implements SuiEvent {
-  const factory _SuiEvent(
-      {required final EventId id,
-      required final String packageId,
-      required final String transactionModule,
-      required final String sender,
-      required final String type,
-      required final Map<String, dynamic>? parsedJson,
-      required final String? bcs}) = _$_SuiEvent;
-
-  factory _SuiEvent.fromJson(Map<String, dynamic> json) = _$_SuiEvent.fromJson;
 
   @override
-  EventId get id;
-  @override
-  String get packageId;
-  @override
-  String get transactionModule;
-  @override
-  String get sender;
-  @override
-  String get type;
-  @override
-  Map<String, dynamic>? get parsedJson;
-  @override
-  String? get bcs;
-}
-
-EventId _$EventIdFromJson(Map<String, dynamic> json) {
-  return _EventId.fromJson(json);
+  String toString() {
+    return 'SuiEvent(id: $id, packageId: $packageId, transactionModule: $transactionModule, sender: $sender, type: $type, parsedJson: $parsedJson, bcs: $bcs)';
+  }
 }
 
 /// @nodoc
 mixin _$EventId {
-  String get txDigest => throw _privateConstructorUsedError;
-  String get eventSeq => throw _privateConstructorUsedError;
+  String get txDigest;
+  String get eventSeq;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  /// Serializes this EventId to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  String toString() {
+    return 'EventId(txDigest: $txDigest, eventSeq: $eventSeq)';
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_EventId implements _EventId {
-  const _$_EventId({required this.txDigest, required this.eventSeq});
-
-  factory _$_EventId.fromJson(Map<String, dynamic> json) =>
-      _$$_EventIdFromJson(json);
+class _EventId implements EventId {
+  const _EventId({required this.txDigest, required this.eventSeq});
+  factory _EventId.fromJson(Map<String, dynamic> json) =>
+      _$EventIdFromJson(json);
 
   @override
   final String txDigest;
@@ -137,27 +110,16 @@ class _$_EventId implements _EventId {
   final String eventSeq;
 
   @override
-  String toString() {
-    return 'EventId(txDigest: $txDigest, eventSeq: $eventSeq)';
-  }
-
-  @override
   Map<String, dynamic> toJson() {
-    return _$$_EventIdToJson(
+    return _$EventIdToJson(
       this,
     );
   }
-}
-
-abstract class _EventId implements EventId {
-  const factory _EventId(
-      {required final String txDigest,
-      required final String eventSeq}) = _$_EventId;
-
-  factory _EventId.fromJson(Map<String, dynamic> json) = _$_EventId.fromJson;
 
   @override
-  String get txDigest;
-  @override
-  String get eventSeq;
+  String toString() {
+    return 'EventId(txDigest: $txDigest, eventSeq: $eventSeq)';
+  }
 }
+
+// dart format on

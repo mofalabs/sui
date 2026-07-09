@@ -5,7 +5,7 @@ part 'checkpoint.freezed.dart';
 part 'checkpoint.g.dart';
 
 @freezed
-class Checkpoint with _$Checkpoint{
+abstract class Checkpoint with _$Checkpoint{
   const factory Checkpoint({
     required String epoch,
     required String sequenceNumber,
@@ -23,7 +23,7 @@ class Checkpoint with _$Checkpoint{
 }
 
 @freezed
-class EpochRollingGasCostSummary with _$EpochRollingGasCostSummary{
+abstract class EpochRollingGasCostSummary with _$EpochRollingGasCostSummary{
   const factory EpochRollingGasCostSummary({
     required String computationCost,
     required String storageCost,

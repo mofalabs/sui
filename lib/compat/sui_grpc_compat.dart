@@ -10,7 +10,6 @@ import '../cryptography/keypair.dart';
 import '../cryptography/signature.dart';
 import '../grpc/grpc_builder_adapter.dart';
 import '../grpc/grpc_core_client.dart';
-import '../grpc/grpc_transaction_executor.dart';
 import '../grpc/proto/sui/rpc/v2/state_service.pbenum.dart';
 import '../grpc/sui_grpc_client.dart';
 import '../graphql/sui_graphql_client.dart';
@@ -342,12 +341,12 @@ class SuiGrpcCompat {
   Future<String?> resolveNameServiceAddress(String name) =>
       grpc.resolveNameServiceAddress(name);
 
-  Future<_NamePage?> resolveNameServiceNames(String address) async {
+  Future<SuiNamePage?> resolveNameServiceNames(String address) async {
     try {
       final rec = await grpc.reverseLookupName(address);
-      return _NamePage([if (rec.name.isNotEmpty) rec.name]);
+      return SuiNamePage([if (rec.name.isNotEmpty) rec.name]);
     } catch (_) {
-      return _NamePage(const []);
+      return SuiNamePage(const []);
     }
   }
 
@@ -588,7 +587,8 @@ class SuiGrpcCompat {
 
 /// Minimal page wrapper matching the legacy `resolveNameServiceNames` return
 /// shape (`.data.firstOrNull`).
-class _NamePage {
-  _NamePage(this.data);
+/// Page wrapper for `resolveNameServiceNames` results (`.data` = names).
+class SuiNamePage {
+  SuiNamePage(this.data);
   final List<String> data;
 }

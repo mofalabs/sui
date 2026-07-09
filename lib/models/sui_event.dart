@@ -4,7 +4,7 @@ part 'sui_event.freezed.dart';
 part 'sui_event.g.dart';
 
 @freezed
-class SuiEvent with _$SuiEvent{
+abstract class SuiEvent with _$SuiEvent{
   const factory SuiEvent({
     required EventId id,
     required String packageId,
@@ -19,7 +19,7 @@ class SuiEvent with _$SuiEvent{
 }
 
 @freezed
-class EventId with _$EventId{
+abstract class EventId with _$EventId{
   const factory EventId({
     required String txDigest,
     required String eventSeq,

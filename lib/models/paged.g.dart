@@ -6,18 +6,18 @@ part of 'paged.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Paged<T> _$$_PagedFromJson<T>(
+_Paged<T> _$PagedFromJson<T>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
 ) =>
-    _$_Paged<T>(
+    _Paged<T>(
       data: fromJsonT(json['data']),
       nextCursor: json['nextCursor'],
       hasNextPage: json['hasNextPage'] as bool,
     );
 
-Map<String, dynamic> _$$_PagedToJson<T>(
-  _$_Paged<T> instance,
+Map<String, dynamic> _$PagedToJson<T>(
+  _Paged<T> instance,
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
@@ -26,13 +26,12 @@ Map<String, dynamic> _$$_PagedToJson<T>(
       'hasNextPage': instance.hasNextPage,
     };
 
-_$_NextCursor _$$_NextCursorFromJson(Map<String, dynamic> json) =>
-    _$_NextCursor(
+_NextCursor _$NextCursorFromJson(Map<String, dynamic> json) => _NextCursor(
       txDigest: json['txDigest'] as String,
       eventSeq: json['eventSeq'] as String,
     );
 
-Map<String, dynamic> _$$_NextCursorToJson(_$_NextCursor instance) =>
+Map<String, dynamic> _$NextCursorToJson(_NextCursor instance) =>
     <String, dynamic>{
       'txDigest': instance.txDigest,
       'eventSeq': instance.eventSeq,
