@@ -78,14 +78,22 @@ class GrpcCoreClient extends CoreClient {
     final req = BatchGetObjectsRequest(
       requests: objectIds.map((id) => GetObjectRequest(objectId: id)),
       readMask: _mask(readMask ??
-          const ['object_id', 'version', 'digest', 'owner', 'object_type', 'contents']),
+          const [
+            'object_id',
+            'version',
+            'digest',
+            'owner',
+            'object_type',
+            'contents'
+          ]),
     );
     final bytes = await _call(_ledger, 'BatchGetObjects', req.writeToBuffer());
     return BatchGetObjectsResponse.fromBuffer(bytes).objects;
   }
 
   @override
-  Future<Balance> getBalance(String owner, {String coinType = '0x2::sui::SUI'}) async {
+  Future<Balance> getBalance(String owner,
+      {String coinType = '0x2::sui::SUI'}) async {
     final req = GetBalanceRequest(owner: owner, coinType: coinType);
     final bytes = await _call(_state, 'GetBalance', req.writeToBuffer());
     return GetBalanceResponse.fromBuffer(bytes).balance;
@@ -140,7 +148,13 @@ class GrpcCoreClient extends CoreClient {
     final req = GetTransactionRequest(
       digest: digest,
       readMask: _mask(readMask ??
-          const ['digest', 'transaction', 'effects', 'events', 'balance_changes']),
+          const [
+            'digest',
+            'transaction',
+            'effects',
+            'events',
+            'balance_changes'
+          ]),
     );
     final bytes = await _call(_ledger, 'GetTransaction', req.writeToBuffer());
     return GetTransactionResponse.fromBuffer(bytes).transaction;
@@ -181,11 +195,12 @@ class GrpcCoreClient extends CoreClient {
     List<String>? readMask,
   }) async {
     final req = ExecuteTransactionRequest(
-      transaction: Transaction(bcs: Bcs(name: 'TransactionData', value: transactionBcs)),
+      transaction:
+          Transaction(bcs: Bcs(name: 'TransactionData', value: transactionBcs)),
       signatures: signatures
           .map((s) => UserSignature(bcs: Bcs(name: 'UserSignature', value: s))),
-      readMask: _mask(readMask ??
-          const ['digest', 'effects', 'events', 'balance_changes']),
+      readMask: _mask(
+          readMask ?? const ['digest', 'effects', 'events', 'balance_changes']),
     );
     final bytes = await _call(_exec, 'ExecuteTransaction', req.writeToBuffer());
     return ExecuteTransactionResponse.fromBuffer(bytes).transaction;
@@ -199,14 +214,16 @@ class GrpcCoreClient extends CoreClient {
     bool checksEnabled = true,
   }) async {
     final req = SimulateTransactionRequest(
-      transaction: Transaction(bcs: Bcs(name: 'TransactionData', value: transactionBcs)),
+      transaction:
+          Transaction(bcs: Bcs(name: 'TransactionData', value: transactionBcs)),
       readMask: _mask(readMask),
       checks: checksEnabled
           ? SimulateTransactionRequest_TransactionChecks.ENABLED
           : SimulateTransactionRequest_TransactionChecks.DISABLED,
       doGasSelection: doGasSelection,
     );
-    final bytes = await _call(_exec, 'SimulateTransaction', req.writeToBuffer());
+    final bytes =
+        await _call(_exec, 'SimulateTransaction', req.writeToBuffer());
     return SimulateTransactionResponse.fromBuffer(bytes);
   }
 
@@ -321,7 +338,8 @@ class GrpcCoreClient extends CoreClient {
         : message;
     final req = VerifySignatureRequest(
       message: Bcs(name: _intentName(intentScope), value: value),
-      signature: UserSignature(bcs: Bcs(name: 'UserSignature', value: signature)),
+      signature:
+          UserSignature(bcs: Bcs(name: 'UserSignature', value: signature)),
       address: address,
     );
     final bytes =

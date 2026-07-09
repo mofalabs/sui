@@ -6,33 +6,32 @@ import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/types/common.dart';
 
 class SuiBcs {
-
   static const SUI_ADDRESS_LENGTH = 32;
 
-	static final U8 = Bcs.u8();
-	static final U16 = Bcs.u16();
-	static final U32 = Bcs.u32();
-	static final U64 = Bcs.u64();
-	static final U128 = Bcs.u128();
-	static final U256 = Bcs.u256();
-	static final ULEB128 = Bcs.uleb128();
+  static final U8 = Bcs.u8();
+  static final U16 = Bcs.u16();
+  static final U32 = Bcs.u32();
+  static final U64 = Bcs.u64();
+  static final U128 = Bcs.u128();
+  static final U256 = Bcs.u256();
+  static final ULEB128 = Bcs.uleb128();
   static final BOOL = Bcs.boolean();
-	static final STRING = Bcs.string();
+  static final STRING = Bcs.string();
   static const VECTOR = Bcs.vector;
 
-  static BcsType<int, dynamic> unsafe_u64([BcsTypeOptions<int, dynamic>? options]) {
-    return Bcs.u64(
-      BcsTypeOptions(
-        name: 'unsafe_u64',
-        validate: options?.validate,
-      )
-    ).transform(
+  static BcsType<int, dynamic> unsafe_u64(
+      [BcsTypeOptions<int, dynamic>? options]) {
+    return Bcs.u64(BcsTypeOptions(
+      name: 'unsafe_u64',
+      validate: options?.validate,
+    )).transform(
       input: (dynamic val) => val is int ? val : int.parse(val.toString()),
       output: (BigInt val) => val.toInt(),
     );
   }
 
-  static BcsType<Map<String, dynamic>, dynamic> OptionEnum<T>(BcsType<T, dynamic> type) {
+  static BcsType<Map<String, dynamic>, dynamic> OptionEnum<T>(
+      BcsType<T, dynamic> type) {
     return Bcs.enumeration('Option', {
       'None': null,
       'Some': type,
@@ -46,8 +45,8 @@ class SuiBcs {
         throw Exception('Invalid Sui address $address');
       }
     },
-    input: (dynamic val) => 
-      val is String ? fromHEX(normalizeSuiAddress(val)) : val,
+    input: (dynamic val) =>
+        val is String ? fromHEX(normalizeSuiAddress(val)) : val,
     output: (Uint8List val) => normalizeSuiAddress(toHEX(val)),
   );
 
@@ -90,7 +89,8 @@ class SuiBcs {
     'Object': ObjectArg,
   });
 
-  static final BcsType<dynamic, dynamic> InnerTypeTag = Bcs.enumeration('TypeTag', {
+  static final BcsType<dynamic, dynamic> InnerTypeTag =
+      Bcs.enumeration('TypeTag', {
     'bool': null,
     'u8': null,
     'u64': null,
@@ -105,8 +105,9 @@ class SuiBcs {
   }) as BcsType<dynamic, dynamic>;
 
   static final TypeTag = InnerTypeTag.transform(
-    input: (dynamic typeTag) => 
-      typeTag is String ? TypeTagSerializer.parseFromStr(typeTag, true) : typeTag,
+    input: (dynamic typeTag) => typeTag is String
+        ? TypeTagSerializer.parseFromStr(typeTag, true)
+        : typeTag,
     output: (dynamic typeTag) => TypeTagSerializer.tagToString(typeTag),
   );
 
@@ -150,8 +151,7 @@ class SuiBcs {
     }),
     'MakeMoveVec': Bcs.struct('MakeMoveVec', {
       'type': OptionEnum(TypeTag).transform(
-        input: (dynamic val) => 
-          val == null ? {'None': true} : {'Some': val},
+        input: (dynamic val) => val == null ? {'None': true} : {'Some': val},
         output: (Map<String, dynamic> val) => val['Some'],
       ),
       'elements': Bcs.vector(Argument),
@@ -181,7 +181,8 @@ class SuiBcs {
     'ConsensusCommitPrologue': null,
   });
 
-  static final TransactionExpiration = Bcs.enumeration('TransactionExpiration', {
+  static final TransactionExpiration =
+      Bcs.enumeration('TransactionExpiration', {
     'None': null,
     'Epoch': unsafe_u64(),
   });
@@ -232,7 +233,8 @@ class SuiBcs {
     'appId': AppId,
   });
 
-  static BcsType<Map<String, dynamic>, dynamic> IntentMessage<T>(BcsType<T, dynamic> T) {
+  static BcsType<Map<String, dynamic>, dynamic> IntentMessage<T>(
+      BcsType<T, dynamic> T) {
     return Bcs.struct('IntentMessage<${T.name}>', {
       'intent': Intent,
       'value': T,
@@ -279,6 +281,6 @@ class SuiBcs {
     'txSignatures': Bcs.vector(base64String),
   });
 
-  static final SenderSignedData = Bcs.vector(SenderSignedTransaction, BcsTypeOptions(name: 'SenderSignedData'));
-
+  static final SenderSignedData = Bcs.vector(
+      SenderSignedTransaction, BcsTypeOptions(name: 'SenderSignedData'));
 }

@@ -35,19 +35,28 @@ class ExecutionStatus extends $pb.GeneratedMessage {
 
   ExecutionStatus._();
 
-  factory ExecutionStatus.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecutionStatus.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecutionStatus.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecutionStatus.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecutionStatus', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecutionStatus',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'success')
-    ..aOM<ExecutionError>(2, _omitFieldNames ? '' : 'error', subBuilder: ExecutionError.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<ExecutionError>(2, _omitFieldNames ? '' : 'error',
+        subBuilder: ExecutionError.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ExecutionStatus clone() => ExecutionStatus()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutionStatus copyWith(void Function(ExecutionStatus) updates) => super.copyWith((message) => updates(message as ExecutionStatus)) as ExecutionStatus;
+  ExecutionStatus copyWith(void Function(ExecutionStatus) updates) =>
+      super.copyWith((message) => updates(message as ExecutionStatus))
+          as ExecutionStatus;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -56,9 +65,11 @@ class ExecutionStatus extends $pb.GeneratedMessage {
   static ExecutionStatus create() => ExecutionStatus._();
   @$core.override
   ExecutionStatus createEmptyInstance() => create();
-  static $pb.PbList<ExecutionStatus> createRepeated() => $pb.PbList<ExecutionStatus>();
+  static $pb.PbList<ExecutionStatus> createRepeated() =>
+      $pb.PbList<ExecutionStatus>();
   @$core.pragma('dart2js:noInline')
-  static ExecutionStatus getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecutionStatus>(create);
+  static ExecutionStatus getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecutionStatus>(create);
   static ExecutionStatus? _defaultInstance;
 
   /// Indicates if the transaction was successful or not.
@@ -85,15 +96,15 @@ class ExecutionStatus extends $pb.GeneratedMessage {
 }
 
 enum ExecutionError_ErrorDetails {
-  abort, 
-  sizeError, 
-  commandArgumentError, 
-  typeArgumentError, 
-  packageUpgradeError, 
-  indexError, 
-  objectId, 
-  coinDenyListError, 
-  congestedObjects, 
+  abort,
+  sizeError,
+  commandArgumentError,
+  typeArgumentError,
+  packageUpgradeError,
+  indexError,
+  objectId,
+  coinDenyListError,
+  congestedObjects,
   notSet
 }
 
@@ -119,9 +130,11 @@ class ExecutionError extends $pb.GeneratedMessage {
     if (kind != null) result.kind = kind;
     if (abort != null) result.abort = abort;
     if (sizeError != null) result.sizeError = sizeError;
-    if (commandArgumentError != null) result.commandArgumentError = commandArgumentError;
+    if (commandArgumentError != null)
+      result.commandArgumentError = commandArgumentError;
     if (typeArgumentError != null) result.typeArgumentError = typeArgumentError;
-    if (packageUpgradeError != null) result.packageUpgradeError = packageUpgradeError;
+    if (packageUpgradeError != null)
+      result.packageUpgradeError = packageUpgradeError;
     if (indexError != null) result.indexError = indexError;
     if (objectId != null) result.objectId = objectId;
     if (coinDenyListError != null) result.coinDenyListError = coinDenyListError;
@@ -131,42 +144,66 @@ class ExecutionError extends $pb.GeneratedMessage {
 
   ExecutionError._();
 
-  factory ExecutionError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecutionError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecutionError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecutionError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static const $core.Map<$core.int, ExecutionError_ErrorDetails> _ExecutionError_ErrorDetailsByTag = {
-    4 : ExecutionError_ErrorDetails.abort,
-    5 : ExecutionError_ErrorDetails.sizeError,
-    6 : ExecutionError_ErrorDetails.commandArgumentError,
-    7 : ExecutionError_ErrorDetails.typeArgumentError,
-    8 : ExecutionError_ErrorDetails.packageUpgradeError,
-    9 : ExecutionError_ErrorDetails.indexError,
-    10 : ExecutionError_ErrorDetails.objectId,
-    11 : ExecutionError_ErrorDetails.coinDenyListError,
-    12 : ExecutionError_ErrorDetails.congestedObjects,
-    0 : ExecutionError_ErrorDetails.notSet
+  static const $core.Map<$core.int, ExecutionError_ErrorDetails>
+      _ExecutionError_ErrorDetailsByTag = {
+    4: ExecutionError_ErrorDetails.abort,
+    5: ExecutionError_ErrorDetails.sizeError,
+    6: ExecutionError_ErrorDetails.commandArgumentError,
+    7: ExecutionError_ErrorDetails.typeArgumentError,
+    8: ExecutionError_ErrorDetails.packageUpgradeError,
+    9: ExecutionError_ErrorDetails.indexError,
+    10: ExecutionError_ErrorDetails.objectId,
+    11: ExecutionError_ErrorDetails.coinDenyListError,
+    12: ExecutionError_ErrorDetails.congestedObjects,
+    0: ExecutionError_ErrorDetails.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecutionError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecutionError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..oo(0, [4, 5, 6, 7, 8, 9, 10, 11, 12])
     ..aOS(1, _omitFieldNames ? '' : 'description')
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'command', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..e<ExecutionError_ExecutionErrorKind>(3, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: ExecutionError_ExecutionErrorKind.EXECUTION_ERROR_KIND_UNKNOWN, valueOf: ExecutionError_ExecutionErrorKind.valueOf, enumValues: ExecutionError_ExecutionErrorKind.values)
-    ..aOM<MoveAbort>(4, _omitFieldNames ? '' : 'abort', subBuilder: MoveAbort.create)
-    ..aOM<SizeError>(5, _omitFieldNames ? '' : 'sizeError', subBuilder: SizeError.create)
-    ..aOM<CommandArgumentError>(6, _omitFieldNames ? '' : 'commandArgumentError', subBuilder: CommandArgumentError.create)
-    ..aOM<TypeArgumentError>(7, _omitFieldNames ? '' : 'typeArgumentError', subBuilder: TypeArgumentError.create)
-    ..aOM<PackageUpgradeError>(8, _omitFieldNames ? '' : 'packageUpgradeError', subBuilder: PackageUpgradeError.create)
-    ..aOM<IndexError>(9, _omitFieldNames ? '' : 'indexError', subBuilder: IndexError.create)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'command', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..e<ExecutionError_ExecutionErrorKind>(
+        3, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            ExecutionError_ExecutionErrorKind.EXECUTION_ERROR_KIND_UNKNOWN,
+        valueOf: ExecutionError_ExecutionErrorKind.valueOf,
+        enumValues: ExecutionError_ExecutionErrorKind.values)
+    ..aOM<MoveAbort>(4, _omitFieldNames ? '' : 'abort',
+        subBuilder: MoveAbort.create)
+    ..aOM<SizeError>(5, _omitFieldNames ? '' : 'sizeError',
+        subBuilder: SizeError.create)
+    ..aOM<CommandArgumentError>(
+        6, _omitFieldNames ? '' : 'commandArgumentError',
+        subBuilder: CommandArgumentError.create)
+    ..aOM<TypeArgumentError>(7, _omitFieldNames ? '' : 'typeArgumentError',
+        subBuilder: TypeArgumentError.create)
+    ..aOM<PackageUpgradeError>(8, _omitFieldNames ? '' : 'packageUpgradeError',
+        subBuilder: PackageUpgradeError.create)
+    ..aOM<IndexError>(9, _omitFieldNames ? '' : 'indexError',
+        subBuilder: IndexError.create)
     ..aOS(10, _omitFieldNames ? '' : 'objectId')
-    ..aOM<CoinDenyListError>(11, _omitFieldNames ? '' : 'coinDenyListError', subBuilder: CoinDenyListError.create)
-    ..aOM<CongestedObjects>(12, _omitFieldNames ? '' : 'congestedObjects', subBuilder: CongestedObjects.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<CoinDenyListError>(11, _omitFieldNames ? '' : 'coinDenyListError',
+        subBuilder: CoinDenyListError.create)
+    ..aOM<CongestedObjects>(12, _omitFieldNames ? '' : 'congestedObjects',
+        subBuilder: CongestedObjects.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ExecutionError clone() => ExecutionError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutionError copyWith(void Function(ExecutionError) updates) => super.copyWith((message) => updates(message as ExecutionError)) as ExecutionError;
+  ExecutionError copyWith(void Function(ExecutionError) updates) =>
+      super.copyWith((message) => updates(message as ExecutionError))
+          as ExecutionError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -175,12 +212,15 @@ class ExecutionError extends $pb.GeneratedMessage {
   static ExecutionError create() => ExecutionError._();
   @$core.override
   ExecutionError createEmptyInstance() => create();
-  static $pb.PbList<ExecutionError> createRepeated() => $pb.PbList<ExecutionError>();
+  static $pb.PbList<ExecutionError> createRepeated() =>
+      $pb.PbList<ExecutionError>();
   @$core.pragma('dart2js:noInline')
-  static ExecutionError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecutionError>(create);
+  static ExecutionError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecutionError>(create);
   static ExecutionError? _defaultInstance;
 
-  ExecutionError_ErrorDetails whichErrorDetails() => _ExecutionError_ErrorDetailsByTag[$_whichOneof(0)]!;
+  ExecutionError_ErrorDetails whichErrorDetails() =>
+      _ExecutionError_ErrorDetailsByTag[$_whichOneof(0)]!;
   void clearErrorDetails() => $_clearField($_whichOneof(0));
 
   /// A human readable description of the error
@@ -326,20 +366,31 @@ class MoveAbort extends $pb.GeneratedMessage {
 
   MoveAbort._();
 
-  factory MoveAbort.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MoveAbort.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MoveAbort.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MoveAbort.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MoveAbort', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'abortCode', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<MoveLocation>(2, _omitFieldNames ? '' : 'location', subBuilder: MoveLocation.create)
-    ..aOM<CleverError>(3, _omitFieldNames ? '' : 'cleverError', subBuilder: CleverError.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MoveAbort',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'abortCode', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveLocation>(2, _omitFieldNames ? '' : 'location',
+        subBuilder: MoveLocation.create)
+    ..aOM<CleverError>(3, _omitFieldNames ? '' : 'cleverError',
+        subBuilder: CleverError.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MoveAbort clone() => MoveAbort()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MoveAbort copyWith(void Function(MoveAbort) updates) => super.copyWith((message) => updates(message as MoveAbort)) as MoveAbort;
+  MoveAbort copyWith(void Function(MoveAbort) updates) =>
+      super.copyWith((message) => updates(message as MoveAbort)) as MoveAbort;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -350,7 +401,8 @@ class MoveAbort extends $pb.GeneratedMessage {
   MoveAbort createEmptyInstance() => create();
   static $pb.PbList<MoveAbort> createRepeated() => $pb.PbList<MoveAbort>();
   @$core.pragma('dart2js:noInline')
-  static MoveAbort getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveAbort>(create);
+  static MoveAbort getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveAbort>(create);
   static MoveAbort? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -407,22 +459,30 @@ class MoveLocation extends $pb.GeneratedMessage {
 
   MoveLocation._();
 
-  factory MoveLocation.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MoveLocation.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MoveLocation.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MoveLocation.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MoveLocation', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MoveLocation',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'package')
     ..aOS(2, _omitFieldNames ? '' : 'module')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'function', $pb.PbFieldType.OU3)
     ..a<$core.int>(4, _omitFieldNames ? '' : 'instruction', $pb.PbFieldType.OU3)
     ..aOS(5, _omitFieldNames ? '' : 'functionName')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MoveLocation clone() => MoveLocation()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MoveLocation copyWith(void Function(MoveLocation) updates) => super.copyWith((message) => updates(message as MoveLocation)) as MoveLocation;
+  MoveLocation copyWith(void Function(MoveLocation) updates) =>
+      super.copyWith((message) => updates(message as MoveLocation))
+          as MoveLocation;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -431,9 +491,11 @@ class MoveLocation extends $pb.GeneratedMessage {
   static MoveLocation create() => MoveLocation._();
   @$core.override
   MoveLocation createEmptyInstance() => create();
-  static $pb.PbList<MoveLocation> createRepeated() => $pb.PbList<MoveLocation>();
+  static $pb.PbList<MoveLocation> createRepeated() =>
+      $pb.PbList<MoveLocation>();
   @$core.pragma('dart2js:noInline')
-  static MoveLocation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveLocation>(create);
+  static MoveLocation getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MoveLocation>(create);
   static MoveLocation? _defaultInstance;
 
   /// The package ID.
@@ -487,11 +549,7 @@ class MoveLocation extends $pb.GeneratedMessage {
   void clearFunctionName() => $_clearField(5);
 }
 
-enum CleverError_Value {
-  rendered, 
-  raw, 
-  notSet
-}
+enum CleverError_Value { rendered, raw, notSet }
 
 class CleverError extends $pb.GeneratedMessage {
   factory CleverError({
@@ -514,29 +572,43 @@ class CleverError extends $pb.GeneratedMessage {
 
   CleverError._();
 
-  factory CleverError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CleverError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CleverError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CleverError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static const $core.Map<$core.int, CleverError_Value> _CleverError_ValueByTag = {
-    5 : CleverError_Value.rendered,
-    6 : CleverError_Value.raw,
-    0 : CleverError_Value.notSet
+  static const $core.Map<$core.int, CleverError_Value> _CleverError_ValueByTag =
+      {
+    5: CleverError_Value.rendered,
+    6: CleverError_Value.raw,
+    0: CleverError_Value.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CleverError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CleverError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..oo(0, [5, 6])
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'errorCode', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'lineNumber', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'errorCode', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'lineNumber', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(3, _omitFieldNames ? '' : 'constantName')
     ..aOS(4, _omitFieldNames ? '' : 'constantType')
     ..aOS(5, _omitFieldNames ? '' : 'rendered')
-    ..a<$core.List<$core.int>>(6, _omitFieldNames ? '' : 'raw', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.List<$core.int>>(
+        6, _omitFieldNames ? '' : 'raw', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CleverError clone() => CleverError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CleverError copyWith(void Function(CleverError) updates) => super.copyWith((message) => updates(message as CleverError)) as CleverError;
+  CleverError copyWith(void Function(CleverError) updates) =>
+      super.copyWith((message) => updates(message as CleverError))
+          as CleverError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -547,7 +619,8 @@ class CleverError extends $pb.GeneratedMessage {
   CleverError createEmptyInstance() => create();
   static $pb.PbList<CleverError> createRepeated() => $pb.PbList<CleverError>();
   @$core.pragma('dart2js:noInline')
-  static CleverError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CleverError>(create);
+  static CleverError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CleverError>(create);
   static CleverError? _defaultInstance;
 
   CleverError_Value whichValue() => _CleverError_ValueByTag[$_whichOneof(0)]!;
@@ -622,19 +695,28 @@ class SizeError extends $pb.GeneratedMessage {
 
   SizeError._();
 
-  factory SizeError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SizeError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SizeError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SizeError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SizeError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'size', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'maxSize', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SizeError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'size', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'maxSize', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SizeError clone() => SizeError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SizeError copyWith(void Function(SizeError) updates) => super.copyWith((message) => updates(message as SizeError)) as SizeError;
+  SizeError copyWith(void Function(SizeError) updates) =>
+      super.copyWith((message) => updates(message as SizeError)) as SizeError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -645,7 +727,8 @@ class SizeError extends $pb.GeneratedMessage {
   SizeError createEmptyInstance() => create();
   static $pb.PbList<SizeError> createRepeated() => $pb.PbList<SizeError>();
   @$core.pragma('dart2js:noInline')
-  static SizeError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SizeError>(create);
+  static SizeError getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SizeError>(create);
   static SizeError? _defaultInstance;
 
   /// The offending size.
@@ -682,19 +765,26 @@ class IndexError extends $pb.GeneratedMessage {
 
   IndexError._();
 
-  factory IndexError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory IndexError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory IndexError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory IndexError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'IndexError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'IndexError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'index', $pb.PbFieldType.OU3)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'subresult', $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   IndexError clone() => IndexError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  IndexError copyWith(void Function(IndexError) updates) => super.copyWith((message) => updates(message as IndexError)) as IndexError;
+  IndexError copyWith(void Function(IndexError) updates) =>
+      super.copyWith((message) => updates(message as IndexError)) as IndexError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -705,7 +795,8 @@ class IndexError extends $pb.GeneratedMessage {
   IndexError createEmptyInstance() => create();
   static $pb.PbList<IndexError> createRepeated() => $pb.PbList<IndexError>();
   @$core.pragma('dart2js:noInline')
-  static IndexError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IndexError>(create);
+  static IndexError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<IndexError>(create);
   static IndexError? _defaultInstance;
 
   /// Index of an input or result.
@@ -742,19 +833,27 @@ class CoinDenyListError extends $pb.GeneratedMessage {
 
   CoinDenyListError._();
 
-  factory CoinDenyListError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CoinDenyListError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CoinDenyListError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CoinDenyListError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CoinDenyListError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CoinDenyListError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'address')
     ..aOS(2, _omitFieldNames ? '' : 'coinType')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CoinDenyListError clone() => CoinDenyListError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CoinDenyListError copyWith(void Function(CoinDenyListError) updates) => super.copyWith((message) => updates(message as CoinDenyListError)) as CoinDenyListError;
+  CoinDenyListError copyWith(void Function(CoinDenyListError) updates) =>
+      super.copyWith((message) => updates(message as CoinDenyListError))
+          as CoinDenyListError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -763,9 +862,11 @@ class CoinDenyListError extends $pb.GeneratedMessage {
   static CoinDenyListError create() => CoinDenyListError._();
   @$core.override
   CoinDenyListError createEmptyInstance() => create();
-  static $pb.PbList<CoinDenyListError> createRepeated() => $pb.PbList<CoinDenyListError>();
+  static $pb.PbList<CoinDenyListError> createRepeated() =>
+      $pb.PbList<CoinDenyListError>();
   @$core.pragma('dart2js:noInline')
-  static CoinDenyListError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CoinDenyListError>(create);
+  static CoinDenyListError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CoinDenyListError>(create);
   static CoinDenyListError? _defaultInstance;
 
   /// Denied address.
@@ -801,18 +902,26 @@ class CongestedObjects extends $pb.GeneratedMessage {
 
   CongestedObjects._();
 
-  factory CongestedObjects.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CongestedObjects.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CongestedObjects.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CongestedObjects.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CongestedObjects', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CongestedObjects',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..pPS(1, _omitFieldNames ? '' : 'objects')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CongestedObjects clone() => CongestedObjects()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CongestedObjects copyWith(void Function(CongestedObjects) updates) => super.copyWith((message) => updates(message as CongestedObjects)) as CongestedObjects;
+  CongestedObjects copyWith(void Function(CongestedObjects) updates) =>
+      super.copyWith((message) => updates(message as CongestedObjects))
+          as CongestedObjects;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -821,9 +930,11 @@ class CongestedObjects extends $pb.GeneratedMessage {
   static CongestedObjects create() => CongestedObjects._();
   @$core.override
   CongestedObjects createEmptyInstance() => create();
-  static $pb.PbList<CongestedObjects> createRepeated() => $pb.PbList<CongestedObjects>();
+  static $pb.PbList<CongestedObjects> createRepeated() =>
+      $pb.PbList<CongestedObjects>();
   @$core.pragma('dart2js:noInline')
-  static CongestedObjects getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CongestedObjects>(create);
+  static CongestedObjects getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CongestedObjects>(create);
   static CongestedObjects? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -846,20 +957,35 @@ class CommandArgumentError extends $pb.GeneratedMessage {
 
   CommandArgumentError._();
 
-  factory CommandArgumentError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CommandArgumentError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CommandArgumentError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CommandArgumentError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CommandArgumentError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CommandArgumentError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'argument', $pb.PbFieldType.OU3)
-    ..e<CommandArgumentError_CommandArgumentErrorKind>(2, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: CommandArgumentError_CommandArgumentErrorKind.COMMAND_ARGUMENT_ERROR_KIND_UNKNOWN, valueOf: CommandArgumentError_CommandArgumentErrorKind.valueOf, enumValues: CommandArgumentError_CommandArgumentErrorKind.values)
-    ..aOM<IndexError>(3, _omitFieldNames ? '' : 'indexError', subBuilder: IndexError.create)
-    ..hasRequiredFields = false
-  ;
+    ..e<CommandArgumentError_CommandArgumentErrorKind>(
+        2, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: CommandArgumentError_CommandArgumentErrorKind
+            .COMMAND_ARGUMENT_ERROR_KIND_UNKNOWN,
+        valueOf: CommandArgumentError_CommandArgumentErrorKind.valueOf,
+        enumValues: CommandArgumentError_CommandArgumentErrorKind.values)
+    ..aOM<IndexError>(3, _omitFieldNames ? '' : 'indexError',
+        subBuilder: IndexError.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CommandArgumentError clone() => CommandArgumentError()..mergeFromMessage(this);
+  CommandArgumentError clone() =>
+      CommandArgumentError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CommandArgumentError copyWith(void Function(CommandArgumentError) updates) => super.copyWith((message) => updates(message as CommandArgumentError)) as CommandArgumentError;
+  CommandArgumentError copyWith(void Function(CommandArgumentError) updates) =>
+      super.copyWith((message) => updates(message as CommandArgumentError))
+          as CommandArgumentError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -868,9 +994,11 @@ class CommandArgumentError extends $pb.GeneratedMessage {
   static CommandArgumentError create() => CommandArgumentError._();
   @$core.override
   CommandArgumentError createEmptyInstance() => create();
-  static $pb.PbList<CommandArgumentError> createRepeated() => $pb.PbList<CommandArgumentError>();
+  static $pb.PbList<CommandArgumentError> createRepeated() =>
+      $pb.PbList<CommandArgumentError>();
   @$core.pragma('dart2js:noInline')
-  static CommandArgumentError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandArgumentError>(create);
+  static CommandArgumentError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CommandArgumentError>(create);
   static CommandArgumentError? _defaultInstance;
 
   /// Position of the problematic argument.
@@ -886,7 +1014,8 @@ class CommandArgumentError extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   CommandArgumentError_CommandArgumentErrorKind get kind => $_getN(1);
   @$pb.TagNumber(2)
-  set kind(CommandArgumentError_CommandArgumentErrorKind value) => $_setField(2, value);
+  set kind(CommandArgumentError_CommandArgumentErrorKind value) =>
+      $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasKind() => $_has(1);
   @$pb.TagNumber(2)
@@ -924,22 +1053,35 @@ class PackageUpgradeError extends $pb.GeneratedMessage {
 
   PackageUpgradeError._();
 
-  factory PackageUpgradeError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory PackageUpgradeError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory PackageUpgradeError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory PackageUpgradeError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PackageUpgradeError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<PackageUpgradeError_PackageUpgradeErrorKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: PackageUpgradeError_PackageUpgradeErrorKind.PACKAGE_UPGRADE_ERROR_KIND_UNKNOWN, valueOf: PackageUpgradeError_PackageUpgradeErrorKind.valueOf, enumValues: PackageUpgradeError_PackageUpgradeErrorKind.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PackageUpgradeError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<PackageUpgradeError_PackageUpgradeErrorKind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: PackageUpgradeError_PackageUpgradeErrorKind
+            .PACKAGE_UPGRADE_ERROR_KIND_UNKNOWN,
+        valueOf: PackageUpgradeError_PackageUpgradeErrorKind.valueOf,
+        enumValues: PackageUpgradeError_PackageUpgradeErrorKind.values)
     ..aOS(2, _omitFieldNames ? '' : 'packageId')
     ..aOS(3, _omitFieldNames ? '' : 'digest')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'policy', $pb.PbFieldType.OU3)
     ..aOS(5, _omitFieldNames ? '' : 'ticketId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PackageUpgradeError clone() => PackageUpgradeError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PackageUpgradeError copyWith(void Function(PackageUpgradeError) updates) => super.copyWith((message) => updates(message as PackageUpgradeError)) as PackageUpgradeError;
+  PackageUpgradeError copyWith(void Function(PackageUpgradeError) updates) =>
+      super.copyWith((message) => updates(message as PackageUpgradeError))
+          as PackageUpgradeError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -948,15 +1090,18 @@ class PackageUpgradeError extends $pb.GeneratedMessage {
   static PackageUpgradeError create() => PackageUpgradeError._();
   @$core.override
   PackageUpgradeError createEmptyInstance() => create();
-  static $pb.PbList<PackageUpgradeError> createRepeated() => $pb.PbList<PackageUpgradeError>();
+  static $pb.PbList<PackageUpgradeError> createRepeated() =>
+      $pb.PbList<PackageUpgradeError>();
   @$core.pragma('dart2js:noInline')
-  static PackageUpgradeError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackageUpgradeError>(create);
+  static PackageUpgradeError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PackageUpgradeError>(create);
   static PackageUpgradeError? _defaultInstance;
 
   @$pb.TagNumber(1)
   PackageUpgradeError_PackageUpgradeErrorKind get kind => $_getN(0);
   @$pb.TagNumber(1)
-  set kind(PackageUpgradeError_PackageUpgradeErrorKind value) => $_setField(1, value);
+  set kind(PackageUpgradeError_PackageUpgradeErrorKind value) =>
+      $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasKind() => $_has(0);
   @$pb.TagNumber(1)
@@ -1017,19 +1162,33 @@ class TypeArgumentError extends $pb.GeneratedMessage {
 
   TypeArgumentError._();
 
-  factory TypeArgumentError.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TypeArgumentError.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TypeArgumentError.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TypeArgumentError.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TypeArgumentError', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'typeArgument', $pb.PbFieldType.OU3)
-    ..e<TypeArgumentError_TypeArgumentErrorKind>(2, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: TypeArgumentError_TypeArgumentErrorKind.TYPE_ARGUMENT_ERROR_KIND_UNKNOWN, valueOf: TypeArgumentError_TypeArgumentErrorKind.valueOf, enumValues: TypeArgumentError_TypeArgumentErrorKind.values)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TypeArgumentError',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$core.int>(
+        1, _omitFieldNames ? '' : 'typeArgument', $pb.PbFieldType.OU3)
+    ..e<TypeArgumentError_TypeArgumentErrorKind>(
+        2, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: TypeArgumentError_TypeArgumentErrorKind
+            .TYPE_ARGUMENT_ERROR_KIND_UNKNOWN,
+        valueOf: TypeArgumentError_TypeArgumentErrorKind.valueOf,
+        enumValues: TypeArgumentError_TypeArgumentErrorKind.values)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TypeArgumentError clone() => TypeArgumentError()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TypeArgumentError copyWith(void Function(TypeArgumentError) updates) => super.copyWith((message) => updates(message as TypeArgumentError)) as TypeArgumentError;
+  TypeArgumentError copyWith(void Function(TypeArgumentError) updates) =>
+      super.copyWith((message) => updates(message as TypeArgumentError))
+          as TypeArgumentError;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1038,9 +1197,11 @@ class TypeArgumentError extends $pb.GeneratedMessage {
   static TypeArgumentError create() => TypeArgumentError._();
   @$core.override
   TypeArgumentError createEmptyInstance() => create();
-  static $pb.PbList<TypeArgumentError> createRepeated() => $pb.PbList<TypeArgumentError>();
+  static $pb.PbList<TypeArgumentError> createRepeated() =>
+      $pb.PbList<TypeArgumentError>();
   @$core.pragma('dart2js:noInline')
-  static TypeArgumentError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TypeArgumentError>(create);
+  static TypeArgumentError getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TypeArgumentError>(create);
   static TypeArgumentError? _defaultInstance;
 
   /// Index of the problematic type argument.
@@ -1056,13 +1217,15 @@ class TypeArgumentError extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   TypeArgumentError_TypeArgumentErrorKind get kind => $_getN(1);
   @$pb.TagNumber(2)
-  set kind(TypeArgumentError_TypeArgumentErrorKind value) => $_setField(2, value);
+  set kind(TypeArgumentError_TypeArgumentErrorKind value) =>
+      $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasKind() => $_has(1);
   @$pb.TagNumber(2)
   void clearKind() => $_clearField(2);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

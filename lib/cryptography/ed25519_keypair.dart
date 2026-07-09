@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -12,9 +11,7 @@ import 'package:sui/utils/ed25519_hd_key.dart' as ed25519HDKey;
 
 const DEFAULT_ED25519_DERIVATION_PATH = "m/44'/784'/0'/0'/0'";
 
-
 class Ed25519Keypair with Keypair {
-
   late ed25519.KeyPair _signingKeypair;
 
   /// Create a new Ed25519 keypair instance.
@@ -50,21 +47,22 @@ class Ed25519Keypair with Keypair {
   /// Create a Ed25519 keypair from a raw secret key byte array.
   ///
   /// throws error if the provided secret key is invalid and validation is not skipped.
-  factory Ed25519Keypair.fromSecretKey(
-    Uint8List secretKey,
-    { bool skipValidation = true }
-  ) {
+  factory Ed25519Keypair.fromSecretKey(Uint8List secretKey,
+      {bool skipValidation = true}) {
     if (secretKey.length == 32) {
       return Ed25519Keypair.fromSeed(secretKey);
     }
-    if (secretKey.length != 64) throw ArgumentError("Wrong secretKey size. Expected 64 bytes, got ${secretKey.length}.");
+    if (secretKey.length != 64) {
+      throw ArgumentError(
+          "Wrong secretKey size. Expected 64 bytes, got ${secretKey.length}.");
+    }
 
     final privateKey = ed25519.PrivateKey(secretKey);
     final publicKey = ed25519.public(privateKey);
 
     if (!skipValidation) {
-      final msg =  Uint8List.fromList(utf8.encode('sui validation'));
-      final signature = ed25519.sign(privateKey,msg);
+      final msg = Uint8List.fromList(utf8.encode('sui validation'));
+      final signature = ed25519.sign(privateKey, msg);
       if (!ed25519.verify(publicKey, msg, signature)) {
         throw ArgumentError('provided secretKey is invalid');
       }
@@ -74,7 +72,10 @@ class Ed25519Keypair with Keypair {
 
   /// Generate a Ed25519 keypair from a 32 byte seed.
   factory Ed25519Keypair.fromSeed(Uint8List seed) {
-    if (seed.length != 32) throw ArgumentError("Wrong secretKey size. Expected 32 bytes, got ${seed.length}.");
+    if (seed.length != 32) {
+      throw ArgumentError(
+          "Wrong secretKey size. Expected 32 bytes, got ${seed.length}.");
+    }
 
     final privateKey = ed25519.newKeyFromSeed(seed);
     return Ed25519Keypair(Uint8List.fromList(privateKey.bytes));
@@ -106,24 +107,25 @@ class Ed25519Keypair with Keypair {
   /// If path is none, it will default to m/44'/784'/0'/0'/0', otherwise the path must
   /// be compliant to SLIP-0010 in form m/44'/784'/{account_index}'/{change_index}'/{address_index}'.
   static Ed25519Keypair deriveKeypair(String path, String mnemonics) {
-
     if (!isValidHardenedPath(path)) {
       throw ArgumentError('Invalid derivation path');
     }
 
     final normalizeMnemonics = mnemonics
-      .trim()
-      .split(r"\s+")
-      .map((part) => part.toLowerCase())
-      .join(" ");
+        .trim()
+        .split(r"\s+")
+        .map((part) => part.toLowerCase())
+        .join(" ");
 
-    if(!isValidMnemonics(mnemonics)) {
+    if (!isValidMnemonics(mnemonics)) {
       throw ArgumentError('Invalid mnemonics');
     }
 
-    final key = ed25519HDKey.derivePath(path, mnemonicToSeedHex(normalizeMnemonics)).key!;    
+    final key = ed25519HDKey
+        .derivePath(path, mnemonicToSeedHex(normalizeMnemonics))
+        .key!;
     final pubkey = ed25519HDKey.getPublicKey(key, false);
-    
+
     final fullPrivateKey = Uint8List(64);
     fullPrivateKey.setAll(0, key);
     fullPrivateKey.setAll(32, pubkey);
@@ -132,12 +134,13 @@ class Ed25519Keypair with Keypair {
   }
 
   @override
-  bool verify(Uint8List data,Uint8List signature, Uint8List publicKey) {
+  bool verify(Uint8List data, Uint8List signature, Uint8List publicKey) {
     return ed25519.verify(ed25519.PublicKey(publicKey), data, signature);
   }
-  
+
   @override
-  bool verifySerialized(Uint8List message, String signature, Uint8List publicKey) {
+  bool verifySerialized(
+      Uint8List message, String signature, Uint8List publicKey) {
     final parsed = parseSerializedSignature(signature);
     if (parsed.signatureScheme != SignatureScheme.Ed25519) {
       throw ArgumentError('Invalid signature scheme');
@@ -149,5 +152,4 @@ class Ed25519Keypair with Keypair {
 
     return verify(message, parsed.signature, publicKey);
   }
-
 }

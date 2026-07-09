@@ -39,9 +39,34 @@ import 'transaction.pbjson.dart' as $0;
 const ExecuteTransactionRequest$json = {
   '1': 'ExecuteTransactionRequest',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Transaction', '9': 0, '10': 'transaction', '17': true},
-    {'1': 'signatures', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.UserSignature', '10': 'signatures'},
-    {'1': 'read_mask', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 1, '10': 'readMask', '17': true},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Transaction',
+      '9': 0,
+      '10': 'transaction',
+      '17': true
+    },
+    {
+      '1': 'signatures',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.UserSignature',
+      '10': 'signatures'
+    },
+    {
+      '1': 'read_mask',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 1,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_transaction'},
@@ -61,7 +86,16 @@ final $typed_data.Uint8List executeTransactionRequestDescriptor = $convert.base6
 const ExecuteTransactionResponse$json = {
   '1': 'ExecuteTransactionResponse',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutedTransaction', '9': 0, '10': 'transaction', '17': true},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutedTransaction',
+      '9': 0,
+      '10': 'transaction',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_transaction'},
@@ -69,19 +103,55 @@ const ExecuteTransactionResponse$json = {
 };
 
 /// Descriptor for `ExecuteTransactionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List executeTransactionResponseDescriptor = $convert.base64Decode(
-    'ChpFeGVjdXRlVHJhbnNhY3Rpb25SZXNwb25zZRJGCgt0cmFuc2FjdGlvbhgBIAEoCzIfLnN1aS'
-    '5ycGMudjIuRXhlY3V0ZWRUcmFuc2FjdGlvbkgAUgt0cmFuc2FjdGlvbogBAUIOCgxfdHJhbnNh'
-    'Y3Rpb24=');
+final $typed_data.Uint8List executeTransactionResponseDescriptor =
+    $convert.base64Decode(
+        'ChpFeGVjdXRlVHJhbnNhY3Rpb25SZXNwb25zZRJGCgt0cmFuc2FjdGlvbhgBIAEoCzIfLnN1aS'
+        '5ycGMudjIuRXhlY3V0ZWRUcmFuc2FjdGlvbkgAUgt0cmFuc2FjdGlvbogBAUIOCgxfdHJhbnNh'
+        'Y3Rpb24=');
 
 @$core.Deprecated('Use simulateTransactionRequestDescriptor instead')
 const SimulateTransactionRequest$json = {
   '1': 'SimulateTransactionRequest',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Transaction', '9': 0, '10': 'transaction', '17': true},
-    {'1': 'read_mask', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 1, '10': 'readMask', '17': true},
-    {'1': 'checks', '3': 3, '4': 1, '5': 14, '6': '.sui.rpc.v2.SimulateTransactionRequest.TransactionChecks', '9': 2, '10': 'checks', '17': true},
-    {'1': 'do_gas_selection', '3': 4, '4': 1, '5': 8, '9': 3, '10': 'doGasSelection', '17': true},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Transaction',
+      '9': 0,
+      '10': 'transaction',
+      '17': true
+    },
+    {
+      '1': 'read_mask',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 1,
+      '10': 'readMask',
+      '17': true
+    },
+    {
+      '1': 'checks',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.SimulateTransactionRequest.TransactionChecks',
+      '9': 2,
+      '10': 'checks',
+      '17': true
+    },
+    {
+      '1': 'do_gas_selection',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '9': 3,
+      '10': 'doGasSelection',
+      '17': true
+    },
   ],
   '4': [SimulateTransactionRequest_TransactionChecks$json],
   '8': [
@@ -116,9 +186,33 @@ final $typed_data.Uint8List simulateTransactionRequestDescriptor = $convert.base
 const SimulateTransactionResponse$json = {
   '1': 'SimulateTransactionResponse',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutedTransaction', '9': 0, '10': 'transaction', '17': true},
-    {'1': 'command_outputs', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.CommandResult', '10': 'commandOutputs'},
-    {'1': 'suggested_gas_price', '3': 3, '4': 1, '5': 4, '9': 1, '10': 'suggestedGasPrice', '17': true},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutedTransaction',
+      '9': 0,
+      '10': 'transaction',
+      '17': true
+    },
+    {
+      '1': 'command_outputs',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CommandResult',
+      '10': 'commandOutputs'
+    },
+    {
+      '1': 'suggested_gas_price',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'suggestedGasPrice',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_transaction'},
@@ -138,8 +232,22 @@ final $typed_data.Uint8List simulateTransactionResponseDescriptor = $convert.bas
 const CommandResult$json = {
   '1': 'CommandResult',
   '2': [
-    {'1': 'return_values', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.CommandOutput', '10': 'returnValues'},
-    {'1': 'mutated_by_ref', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.CommandOutput', '10': 'mutatedByRef'},
+    {
+      '1': 'return_values',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CommandOutput',
+      '10': 'returnValues'
+    },
+    {
+      '1': 'mutated_by_ref',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CommandOutput',
+      '10': 'mutatedByRef'
+    },
   ],
 };
 
@@ -153,9 +261,36 @@ final $typed_data.Uint8List commandResultDescriptor = $convert.base64Decode(
 const CommandOutput$json = {
   '1': 'CommandOutput',
   '2': [
-    {'1': 'argument', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Argument', '9': 0, '10': 'argument', '17': true},
-    {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 1, '10': 'value', '17': true},
-    {'1': 'json', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Value', '9': 2, '10': 'json', '17': true},
+    {
+      '1': 'argument',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '9': 0,
+      '10': 'argument',
+      '17': true
+    },
+    {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 1,
+      '10': 'value',
+      '17': true
+    },
+    {
+      '1': 'json',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '9': 2,
+      '10': 'json',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_argument'},
@@ -171,16 +306,26 @@ final $typed_data.Uint8List commandOutputDescriptor = $convert.base64Decode(
     'iAEBEi8KBGpzb24YAyABKAsyFi5nb29nbGUucHJvdG9idWYuVmFsdWVIAlIEanNvbogBAUILCg'
     'lfYXJndW1lbnRCCAoGX3ZhbHVlQgcKBV9qc29u');
 
-const $core.Map<$core.String, $core.dynamic> TransactionExecutionServiceBase$json = {
+const $core.Map<$core.String, $core.dynamic>
+    TransactionExecutionServiceBase$json = {
   '1': 'TransactionExecutionService',
   '2': [
-    {'1': 'ExecuteTransaction', '2': '.sui.rpc.v2.ExecuteTransactionRequest', '3': '.sui.rpc.v2.ExecuteTransactionResponse'},
-    {'1': 'SimulateTransaction', '2': '.sui.rpc.v2.SimulateTransactionRequest', '3': '.sui.rpc.v2.SimulateTransactionResponse'},
+    {
+      '1': 'ExecuteTransaction',
+      '2': '.sui.rpc.v2.ExecuteTransactionRequest',
+      '3': '.sui.rpc.v2.ExecuteTransactionResponse'
+    },
+    {
+      '1': 'SimulateTransaction',
+      '2': '.sui.rpc.v2.SimulateTransactionRequest',
+      '3': '.sui.rpc.v2.SimulateTransactionResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use transactionExecutionServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> TransactionExecutionServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    TransactionExecutionServiceBase$messageJson = {
   '.sui.rpc.v2.ExecuteTransactionRequest': ExecuteTransactionRequest$json,
   '.sui.rpc.v2.Transaction': $0.Transaction$json,
   '.sui.rpc.v2.Bcs': $5.Bcs$json,
@@ -220,7 +365,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Transactio
   '.sui.rpc.v2.Linkage': $11.Linkage$json,
   '.sui.rpc.v2.Display': $9.Display$json,
   '.sui.rpc.v2.ConsensusCommitPrologue': $0.ConsensusCommitPrologue$json,
-  '.sui.rpc.v2.ConsensusDeterminedVersionAssignments': $0.ConsensusDeterminedVersionAssignments$json,
+  '.sui.rpc.v2.ConsensusDeterminedVersionAssignments':
+      $0.ConsensusDeterminedVersionAssignments$json,
   '.sui.rpc.v2.CanceledTransaction': $0.CanceledTransaction$json,
   '.sui.rpc.v2.VersionAssignment': $0.VersionAssignment$json,
   '.sui.rpc.v2.AuthenticatorStateUpdate': $0.AuthenticatorStateUpdate$json,
@@ -232,7 +378,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Transactio
   '.sui.rpc.v2.AuthenticatorStateExpire': $0.AuthenticatorStateExpire$json,
   '.sui.rpc.v2.ExecutionTimeObservations': $0.ExecutionTimeObservations$json,
   '.sui.rpc.v2.ExecutionTimeObservation': $0.ExecutionTimeObservation$json,
-  '.sui.rpc.v2.ValidatorExecutionTimeObservation': $0.ValidatorExecutionTimeObservation$json,
+  '.sui.rpc.v2.ValidatorExecutionTimeObservation':
+      $0.ValidatorExecutionTimeObservation$json,
   '.google.protobuf.Duration': $13.Duration$json,
   '.sui.rpc.v2.RandomnessStateUpdate': $0.RandomnessStateUpdate$json,
   '.sui.rpc.v2.GasPayment': $0.GasPayment$json,
@@ -240,7 +387,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Transactio
   '.sui.rpc.v2.TransactionExpiration': $0.TransactionExpiration$json,
   '.sui.rpc.v2.UserSignature': $1.UserSignature$json,
   '.sui.rpc.v2.SimpleSignature': $1.SimpleSignature$json,
-  '.sui.rpc.v2.MultisigAggregatedSignature': $1.MultisigAggregatedSignature$json,
+  '.sui.rpc.v2.MultisigAggregatedSignature':
+      $1.MultisigAggregatedSignature$json,
   '.sui.rpc.v2.MultisigMemberSignature': $1.MultisigMemberSignature$json,
   '.sui.rpc.v2.ZkLoginAuthenticator': $1.ZkLoginAuthenticator$json,
   '.sui.rpc.v2.ZkLoginInputs': $1.ZkLoginInputs$json,
@@ -291,4 +439,3 @@ final $typed_data.Uint8List transactionExecutionServiceDescriptor = $convert.bas
     'VHJhbnNhY3Rpb25SZXNwb25zZRJmChNTaW11bGF0ZVRyYW5zYWN0aW9uEiYuc3VpLnJwYy52Mi'
     '5TaW11bGF0ZVRyYW5zYWN0aW9uUmVxdWVzdBonLnN1aS5ycGMudjIuU2ltdWxhdGVUcmFuc2Fj'
     'dGlvblJlc3BvbnNl');
-

@@ -18,15 +18,75 @@ import 'dart:typed_data' as $typed_data;
 const Input$json = {
   '1': 'Input',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.Input.InputKind', '9': 0, '10': 'kind', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.Input.InputKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
     {'1': 'pure', '3': 2, '4': 1, '5': 12, '9': 1, '10': 'pure', '17': true},
-    {'1': 'object_id', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'objectId', '17': true},
-    {'1': 'version', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'version', '17': true},
+    {
+      '1': 'object_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'version',
+      '17': true
+    },
     {'1': 'digest', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'digest', '17': true},
-    {'1': 'mutable', '3': 6, '4': 1, '5': 8, '9': 5, '10': 'mutable', '17': true},
-    {'1': 'mutability', '3': 7, '4': 1, '5': 14, '6': '.sui.rpc.v2.Input.Mutability', '9': 6, '10': 'mutability', '17': true},
-    {'1': 'funds_withdrawal', '3': 8, '4': 1, '5': 11, '6': '.sui.rpc.v2.FundsWithdrawal', '9': 7, '10': 'fundsWithdrawal', '17': true},
-    {'1': 'literal', '3': 1000, '4': 1, '5': 11, '6': '.google.protobuf.Value', '9': 8, '10': 'literal', '17': true},
+    {
+      '1': 'mutable',
+      '3': 6,
+      '4': 1,
+      '5': 8,
+      '9': 5,
+      '10': 'mutable',
+      '17': true
+    },
+    {
+      '1': 'mutability',
+      '3': 7,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.Input.Mutability',
+      '9': 6,
+      '10': 'mutability',
+      '17': true
+    },
+    {
+      '1': 'funds_withdrawal',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.FundsWithdrawal',
+      '9': 7,
+      '10': 'fundsWithdrawal',
+      '17': true
+    },
+    {
+      '1': 'literal',
+      '3': 1000,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '9': 8,
+      '10': 'literal',
+      '17': true
+    },
   ],
   '4': [Input_InputKind$json, Input_Mutability$json],
   '8': [
@@ -88,8 +148,25 @@ const FundsWithdrawal$json = {
   '1': 'FundsWithdrawal',
   '2': [
     {'1': 'amount', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'amount', '17': true},
-    {'1': 'coin_type', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'coinType', '17': true},
-    {'1': 'source', '3': 3, '4': 1, '5': 14, '6': '.sui.rpc.v2.FundsWithdrawal.Source', '9': 2, '10': 'source', '17': true},
+    {
+      '1': 'coin_type',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'coinType',
+      '17': true
+    },
+    {
+      '1': 'source',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.FundsWithdrawal.Source',
+      '9': 2,
+      '10': 'source',
+      '17': true
+    },
   ],
   '4': [FundsWithdrawal_Source$json],
   '8': [
@@ -116,4 +193,3 @@ final $typed_data.Uint8List fundsWithdrawalDescriptor = $convert.base64Decode(
     'dW5kc1dpdGhkcmF3YWwuU291cmNlSAJSBnNvdXJjZYgBASI1CgZTb3VyY2USEgoOU09VUkNFX1'
     'VOS05PV04QABIKCgZTRU5ERVIQARILCgdTUE9OU09SEAJCCQoHX2Ftb3VudEIMCgpfY29pbl90'
     'eXBlQgkKB19zb3VyY2U=');
-

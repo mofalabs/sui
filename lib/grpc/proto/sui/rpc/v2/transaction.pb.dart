@@ -53,24 +53,35 @@ class Transaction extends $pb.GeneratedMessage {
 
   Transaction._();
 
-  factory Transaction.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Transaction.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Transaction.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Transaction.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Transaction', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Transaction',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.O3)
-    ..aOM<TransactionKind>(4, _omitFieldNames ? '' : 'kind', subBuilder: TransactionKind.create)
+    ..aOM<TransactionKind>(4, _omitFieldNames ? '' : 'kind',
+        subBuilder: TransactionKind.create)
     ..aOS(5, _omitFieldNames ? '' : 'sender')
-    ..aOM<GasPayment>(6, _omitFieldNames ? '' : 'gasPayment', subBuilder: GasPayment.create)
-    ..aOM<TransactionExpiration>(7, _omitFieldNames ? '' : 'expiration', subBuilder: TransactionExpiration.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<GasPayment>(6, _omitFieldNames ? '' : 'gasPayment',
+        subBuilder: GasPayment.create)
+    ..aOM<TransactionExpiration>(7, _omitFieldNames ? '' : 'expiration',
+        subBuilder: TransactionExpiration.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Transaction clone() => Transaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Transaction copyWith(void Function(Transaction) updates) => super.copyWith((message) => updates(message as Transaction)) as Transaction;
+  Transaction copyWith(void Function(Transaction) updates) =>
+      super.copyWith((message) => updates(message as Transaction))
+          as Transaction;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -81,7 +92,8 @@ class Transaction extends $pb.GeneratedMessage {
   Transaction createEmptyInstance() => create();
   static $pb.PbList<Transaction> createRepeated() => $pb.PbList<Transaction>();
   @$core.pragma('dart2js:noInline')
-  static Transaction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Transaction>(create);
+  static Transaction getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Transaction>(create);
   static Transaction? _defaultInstance;
 
   /// This Transaction serialized as BCS.
@@ -177,21 +189,32 @@ class GasPayment extends $pb.GeneratedMessage {
 
   GasPayment._();
 
-  factory GasPayment.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GasPayment.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GasPayment.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GasPayment.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GasPayment', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<$1.ObjectReference>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: $1.ObjectReference.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GasPayment',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<$1.ObjectReference>(
+        1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM,
+        subBuilder: $1.ObjectReference.create)
     ..aOS(2, _omitFieldNames ? '' : 'owner')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'price', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'budget', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'price', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'budget', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GasPayment clone() => GasPayment()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GasPayment copyWith(void Function(GasPayment) updates) => super.copyWith((message) => updates(message as GasPayment)) as GasPayment;
+  GasPayment copyWith(void Function(GasPayment) updates) =>
+      super.copyWith((message) => updates(message as GasPayment)) as GasPayment;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -202,7 +225,8 @@ class GasPayment extends $pb.GeneratedMessage {
   GasPayment createEmptyInstance() => create();
   static $pb.PbList<GasPayment> createRepeated() => $pb.PbList<GasPayment>();
   @$core.pragma('dart2js:noInline')
-  static GasPayment getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GasPayment>(create);
+  static GasPayment getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GasPayment>(create);
   static GasPayment? _defaultInstance;
 
   /// Set of gas objects to use for payment.
@@ -266,24 +290,44 @@ class TransactionExpiration extends $pb.GeneratedMessage {
 
   TransactionExpiration._();
 
-  factory TransactionExpiration.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TransactionExpiration.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TransactionExpiration.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TransactionExpiration.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TransactionExpiration', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<TransactionExpiration_TransactionExpirationKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: TransactionExpiration_TransactionExpirationKind.TRANSACTION_EXPIRATION_KIND_UNKNOWN, valueOf: TransactionExpiration_TransactionExpirationKind.valueOf, enumValues: TransactionExpiration_TransactionExpirationKind.values)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'minEpoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.Timestamp>(4, _omitFieldNames ? '' : 'minTimestamp', subBuilder: $2.Timestamp.create)
-    ..aOM<$2.Timestamp>(5, _omitFieldNames ? '' : 'maxTimestamp', subBuilder: $2.Timestamp.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TransactionExpiration',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<TransactionExpiration_TransactionExpirationKind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: TransactionExpiration_TransactionExpirationKind
+            .TRANSACTION_EXPIRATION_KIND_UNKNOWN,
+        valueOf: TransactionExpiration_TransactionExpirationKind.valueOf,
+        enumValues: TransactionExpiration_TransactionExpirationKind.values)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'minEpoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$2.Timestamp>(4, _omitFieldNames ? '' : 'minTimestamp',
+        subBuilder: $2.Timestamp.create)
+    ..aOM<$2.Timestamp>(5, _omitFieldNames ? '' : 'maxTimestamp',
+        subBuilder: $2.Timestamp.create)
     ..aOS(6, _omitFieldNames ? '' : 'chain')
     ..a<$core.int>(7, _omitFieldNames ? '' : 'nonce', $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TransactionExpiration clone() => TransactionExpiration()..mergeFromMessage(this);
+  TransactionExpiration clone() =>
+      TransactionExpiration()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TransactionExpiration copyWith(void Function(TransactionExpiration) updates) => super.copyWith((message) => updates(message as TransactionExpiration)) as TransactionExpiration;
+  TransactionExpiration copyWith(
+          void Function(TransactionExpiration) updates) =>
+      super.copyWith((message) => updates(message as TransactionExpiration))
+          as TransactionExpiration;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -292,15 +336,18 @@ class TransactionExpiration extends $pb.GeneratedMessage {
   static TransactionExpiration create() => TransactionExpiration._();
   @$core.override
   TransactionExpiration createEmptyInstance() => create();
-  static $pb.PbList<TransactionExpiration> createRepeated() => $pb.PbList<TransactionExpiration>();
+  static $pb.PbList<TransactionExpiration> createRepeated() =>
+      $pb.PbList<TransactionExpiration>();
   @$core.pragma('dart2js:noInline')
-  static TransactionExpiration getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransactionExpiration>(create);
+  static TransactionExpiration getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TransactionExpiration>(create);
   static TransactionExpiration? _defaultInstance;
 
   @$pb.TagNumber(1)
   TransactionExpiration_TransactionExpirationKind get kind => $_getN(0);
   @$pb.TagNumber(1)
-  set kind(TransactionExpiration_TransactionExpirationKind value) => $_setField(1, value);
+  set kind(TransactionExpiration_TransactionExpirationKind value) =>
+      $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasKind() => $_has(0);
   @$pb.TagNumber(1)
@@ -378,13 +425,13 @@ class TransactionExpiration extends $pb.GeneratedMessage {
 }
 
 enum TransactionKind_Data {
-  programmableTransaction, 
-  changeEpoch, 
-  genesis, 
-  consensusCommitPrologue, 
-  authenticatorStateUpdate, 
-  endOfEpoch, 
-  randomnessStateUpdate, 
+  programmableTransaction,
+  changeEpoch,
+  genesis,
+  consensusCommitPrologue,
+  authenticatorStateUpdate,
+  endOfEpoch,
+  randomnessStateUpdate,
   notSet
 }
 
@@ -402,48 +449,76 @@ class TransactionKind extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (kind != null) result.kind = kind;
-    if (programmableTransaction != null) result.programmableTransaction = programmableTransaction;
+    if (programmableTransaction != null)
+      result.programmableTransaction = programmableTransaction;
     if (changeEpoch != null) result.changeEpoch = changeEpoch;
     if (genesis != null) result.genesis = genesis;
-    if (consensusCommitPrologue != null) result.consensusCommitPrologue = consensusCommitPrologue;
-    if (authenticatorStateUpdate != null) result.authenticatorStateUpdate = authenticatorStateUpdate;
+    if (consensusCommitPrologue != null)
+      result.consensusCommitPrologue = consensusCommitPrologue;
+    if (authenticatorStateUpdate != null)
+      result.authenticatorStateUpdate = authenticatorStateUpdate;
     if (endOfEpoch != null) result.endOfEpoch = endOfEpoch;
-    if (randomnessStateUpdate != null) result.randomnessStateUpdate = randomnessStateUpdate;
+    if (randomnessStateUpdate != null)
+      result.randomnessStateUpdate = randomnessStateUpdate;
     return result;
   }
 
   TransactionKind._();
 
-  factory TransactionKind.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TransactionKind.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TransactionKind.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TransactionKind.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static const $core.Map<$core.int, TransactionKind_Data> _TransactionKind_DataByTag = {
-    2 : TransactionKind_Data.programmableTransaction,
-    3 : TransactionKind_Data.changeEpoch,
-    4 : TransactionKind_Data.genesis,
-    5 : TransactionKind_Data.consensusCommitPrologue,
-    6 : TransactionKind_Data.authenticatorStateUpdate,
-    7 : TransactionKind_Data.endOfEpoch,
-    8 : TransactionKind_Data.randomnessStateUpdate,
-    0 : TransactionKind_Data.notSet
+  static const $core.Map<$core.int, TransactionKind_Data>
+      _TransactionKind_DataByTag = {
+    2: TransactionKind_Data.programmableTransaction,
+    3: TransactionKind_Data.changeEpoch,
+    4: TransactionKind_Data.genesis,
+    5: TransactionKind_Data.consensusCommitPrologue,
+    6: TransactionKind_Data.authenticatorStateUpdate,
+    7: TransactionKind_Data.endOfEpoch,
+    8: TransactionKind_Data.randomnessStateUpdate,
+    0: TransactionKind_Data.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TransactionKind', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TransactionKind',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..oo(0, [2, 3, 4, 5, 6, 7, 8])
-    ..e<TransactionKind_Kind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: TransactionKind_Kind.KIND_UNKNOWN, valueOf: TransactionKind_Kind.valueOf, enumValues: TransactionKind_Kind.values)
-    ..aOM<ProgrammableTransaction>(2, _omitFieldNames ? '' : 'programmableTransaction', subBuilder: ProgrammableTransaction.create)
-    ..aOM<ChangeEpoch>(3, _omitFieldNames ? '' : 'changeEpoch', subBuilder: ChangeEpoch.create)
-    ..aOM<GenesisTransaction>(4, _omitFieldNames ? '' : 'genesis', subBuilder: GenesisTransaction.create)
-    ..aOM<ConsensusCommitPrologue>(5, _omitFieldNames ? '' : 'consensusCommitPrologue', subBuilder: ConsensusCommitPrologue.create)
-    ..aOM<AuthenticatorStateUpdate>(6, _omitFieldNames ? '' : 'authenticatorStateUpdate', subBuilder: AuthenticatorStateUpdate.create)
-    ..aOM<EndOfEpochTransaction>(7, _omitFieldNames ? '' : 'endOfEpoch', subBuilder: EndOfEpochTransaction.create)
-    ..aOM<RandomnessStateUpdate>(8, _omitFieldNames ? '' : 'randomnessStateUpdate', subBuilder: RandomnessStateUpdate.create)
-    ..hasRequiredFields = false
-  ;
+    ..e<TransactionKind_Kind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: TransactionKind_Kind.KIND_UNKNOWN,
+        valueOf: TransactionKind_Kind.valueOf,
+        enumValues: TransactionKind_Kind.values)
+    ..aOM<ProgrammableTransaction>(
+        2, _omitFieldNames ? '' : 'programmableTransaction',
+        subBuilder: ProgrammableTransaction.create)
+    ..aOM<ChangeEpoch>(3, _omitFieldNames ? '' : 'changeEpoch',
+        subBuilder: ChangeEpoch.create)
+    ..aOM<GenesisTransaction>(4, _omitFieldNames ? '' : 'genesis',
+        subBuilder: GenesisTransaction.create)
+    ..aOM<ConsensusCommitPrologue>(
+        5, _omitFieldNames ? '' : 'consensusCommitPrologue',
+        subBuilder: ConsensusCommitPrologue.create)
+    ..aOM<AuthenticatorStateUpdate>(
+        6, _omitFieldNames ? '' : 'authenticatorStateUpdate',
+        subBuilder: AuthenticatorStateUpdate.create)
+    ..aOM<EndOfEpochTransaction>(7, _omitFieldNames ? '' : 'endOfEpoch',
+        subBuilder: EndOfEpochTransaction.create)
+    ..aOM<RandomnessStateUpdate>(
+        8, _omitFieldNames ? '' : 'randomnessStateUpdate',
+        subBuilder: RandomnessStateUpdate.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TransactionKind clone() => TransactionKind()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TransactionKind copyWith(void Function(TransactionKind) updates) => super.copyWith((message) => updates(message as TransactionKind)) as TransactionKind;
+  TransactionKind copyWith(void Function(TransactionKind) updates) =>
+      super.copyWith((message) => updates(message as TransactionKind))
+          as TransactionKind;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -452,12 +527,15 @@ class TransactionKind extends $pb.GeneratedMessage {
   static TransactionKind create() => TransactionKind._();
   @$core.override
   TransactionKind createEmptyInstance() => create();
-  static $pb.PbList<TransactionKind> createRepeated() => $pb.PbList<TransactionKind>();
+  static $pb.PbList<TransactionKind> createRepeated() =>
+      $pb.PbList<TransactionKind>();
   @$core.pragma('dart2js:noInline')
-  static TransactionKind getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransactionKind>(create);
+  static TransactionKind getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TransactionKind>(create);
   static TransactionKind? _defaultInstance;
 
-  TransactionKind_Data whichData() => _TransactionKind_DataByTag[$_whichOneof(0)]!;
+  TransactionKind_Data whichData() =>
+      _TransactionKind_DataByTag[$_whichOneof(0)]!;
   void clearData() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -473,7 +551,8 @@ class TransactionKind extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   ProgrammableTransaction get programmableTransaction => $_getN(1);
   @$pb.TagNumber(2)
-  set programmableTransaction(ProgrammableTransaction value) => $_setField(2, value);
+  set programmableTransaction(ProgrammableTransaction value) =>
+      $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasProgrammableTransaction() => $_has(1);
   @$pb.TagNumber(2)
@@ -515,7 +594,8 @@ class TransactionKind extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   ConsensusCommitPrologue get consensusCommitPrologue => $_getN(4);
   @$pb.TagNumber(5)
-  set consensusCommitPrologue(ConsensusCommitPrologue value) => $_setField(5, value);
+  set consensusCommitPrologue(ConsensusCommitPrologue value) =>
+      $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasConsensusCommitPrologue() => $_has(4);
   @$pb.TagNumber(5)
@@ -527,7 +607,8 @@ class TransactionKind extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   AuthenticatorStateUpdate get authenticatorStateUpdate => $_getN(5);
   @$pb.TagNumber(6)
-  set authenticatorStateUpdate(AuthenticatorStateUpdate value) => $_setField(6, value);
+  set authenticatorStateUpdate(AuthenticatorStateUpdate value) =>
+      $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasAuthenticatorStateUpdate() => $_has(5);
   @$pb.TagNumber(6)
@@ -552,7 +633,8 @@ class TransactionKind extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   RandomnessStateUpdate get randomnessStateUpdate => $_getN(7);
   @$pb.TagNumber(8)
-  set randomnessStateUpdate(RandomnessStateUpdate value) => $_setField(8, value);
+  set randomnessStateUpdate(RandomnessStateUpdate value) =>
+      $_setField(8, value);
   @$pb.TagNumber(8)
   $core.bool hasRandomnessStateUpdate() => $_has(7);
   @$pb.TagNumber(8)
@@ -578,19 +660,31 @@ class ProgrammableTransaction extends $pb.GeneratedMessage {
 
   ProgrammableTransaction._();
 
-  factory ProgrammableTransaction.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ProgrammableTransaction.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ProgrammableTransaction.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ProgrammableTransaction.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ProgrammableTransaction', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<$3.Input>(1, _omitFieldNames ? '' : 'inputs', $pb.PbFieldType.PM, subBuilder: $3.Input.create)
-    ..pc<Command>(2, _omitFieldNames ? '' : 'commands', $pb.PbFieldType.PM, subBuilder: Command.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ProgrammableTransaction',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<$3.Input>(1, _omitFieldNames ? '' : 'inputs', $pb.PbFieldType.PM,
+        subBuilder: $3.Input.create)
+    ..pc<Command>(2, _omitFieldNames ? '' : 'commands', $pb.PbFieldType.PM,
+        subBuilder: Command.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProgrammableTransaction clone() => ProgrammableTransaction()..mergeFromMessage(this);
+  ProgrammableTransaction clone() =>
+      ProgrammableTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProgrammableTransaction copyWith(void Function(ProgrammableTransaction) updates) => super.copyWith((message) => updates(message as ProgrammableTransaction)) as ProgrammableTransaction;
+  ProgrammableTransaction copyWith(
+          void Function(ProgrammableTransaction) updates) =>
+      super.copyWith((message) => updates(message as ProgrammableTransaction))
+          as ProgrammableTransaction;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -599,9 +693,11 @@ class ProgrammableTransaction extends $pb.GeneratedMessage {
   static ProgrammableTransaction create() => ProgrammableTransaction._();
   @$core.override
   ProgrammableTransaction createEmptyInstance() => create();
-  static $pb.PbList<ProgrammableTransaction> createRepeated() => $pb.PbList<ProgrammableTransaction>();
+  static $pb.PbList<ProgrammableTransaction> createRepeated() =>
+      $pb.PbList<ProgrammableTransaction>();
   @$core.pragma('dart2js:noInline')
-  static ProgrammableTransaction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ProgrammableTransaction>(create);
+  static ProgrammableTransaction getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ProgrammableTransaction>(create);
   static ProgrammableTransaction? _defaultInstance;
 
   /// Input objects or primitive values.
@@ -615,13 +711,13 @@ class ProgrammableTransaction extends $pb.GeneratedMessage {
 }
 
 enum Command_Command {
-  moveCall, 
-  transferObjects, 
-  splitCoins, 
-  mergeCoins, 
-  publish, 
-  makeMoveVector, 
-  upgrade, 
+  moveCall,
+  transferObjects,
+  splitCoins,
+  mergeCoins,
+  publish,
+  makeMoveVector,
+  upgrade,
   notSet
 }
 
@@ -649,35 +745,49 @@ class Command extends $pb.GeneratedMessage {
 
   Command._();
 
-  factory Command.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Command.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Command.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Command.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
   static const $core.Map<$core.int, Command_Command> _Command_CommandByTag = {
-    1 : Command_Command.moveCall,
-    2 : Command_Command.transferObjects,
-    3 : Command_Command.splitCoins,
-    4 : Command_Command.mergeCoins,
-    5 : Command_Command.publish,
-    6 : Command_Command.makeMoveVector,
-    7 : Command_Command.upgrade,
-    0 : Command_Command.notSet
+    1: Command_Command.moveCall,
+    2: Command_Command.transferObjects,
+    3: Command_Command.splitCoins,
+    4: Command_Command.mergeCoins,
+    5: Command_Command.publish,
+    6: Command_Command.makeMoveVector,
+    7: Command_Command.upgrade,
+    0: Command_Command.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Command', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Command',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..oo(0, [1, 2, 3, 4, 5, 6, 7])
-    ..aOM<MoveCall>(1, _omitFieldNames ? '' : 'moveCall', subBuilder: MoveCall.create)
-    ..aOM<TransferObjects>(2, _omitFieldNames ? '' : 'transferObjects', subBuilder: TransferObjects.create)
-    ..aOM<SplitCoins>(3, _omitFieldNames ? '' : 'splitCoins', subBuilder: SplitCoins.create)
-    ..aOM<MergeCoins>(4, _omitFieldNames ? '' : 'mergeCoins', subBuilder: MergeCoins.create)
-    ..aOM<Publish>(5, _omitFieldNames ? '' : 'publish', subBuilder: Publish.create)
-    ..aOM<MakeMoveVector>(6, _omitFieldNames ? '' : 'makeMoveVector', subBuilder: MakeMoveVector.create)
-    ..aOM<Upgrade>(7, _omitFieldNames ? '' : 'upgrade', subBuilder: Upgrade.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<MoveCall>(1, _omitFieldNames ? '' : 'moveCall',
+        subBuilder: MoveCall.create)
+    ..aOM<TransferObjects>(2, _omitFieldNames ? '' : 'transferObjects',
+        subBuilder: TransferObjects.create)
+    ..aOM<SplitCoins>(3, _omitFieldNames ? '' : 'splitCoins',
+        subBuilder: SplitCoins.create)
+    ..aOM<MergeCoins>(4, _omitFieldNames ? '' : 'mergeCoins',
+        subBuilder: MergeCoins.create)
+    ..aOM<Publish>(5, _omitFieldNames ? '' : 'publish',
+        subBuilder: Publish.create)
+    ..aOM<MakeMoveVector>(6, _omitFieldNames ? '' : 'makeMoveVector',
+        subBuilder: MakeMoveVector.create)
+    ..aOM<Upgrade>(7, _omitFieldNames ? '' : 'upgrade',
+        subBuilder: Upgrade.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Command clone() => Command()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Command copyWith(void Function(Command) updates) => super.copyWith((message) => updates(message as Command)) as Command;
+  Command copyWith(void Function(Command) updates) =>
+      super.copyWith((message) => updates(message as Command)) as Command;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -688,7 +798,8 @@ class Command extends $pb.GeneratedMessage {
   Command createEmptyInstance() => create();
   static $pb.PbList<Command> createRepeated() => $pb.PbList<Command>();
   @$core.pragma('dart2js:noInline')
-  static Command getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Command>(create);
+  static Command getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Command>(create);
   static Command? _defaultInstance;
 
   Command_Command whichCommand() => _Command_CommandByTag[$_whichOneof(0)]!;
@@ -816,22 +927,30 @@ class MoveCall extends $pb.GeneratedMessage {
 
   MoveCall._();
 
-  factory MoveCall.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MoveCall.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MoveCall.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MoveCall.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MoveCall', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MoveCall',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'package')
     ..aOS(2, _omitFieldNames ? '' : 'module')
     ..aOS(3, _omitFieldNames ? '' : 'function')
     ..pPS(4, _omitFieldNames ? '' : 'typeArguments')
-    ..pc<$4.Argument>(5, _omitFieldNames ? '' : 'arguments', $pb.PbFieldType.PM, subBuilder: $4.Argument.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<$4.Argument>(5, _omitFieldNames ? '' : 'arguments', $pb.PbFieldType.PM,
+        subBuilder: $4.Argument.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MoveCall clone() => MoveCall()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MoveCall copyWith(void Function(MoveCall) updates) => super.copyWith((message) => updates(message as MoveCall)) as MoveCall;
+  MoveCall copyWith(void Function(MoveCall) updates) =>
+      super.copyWith((message) => updates(message as MoveCall)) as MoveCall;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -842,7 +961,8 @@ class MoveCall extends $pb.GeneratedMessage {
   MoveCall createEmptyInstance() => create();
   static $pb.PbList<MoveCall> createRepeated() => $pb.PbList<MoveCall>();
   @$core.pragma('dart2js:noInline')
-  static MoveCall getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveCall>(create);
+  static MoveCall getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveCall>(create);
   static MoveCall? _defaultInstance;
 
   /// The package containing the module and function.
@@ -898,19 +1018,29 @@ class TransferObjects extends $pb.GeneratedMessage {
 
   TransferObjects._();
 
-  factory TransferObjects.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TransferObjects.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TransferObjects.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TransferObjects.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TransferObjects', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<$4.Argument>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: $4.Argument.create)
-    ..aOM<$4.Argument>(2, _omitFieldNames ? '' : 'address', subBuilder: $4.Argument.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TransferObjects',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<$4.Argument>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM,
+        subBuilder: $4.Argument.create)
+    ..aOM<$4.Argument>(2, _omitFieldNames ? '' : 'address',
+        subBuilder: $4.Argument.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TransferObjects clone() => TransferObjects()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TransferObjects copyWith(void Function(TransferObjects) updates) => super.copyWith((message) => updates(message as TransferObjects)) as TransferObjects;
+  TransferObjects copyWith(void Function(TransferObjects) updates) =>
+      super.copyWith((message) => updates(message as TransferObjects))
+          as TransferObjects;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -919,9 +1049,11 @@ class TransferObjects extends $pb.GeneratedMessage {
   static TransferObjects create() => TransferObjects._();
   @$core.override
   TransferObjects createEmptyInstance() => create();
-  static $pb.PbList<TransferObjects> createRepeated() => $pb.PbList<TransferObjects>();
+  static $pb.PbList<TransferObjects> createRepeated() =>
+      $pb.PbList<TransferObjects>();
   @$core.pragma('dart2js:noInline')
-  static TransferObjects getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransferObjects>(create);
+  static TransferObjects getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TransferObjects>(create);
   static TransferObjects? _defaultInstance;
 
   /// Set of objects to transfer.
@@ -955,19 +1087,28 @@ class SplitCoins extends $pb.GeneratedMessage {
 
   SplitCoins._();
 
-  factory SplitCoins.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SplitCoins.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SplitCoins.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SplitCoins.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SplitCoins', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$4.Argument>(1, _omitFieldNames ? '' : 'coin', subBuilder: $4.Argument.create)
-    ..pc<$4.Argument>(2, _omitFieldNames ? '' : 'amounts', $pb.PbFieldType.PM, subBuilder: $4.Argument.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SplitCoins',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$4.Argument>(1, _omitFieldNames ? '' : 'coin',
+        subBuilder: $4.Argument.create)
+    ..pc<$4.Argument>(2, _omitFieldNames ? '' : 'amounts', $pb.PbFieldType.PM,
+        subBuilder: $4.Argument.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SplitCoins clone() => SplitCoins()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SplitCoins copyWith(void Function(SplitCoins) updates) => super.copyWith((message) => updates(message as SplitCoins)) as SplitCoins;
+  SplitCoins copyWith(void Function(SplitCoins) updates) =>
+      super.copyWith((message) => updates(message as SplitCoins)) as SplitCoins;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -978,7 +1119,8 @@ class SplitCoins extends $pb.GeneratedMessage {
   SplitCoins createEmptyInstance() => create();
   static $pb.PbList<SplitCoins> createRepeated() => $pb.PbList<SplitCoins>();
   @$core.pragma('dart2js:noInline')
-  static SplitCoins getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SplitCoins>(create);
+  static SplitCoins getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SplitCoins>(create);
   static SplitCoins? _defaultInstance;
 
   /// The coin to split.
@@ -1012,19 +1154,29 @@ class MergeCoins extends $pb.GeneratedMessage {
 
   MergeCoins._();
 
-  factory MergeCoins.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MergeCoins.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MergeCoins.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MergeCoins.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MergeCoins', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$4.Argument>(1, _omitFieldNames ? '' : 'coin', subBuilder: $4.Argument.create)
-    ..pc<$4.Argument>(2, _omitFieldNames ? '' : 'coinsToMerge', $pb.PbFieldType.PM, subBuilder: $4.Argument.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MergeCoins',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$4.Argument>(1, _omitFieldNames ? '' : 'coin',
+        subBuilder: $4.Argument.create)
+    ..pc<$4.Argument>(
+        2, _omitFieldNames ? '' : 'coinsToMerge', $pb.PbFieldType.PM,
+        subBuilder: $4.Argument.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MergeCoins clone() => MergeCoins()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MergeCoins copyWith(void Function(MergeCoins) updates) => super.copyWith((message) => updates(message as MergeCoins)) as MergeCoins;
+  MergeCoins copyWith(void Function(MergeCoins) updates) =>
+      super.copyWith((message) => updates(message as MergeCoins)) as MergeCoins;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1035,7 +1187,8 @@ class MergeCoins extends $pb.GeneratedMessage {
   MergeCoins createEmptyInstance() => create();
   static $pb.PbList<MergeCoins> createRepeated() => $pb.PbList<MergeCoins>();
   @$core.pragma('dart2js:noInline')
-  static MergeCoins getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MergeCoins>(create);
+  static MergeCoins getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MergeCoins>(create);
   static MergeCoins? _defaultInstance;
 
   /// Coin to merge coins into.
@@ -1071,19 +1224,27 @@ class Publish extends $pb.GeneratedMessage {
 
   Publish._();
 
-  factory Publish.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Publish.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Publish.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Publish.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Publish', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..p<$core.List<$core.int>>(1, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PY)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Publish',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..p<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PY)
     ..pPS(2, _omitFieldNames ? '' : 'dependencies')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Publish clone() => Publish()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Publish copyWith(void Function(Publish) updates) => super.copyWith((message) => updates(message as Publish)) as Publish;
+  Publish copyWith(void Function(Publish) updates) =>
+      super.copyWith((message) => updates(message as Publish)) as Publish;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1094,7 +1255,8 @@ class Publish extends $pb.GeneratedMessage {
   Publish createEmptyInstance() => create();
   static $pb.PbList<Publish> createRepeated() => $pb.PbList<Publish>();
   @$core.pragma('dart2js:noInline')
-  static Publish getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Publish>(create);
+  static Publish getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Publish>(create);
   static Publish? _defaultInstance;
 
   /// The serialized Move modules.
@@ -1120,19 +1282,28 @@ class MakeMoveVector extends $pb.GeneratedMessage {
 
   MakeMoveVector._();
 
-  factory MakeMoveVector.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MakeMoveVector.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MakeMoveVector.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MakeMoveVector.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MakeMoveVector', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MakeMoveVector',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'elementType')
-    ..pc<$4.Argument>(2, _omitFieldNames ? '' : 'elements', $pb.PbFieldType.PM, subBuilder: $4.Argument.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<$4.Argument>(2, _omitFieldNames ? '' : 'elements', $pb.PbFieldType.PM,
+        subBuilder: $4.Argument.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MakeMoveVector clone() => MakeMoveVector()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MakeMoveVector copyWith(void Function(MakeMoveVector) updates) => super.copyWith((message) => updates(message as MakeMoveVector)) as MakeMoveVector;
+  MakeMoveVector copyWith(void Function(MakeMoveVector) updates) =>
+      super.copyWith((message) => updates(message as MakeMoveVector))
+          as MakeMoveVector;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1141,9 +1312,11 @@ class MakeMoveVector extends $pb.GeneratedMessage {
   static MakeMoveVector create() => MakeMoveVector._();
   @$core.override
   MakeMoveVector createEmptyInstance() => create();
-  static $pb.PbList<MakeMoveVector> createRepeated() => $pb.PbList<MakeMoveVector>();
+  static $pb.PbList<MakeMoveVector> createRepeated() =>
+      $pb.PbList<MakeMoveVector>();
   @$core.pragma('dart2js:noInline')
-  static MakeMoveVector getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MakeMoveVector>(create);
+  static MakeMoveVector getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MakeMoveVector>(create);
   static MakeMoveVector? _defaultInstance;
 
   /// Type of the individual elements.
@@ -1182,21 +1355,30 @@ class Upgrade extends $pb.GeneratedMessage {
 
   Upgrade._();
 
-  factory Upgrade.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Upgrade.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Upgrade.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Upgrade.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Upgrade', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..p<$core.List<$core.int>>(1, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PY)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Upgrade',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..p<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PY)
     ..pPS(2, _omitFieldNames ? '' : 'dependencies')
     ..aOS(3, _omitFieldNames ? '' : 'package')
-    ..aOM<$4.Argument>(4, _omitFieldNames ? '' : 'ticket', subBuilder: $4.Argument.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<$4.Argument>(4, _omitFieldNames ? '' : 'ticket',
+        subBuilder: $4.Argument.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Upgrade clone() => Upgrade()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Upgrade copyWith(void Function(Upgrade) updates) => super.copyWith((message) => updates(message as Upgrade)) as Upgrade;
+  Upgrade copyWith(void Function(Upgrade) updates) =>
+      super.copyWith((message) => updates(message as Upgrade)) as Upgrade;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1207,7 +1389,8 @@ class Upgrade extends $pb.GeneratedMessage {
   Upgrade createEmptyInstance() => create();
   static $pb.PbList<Upgrade> createRepeated() => $pb.PbList<Upgrade>();
   @$core.pragma('dart2js:noInline')
-  static Upgrade getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Upgrade>(create);
+  static Upgrade getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Upgrade>(create);
   static Upgrade? _defaultInstance;
 
   /// The serialized Move modules.
@@ -1253,27 +1436,47 @@ class RandomnessStateUpdate extends $pb.GeneratedMessage {
     if (epoch != null) result.epoch = epoch;
     if (randomnessRound != null) result.randomnessRound = randomnessRound;
     if (randomBytes != null) result.randomBytes = randomBytes;
-    if (randomnessObjectInitialSharedVersion != null) result.randomnessObjectInitialSharedVersion = randomnessObjectInitialSharedVersion;
+    if (randomnessObjectInitialSharedVersion != null)
+      result.randomnessObjectInitialSharedVersion =
+          randomnessObjectInitialSharedVersion;
     return result;
   }
 
   RandomnessStateUpdate._();
 
-  factory RandomnessStateUpdate.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory RandomnessStateUpdate.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory RandomnessStateUpdate.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RandomnessStateUpdate.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RandomnessStateUpdate', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'randomnessRound', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'randomBytes', $pb.PbFieldType.OY)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'randomnessObjectInitialSharedVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RandomnessStateUpdate',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'randomnessRound', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.List<$core.int>>(
+        3, _omitFieldNames ? '' : 'randomBytes', $pb.PbFieldType.OY)
+    ..a<$fixnum.Int64>(
+        4,
+        _omitFieldNames ? '' : 'randomnessObjectInitialSharedVersion',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RandomnessStateUpdate clone() => RandomnessStateUpdate()..mergeFromMessage(this);
+  RandomnessStateUpdate clone() =>
+      RandomnessStateUpdate()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  RandomnessStateUpdate copyWith(void Function(RandomnessStateUpdate) updates) => super.copyWith((message) => updates(message as RandomnessStateUpdate)) as RandomnessStateUpdate;
+  RandomnessStateUpdate copyWith(
+          void Function(RandomnessStateUpdate) updates) =>
+      super.copyWith((message) => updates(message as RandomnessStateUpdate))
+          as RandomnessStateUpdate;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1282,9 +1485,11 @@ class RandomnessStateUpdate extends $pb.GeneratedMessage {
   static RandomnessStateUpdate create() => RandomnessStateUpdate._();
   @$core.override
   RandomnessStateUpdate createEmptyInstance() => create();
-  static $pb.PbList<RandomnessStateUpdate> createRepeated() => $pb.PbList<RandomnessStateUpdate>();
+  static $pb.PbList<RandomnessStateUpdate> createRepeated() =>
+      $pb.PbList<RandomnessStateUpdate>();
   @$core.pragma('dart2js:noInline')
-  static RandomnessStateUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RandomnessStateUpdate>(create);
+  static RandomnessStateUpdate getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RandomnessStateUpdate>(create);
   static RandomnessStateUpdate? _defaultInstance;
 
   /// Epoch of the randomness state update transaction.
@@ -1321,7 +1526,8 @@ class RandomnessStateUpdate extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $fixnum.Int64 get randomnessObjectInitialSharedVersion => $_getI64(3);
   @$pb.TagNumber(4)
-  set randomnessObjectInitialSharedVersion($fixnum.Int64 value) => $_setInt64(3, value);
+  set randomnessObjectInitialSharedVersion($fixnum.Int64 value) =>
+      $_setInt64(3, value);
   @$pb.TagNumber(4)
   $core.bool hasRandomnessObjectInitialSharedVersion() => $_has(3);
   @$pb.TagNumber(4)
@@ -1346,33 +1552,57 @@ class ChangeEpoch extends $pb.GeneratedMessage {
     if (storageCharge != null) result.storageCharge = storageCharge;
     if (computationCharge != null) result.computationCharge = computationCharge;
     if (storageRebate != null) result.storageRebate = storageRebate;
-    if (nonRefundableStorageFee != null) result.nonRefundableStorageFee = nonRefundableStorageFee;
-    if (epochStartTimestamp != null) result.epochStartTimestamp = epochStartTimestamp;
+    if (nonRefundableStorageFee != null)
+      result.nonRefundableStorageFee = nonRefundableStorageFee;
+    if (epochStartTimestamp != null)
+      result.epochStartTimestamp = epochStartTimestamp;
     if (systemPackages != null) result.systemPackages.addAll(systemPackages);
     return result;
   }
 
   ChangeEpoch._();
 
-  factory ChangeEpoch.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ChangeEpoch.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ChangeEpoch.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ChangeEpoch.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChangeEpoch', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'protocolVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'storageCharge', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'computationCharge', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'storageRebate', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'nonRefundableStorageFee', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.Timestamp>(7, _omitFieldNames ? '' : 'epochStartTimestamp', subBuilder: $2.Timestamp.create)
-    ..pc<SystemPackage>(8, _omitFieldNames ? '' : 'systemPackages', $pb.PbFieldType.PM, subBuilder: SystemPackage.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ChangeEpoch',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'protocolVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'storageCharge', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        4, _omitFieldNames ? '' : 'computationCharge', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        5, _omitFieldNames ? '' : 'storageRebate', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'nonRefundableStorageFee',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$2.Timestamp>(7, _omitFieldNames ? '' : 'epochStartTimestamp',
+        subBuilder: $2.Timestamp.create)
+    ..pc<SystemPackage>(
+        8, _omitFieldNames ? '' : 'systemPackages', $pb.PbFieldType.PM,
+        subBuilder: SystemPackage.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChangeEpoch clone() => ChangeEpoch()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ChangeEpoch copyWith(void Function(ChangeEpoch) updates) => super.copyWith((message) => updates(message as ChangeEpoch)) as ChangeEpoch;
+  ChangeEpoch copyWith(void Function(ChangeEpoch) updates) =>
+      super.copyWith((message) => updates(message as ChangeEpoch))
+          as ChangeEpoch;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1383,7 +1613,8 @@ class ChangeEpoch extends $pb.GeneratedMessage {
   ChangeEpoch createEmptyInstance() => create();
   static $pb.PbList<ChangeEpoch> createRepeated() => $pb.PbList<ChangeEpoch>();
   @$core.pragma('dart2js:noInline')
-  static ChangeEpoch getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChangeEpoch>(create);
+  static ChangeEpoch getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ChangeEpoch>(create);
   static ChangeEpoch? _defaultInstance;
 
   /// The next (to become) epoch ID.
@@ -1483,20 +1714,30 @@ class SystemPackage extends $pb.GeneratedMessage {
 
   SystemPackage._();
 
-  factory SystemPackage.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SystemPackage.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SystemPackage.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SystemPackage.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SystemPackage', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..p<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PY)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SystemPackage',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..p<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PY)
     ..pPS(3, _omitFieldNames ? '' : 'dependencies')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SystemPackage clone() => SystemPackage()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SystemPackage copyWith(void Function(SystemPackage) updates) => super.copyWith((message) => updates(message as SystemPackage)) as SystemPackage;
+  SystemPackage copyWith(void Function(SystemPackage) updates) =>
+      super.copyWith((message) => updates(message as SystemPackage))
+          as SystemPackage;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1505,9 +1746,11 @@ class SystemPackage extends $pb.GeneratedMessage {
   static SystemPackage create() => SystemPackage._();
   @$core.override
   SystemPackage createEmptyInstance() => create();
-  static $pb.PbList<SystemPackage> createRepeated() => $pb.PbList<SystemPackage>();
+  static $pb.PbList<SystemPackage> createRepeated() =>
+      $pb.PbList<SystemPackage>();
   @$core.pragma('dart2js:noInline')
-  static SystemPackage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SystemPackage>(create);
+  static SystemPackage getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SystemPackage>(create);
   static SystemPackage? _defaultInstance;
 
   /// Version of the package.
@@ -1541,18 +1784,27 @@ class GenesisTransaction extends $pb.GeneratedMessage {
 
   GenesisTransaction._();
 
-  factory GenesisTransaction.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GenesisTransaction.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GenesisTransaction.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GenesisTransaction.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GenesisTransaction', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<$5.Object>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: $5.Object.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GenesisTransaction',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<$5.Object>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM,
+        subBuilder: $5.Object.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GenesisTransaction clone() => GenesisTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GenesisTransaction copyWith(void Function(GenesisTransaction) updates) => super.copyWith((message) => updates(message as GenesisTransaction)) as GenesisTransaction;
+  GenesisTransaction copyWith(void Function(GenesisTransaction) updates) =>
+      super.copyWith((message) => updates(message as GenesisTransaction))
+          as GenesisTransaction;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1561,9 +1813,11 @@ class GenesisTransaction extends $pb.GeneratedMessage {
   static GenesisTransaction create() => GenesisTransaction._();
   @$core.override
   GenesisTransaction createEmptyInstance() => create();
-  static $pb.PbList<GenesisTransaction> createRepeated() => $pb.PbList<GenesisTransaction>();
+  static $pb.PbList<GenesisTransaction> createRepeated() =>
+      $pb.PbList<GenesisTransaction>();
   @$core.pragma('dart2js:noInline')
-  static GenesisTransaction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GenesisTransaction>(create);
+  static GenesisTransaction getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GenesisTransaction>(create);
   static GenesisTransaction? _defaultInstance;
 
   /// Set of genesis objects.
@@ -1581,40 +1835,62 @@ class ConsensusCommitPrologue extends $pb.GeneratedMessage {
     $2.Timestamp? commitTimestamp,
     $core.String? consensusCommitDigest,
     $fixnum.Int64? subDagIndex,
-    ConsensusDeterminedVersionAssignments? consensusDeterminedVersionAssignments,
+    ConsensusDeterminedVersionAssignments?
+        consensusDeterminedVersionAssignments,
     $core.String? additionalStateDigest,
   }) {
     final result = create();
     if (epoch != null) result.epoch = epoch;
     if (round != null) result.round = round;
     if (commitTimestamp != null) result.commitTimestamp = commitTimestamp;
-    if (consensusCommitDigest != null) result.consensusCommitDigest = consensusCommitDigest;
+    if (consensusCommitDigest != null)
+      result.consensusCommitDigest = consensusCommitDigest;
     if (subDagIndex != null) result.subDagIndex = subDagIndex;
-    if (consensusDeterminedVersionAssignments != null) result.consensusDeterminedVersionAssignments = consensusDeterminedVersionAssignments;
-    if (additionalStateDigest != null) result.additionalStateDigest = additionalStateDigest;
+    if (consensusDeterminedVersionAssignments != null)
+      result.consensusDeterminedVersionAssignments =
+          consensusDeterminedVersionAssignments;
+    if (additionalStateDigest != null)
+      result.additionalStateDigest = additionalStateDigest;
     return result;
   }
 
   ConsensusCommitPrologue._();
 
-  factory ConsensusCommitPrologue.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ConsensusCommitPrologue.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ConsensusCommitPrologue.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ConsensusCommitPrologue.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConsensusCommitPrologue', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'round', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.Timestamp>(3, _omitFieldNames ? '' : 'commitTimestamp', subBuilder: $2.Timestamp.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ConsensusCommitPrologue',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'round', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$2.Timestamp>(3, _omitFieldNames ? '' : 'commitTimestamp',
+        subBuilder: $2.Timestamp.create)
     ..aOS(4, _omitFieldNames ? '' : 'consensusCommitDigest')
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'subDagIndex', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<ConsensusDeterminedVersionAssignments>(6, _omitFieldNames ? '' : 'consensusDeterminedVersionAssignments', subBuilder: ConsensusDeterminedVersionAssignments.create)
+    ..a<$fixnum.Int64>(
+        5, _omitFieldNames ? '' : 'subDagIndex', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<ConsensusDeterminedVersionAssignments>(
+        6, _omitFieldNames ? '' : 'consensusDeterminedVersionAssignments',
+        subBuilder: ConsensusDeterminedVersionAssignments.create)
     ..aOS(7, _omitFieldNames ? '' : 'additionalStateDigest')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ConsensusCommitPrologue clone() => ConsensusCommitPrologue()..mergeFromMessage(this);
+  ConsensusCommitPrologue clone() =>
+      ConsensusCommitPrologue()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ConsensusCommitPrologue copyWith(void Function(ConsensusCommitPrologue) updates) => super.copyWith((message) => updates(message as ConsensusCommitPrologue)) as ConsensusCommitPrologue;
+  ConsensusCommitPrologue copyWith(
+          void Function(ConsensusCommitPrologue) updates) =>
+      super.copyWith((message) => updates(message as ConsensusCommitPrologue))
+          as ConsensusCommitPrologue;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1623,9 +1899,11 @@ class ConsensusCommitPrologue extends $pb.GeneratedMessage {
   static ConsensusCommitPrologue create() => ConsensusCommitPrologue._();
   @$core.override
   ConsensusCommitPrologue createEmptyInstance() => create();
-  static $pb.PbList<ConsensusCommitPrologue> createRepeated() => $pb.PbList<ConsensusCommitPrologue>();
+  static $pb.PbList<ConsensusCommitPrologue> createRepeated() =>
+      $pb.PbList<ConsensusCommitPrologue>();
   @$core.pragma('dart2js:noInline')
-  static ConsensusCommitPrologue getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConsensusCommitPrologue>(create);
+  static ConsensusCommitPrologue getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ConsensusCommitPrologue>(create);
   static ConsensusCommitPrologue? _defaultInstance;
 
   /// Epoch of the commit prologue transaction.
@@ -1695,15 +1973,19 @@ class ConsensusCommitPrologue extends $pb.GeneratedMessage {
   ///
   /// Present in V3, V4.
   @$pb.TagNumber(6)
-  ConsensusDeterminedVersionAssignments get consensusDeterminedVersionAssignments => $_getN(5);
+  ConsensusDeterminedVersionAssignments
+      get consensusDeterminedVersionAssignments => $_getN(5);
   @$pb.TagNumber(6)
-  set consensusDeterminedVersionAssignments(ConsensusDeterminedVersionAssignments value) => $_setField(6, value);
+  set consensusDeterminedVersionAssignments(
+          ConsensusDeterminedVersionAssignments value) =>
+      $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasConsensusDeterminedVersionAssignments() => $_has(5);
   @$pb.TagNumber(6)
   void clearConsensusDeterminedVersionAssignments() => $_clearField(6);
   @$pb.TagNumber(6)
-  ConsensusDeterminedVersionAssignments ensureConsensusDeterminedVersionAssignments() => $_ensure(5);
+  ConsensusDeterminedVersionAssignments
+      ensureConsensusDeterminedVersionAssignments() => $_ensure(5);
 
   /// Digest of any additional state computed by the consensus handler.
   /// Used to detect forking bugs as early as possible.
@@ -1735,20 +2017,31 @@ class VersionAssignment extends $pb.GeneratedMessage {
 
   VersionAssignment._();
 
-  factory VersionAssignment.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory VersionAssignment.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory VersionAssignment.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory VersionAssignment.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VersionAssignment', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'VersionAssignment',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'objectId')
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'startVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'startVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   VersionAssignment clone() => VersionAssignment()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VersionAssignment copyWith(void Function(VersionAssignment) updates) => super.copyWith((message) => updates(message as VersionAssignment)) as VersionAssignment;
+  VersionAssignment copyWith(void Function(VersionAssignment) updates) =>
+      super.copyWith((message) => updates(message as VersionAssignment))
+          as VersionAssignment;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1757,9 +2050,11 @@ class VersionAssignment extends $pb.GeneratedMessage {
   static VersionAssignment create() => VersionAssignment._();
   @$core.override
   VersionAssignment createEmptyInstance() => create();
-  static $pb.PbList<VersionAssignment> createRepeated() => $pb.PbList<VersionAssignment>();
+  static $pb.PbList<VersionAssignment> createRepeated() =>
+      $pb.PbList<VersionAssignment>();
   @$core.pragma('dart2js:noInline')
-  static VersionAssignment getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<VersionAssignment>(create);
+  static VersionAssignment getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<VersionAssignment>(create);
   static VersionAssignment? _defaultInstance;
 
   /// `ObjectId` of the object.
@@ -1801,25 +2096,36 @@ class CanceledTransaction extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (digest != null) result.digest = digest;
-    if (versionAssignments != null) result.versionAssignments.addAll(versionAssignments);
+    if (versionAssignments != null)
+      result.versionAssignments.addAll(versionAssignments);
     return result;
   }
 
   CanceledTransaction._();
 
-  factory CanceledTransaction.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CanceledTransaction.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CanceledTransaction.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CanceledTransaction.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CanceledTransaction', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CanceledTransaction',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'digest')
-    ..pc<VersionAssignment>(2, _omitFieldNames ? '' : 'versionAssignments', $pb.PbFieldType.PM, subBuilder: VersionAssignment.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<VersionAssignment>(
+        2, _omitFieldNames ? '' : 'versionAssignments', $pb.PbFieldType.PM,
+        subBuilder: VersionAssignment.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CanceledTransaction clone() => CanceledTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CanceledTransaction copyWith(void Function(CanceledTransaction) updates) => super.copyWith((message) => updates(message as CanceledTransaction)) as CanceledTransaction;
+  CanceledTransaction copyWith(void Function(CanceledTransaction) updates) =>
+      super.copyWith((message) => updates(message as CanceledTransaction))
+          as CanceledTransaction;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1828,9 +2134,11 @@ class CanceledTransaction extends $pb.GeneratedMessage {
   static CanceledTransaction create() => CanceledTransaction._();
   @$core.override
   CanceledTransaction createEmptyInstance() => create();
-  static $pb.PbList<CanceledTransaction> createRepeated() => $pb.PbList<CanceledTransaction>();
+  static $pb.PbList<CanceledTransaction> createRepeated() =>
+      $pb.PbList<CanceledTransaction>();
   @$core.pragma('dart2js:noInline')
-  static CanceledTransaction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CanceledTransaction>(create);
+  static CanceledTransaction getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CanceledTransaction>(create);
   static CanceledTransaction? _defaultInstance;
 
   /// Digest of the canceled transaction.
@@ -1856,36 +2164,55 @@ class ConsensusDeterminedVersionAssignments extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (version != null) result.version = version;
-    if (canceledTransactions != null) result.canceledTransactions.addAll(canceledTransactions);
+    if (canceledTransactions != null)
+      result.canceledTransactions.addAll(canceledTransactions);
     return result;
   }
 
   ConsensusDeterminedVersionAssignments._();
 
-  factory ConsensusDeterminedVersionAssignments.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ConsensusDeterminedVersionAssignments.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ConsensusDeterminedVersionAssignments.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ConsensusDeterminedVersionAssignments.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConsensusDeterminedVersionAssignments', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ConsensusDeterminedVersionAssignments',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.O3)
-    ..pc<CanceledTransaction>(3, _omitFieldNames ? '' : 'canceledTransactions', $pb.PbFieldType.PM, subBuilder: CanceledTransaction.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<CanceledTransaction>(
+        3, _omitFieldNames ? '' : 'canceledTransactions', $pb.PbFieldType.PM,
+        subBuilder: CanceledTransaction.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ConsensusDeterminedVersionAssignments clone() => ConsensusDeterminedVersionAssignments()..mergeFromMessage(this);
+  ConsensusDeterminedVersionAssignments clone() =>
+      ConsensusDeterminedVersionAssignments()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ConsensusDeterminedVersionAssignments copyWith(void Function(ConsensusDeterminedVersionAssignments) updates) => super.copyWith((message) => updates(message as ConsensusDeterminedVersionAssignments)) as ConsensusDeterminedVersionAssignments;
+  ConsensusDeterminedVersionAssignments copyWith(
+          void Function(ConsensusDeterminedVersionAssignments) updates) =>
+      super.copyWith((message) =>
+              updates(message as ConsensusDeterminedVersionAssignments))
+          as ConsensusDeterminedVersionAssignments;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ConsensusDeterminedVersionAssignments create() => ConsensusDeterminedVersionAssignments._();
+  static ConsensusDeterminedVersionAssignments create() =>
+      ConsensusDeterminedVersionAssignments._();
   @$core.override
   ConsensusDeterminedVersionAssignments createEmptyInstance() => create();
-  static $pb.PbList<ConsensusDeterminedVersionAssignments> createRepeated() => $pb.PbList<ConsensusDeterminedVersionAssignments>();
+  static $pb.PbList<ConsensusDeterminedVersionAssignments> createRepeated() =>
+      $pb.PbList<ConsensusDeterminedVersionAssignments>();
   @$core.pragma('dart2js:noInline')
-  static ConsensusDeterminedVersionAssignments getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConsensusDeterminedVersionAssignments>(create);
+  static ConsensusDeterminedVersionAssignments getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
+          ConsensusDeterminedVersionAssignments>(create);
   static ConsensusDeterminedVersionAssignments? _defaultInstance;
 
   /// Version of this message
@@ -1915,27 +2242,47 @@ class AuthenticatorStateUpdate extends $pb.GeneratedMessage {
     if (epoch != null) result.epoch = epoch;
     if (round != null) result.round = round;
     if (newActiveJwks != null) result.newActiveJwks.addAll(newActiveJwks);
-    if (authenticatorObjectInitialSharedVersion != null) result.authenticatorObjectInitialSharedVersion = authenticatorObjectInitialSharedVersion;
+    if (authenticatorObjectInitialSharedVersion != null)
+      result.authenticatorObjectInitialSharedVersion =
+          authenticatorObjectInitialSharedVersion;
     return result;
   }
 
   AuthenticatorStateUpdate._();
 
-  factory AuthenticatorStateUpdate.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory AuthenticatorStateUpdate.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory AuthenticatorStateUpdate.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AuthenticatorStateUpdate.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AuthenticatorStateUpdate', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'round', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<ActiveJwk>(3, _omitFieldNames ? '' : 'newActiveJwks', $pb.PbFieldType.PM, subBuilder: ActiveJwk.create)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'authenticatorObjectInitialSharedVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AuthenticatorStateUpdate',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'round', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<ActiveJwk>(
+        3, _omitFieldNames ? '' : 'newActiveJwks', $pb.PbFieldType.PM,
+        subBuilder: ActiveJwk.create)
+    ..a<$fixnum.Int64>(
+        4,
+        _omitFieldNames ? '' : 'authenticatorObjectInitialSharedVersion',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AuthenticatorStateUpdate clone() => AuthenticatorStateUpdate()..mergeFromMessage(this);
+  AuthenticatorStateUpdate clone() =>
+      AuthenticatorStateUpdate()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AuthenticatorStateUpdate copyWith(void Function(AuthenticatorStateUpdate) updates) => super.copyWith((message) => updates(message as AuthenticatorStateUpdate)) as AuthenticatorStateUpdate;
+  AuthenticatorStateUpdate copyWith(
+          void Function(AuthenticatorStateUpdate) updates) =>
+      super.copyWith((message) => updates(message as AuthenticatorStateUpdate))
+          as AuthenticatorStateUpdate;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1944,9 +2291,11 @@ class AuthenticatorStateUpdate extends $pb.GeneratedMessage {
   static AuthenticatorStateUpdate create() => AuthenticatorStateUpdate._();
   @$core.override
   AuthenticatorStateUpdate createEmptyInstance() => create();
-  static $pb.PbList<AuthenticatorStateUpdate> createRepeated() => $pb.PbList<AuthenticatorStateUpdate>();
+  static $pb.PbList<AuthenticatorStateUpdate> createRepeated() =>
+      $pb.PbList<AuthenticatorStateUpdate>();
   @$core.pragma('dart2js:noInline')
-  static AuthenticatorStateUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AuthenticatorStateUpdate>(create);
+  static AuthenticatorStateUpdate getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AuthenticatorStateUpdate>(create);
   static AuthenticatorStateUpdate? _defaultInstance;
 
   /// Epoch of the authenticator state update transaction.
@@ -1977,7 +2326,8 @@ class AuthenticatorStateUpdate extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $fixnum.Int64 get authenticatorObjectInitialSharedVersion => $_getI64(3);
   @$pb.TagNumber(4)
-  set authenticatorObjectInitialSharedVersion($fixnum.Int64 value) => $_setInt64(3, value);
+  set authenticatorObjectInitialSharedVersion($fixnum.Int64 value) =>
+      $_setInt64(3, value);
   @$pb.TagNumber(4)
   $core.bool hasAuthenticatorObjectInitialSharedVersion() => $_has(3);
   @$pb.TagNumber(4)
@@ -2000,20 +2350,28 @@ class ActiveJwk extends $pb.GeneratedMessage {
 
   ActiveJwk._();
 
-  factory ActiveJwk.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ActiveJwk.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ActiveJwk.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ActiveJwk.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ActiveJwk', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ActiveJwk',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$6.JwkId>(1, _omitFieldNames ? '' : 'id', subBuilder: $6.JwkId.create)
     ..aOM<$6.Jwk>(2, _omitFieldNames ? '' : 'jwk', subBuilder: $6.Jwk.create)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ActiveJwk clone() => ActiveJwk()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ActiveJwk copyWith(void Function(ActiveJwk) updates) => super.copyWith((message) => updates(message as ActiveJwk)) as ActiveJwk;
+  ActiveJwk copyWith(void Function(ActiveJwk) updates) =>
+      super.copyWith((message) => updates(message as ActiveJwk)) as ActiveJwk;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -2024,7 +2382,8 @@ class ActiveJwk extends $pb.GeneratedMessage {
   ActiveJwk createEmptyInstance() => create();
   static $pb.PbList<ActiveJwk> createRepeated() => $pb.PbList<ActiveJwk>();
   @$core.pragma('dart2js:noInline')
-  static ActiveJwk getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ActiveJwk>(create);
+  static ActiveJwk getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ActiveJwk>(create);
   static ActiveJwk? _defaultInstance;
 
   /// Identifier used to uniquely identify a JWK.
@@ -2075,18 +2434,30 @@ class EndOfEpochTransaction extends $pb.GeneratedMessage {
 
   EndOfEpochTransaction._();
 
-  factory EndOfEpochTransaction.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory EndOfEpochTransaction.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory EndOfEpochTransaction.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory EndOfEpochTransaction.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EndOfEpochTransaction', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<EndOfEpochTransactionKind>(1, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM, subBuilder: EndOfEpochTransactionKind.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'EndOfEpochTransaction',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<EndOfEpochTransactionKind>(
+        1, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
+        subBuilder: EndOfEpochTransactionKind.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EndOfEpochTransaction clone() => EndOfEpochTransaction()..mergeFromMessage(this);
+  EndOfEpochTransaction clone() =>
+      EndOfEpochTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EndOfEpochTransaction copyWith(void Function(EndOfEpochTransaction) updates) => super.copyWith((message) => updates(message as EndOfEpochTransaction)) as EndOfEpochTransaction;
+  EndOfEpochTransaction copyWith(
+          void Function(EndOfEpochTransaction) updates) =>
+      super.copyWith((message) => updates(message as EndOfEpochTransaction))
+          as EndOfEpochTransaction;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -2095,9 +2466,11 @@ class EndOfEpochTransaction extends $pb.GeneratedMessage {
   static EndOfEpochTransaction create() => EndOfEpochTransaction._();
   @$core.override
   EndOfEpochTransaction createEmptyInstance() => create();
-  static $pb.PbList<EndOfEpochTransaction> createRepeated() => $pb.PbList<EndOfEpochTransaction>();
+  static $pb.PbList<EndOfEpochTransaction> createRepeated() =>
+      $pb.PbList<EndOfEpochTransaction>();
   @$core.pragma('dart2js:noInline')
-  static EndOfEpochTransaction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EndOfEpochTransaction>(create);
+  static EndOfEpochTransaction getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<EndOfEpochTransaction>(create);
   static EndOfEpochTransaction? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2105,12 +2478,12 @@ class EndOfEpochTransaction extends $pb.GeneratedMessage {
 }
 
 enum EndOfEpochTransactionKind_Data {
-  changeEpoch, 
-  authenticatorStateExpire, 
-  executionTimeObservations, 
-  bridgeChainId, 
-  bridgeObjectVersion, 
-  storageCost, 
+  changeEpoch,
+  authenticatorStateExpire,
+  executionTimeObservations,
+  bridgeChainId,
+  bridgeObjectVersion,
+  storageCost,
   notSet
 }
 
@@ -2128,44 +2501,71 @@ class EndOfEpochTransactionKind extends $pb.GeneratedMessage {
     final result = create();
     if (kind != null) result.kind = kind;
     if (changeEpoch != null) result.changeEpoch = changeEpoch;
-    if (authenticatorStateExpire != null) result.authenticatorStateExpire = authenticatorStateExpire;
-    if (executionTimeObservations != null) result.executionTimeObservations = executionTimeObservations;
+    if (authenticatorStateExpire != null)
+      result.authenticatorStateExpire = authenticatorStateExpire;
+    if (executionTimeObservations != null)
+      result.executionTimeObservations = executionTimeObservations;
     if (bridgeChainId != null) result.bridgeChainId = bridgeChainId;
-    if (bridgeObjectVersion != null) result.bridgeObjectVersion = bridgeObjectVersion;
+    if (bridgeObjectVersion != null)
+      result.bridgeObjectVersion = bridgeObjectVersion;
     if (storageCost != null) result.storageCost = storageCost;
     return result;
   }
 
   EndOfEpochTransactionKind._();
 
-  factory EndOfEpochTransactionKind.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory EndOfEpochTransactionKind.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory EndOfEpochTransactionKind.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory EndOfEpochTransactionKind.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static const $core.Map<$core.int, EndOfEpochTransactionKind_Data> _EndOfEpochTransactionKind_DataByTag = {
-    2 : EndOfEpochTransactionKind_Data.changeEpoch,
-    3 : EndOfEpochTransactionKind_Data.authenticatorStateExpire,
-    4 : EndOfEpochTransactionKind_Data.executionTimeObservations,
-    5 : EndOfEpochTransactionKind_Data.bridgeChainId,
-    6 : EndOfEpochTransactionKind_Data.bridgeObjectVersion,
-    7 : EndOfEpochTransactionKind_Data.storageCost,
-    0 : EndOfEpochTransactionKind_Data.notSet
+  static const $core.Map<$core.int, EndOfEpochTransactionKind_Data>
+      _EndOfEpochTransactionKind_DataByTag = {
+    2: EndOfEpochTransactionKind_Data.changeEpoch,
+    3: EndOfEpochTransactionKind_Data.authenticatorStateExpire,
+    4: EndOfEpochTransactionKind_Data.executionTimeObservations,
+    5: EndOfEpochTransactionKind_Data.bridgeChainId,
+    6: EndOfEpochTransactionKind_Data.bridgeObjectVersion,
+    7: EndOfEpochTransactionKind_Data.storageCost,
+    0: EndOfEpochTransactionKind_Data.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EndOfEpochTransactionKind', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'EndOfEpochTransactionKind',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..oo(0, [2, 3, 4, 5, 6, 7])
-    ..e<EndOfEpochTransactionKind_Kind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: EndOfEpochTransactionKind_Kind.KIND_UNKNOWN, valueOf: EndOfEpochTransactionKind_Kind.valueOf, enumValues: EndOfEpochTransactionKind_Kind.values)
-    ..aOM<ChangeEpoch>(2, _omitFieldNames ? '' : 'changeEpoch', subBuilder: ChangeEpoch.create)
-    ..aOM<AuthenticatorStateExpire>(3, _omitFieldNames ? '' : 'authenticatorStateExpire', subBuilder: AuthenticatorStateExpire.create)
-    ..aOM<ExecutionTimeObservations>(4, _omitFieldNames ? '' : 'executionTimeObservations', subBuilder: ExecutionTimeObservations.create)
+    ..e<EndOfEpochTransactionKind_Kind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: EndOfEpochTransactionKind_Kind.KIND_UNKNOWN,
+        valueOf: EndOfEpochTransactionKind_Kind.valueOf,
+        enumValues: EndOfEpochTransactionKind_Kind.values)
+    ..aOM<ChangeEpoch>(2, _omitFieldNames ? '' : 'changeEpoch',
+        subBuilder: ChangeEpoch.create)
+    ..aOM<AuthenticatorStateExpire>(
+        3, _omitFieldNames ? '' : 'authenticatorStateExpire',
+        subBuilder: AuthenticatorStateExpire.create)
+    ..aOM<ExecutionTimeObservations>(
+        4, _omitFieldNames ? '' : 'executionTimeObservations',
+        subBuilder: ExecutionTimeObservations.create)
     ..aOS(5, _omitFieldNames ? '' : 'bridgeChainId')
-    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'bridgeObjectVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(7, _omitFieldNames ? '' : 'storageCost', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(
+        6, _omitFieldNames ? '' : 'bridgeObjectVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        7, _omitFieldNames ? '' : 'storageCost', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EndOfEpochTransactionKind clone() => EndOfEpochTransactionKind()..mergeFromMessage(this);
+  EndOfEpochTransactionKind clone() =>
+      EndOfEpochTransactionKind()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EndOfEpochTransactionKind copyWith(void Function(EndOfEpochTransactionKind) updates) => super.copyWith((message) => updates(message as EndOfEpochTransactionKind)) as EndOfEpochTransactionKind;
+  EndOfEpochTransactionKind copyWith(
+          void Function(EndOfEpochTransactionKind) updates) =>
+      super.copyWith((message) => updates(message as EndOfEpochTransactionKind))
+          as EndOfEpochTransactionKind;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -2174,12 +2574,15 @@ class EndOfEpochTransactionKind extends $pb.GeneratedMessage {
   static EndOfEpochTransactionKind create() => EndOfEpochTransactionKind._();
   @$core.override
   EndOfEpochTransactionKind createEmptyInstance() => create();
-  static $pb.PbList<EndOfEpochTransactionKind> createRepeated() => $pb.PbList<EndOfEpochTransactionKind>();
+  static $pb.PbList<EndOfEpochTransactionKind> createRepeated() =>
+      $pb.PbList<EndOfEpochTransactionKind>();
   @$core.pragma('dart2js:noInline')
-  static EndOfEpochTransactionKind getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EndOfEpochTransactionKind>(create);
+  static EndOfEpochTransactionKind getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<EndOfEpochTransactionKind>(create);
   static EndOfEpochTransactionKind? _defaultInstance;
 
-  EndOfEpochTransactionKind_Data whichData() => _EndOfEpochTransactionKind_DataByTag[$_whichOneof(0)]!;
+  EndOfEpochTransactionKind_Data whichData() =>
+      _EndOfEpochTransactionKind_DataByTag[$_whichOneof(0)]!;
   void clearData() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
@@ -2207,7 +2610,8 @@ class EndOfEpochTransactionKind extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   AuthenticatorStateExpire get authenticatorStateExpire => $_getN(2);
   @$pb.TagNumber(3)
-  set authenticatorStateExpire(AuthenticatorStateExpire value) => $_setField(3, value);
+  set authenticatorStateExpire(AuthenticatorStateExpire value) =>
+      $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasAuthenticatorStateExpire() => $_has(2);
   @$pb.TagNumber(3)
@@ -2219,7 +2623,8 @@ class EndOfEpochTransactionKind extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   ExecutionTimeObservations get executionTimeObservations => $_getN(3);
   @$pb.TagNumber(4)
-  set executionTimeObservations(ExecutionTimeObservations value) => $_setField(4, value);
+  set executionTimeObservations(ExecutionTimeObservations value) =>
+      $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasExecutionTimeObservations() => $_has(3);
   @$pb.TagNumber(4)
@@ -2266,25 +2671,43 @@ class AuthenticatorStateExpire extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (minEpoch != null) result.minEpoch = minEpoch;
-    if (authenticatorObjectInitialSharedVersion != null) result.authenticatorObjectInitialSharedVersion = authenticatorObjectInitialSharedVersion;
+    if (authenticatorObjectInitialSharedVersion != null)
+      result.authenticatorObjectInitialSharedVersion =
+          authenticatorObjectInitialSharedVersion;
     return result;
   }
 
   AuthenticatorStateExpire._();
 
-  factory AuthenticatorStateExpire.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory AuthenticatorStateExpire.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory AuthenticatorStateExpire.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AuthenticatorStateExpire.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AuthenticatorStateExpire', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'minEpoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'authenticatorObjectInitialSharedVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AuthenticatorStateExpire',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'minEpoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2,
+        _omitFieldNames ? '' : 'authenticatorObjectInitialSharedVersion',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AuthenticatorStateExpire clone() => AuthenticatorStateExpire()..mergeFromMessage(this);
+  AuthenticatorStateExpire clone() =>
+      AuthenticatorStateExpire()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AuthenticatorStateExpire copyWith(void Function(AuthenticatorStateExpire) updates) => super.copyWith((message) => updates(message as AuthenticatorStateExpire)) as AuthenticatorStateExpire;
+  AuthenticatorStateExpire copyWith(
+          void Function(AuthenticatorStateExpire) updates) =>
+      super.copyWith((message) => updates(message as AuthenticatorStateExpire))
+          as AuthenticatorStateExpire;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -2293,9 +2716,11 @@ class AuthenticatorStateExpire extends $pb.GeneratedMessage {
   static AuthenticatorStateExpire create() => AuthenticatorStateExpire._();
   @$core.override
   AuthenticatorStateExpire createEmptyInstance() => create();
-  static $pb.PbList<AuthenticatorStateExpire> createRepeated() => $pb.PbList<AuthenticatorStateExpire>();
+  static $pb.PbList<AuthenticatorStateExpire> createRepeated() =>
+      $pb.PbList<AuthenticatorStateExpire>();
   @$core.pragma('dart2js:noInline')
-  static AuthenticatorStateExpire getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AuthenticatorStateExpire>(create);
+  static AuthenticatorStateExpire getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AuthenticatorStateExpire>(create);
   static AuthenticatorStateExpire? _defaultInstance;
 
   /// Expire JWKs that have a lower epoch than this.
@@ -2312,7 +2737,8 @@ class AuthenticatorStateExpire extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $fixnum.Int64 get authenticatorObjectInitialSharedVersion => $_getI64(1);
   @$pb.TagNumber(2)
-  set authenticatorObjectInitialSharedVersion($fixnum.Int64 value) => $_setInt64(1, value);
+  set authenticatorObjectInitialSharedVersion($fixnum.Int64 value) =>
+      $_setInt64(1, value);
   @$pb.TagNumber(2)
   $core.bool hasAuthenticatorObjectInitialSharedVersion() => $_has(1);
   @$pb.TagNumber(2)
@@ -2332,19 +2758,31 @@ class ExecutionTimeObservations extends $pb.GeneratedMessage {
 
   ExecutionTimeObservations._();
 
-  factory ExecutionTimeObservations.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecutionTimeObservations.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecutionTimeObservations.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecutionTimeObservations.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecutionTimeObservations', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecutionTimeObservations',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.O3)
-    ..pc<ExecutionTimeObservation>(2, _omitFieldNames ? '' : 'observations', $pb.PbFieldType.PM, subBuilder: ExecutionTimeObservation.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<ExecutionTimeObservation>(
+        2, _omitFieldNames ? '' : 'observations', $pb.PbFieldType.PM,
+        subBuilder: ExecutionTimeObservation.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutionTimeObservations clone() => ExecutionTimeObservations()..mergeFromMessage(this);
+  ExecutionTimeObservations clone() =>
+      ExecutionTimeObservations()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutionTimeObservations copyWith(void Function(ExecutionTimeObservations) updates) => super.copyWith((message) => updates(message as ExecutionTimeObservations)) as ExecutionTimeObservations;
+  ExecutionTimeObservations copyWith(
+          void Function(ExecutionTimeObservations) updates) =>
+      super.copyWith((message) => updates(message as ExecutionTimeObservations))
+          as ExecutionTimeObservations;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -2353,9 +2791,11 @@ class ExecutionTimeObservations extends $pb.GeneratedMessage {
   static ExecutionTimeObservations create() => ExecutionTimeObservations._();
   @$core.override
   ExecutionTimeObservations createEmptyInstance() => create();
-  static $pb.PbList<ExecutionTimeObservations> createRepeated() => $pb.PbList<ExecutionTimeObservations>();
+  static $pb.PbList<ExecutionTimeObservations> createRepeated() =>
+      $pb.PbList<ExecutionTimeObservations>();
   @$core.pragma('dart2js:noInline')
-  static ExecutionTimeObservations getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecutionTimeObservations>(create);
+  static ExecutionTimeObservations getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecutionTimeObservations>(create);
   static ExecutionTimeObservations? _defaultInstance;
 
   /// Version of this ExecutionTimeObservations
@@ -2381,26 +2821,46 @@ class ExecutionTimeObservation extends $pb.GeneratedMessage {
     final result = create();
     if (kind != null) result.kind = kind;
     if (moveEntryPoint != null) result.moveEntryPoint = moveEntryPoint;
-    if (validatorObservations != null) result.validatorObservations.addAll(validatorObservations);
+    if (validatorObservations != null)
+      result.validatorObservations.addAll(validatorObservations);
     return result;
   }
 
   ExecutionTimeObservation._();
 
-  factory ExecutionTimeObservation.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecutionTimeObservation.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecutionTimeObservation.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecutionTimeObservation.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecutionTimeObservation', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<ExecutionTimeObservation_ExecutionTimeObservationKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: ExecutionTimeObservation_ExecutionTimeObservationKind.EXECUTION_TIME_OBSERVATION_KIND_UNKNOWN, valueOf: ExecutionTimeObservation_ExecutionTimeObservationKind.valueOf, enumValues: ExecutionTimeObservation_ExecutionTimeObservationKind.values)
-    ..aOM<MoveCall>(2, _omitFieldNames ? '' : 'moveEntryPoint', subBuilder: MoveCall.create)
-    ..pc<ValidatorExecutionTimeObservation>(3, _omitFieldNames ? '' : 'validatorObservations', $pb.PbFieldType.PM, subBuilder: ValidatorExecutionTimeObservation.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecutionTimeObservation',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<ExecutionTimeObservation_ExecutionTimeObservationKind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: ExecutionTimeObservation_ExecutionTimeObservationKind
+            .EXECUTION_TIME_OBSERVATION_KIND_UNKNOWN,
+        valueOf: ExecutionTimeObservation_ExecutionTimeObservationKind.valueOf,
+        enumValues:
+            ExecutionTimeObservation_ExecutionTimeObservationKind.values)
+    ..aOM<MoveCall>(2, _omitFieldNames ? '' : 'moveEntryPoint',
+        subBuilder: MoveCall.create)
+    ..pc<ValidatorExecutionTimeObservation>(
+        3, _omitFieldNames ? '' : 'validatorObservations', $pb.PbFieldType.PM,
+        subBuilder: ValidatorExecutionTimeObservation.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutionTimeObservation clone() => ExecutionTimeObservation()..mergeFromMessage(this);
+  ExecutionTimeObservation clone() =>
+      ExecutionTimeObservation()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutionTimeObservation copyWith(void Function(ExecutionTimeObservation) updates) => super.copyWith((message) => updates(message as ExecutionTimeObservation)) as ExecutionTimeObservation;
+  ExecutionTimeObservation copyWith(
+          void Function(ExecutionTimeObservation) updates) =>
+      super.copyWith((message) => updates(message as ExecutionTimeObservation))
+          as ExecutionTimeObservation;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -2409,15 +2869,18 @@ class ExecutionTimeObservation extends $pb.GeneratedMessage {
   static ExecutionTimeObservation create() => ExecutionTimeObservation._();
   @$core.override
   ExecutionTimeObservation createEmptyInstance() => create();
-  static $pb.PbList<ExecutionTimeObservation> createRepeated() => $pb.PbList<ExecutionTimeObservation>();
+  static $pb.PbList<ExecutionTimeObservation> createRepeated() =>
+      $pb.PbList<ExecutionTimeObservation>();
   @$core.pragma('dart2js:noInline')
-  static ExecutionTimeObservation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecutionTimeObservation>(create);
+  static ExecutionTimeObservation getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecutionTimeObservation>(create);
   static ExecutionTimeObservation? _defaultInstance;
 
   @$pb.TagNumber(1)
   ExecutionTimeObservation_ExecutionTimeObservationKind get kind => $_getN(0);
   @$pb.TagNumber(1)
-  set kind(ExecutionTimeObservation_ExecutionTimeObservationKind value) => $_setField(1, value);
+  set kind(ExecutionTimeObservation_ExecutionTimeObservationKind value) =>
+      $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasKind() => $_has(0);
   @$pb.TagNumber(1)
@@ -2435,7 +2898,8 @@ class ExecutionTimeObservation extends $pb.GeneratedMessage {
   MoveCall ensureMoveEntryPoint() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $pb.PbList<ValidatorExecutionTimeObservation> get validatorObservations => $_getList(2);
+  $pb.PbList<ValidatorExecutionTimeObservation> get validatorObservations =>
+      $_getList(2);
 }
 
 class ValidatorExecutionTimeObservation extends $pb.GeneratedMessage {
@@ -2451,30 +2915,48 @@ class ValidatorExecutionTimeObservation extends $pb.GeneratedMessage {
 
   ValidatorExecutionTimeObservation._();
 
-  factory ValidatorExecutionTimeObservation.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ValidatorExecutionTimeObservation.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ValidatorExecutionTimeObservation.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ValidatorExecutionTimeObservation.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ValidatorExecutionTimeObservation', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, _omitFieldNames ? '' : 'validator', $pb.PbFieldType.OY)
-    ..aOM<$7.Duration>(2, _omitFieldNames ? '' : 'duration', subBuilder: $7.Duration.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ValidatorExecutionTimeObservation',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'validator', $pb.PbFieldType.OY)
+    ..aOM<$7.Duration>(2, _omitFieldNames ? '' : 'duration',
+        subBuilder: $7.Duration.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorExecutionTimeObservation clone() => ValidatorExecutionTimeObservation()..mergeFromMessage(this);
+  ValidatorExecutionTimeObservation clone() =>
+      ValidatorExecutionTimeObservation()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorExecutionTimeObservation copyWith(void Function(ValidatorExecutionTimeObservation) updates) => super.copyWith((message) => updates(message as ValidatorExecutionTimeObservation)) as ValidatorExecutionTimeObservation;
+  ValidatorExecutionTimeObservation copyWith(
+          void Function(ValidatorExecutionTimeObservation) updates) =>
+      super.copyWith((message) =>
+              updates(message as ValidatorExecutionTimeObservation))
+          as ValidatorExecutionTimeObservation;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ValidatorExecutionTimeObservation create() => ValidatorExecutionTimeObservation._();
+  static ValidatorExecutionTimeObservation create() =>
+      ValidatorExecutionTimeObservation._();
   @$core.override
   ValidatorExecutionTimeObservation createEmptyInstance() => create();
-  static $pb.PbList<ValidatorExecutionTimeObservation> createRepeated() => $pb.PbList<ValidatorExecutionTimeObservation>();
+  static $pb.PbList<ValidatorExecutionTimeObservation> createRepeated() =>
+      $pb.PbList<ValidatorExecutionTimeObservation>();
   @$core.pragma('dart2js:noInline')
-  static ValidatorExecutionTimeObservation getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ValidatorExecutionTimeObservation>(create);
+  static ValidatorExecutionTimeObservation getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ValidatorExecutionTimeObservation>(
+          create);
   static ValidatorExecutionTimeObservation? _defaultInstance;
 
   /// Bls12381 public key of the validator
@@ -2500,6 +2982,7 @@ class ValidatorExecutionTimeObservation extends $pb.GeneratedMessage {
   $7.Duration ensureDuration() => $_ensure(1);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

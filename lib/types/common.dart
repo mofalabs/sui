@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'sui_bcs.dart';
 
@@ -28,13 +27,9 @@ class ObjectOwner {
     if (data is String && data == 'Immutable') {
       return ObjectOwner(null, null, null, true);
     }
-    
-    return ObjectOwner(
-      data['AddressOwner'],
-      data['ObjectOwner'],
-      data['Shared'] != null ? Shared.fromJson(data['Shared']) : null,
-      false
-    );
+
+    return ObjectOwner(data['AddressOwner'], data['ObjectOwner'],
+        data['Shared'] != null ? Shared.fromJson(data['Shared']) : null, false);
   }
 }
 
@@ -43,15 +38,12 @@ class ObjectOwner {
 const TX_DIGEST_LENGTH = 32;
 
 // taken from https://rgxdb.com/r/1NUN74O6
-final VALID_BASE64_REGEX = RegExp(r'^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$');
-  
+final VALID_BASE64_REGEX = RegExp(
+    r'^(?:[a-zA-Z0-9+/]{4})*(?:|(?:[a-zA-Z0-9+/]{3}=)|(?:[a-zA-Z0-9+/]{2}==)|(?:[a-zA-Z0-9+/]{1}===))$');
 
-bool isValidTransactionDigest(
-  String value
-) {
-  return
-    base64Decode(value).length == TX_DIGEST_LENGTH &&
-    VALID_BASE64_REGEX.hasMatch(value);
+bool isValidTransactionDigest(String value) {
+  return base64Decode(value).length == TX_DIGEST_LENGTH &&
+      VALID_BASE64_REGEX.hasMatch(value);
 }
 
 // TODO - can we automatically sync this with rust length definition?
@@ -70,61 +62,57 @@ bool isValidSuiObjectId(String value) {
   return isValidSuiAddress(value);
 }
 
-List<String> splitGenericParameters(
-	String str,
-	[(String, String) genericSeparators = ('<', '>')]
-) {
-	final (left, right) = genericSeparators;
-	final tok = <String>[];
-	String word = '';
-	int nestedAngleBrackets = 0;
+List<String> splitGenericParameters(String str,
+    [(String, String) genericSeparators = ('<', '>')]) {
+  final (left, right) = genericSeparators;
+  final tok = <String>[];
+  String word = '';
+  int nestedAngleBrackets = 0;
 
-	for (int i = 0; i < str.length; i++) {
-		final char = str[i];
-		if (char == left) {
-			nestedAngleBrackets++;
-		}
-		if (char == right) {
-			nestedAngleBrackets--;
-		}
-		if (nestedAngleBrackets == 0 && char == ',') {
-			tok.add(word.trim());
-			word = '';
-			continue;
-		}
-		word += char;
-	}
+  for (int i = 0; i < str.length; i++) {
+    final char = str[i];
+    if (char == left) {
+      nestedAngleBrackets++;
+    }
+    if (char == right) {
+      nestedAngleBrackets--;
+    }
+    if (nestedAngleBrackets == 0 && char == ',') {
+      tok.add(word.trim());
+      word = '';
+      continue;
+    }
+    word += char;
+  }
 
-	tok.add(word.trim());
+  tok.add(word.trim());
 
-	return tok;
+  return tok;
 }
 
 dynamic parseTypeTag(String type) {
-	if (!type.contains('::')) return type;
+  if (!type.contains('::')) return type;
 
-	return parseStructTag(type);
+  return parseStructTag(type);
 }
 
 StructTag parseStructTag(String type) {
-	final result = type.split('::');
+  final result = type.split('::');
   final address = result[0];
   final module = result[1];
 
-	final rest = type.substring(address.length + module.length + 4);
-	final name = rest.contains('<') ? rest.substring(0, rest.indexOf('<')) : rest;
-	final typeParams = rest.contains('<')
-		? splitGenericParameters(rest.substring(rest.indexOf('<') + 1, rest.lastIndexOf('>'))).map(
-				(typeParam) => parseTypeTag(typeParam.trim()),
-		  ).toList()
-		: [];
+  final rest = type.substring(address.length + module.length + 4);
+  final name = rest.contains('<') ? rest.substring(0, rest.indexOf('<')) : rest;
+  final typeParams = rest.contains('<')
+      ? splitGenericParameters(
+              rest.substring(rest.indexOf('<') + 1, rest.lastIndexOf('>')))
+          .map(
+            (typeParam) => parseTypeTag(typeParam.trim()),
+          )
+          .toList()
+      : [];
 
-	return StructTag(
-		normalizeSuiAddress(address),
-		module,
-		name,
-		typeParams
-  );
+  return StructTag(normalizeSuiAddress(address), module, name, typeParams);
 }
 
 String normalizeStructTag(StructTag type) {
@@ -133,16 +121,14 @@ String normalizeStructTag(StructTag type) {
   final name = type.name;
   final typeParams = type.typeParams;
 
-	final formattedTypeParams =
-		typeParams.isNotEmpty
-			? "<${typeParams
-					.map((typeParam) =>
-						typeParam is String ? typeParam : normalizeStructTag(typeParam),
-					)
-					.join(',')}>"
-			: "";
+  final formattedTypeParams = typeParams.isNotEmpty
+      ? "<${typeParams.map(
+            (typeParam) =>
+                typeParam is String ? typeParam : normalizeStructTag(typeParam),
+          ).join(',')}>"
+      : "";
 
-	return "$address::$module::$name$formattedTypeParams";
+  return "$address::$module::$name$formattedTypeParams";
 }
 
 String normalizeStructTagString(String type) {
@@ -157,10 +143,7 @@ String normalizeStructTagString(String type) {
 /// WARNING: if the address value itself starts with `0x`, e.g., `0x0x`, the default behavior
 /// is to treat the first `0x` not as part of the address. The default behavior can be overridden by
 /// setting `forceAdd0x` to true
-String normalizeSuiAddress(
-  String value,
-  [bool forceAdd0x = false]
-) {
+String normalizeSuiAddress(String value, [bool forceAdd0x = false]) {
   String address = value.toLowerCase();
   if (!forceAdd0x && address.startsWith('0x')) {
     address = address.substring(2);
@@ -168,17 +151,17 @@ String normalizeSuiAddress(
   return "0x${address.padLeft(SUI_ADDRESS_LENGTH * 2, '0')}";
 }
 
-String normalizeSuiObjectId(
-  String value,
-  [bool forceAdd0x = false]
-) {
+String normalizeSuiObjectId(String value, [bool forceAdd0x = false]) {
   return normalizeSuiAddress(value, forceAdd0x);
 }
 
 bool isHex(String value) {
-  return RegExp(r'^(0x|0X)?[a-fA-F0-9]+$').hasMatch(value) && value.length % 2 == 0;
+  return RegExp(r'^(0x|0X)?[a-fA-F0-9]+$').hasMatch(value) &&
+      value.length % 2 == 0;
 }
 
 int getHexByteLength(String value) {
-  return RegExp(r'^(0x|0X)').hasMatch(value) ? (value.length - 2) ~/ 2 : value.length ~/ 2;
+  return RegExp(r'^(0x|0X)').hasMatch(value)
+      ? (value.length - 2) ~/ 2
+      : value.length ~/ 2;
 }

@@ -35,12 +35,57 @@ final $typed_data.Uint8List abilityDescriptor = $convert.base64Decode(
 const Package$json = {
   '1': 'Package',
   '2': [
-    {'1': 'storage_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'storageId', '17': true},
-    {'1': 'original_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'originalId', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'version', '17': true},
-    {'1': 'modules', '3': 4, '4': 3, '5': 11, '6': '.sui.rpc.v2.Module', '10': 'modules'},
-    {'1': 'type_origins', '3': 5, '4': 3, '5': 11, '6': '.sui.rpc.v2.TypeOrigin', '10': 'typeOrigins'},
-    {'1': 'linkage', '3': 6, '4': 3, '5': 11, '6': '.sui.rpc.v2.Linkage', '10': 'linkage'},
+    {
+      '1': 'storage_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'storageId',
+      '17': true
+    },
+    {
+      '1': 'original_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'originalId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'modules',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Module',
+      '10': 'modules'
+    },
+    {
+      '1': 'type_origins',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.TypeOrigin',
+      '10': 'typeOrigins'
+    },
+    {
+      '1': 'linkage',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Linkage',
+      '10': 'linkage'
+    },
   ],
   '8': [
     {'1': '_storage_id'},
@@ -63,9 +108,31 @@ const Module$json = {
   '1': 'Module',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'name', '17': true},
-    {'1': 'contents', '3': 2, '4': 1, '5': 12, '9': 1, '10': 'contents', '17': true},
-    {'1': 'datatypes', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.DatatypeDescriptor', '10': 'datatypes'},
-    {'1': 'functions', '3': 4, '4': 3, '5': 11, '6': '.sui.rpc.v2.FunctionDescriptor', '10': 'functions'},
+    {
+      '1': 'contents',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 1,
+      '10': 'contents',
+      '17': true
+    },
+    {
+      '1': 'datatypes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.DatatypeDescriptor',
+      '10': 'datatypes'
+    },
+    {
+      '1': 'functions',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.FunctionDescriptor',
+      '10': 'functions'
+    },
   ],
   '8': [
     {'1': '_name'},
@@ -84,15 +151,68 @@ final $typed_data.Uint8List moduleDescriptor = $convert.base64Decode(
 const DatatypeDescriptor$json = {
   '1': 'DatatypeDescriptor',
   '2': [
-    {'1': 'type_name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'typeName', '17': true},
-    {'1': 'defining_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'definingId', '17': true},
+    {
+      '1': 'type_name',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'typeName',
+      '17': true
+    },
+    {
+      '1': 'defining_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'definingId',
+      '17': true
+    },
     {'1': 'module', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'module', '17': true},
     {'1': 'name', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'name', '17': true},
-    {'1': 'abilities', '3': 5, '4': 3, '5': 14, '6': '.sui.rpc.v2.Ability', '10': 'abilities'},
-    {'1': 'type_parameters', '3': 6, '4': 3, '5': 11, '6': '.sui.rpc.v2.TypeParameter', '10': 'typeParameters'},
-    {'1': 'kind', '3': 7, '4': 1, '5': 14, '6': '.sui.rpc.v2.DatatypeDescriptor.DatatypeKind', '9': 4, '10': 'kind', '17': true},
-    {'1': 'fields', '3': 8, '4': 3, '5': 11, '6': '.sui.rpc.v2.FieldDescriptor', '10': 'fields'},
-    {'1': 'variants', '3': 9, '4': 3, '5': 11, '6': '.sui.rpc.v2.VariantDescriptor', '10': 'variants'},
+    {
+      '1': 'abilities',
+      '3': 5,
+      '4': 3,
+      '5': 14,
+      '6': '.sui.rpc.v2.Ability',
+      '10': 'abilities'
+    },
+    {
+      '1': 'type_parameters',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.TypeParameter',
+      '10': 'typeParameters'
+    },
+    {
+      '1': 'kind',
+      '3': 7,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.DatatypeDescriptor.DatatypeKind',
+      '9': 4,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'fields',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.FieldDescriptor',
+      '10': 'fields'
+    },
+    {
+      '1': 'variants',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.VariantDescriptor',
+      '10': 'variants'
+    },
   ],
   '4': [DatatypeDescriptor_DatatypeKind$json],
   '8': [
@@ -132,8 +252,23 @@ final $typed_data.Uint8List datatypeDescriptorDescriptor = $convert.base64Decode
 const TypeParameter$json = {
   '1': 'TypeParameter',
   '2': [
-    {'1': 'constraints', '3': 1, '4': 3, '5': 14, '6': '.sui.rpc.v2.Ability', '10': 'constraints'},
-    {'1': 'is_phantom', '3': 2, '4': 1, '5': 8, '9': 0, '10': 'isPhantom', '17': true},
+    {
+      '1': 'constraints',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.sui.rpc.v2.Ability',
+      '10': 'constraints'
+    },
+    {
+      '1': 'is_phantom',
+      '3': 2,
+      '4': 1,
+      '5': 8,
+      '9': 0,
+      '10': 'isPhantom',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_is_phantom'},
@@ -151,8 +286,25 @@ const FieldDescriptor$json = {
   '1': 'FieldDescriptor',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'name', '17': true},
-    {'1': 'position', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'position', '17': true},
-    {'1': 'type', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.OpenSignatureBody', '9': 2, '10': 'type', '17': true},
+    {
+      '1': 'position',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'position',
+      '17': true
+    },
+    {
+      '1': 'type',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.OpenSignatureBody',
+      '9': 2,
+      '10': 'type',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_name'},
@@ -172,8 +324,23 @@ const VariantDescriptor$json = {
   '1': 'VariantDescriptor',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'name', '17': true},
-    {'1': 'position', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'position', '17': true},
-    {'1': 'fields', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.FieldDescriptor', '10': 'fields'},
+    {
+      '1': 'position',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'position',
+      '17': true
+    },
+    {
+      '1': 'fields',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.FieldDescriptor',
+      '10': 'fields'
+    },
   ],
   '8': [
     {'1': '_name'},
@@ -191,10 +358,42 @@ final $typed_data.Uint8List variantDescriptorDescriptor = $convert.base64Decode(
 const OpenSignatureBody$json = {
   '1': 'OpenSignatureBody',
   '2': [
-    {'1': 'type', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.OpenSignatureBody.Type', '9': 0, '10': 'type', '17': true},
-    {'1': 'type_name', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'typeName', '17': true},
-    {'1': 'type_parameter_instantiation', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.OpenSignatureBody', '10': 'typeParameterInstantiation'},
-    {'1': 'type_parameter', '3': 4, '4': 1, '5': 13, '9': 2, '10': 'typeParameter', '17': true},
+    {
+      '1': 'type',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.OpenSignatureBody.Type',
+      '9': 0,
+      '10': 'type',
+      '17': true
+    },
+    {
+      '1': 'type_name',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'typeName',
+      '17': true
+    },
+    {
+      '1': 'type_parameter_instantiation',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.OpenSignatureBody',
+      '10': 'typeParameterInstantiation'
+    },
+    {
+      '1': 'type_parameter',
+      '3': 4,
+      '4': 1,
+      '5': 13,
+      '9': 2,
+      '10': 'typeParameter',
+      '17': true
+    },
   ],
   '4': [OpenSignatureBody_Type$json],
   '8': [
@@ -240,11 +439,49 @@ const FunctionDescriptor$json = {
   '1': 'FunctionDescriptor',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'name', '17': true},
-    {'1': 'visibility', '3': 5, '4': 1, '5': 14, '6': '.sui.rpc.v2.FunctionDescriptor.Visibility', '9': 1, '10': 'visibility', '17': true},
-    {'1': 'is_entry', '3': 6, '4': 1, '5': 8, '9': 2, '10': 'isEntry', '17': true},
-    {'1': 'type_parameters', '3': 7, '4': 3, '5': 11, '6': '.sui.rpc.v2.TypeParameter', '10': 'typeParameters'},
-    {'1': 'parameters', '3': 8, '4': 3, '5': 11, '6': '.sui.rpc.v2.OpenSignature', '10': 'parameters'},
-    {'1': 'returns', '3': 9, '4': 3, '5': 11, '6': '.sui.rpc.v2.OpenSignature', '10': 'returns'},
+    {
+      '1': 'visibility',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.FunctionDescriptor.Visibility',
+      '9': 1,
+      '10': 'visibility',
+      '17': true
+    },
+    {
+      '1': 'is_entry',
+      '3': 6,
+      '4': 1,
+      '5': 8,
+      '9': 2,
+      '10': 'isEntry',
+      '17': true
+    },
+    {
+      '1': 'type_parameters',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.TypeParameter',
+      '10': 'typeParameters'
+    },
+    {
+      '1': 'parameters',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.OpenSignature',
+      '10': 'parameters'
+    },
+    {
+      '1': 'returns',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.OpenSignature',
+      '10': 'returns'
+    },
   ],
   '4': [FunctionDescriptor_Visibility$json],
   '8': [
@@ -281,8 +518,26 @@ final $typed_data.Uint8List functionDescriptorDescriptor = $convert.base64Decode
 const OpenSignature$json = {
   '1': 'OpenSignature',
   '2': [
-    {'1': 'reference', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.OpenSignature.Reference', '9': 0, '10': 'reference', '17': true},
-    {'1': 'body', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.OpenSignatureBody', '9': 1, '10': 'body', '17': true},
+    {
+      '1': 'reference',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.OpenSignature.Reference',
+      '9': 0,
+      '10': 'reference',
+      '17': true
+    },
+    {
+      '1': 'body',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.OpenSignatureBody',
+      '9': 1,
+      '10': 'body',
+      '17': true
+    },
   ],
   '4': [OpenSignature_Reference$json],
   '8': [
@@ -313,9 +568,33 @@ final $typed_data.Uint8List openSignatureDescriptor = $convert.base64Decode(
 const TypeOrigin$json = {
   '1': 'TypeOrigin',
   '2': [
-    {'1': 'module_name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'moduleName', '17': true},
-    {'1': 'datatype_name', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'datatypeName', '17': true},
-    {'1': 'package_id', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'packageId', '17': true},
+    {
+      '1': 'module_name',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'moduleName',
+      '17': true
+    },
+    {
+      '1': 'datatype_name',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'datatypeName',
+      '17': true
+    },
+    {
+      '1': 'package_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'packageId',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_module_name'},
@@ -335,9 +614,33 @@ final $typed_data.Uint8List typeOriginDescriptor = $convert.base64Decode(
 const Linkage$json = {
   '1': 'Linkage',
   '2': [
-    {'1': 'original_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'originalId', '17': true},
-    {'1': 'upgraded_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'upgradedId', '17': true},
-    {'1': 'upgraded_version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'upgradedVersion', '17': true},
+    {
+      '1': 'original_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'originalId',
+      '17': true
+    },
+    {
+      '1': 'upgraded_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'upgradedId',
+      '17': true
+    },
+    {
+      '1': 'upgraded_version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'upgradedVersion',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_original_id'},
@@ -352,4 +655,3 @@ final $typed_data.Uint8List linkageDescriptor = $convert.base64Decode(
     'FkZWRfaWQYAiABKAlIAVIKdXBncmFkZWRJZIgBARIuChB1cGdyYWRlZF92ZXJzaW9uGAMgASgE'
     'SAJSD3VwZ3JhZGVkVmVyc2lvbogBAUIOCgxfb3JpZ2luYWxfaWRCDgoMX3VwZ3JhZGVkX2lkQh'
     'MKEV91cGdyYWRlZF92ZXJzaW9u');
-

@@ -44,47 +44,86 @@ class SystemState extends $pb.GeneratedMessage {
     if (storageFund != null) result.storageFund = storageFund;
     if (parameters != null) result.parameters = parameters;
     if (referenceGasPrice != null) result.referenceGasPrice = referenceGasPrice;
-    if (validatorReportRecords != null) result.validatorReportRecords.addAll(validatorReportRecords);
+    if (validatorReportRecords != null)
+      result.validatorReportRecords.addAll(validatorReportRecords);
     if (stakeSubsidy != null) result.stakeSubsidy = stakeSubsidy;
     if (safeMode != null) result.safeMode = safeMode;
-    if (safeModeStorageRewards != null) result.safeModeStorageRewards = safeModeStorageRewards;
-    if (safeModeComputationRewards != null) result.safeModeComputationRewards = safeModeComputationRewards;
-    if (safeModeStorageRebates != null) result.safeModeStorageRebates = safeModeStorageRebates;
-    if (safeModeNonRefundableStorageFee != null) result.safeModeNonRefundableStorageFee = safeModeNonRefundableStorageFee;
-    if (epochStartTimestampMs != null) result.epochStartTimestampMs = epochStartTimestampMs;
+    if (safeModeStorageRewards != null)
+      result.safeModeStorageRewards = safeModeStorageRewards;
+    if (safeModeComputationRewards != null)
+      result.safeModeComputationRewards = safeModeComputationRewards;
+    if (safeModeStorageRebates != null)
+      result.safeModeStorageRebates = safeModeStorageRebates;
+    if (safeModeNonRefundableStorageFee != null)
+      result.safeModeNonRefundableStorageFee = safeModeNonRefundableStorageFee;
+    if (epochStartTimestampMs != null)
+      result.epochStartTimestampMs = epochStartTimestampMs;
     if (extraFields != null) result.extraFields = extraFields;
     return result;
   }
 
   SystemState._();
 
-  factory SystemState.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SystemState.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SystemState.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SystemState.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SystemState', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'protocolVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<ValidatorSet>(4, _omitFieldNames ? '' : 'validators', subBuilder: ValidatorSet.create)
-    ..aOM<StorageFund>(5, _omitFieldNames ? '' : 'storageFund', subBuilder: StorageFund.create)
-    ..aOM<SystemParameters>(6, _omitFieldNames ? '' : 'parameters', subBuilder: SystemParameters.create)
-    ..a<$fixnum.Int64>(7, _omitFieldNames ? '' : 'referenceGasPrice', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<ValidatorReportRecord>(8, _omitFieldNames ? '' : 'validatorReportRecords', $pb.PbFieldType.PM, subBuilder: ValidatorReportRecord.create)
-    ..aOM<StakeSubsidy>(9, _omitFieldNames ? '' : 'stakeSubsidy', subBuilder: StakeSubsidy.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SystemState',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'protocolVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<ValidatorSet>(4, _omitFieldNames ? '' : 'validators',
+        subBuilder: ValidatorSet.create)
+    ..aOM<StorageFund>(5, _omitFieldNames ? '' : 'storageFund',
+        subBuilder: StorageFund.create)
+    ..aOM<SystemParameters>(6, _omitFieldNames ? '' : 'parameters',
+        subBuilder: SystemParameters.create)
+    ..a<$fixnum.Int64>(
+        7, _omitFieldNames ? '' : 'referenceGasPrice', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<ValidatorReportRecord>(
+        8, _omitFieldNames ? '' : 'validatorReportRecords', $pb.PbFieldType.PM,
+        subBuilder: ValidatorReportRecord.create)
+    ..aOM<StakeSubsidy>(9, _omitFieldNames ? '' : 'stakeSubsidy',
+        subBuilder: StakeSubsidy.create)
     ..aOB(10, _omitFieldNames ? '' : 'safeMode')
-    ..a<$fixnum.Int64>(11, _omitFieldNames ? '' : 'safeModeStorageRewards', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(12, _omitFieldNames ? '' : 'safeModeComputationRewards', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(13, _omitFieldNames ? '' : 'safeModeStorageRebates', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(14, _omitFieldNames ? '' : 'safeModeNonRefundableStorageFee', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(15, _omitFieldNames ? '' : 'epochStartTimestampMs', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<MoveTable>(16, _omitFieldNames ? '' : 'extraFields', subBuilder: MoveTable.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(11, _omitFieldNames ? '' : 'safeModeStorageRewards',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(12, _omitFieldNames ? '' : 'safeModeComputationRewards',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(13, _omitFieldNames ? '' : 'safeModeStorageRebates',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        14,
+        _omitFieldNames ? '' : 'safeModeNonRefundableStorageFee',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        15, _omitFieldNames ? '' : 'epochStartTimestampMs', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveTable>(16, _omitFieldNames ? '' : 'extraFields',
+        subBuilder: MoveTable.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SystemState clone() => SystemState()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SystemState copyWith(void Function(SystemState) updates) => super.copyWith((message) => updates(message as SystemState)) as SystemState;
+  SystemState copyWith(void Function(SystemState) updates) =>
+      super.copyWith((message) => updates(message as SystemState))
+          as SystemState;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -95,7 +134,8 @@ class SystemState extends $pb.GeneratedMessage {
   SystemState createEmptyInstance() => create();
   static $pb.PbList<SystemState> createRepeated() => $pb.PbList<SystemState>();
   @$core.pragma('dart2js:noInline')
-  static SystemState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SystemState>(create);
+  static SystemState getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SystemState>(create);
   static SystemState? _defaultInstance;
 
   /// The version of the system state data structure type.
@@ -245,7 +285,8 @@ class SystemState extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   $fixnum.Int64 get safeModeNonRefundableStorageFee => $_getI64(13);
   @$pb.TagNumber(14)
-  set safeModeNonRefundableStorageFee($fixnum.Int64 value) => $_setInt64(13, value);
+  set safeModeNonRefundableStorageFee($fixnum.Int64 value) =>
+      $_setInt64(13, value);
   @$pb.TagNumber(14)
   $core.bool hasSafeModeNonRefundableStorageFee() => $_has(13);
   @$pb.TagNumber(14)
@@ -287,19 +328,29 @@ class ValidatorReportRecord extends $pb.GeneratedMessage {
 
   ValidatorReportRecord._();
 
-  factory ValidatorReportRecord.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ValidatorReportRecord.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ValidatorReportRecord.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ValidatorReportRecord.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ValidatorReportRecord', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ValidatorReportRecord',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'reported')
     ..pPS(2, _omitFieldNames ? '' : 'reporters')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorReportRecord clone() => ValidatorReportRecord()..mergeFromMessage(this);
+  ValidatorReportRecord clone() =>
+      ValidatorReportRecord()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorReportRecord copyWith(void Function(ValidatorReportRecord) updates) => super.copyWith((message) => updates(message as ValidatorReportRecord)) as ValidatorReportRecord;
+  ValidatorReportRecord copyWith(
+          void Function(ValidatorReportRecord) updates) =>
+      super.copyWith((message) => updates(message as ValidatorReportRecord))
+          as ValidatorReportRecord;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -308,9 +359,11 @@ class ValidatorReportRecord extends $pb.GeneratedMessage {
   static ValidatorReportRecord create() => ValidatorReportRecord._();
   @$core.override
   ValidatorReportRecord createEmptyInstance() => create();
-  static $pb.PbList<ValidatorReportRecord> createRepeated() => $pb.PbList<ValidatorReportRecord>();
+  static $pb.PbList<ValidatorReportRecord> createRepeated() =>
+      $pb.PbList<ValidatorReportRecord>();
   @$core.pragma('dart2js:noInline')
-  static ValidatorReportRecord getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ValidatorReportRecord>(create);
+  static ValidatorReportRecord getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ValidatorReportRecord>(create);
   static ValidatorReportRecord? _defaultInstance;
 
   /// The address of the validator being reported
@@ -342,39 +395,71 @@ class SystemParameters extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (epochDurationMs != null) result.epochDurationMs = epochDurationMs;
-    if (stakeSubsidyStartEpoch != null) result.stakeSubsidyStartEpoch = stakeSubsidyStartEpoch;
+    if (stakeSubsidyStartEpoch != null)
+      result.stakeSubsidyStartEpoch = stakeSubsidyStartEpoch;
     if (minValidatorCount != null) result.minValidatorCount = minValidatorCount;
     if (maxValidatorCount != null) result.maxValidatorCount = maxValidatorCount;
-    if (minValidatorJoiningStake != null) result.minValidatorJoiningStake = minValidatorJoiningStake;
-    if (validatorLowStakeThreshold != null) result.validatorLowStakeThreshold = validatorLowStakeThreshold;
-    if (validatorVeryLowStakeThreshold != null) result.validatorVeryLowStakeThreshold = validatorVeryLowStakeThreshold;
-    if (validatorLowStakeGracePeriod != null) result.validatorLowStakeGracePeriod = validatorLowStakeGracePeriod;
+    if (minValidatorJoiningStake != null)
+      result.minValidatorJoiningStake = minValidatorJoiningStake;
+    if (validatorLowStakeThreshold != null)
+      result.validatorLowStakeThreshold = validatorLowStakeThreshold;
+    if (validatorVeryLowStakeThreshold != null)
+      result.validatorVeryLowStakeThreshold = validatorVeryLowStakeThreshold;
+    if (validatorLowStakeGracePeriod != null)
+      result.validatorLowStakeGracePeriod = validatorLowStakeGracePeriod;
     if (extraFields != null) result.extraFields = extraFields;
     return result;
   }
 
   SystemParameters._();
 
-  factory SystemParameters.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SystemParameters.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SystemParameters.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SystemParameters.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SystemParameters', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epochDurationMs', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'stakeSubsidyStartEpoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'minValidatorCount', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'maxValidatorCount', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'minValidatorJoiningStake', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'validatorLowStakeThreshold', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(7, _omitFieldNames ? '' : 'validatorVeryLowStakeThreshold', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(8, _omitFieldNames ? '' : 'validatorLowStakeGracePeriod', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<MoveTable>(9, _omitFieldNames ? '' : 'extraFields', subBuilder: MoveTable.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SystemParameters',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'epochDurationMs', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'stakeSubsidyStartEpoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'minValidatorCount', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        4, _omitFieldNames ? '' : 'maxValidatorCount', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'minValidatorJoiningStake',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'validatorLowStakeThreshold',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        7,
+        _omitFieldNames ? '' : 'validatorVeryLowStakeThreshold',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(8, _omitFieldNames ? '' : 'validatorLowStakeGracePeriod',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveTable>(9, _omitFieldNames ? '' : 'extraFields',
+        subBuilder: MoveTable.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SystemParameters clone() => SystemParameters()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SystemParameters copyWith(void Function(SystemParameters) updates) => super.copyWith((message) => updates(message as SystemParameters)) as SystemParameters;
+  SystemParameters copyWith(void Function(SystemParameters) updates) =>
+      super.copyWith((message) => updates(message as SystemParameters))
+          as SystemParameters;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -383,9 +468,11 @@ class SystemParameters extends $pb.GeneratedMessage {
   static SystemParameters create() => SystemParameters._();
   @$core.override
   SystemParameters createEmptyInstance() => create();
-  static $pb.PbList<SystemParameters> createRepeated() => $pb.PbList<SystemParameters>();
+  static $pb.PbList<SystemParameters> createRepeated() =>
+      $pb.PbList<SystemParameters>();
   @$core.pragma('dart2js:noInline')
-  static SystemParameters getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SystemParameters>(create);
+  static SystemParameters getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SystemParameters>(create);
   static SystemParameters? _defaultInstance;
 
   /// The duration of an epoch, in milliseconds.
@@ -459,7 +546,8 @@ class SystemParameters extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $fixnum.Int64 get validatorVeryLowStakeThreshold => $_getI64(6);
   @$pb.TagNumber(7)
-  set validatorVeryLowStakeThreshold($fixnum.Int64 value) => $_setInt64(6, value);
+  set validatorVeryLowStakeThreshold($fixnum.Int64 value) =>
+      $_setInt64(6, value);
   @$pb.TagNumber(7)
   $core.bool hasValidatorVeryLowStakeThreshold() => $_has(6);
   @$pb.TagNumber(7)
@@ -503,19 +591,27 @@ class MoveTable extends $pb.GeneratedMessage {
 
   MoveTable._();
 
-  factory MoveTable.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MoveTable.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MoveTable.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MoveTable.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MoveTable', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MoveTable',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'id')
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'size', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'size', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MoveTable clone() => MoveTable()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MoveTable copyWith(void Function(MoveTable) updates) => super.copyWith((message) => updates(message as MoveTable)) as MoveTable;
+  MoveTable copyWith(void Function(MoveTable) updates) =>
+      super.copyWith((message) => updates(message as MoveTable)) as MoveTable;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -526,7 +622,8 @@ class MoveTable extends $pb.GeneratedMessage {
   MoveTable createEmptyInstance() => create();
   static $pb.PbList<MoveTable> createRepeated() => $pb.PbList<MoveTable>();
   @$core.pragma('dart2js:noInline')
-  static MoveTable getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveTable>(create);
+  static MoveTable getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MoveTable>(create);
   static MoveTable? _defaultInstance;
 
   /// The UID of the table or bag
@@ -561,33 +658,54 @@ class StakeSubsidy extends $pb.GeneratedMessage {
   }) {
     final result = create();
     if (balance != null) result.balance = balance;
-    if (distributionCounter != null) result.distributionCounter = distributionCounter;
-    if (currentDistributionAmount != null) result.currentDistributionAmount = currentDistributionAmount;
-    if (stakeSubsidyPeriodLength != null) result.stakeSubsidyPeriodLength = stakeSubsidyPeriodLength;
-    if (stakeSubsidyDecreaseRate != null) result.stakeSubsidyDecreaseRate = stakeSubsidyDecreaseRate;
+    if (distributionCounter != null)
+      result.distributionCounter = distributionCounter;
+    if (currentDistributionAmount != null)
+      result.currentDistributionAmount = currentDistributionAmount;
+    if (stakeSubsidyPeriodLength != null)
+      result.stakeSubsidyPeriodLength = stakeSubsidyPeriodLength;
+    if (stakeSubsidyDecreaseRate != null)
+      result.stakeSubsidyDecreaseRate = stakeSubsidyDecreaseRate;
     if (extraFields != null) result.extraFields = extraFields;
     return result;
   }
 
   StakeSubsidy._();
 
-  factory StakeSubsidy.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory StakeSubsidy.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory StakeSubsidy.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StakeSubsidy.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'StakeSubsidy', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'balance', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'distributionCounter', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'currentDistributionAmount', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'stakeSubsidyPeriodLength', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$core.int>(5, _omitFieldNames ? '' : 'stakeSubsidyDecreaseRate', $pb.PbFieldType.OU3)
-    ..aOM<MoveTable>(6, _omitFieldNames ? '' : 'extraFields', subBuilder: MoveTable.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StakeSubsidy',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'balance', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'distributionCounter', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'currentDistributionAmount',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'stakeSubsidyPeriodLength',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'stakeSubsidyDecreaseRate',
+        $pb.PbFieldType.OU3)
+    ..aOM<MoveTable>(6, _omitFieldNames ? '' : 'extraFields',
+        subBuilder: MoveTable.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StakeSubsidy clone() => StakeSubsidy()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StakeSubsidy copyWith(void Function(StakeSubsidy) updates) => super.copyWith((message) => updates(message as StakeSubsidy)) as StakeSubsidy;
+  StakeSubsidy copyWith(void Function(StakeSubsidy) updates) =>
+      super.copyWith((message) => updates(message as StakeSubsidy))
+          as StakeSubsidy;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -596,9 +714,11 @@ class StakeSubsidy extends $pb.GeneratedMessage {
   static StakeSubsidy create() => StakeSubsidy._();
   @$core.override
   StakeSubsidy createEmptyInstance() => create();
-  static $pb.PbList<StakeSubsidy> createRepeated() => $pb.PbList<StakeSubsidy>();
+  static $pb.PbList<StakeSubsidy> createRepeated() =>
+      $pb.PbList<StakeSubsidy>();
   @$core.pragma('dart2js:noInline')
-  static StakeSubsidy getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StakeSubsidy>(create);
+  static StakeSubsidy getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StakeSubsidy>(create);
   static StakeSubsidy? _defaultInstance;
 
   /// Balance of SUI set aside for stake subsidies that will be drawn down over time.
@@ -673,26 +793,40 @@ class StorageFund extends $pb.GeneratedMessage {
     $fixnum.Int64? nonRefundableBalance,
   }) {
     final result = create();
-    if (totalObjectStorageRebates != null) result.totalObjectStorageRebates = totalObjectStorageRebates;
-    if (nonRefundableBalance != null) result.nonRefundableBalance = nonRefundableBalance;
+    if (totalObjectStorageRebates != null)
+      result.totalObjectStorageRebates = totalObjectStorageRebates;
+    if (nonRefundableBalance != null)
+      result.nonRefundableBalance = nonRefundableBalance;
     return result;
   }
 
   StorageFund._();
 
-  factory StorageFund.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory StorageFund.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory StorageFund.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StorageFund.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'StorageFund', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'totalObjectStorageRebates', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'nonRefundableBalance', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StorageFund',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'totalObjectStorageRebates',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'nonRefundableBalance', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StorageFund clone() => StorageFund()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StorageFund copyWith(void Function(StorageFund) updates) => super.copyWith((message) => updates(message as StorageFund)) as StorageFund;
+  StorageFund copyWith(void Function(StorageFund) updates) =>
+      super.copyWith((message) => updates(message as StorageFund))
+          as StorageFund;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -703,7 +837,8 @@ class StorageFund extends $pb.GeneratedMessage {
   StorageFund createEmptyInstance() => create();
   static $pb.PbList<StorageFund> createRepeated() => $pb.PbList<StorageFund>();
   @$core.pragma('dart2js:noInline')
-  static StorageFund getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StorageFund>(create);
+  static StorageFund getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StorageFund>(create);
   static StorageFund? _defaultInstance;
 
   /// This is the sum of `storage_rebate` of
@@ -741,44 +876,74 @@ class ValidatorSet extends $pb.GeneratedMessage {
     MoveTable? stakingPoolMappings,
     MoveTable? inactiveValidators,
     MoveTable? validatorCandidates,
-    $core.Iterable<$core.MapEntry<$core.String, $fixnum.Int64>>? atRiskValidators,
+    $core.Iterable<$core.MapEntry<$core.String, $fixnum.Int64>>?
+        atRiskValidators,
     MoveTable? extraFields,
   }) {
     final result = create();
     if (totalStake != null) result.totalStake = totalStake;
-    if (activeValidators != null) result.activeValidators.addAll(activeValidators);
-    if (pendingActiveValidators != null) result.pendingActiveValidators = pendingActiveValidators;
+    if (activeValidators != null)
+      result.activeValidators.addAll(activeValidators);
+    if (pendingActiveValidators != null)
+      result.pendingActiveValidators = pendingActiveValidators;
     if (pendingRemovals != null) result.pendingRemovals.addAll(pendingRemovals);
-    if (stakingPoolMappings != null) result.stakingPoolMappings = stakingPoolMappings;
-    if (inactiveValidators != null) result.inactiveValidators = inactiveValidators;
-    if (validatorCandidates != null) result.validatorCandidates = validatorCandidates;
-    if (atRiskValidators != null) result.atRiskValidators.addEntries(atRiskValidators);
+    if (stakingPoolMappings != null)
+      result.stakingPoolMappings = stakingPoolMappings;
+    if (inactiveValidators != null)
+      result.inactiveValidators = inactiveValidators;
+    if (validatorCandidates != null)
+      result.validatorCandidates = validatorCandidates;
+    if (atRiskValidators != null)
+      result.atRiskValidators.addEntries(atRiskValidators);
     if (extraFields != null) result.extraFields = extraFields;
     return result;
   }
 
   ValidatorSet._();
 
-  factory ValidatorSet.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ValidatorSet.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ValidatorSet.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ValidatorSet.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ValidatorSet', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'totalStake', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<Validator>(2, _omitFieldNames ? '' : 'activeValidators', $pb.PbFieldType.PM, subBuilder: Validator.create)
-    ..aOM<MoveTable>(3, _omitFieldNames ? '' : 'pendingActiveValidators', subBuilder: MoveTable.create)
-    ..p<$fixnum.Int64>(4, _omitFieldNames ? '' : 'pendingRemovals', $pb.PbFieldType.KU6)
-    ..aOM<MoveTable>(5, _omitFieldNames ? '' : 'stakingPoolMappings', subBuilder: MoveTable.create)
-    ..aOM<MoveTable>(6, _omitFieldNames ? '' : 'inactiveValidators', subBuilder: MoveTable.create)
-    ..aOM<MoveTable>(7, _omitFieldNames ? '' : 'validatorCandidates', subBuilder: MoveTable.create)
-    ..m<$core.String, $fixnum.Int64>(8, _omitFieldNames ? '' : 'atRiskValidators', entryClassName: 'ValidatorSet.AtRiskValidatorsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OU6, packageName: const $pb.PackageName('sui.rpc.v2'))
-    ..aOM<MoveTable>(9, _omitFieldNames ? '' : 'extraFields', subBuilder: MoveTable.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ValidatorSet',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'totalStake', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<Validator>(
+        2, _omitFieldNames ? '' : 'activeValidators', $pb.PbFieldType.PM,
+        subBuilder: Validator.create)
+    ..aOM<MoveTable>(3, _omitFieldNames ? '' : 'pendingActiveValidators',
+        subBuilder: MoveTable.create)
+    ..p<$fixnum.Int64>(
+        4, _omitFieldNames ? '' : 'pendingRemovals', $pb.PbFieldType.KU6)
+    ..aOM<MoveTable>(5, _omitFieldNames ? '' : 'stakingPoolMappings',
+        subBuilder: MoveTable.create)
+    ..aOM<MoveTable>(6, _omitFieldNames ? '' : 'inactiveValidators',
+        subBuilder: MoveTable.create)
+    ..aOM<MoveTable>(7, _omitFieldNames ? '' : 'validatorCandidates',
+        subBuilder: MoveTable.create)
+    ..m<$core.String, $fixnum.Int64>(
+        8, _omitFieldNames ? '' : 'atRiskValidators',
+        entryClassName: 'ValidatorSet.AtRiskValidatorsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OU6,
+        packageName: const $pb.PackageName('sui.rpc.v2'))
+    ..aOM<MoveTable>(9, _omitFieldNames ? '' : 'extraFields',
+        subBuilder: MoveTable.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ValidatorSet clone() => ValidatorSet()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorSet copyWith(void Function(ValidatorSet) updates) => super.copyWith((message) => updates(message as ValidatorSet)) as ValidatorSet;
+  ValidatorSet copyWith(void Function(ValidatorSet) updates) =>
+      super.copyWith((message) => updates(message as ValidatorSet))
+          as ValidatorSet;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -787,9 +952,11 @@ class ValidatorSet extends $pb.GeneratedMessage {
   static ValidatorSet create() => ValidatorSet._();
   @$core.override
   ValidatorSet createEmptyInstance() => create();
-  static $pb.PbList<ValidatorSet> createRepeated() => $pb.PbList<ValidatorSet>();
+  static $pb.PbList<ValidatorSet> createRepeated() =>
+      $pb.PbList<ValidatorSet>();
   @$core.pragma('dart2js:noInline')
-  static ValidatorSet getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ValidatorSet>(create);
+  static ValidatorSet getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ValidatorSet>(create);
   static ValidatorSet? _defaultInstance;
 
   /// Total amount of stake from all active validators at the beginning of the epoch.
@@ -943,15 +1110,24 @@ class Validator extends $pb.GeneratedMessage {
     if (p2pAddress != null) result.p2pAddress = p2pAddress;
     if (primaryAddress != null) result.primaryAddress = primaryAddress;
     if (workerAddress != null) result.workerAddress = workerAddress;
-    if (nextEpochProtocolPublicKey != null) result.nextEpochProtocolPublicKey = nextEpochProtocolPublicKey;
-    if (nextEpochProofOfPossession != null) result.nextEpochProofOfPossession = nextEpochProofOfPossession;
-    if (nextEpochNetworkPublicKey != null) result.nextEpochNetworkPublicKey = nextEpochNetworkPublicKey;
-    if (nextEpochWorkerPublicKey != null) result.nextEpochWorkerPublicKey = nextEpochWorkerPublicKey;
-    if (nextEpochNetworkAddress != null) result.nextEpochNetworkAddress = nextEpochNetworkAddress;
-    if (nextEpochP2pAddress != null) result.nextEpochP2pAddress = nextEpochP2pAddress;
-    if (nextEpochPrimaryAddress != null) result.nextEpochPrimaryAddress = nextEpochPrimaryAddress;
-    if (nextEpochWorkerAddress != null) result.nextEpochWorkerAddress = nextEpochWorkerAddress;
-    if (metadataExtraFields != null) result.metadataExtraFields = metadataExtraFields;
+    if (nextEpochProtocolPublicKey != null)
+      result.nextEpochProtocolPublicKey = nextEpochProtocolPublicKey;
+    if (nextEpochProofOfPossession != null)
+      result.nextEpochProofOfPossession = nextEpochProofOfPossession;
+    if (nextEpochNetworkPublicKey != null)
+      result.nextEpochNetworkPublicKey = nextEpochNetworkPublicKey;
+    if (nextEpochWorkerPublicKey != null)
+      result.nextEpochWorkerPublicKey = nextEpochWorkerPublicKey;
+    if (nextEpochNetworkAddress != null)
+      result.nextEpochNetworkAddress = nextEpochNetworkAddress;
+    if (nextEpochP2pAddress != null)
+      result.nextEpochP2pAddress = nextEpochP2pAddress;
+    if (nextEpochPrimaryAddress != null)
+      result.nextEpochPrimaryAddress = nextEpochPrimaryAddress;
+    if (nextEpochWorkerAddress != null)
+      result.nextEpochWorkerAddress = nextEpochWorkerAddress;
+    if (metadataExtraFields != null)
+      result.metadataExtraFields = metadataExtraFields;
     if (votingPower != null) result.votingPower = votingPower;
     if (operationCapId != null) result.operationCapId = operationCapId;
     if (gasPrice != null) result.gasPrice = gasPrice;
@@ -959,55 +1135,86 @@ class Validator extends $pb.GeneratedMessage {
     if (commissionRate != null) result.commissionRate = commissionRate;
     if (nextEpochStake != null) result.nextEpochStake = nextEpochStake;
     if (nextEpochGasPrice != null) result.nextEpochGasPrice = nextEpochGasPrice;
-    if (nextEpochCommissionRate != null) result.nextEpochCommissionRate = nextEpochCommissionRate;
+    if (nextEpochCommissionRate != null)
+      result.nextEpochCommissionRate = nextEpochCommissionRate;
     if (extraFields != null) result.extraFields = extraFields;
     return result;
   }
 
   Validator._();
 
-  factory Validator.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Validator.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Validator.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Validator.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Validator', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Validator',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aOS(2, _omitFieldNames ? '' : 'address')
     ..aOS(3, _omitFieldNames ? '' : 'description')
     ..aOS(4, _omitFieldNames ? '' : 'imageUrl')
     ..aOS(5, _omitFieldNames ? '' : 'projectUrl')
-    ..a<$core.List<$core.int>>(7, _omitFieldNames ? '' : 'protocolPublicKey', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(8, _omitFieldNames ? '' : 'proofOfPossession', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(10, _omitFieldNames ? '' : 'networkPublicKey', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(12, _omitFieldNames ? '' : 'workerPublicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(
+        7, _omitFieldNames ? '' : 'protocolPublicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(
+        8, _omitFieldNames ? '' : 'proofOfPossession', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(
+        10, _omitFieldNames ? '' : 'networkPublicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(
+        12, _omitFieldNames ? '' : 'workerPublicKey', $pb.PbFieldType.OY)
     ..aOS(13, _omitFieldNames ? '' : 'networkAddress')
     ..aOS(14, _omitFieldNames ? '' : 'p2pAddress')
     ..aOS(15, _omitFieldNames ? '' : 'primaryAddress')
     ..aOS(16, _omitFieldNames ? '' : 'workerAddress')
-    ..a<$core.List<$core.int>>(18, _omitFieldNames ? '' : 'nextEpochProtocolPublicKey', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(19, _omitFieldNames ? '' : 'nextEpochProofOfPossession', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(21, _omitFieldNames ? '' : 'nextEpochNetworkPublicKey', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(23, _omitFieldNames ? '' : 'nextEpochWorkerPublicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(18,
+        _omitFieldNames ? '' : 'nextEpochProtocolPublicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(19,
+        _omitFieldNames ? '' : 'nextEpochProofOfPossession', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(21,
+        _omitFieldNames ? '' : 'nextEpochNetworkPublicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(23,
+        _omitFieldNames ? '' : 'nextEpochWorkerPublicKey', $pb.PbFieldType.OY)
     ..aOS(24, _omitFieldNames ? '' : 'nextEpochNetworkAddress')
     ..aOS(25, _omitFieldNames ? '' : 'nextEpochP2pAddress')
     ..aOS(26, _omitFieldNames ? '' : 'nextEpochPrimaryAddress')
     ..aOS(27, _omitFieldNames ? '' : 'nextEpochWorkerAddress')
-    ..aOM<MoveTable>(28, _omitFieldNames ? '' : 'metadataExtraFields', subBuilder: MoveTable.create)
-    ..a<$fixnum.Int64>(29, _omitFieldNames ? '' : 'votingPower', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveTable>(28, _omitFieldNames ? '' : 'metadataExtraFields',
+        subBuilder: MoveTable.create)
+    ..a<$fixnum.Int64>(
+        29, _omitFieldNames ? '' : 'votingPower', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(30, _omitFieldNames ? '' : 'operationCapId')
-    ..a<$fixnum.Int64>(31, _omitFieldNames ? '' : 'gasPrice', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<StakingPool>(32, _omitFieldNames ? '' : 'stakingPool', subBuilder: StakingPool.create)
-    ..a<$fixnum.Int64>(33, _omitFieldNames ? '' : 'commissionRate', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(34, _omitFieldNames ? '' : 'nextEpochStake', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(35, _omitFieldNames ? '' : 'nextEpochGasPrice', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(36, _omitFieldNames ? '' : 'nextEpochCommissionRate', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<MoveTable>(37, _omitFieldNames ? '' : 'extraFields', subBuilder: MoveTable.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(
+        31, _omitFieldNames ? '' : 'gasPrice', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<StakingPool>(32, _omitFieldNames ? '' : 'stakingPool',
+        subBuilder: StakingPool.create)
+    ..a<$fixnum.Int64>(
+        33, _omitFieldNames ? '' : 'commissionRate', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        34, _omitFieldNames ? '' : 'nextEpochStake', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        35, _omitFieldNames ? '' : 'nextEpochGasPrice', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(36, _omitFieldNames ? '' : 'nextEpochCommissionRate',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveTable>(37, _omitFieldNames ? '' : 'extraFields',
+        subBuilder: MoveTable.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Validator clone() => Validator()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Validator copyWith(void Function(Validator) updates) => super.copyWith((message) => updates(message as Validator)) as Validator;
+  Validator copyWith(void Function(Validator) updates) =>
+      super.copyWith((message) => updates(message as Validator)) as Validator;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1018,7 +1225,8 @@ class Validator extends $pb.GeneratedMessage {
   Validator createEmptyInstance() => create();
   static $pb.PbList<Validator> createRepeated() => $pb.PbList<Validator>();
   @$core.pragma('dart2js:noInline')
-  static Validator getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Validator>(create);
+  static Validator getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Validator>(create);
   static Validator? _defaultInstance;
 
   /// A unique human-readable name of this validator.
@@ -1154,7 +1362,8 @@ class Validator extends $pb.GeneratedMessage {
   @$pb.TagNumber(18)
   $core.List<$core.int> get nextEpochProtocolPublicKey => $_getN(13);
   @$pb.TagNumber(18)
-  set nextEpochProtocolPublicKey($core.List<$core.int> value) => $_setBytes(13, value);
+  set nextEpochProtocolPublicKey($core.List<$core.int> value) =>
+      $_setBytes(13, value);
   @$pb.TagNumber(18)
   $core.bool hasNextEpochProtocolPublicKey() => $_has(13);
   @$pb.TagNumber(18)
@@ -1163,7 +1372,8 @@ class Validator extends $pb.GeneratedMessage {
   @$pb.TagNumber(19)
   $core.List<$core.int> get nextEpochProofOfPossession => $_getN(14);
   @$pb.TagNumber(19)
-  set nextEpochProofOfPossession($core.List<$core.int> value) => $_setBytes(14, value);
+  set nextEpochProofOfPossession($core.List<$core.int> value) =>
+      $_setBytes(14, value);
   @$pb.TagNumber(19)
   $core.bool hasNextEpochProofOfPossession() => $_has(14);
   @$pb.TagNumber(19)
@@ -1172,7 +1382,8 @@ class Validator extends $pb.GeneratedMessage {
   @$pb.TagNumber(21)
   $core.List<$core.int> get nextEpochNetworkPublicKey => $_getN(15);
   @$pb.TagNumber(21)
-  set nextEpochNetworkPublicKey($core.List<$core.int> value) => $_setBytes(15, value);
+  set nextEpochNetworkPublicKey($core.List<$core.int> value) =>
+      $_setBytes(15, value);
   @$pb.TagNumber(21)
   $core.bool hasNextEpochNetworkPublicKey() => $_has(15);
   @$pb.TagNumber(21)
@@ -1181,7 +1392,8 @@ class Validator extends $pb.GeneratedMessage {
   @$pb.TagNumber(23)
   $core.List<$core.int> get nextEpochWorkerPublicKey => $_getN(16);
   @$pb.TagNumber(23)
-  set nextEpochWorkerPublicKey($core.List<$core.int> value) => $_setBytes(16, value);
+  set nextEpochWorkerPublicKey($core.List<$core.int> value) =>
+      $_setBytes(16, value);
   @$pb.TagNumber(23)
   $core.bool hasNextEpochWorkerPublicKey() => $_has(16);
   @$pb.TagNumber(23)
@@ -1355,36 +1567,64 @@ class StakingPool extends $pb.GeneratedMessage {
     if (poolTokenBalance != null) result.poolTokenBalance = poolTokenBalance;
     if (exchangeRates != null) result.exchangeRates = exchangeRates;
     if (pendingStake != null) result.pendingStake = pendingStake;
-    if (pendingTotalSuiWithdraw != null) result.pendingTotalSuiWithdraw = pendingTotalSuiWithdraw;
-    if (pendingPoolTokenWithdraw != null) result.pendingPoolTokenWithdraw = pendingPoolTokenWithdraw;
+    if (pendingTotalSuiWithdraw != null)
+      result.pendingTotalSuiWithdraw = pendingTotalSuiWithdraw;
+    if (pendingPoolTokenWithdraw != null)
+      result.pendingPoolTokenWithdraw = pendingPoolTokenWithdraw;
     if (extraFields != null) result.extraFields = extraFields;
     return result;
   }
 
   StakingPool._();
 
-  factory StakingPool.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory StakingPool.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory StakingPool.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StakingPool.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'StakingPool', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StakingPool',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'id')
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'activationEpoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'deactivationEpoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'suiBalance', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'rewardsPool', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'poolTokenBalance', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<MoveTable>(7, _omitFieldNames ? '' : 'exchangeRates', subBuilder: MoveTable.create)
-    ..a<$fixnum.Int64>(8, _omitFieldNames ? '' : 'pendingStake', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(9, _omitFieldNames ? '' : 'pendingTotalSuiWithdraw', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(10, _omitFieldNames ? '' : 'pendingPoolTokenWithdraw', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<MoveTable>(11, _omitFieldNames ? '' : 'extraFields', subBuilder: MoveTable.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'activationEpoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'deactivationEpoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        4, _omitFieldNames ? '' : 'suiBalance', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        5, _omitFieldNames ? '' : 'rewardsPool', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        6, _omitFieldNames ? '' : 'poolTokenBalance', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveTable>(7, _omitFieldNames ? '' : 'exchangeRates',
+        subBuilder: MoveTable.create)
+    ..a<$fixnum.Int64>(
+        8, _omitFieldNames ? '' : 'pendingStake', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(9, _omitFieldNames ? '' : 'pendingTotalSuiWithdraw',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(10, _omitFieldNames ? '' : 'pendingPoolTokenWithdraw',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<MoveTable>(11, _omitFieldNames ? '' : 'extraFields',
+        subBuilder: MoveTable.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   StakingPool clone() => StakingPool()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  StakingPool copyWith(void Function(StakingPool) updates) => super.copyWith((message) => updates(message as StakingPool)) as StakingPool;
+  StakingPool copyWith(void Function(StakingPool) updates) =>
+      super.copyWith((message) => updates(message as StakingPool))
+          as StakingPool;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1395,7 +1635,8 @@ class StakingPool extends $pb.GeneratedMessage {
   StakingPool createEmptyInstance() => create();
   static $pb.PbList<StakingPool> createRepeated() => $pb.PbList<StakingPool>();
   @$core.pragma('dart2js:noInline')
-  static StakingPool getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StakingPool>(create);
+  static StakingPool getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StakingPool>(create);
   static StakingPool? _defaultInstance;
 
   /// UID of the StakingPool object
@@ -1522,6 +1763,7 @@ class StakingPool extends $pb.GeneratedMessage {
   MoveTable ensureExtraFields() => $_ensure(10);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

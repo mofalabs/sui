@@ -28,4 +28,3 @@ const ErrorReason$json = {
 final $typed_data.Uint8List errorReasonDescriptor = $convert.base64Decode(
     'CgtFcnJvclJlYXNvbhIYChRFUlJPUl9SRUFTT05fVU5LTk9XThAAEhEKDUZJRUxEX0lOVkFMSU'
     'QQARIRCg1GSUVMRF9NSVNTSU5HEAI=');
-

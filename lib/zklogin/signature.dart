@@ -8,14 +8,11 @@ import 'package:sui/zklogin/types.dart';
 import 'bcs.dart';
 
 Uint8List getZkLoginSignatureBytes(ZkLoginSignature signature) {
-  return zkLoginSignature.serialize(
-          {
-            "inputs": signature.inputs.toJson(),
-            "maxEpoch": signature.maxEpoch,
-            "userSignature": signature.userSignature,
-          },
-          options: BcsWriterOptions(maxSize: 2048))
-      .toBytes();
+  return zkLoginSignature.serialize({
+    "inputs": signature.inputs.toJson(),
+    "maxEpoch": signature.maxEpoch,
+    "userSignature": signature.userSignature,
+  }, options: BcsWriterOptions(maxSize: 2048)).toBytes();
 }
 
 String getZkLoginSignature(ZkLoginSignature signature) {

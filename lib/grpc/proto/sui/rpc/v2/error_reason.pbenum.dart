@@ -15,21 +15,26 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class ErrorReason extends $pb.ProtobufEnum {
-  static const ErrorReason ERROR_REASON_UNKNOWN = ErrorReason._(0, _omitEnumNames ? '' : 'ERROR_REASON_UNKNOWN');
-  static const ErrorReason FIELD_INVALID = ErrorReason._(1, _omitEnumNames ? '' : 'FIELD_INVALID');
-  static const ErrorReason FIELD_MISSING = ErrorReason._(2, _omitEnumNames ? '' : 'FIELD_MISSING');
+  static const ErrorReason ERROR_REASON_UNKNOWN =
+      ErrorReason._(0, _omitEnumNames ? '' : 'ERROR_REASON_UNKNOWN');
+  static const ErrorReason FIELD_INVALID =
+      ErrorReason._(1, _omitEnumNames ? '' : 'FIELD_INVALID');
+  static const ErrorReason FIELD_MISSING =
+      ErrorReason._(2, _omitEnumNames ? '' : 'FIELD_MISSING');
 
-  static const $core.List<ErrorReason> values = <ErrorReason> [
+  static const $core.List<ErrorReason> values = <ErrorReason>[
     ERROR_REASON_UNKNOWN,
     FIELD_INVALID,
     FIELD_MISSING,
   ];
 
-  static final $core.List<ErrorReason?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 2);
-  static ErrorReason? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<ErrorReason?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static ErrorReason? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const ErrorReason._(super.value, super.name);
 }
 
-
-const $core.bool _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');

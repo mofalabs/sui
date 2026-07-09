@@ -16,7 +16,8 @@ void main() {
     expect(b.totalBalance, greaterThanOrEqualTo(BigInt.zero));
   });
 
-  test('objectInfo returns a normalized SuiObjectInfo (shared Clock)', () async {
+  test('objectInfo returns a normalized SuiObjectInfo (shared Clock)',
+      () async {
     final o = await client.objectInfo(
       '0x0000000000000000000000000000000000000000000000000000000000000006',
     );

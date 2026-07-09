@@ -58,40 +58,66 @@ class TransactionEffects extends $pb.GeneratedMessage {
     if (dependencies != null) result.dependencies.addAll(dependencies);
     if (lamportVersion != null) result.lamportVersion = lamportVersion;
     if (changedObjects != null) result.changedObjects.addAll(changedObjects);
-    if (unchangedConsensusObjects != null) result.unchangedConsensusObjects.addAll(unchangedConsensusObjects);
-    if (auxiliaryDataDigest != null) result.auxiliaryDataDigest = auxiliaryDataDigest;
-    if (unchangedLoadedRuntimeObjects != null) result.unchangedLoadedRuntimeObjects.addAll(unchangedLoadedRuntimeObjects);
+    if (unchangedConsensusObjects != null)
+      result.unchangedConsensusObjects.addAll(unchangedConsensusObjects);
+    if (auxiliaryDataDigest != null)
+      result.auxiliaryDataDigest = auxiliaryDataDigest;
+    if (unchangedLoadedRuntimeObjects != null)
+      result.unchangedLoadedRuntimeObjects
+          .addAll(unchangedLoadedRuntimeObjects);
     return result;
   }
 
   TransactionEffects._();
 
-  factory TransactionEffects.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TransactionEffects.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TransactionEffects.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TransactionEffects.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TransactionEffects', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TransactionEffects',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.O3)
-    ..aOM<$1.ExecutionStatus>(4, _omitFieldNames ? '' : 'status', subBuilder: $1.ExecutionStatus.create)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.GasCostSummary>(6, _omitFieldNames ? '' : 'gasUsed', subBuilder: $2.GasCostSummary.create)
+    ..aOM<$1.ExecutionStatus>(4, _omitFieldNames ? '' : 'status',
+        subBuilder: $1.ExecutionStatus.create)
+    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$2.GasCostSummary>(6, _omitFieldNames ? '' : 'gasUsed',
+        subBuilder: $2.GasCostSummary.create)
     ..aOS(7, _omitFieldNames ? '' : 'transactionDigest')
-    ..aOM<ChangedObject>(8, _omitFieldNames ? '' : 'gasObject', subBuilder: ChangedObject.create)
+    ..aOM<ChangedObject>(8, _omitFieldNames ? '' : 'gasObject',
+        subBuilder: ChangedObject.create)
     ..aOS(9, _omitFieldNames ? '' : 'eventsDigest')
     ..pPS(10, _omitFieldNames ? '' : 'dependencies')
-    ..a<$fixnum.Int64>(11, _omitFieldNames ? '' : 'lamportVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<ChangedObject>(12, _omitFieldNames ? '' : 'changedObjects', $pb.PbFieldType.PM, subBuilder: ChangedObject.create)
-    ..pc<UnchangedConsensusObject>(13, _omitFieldNames ? '' : 'unchangedConsensusObjects', $pb.PbFieldType.PM, subBuilder: UnchangedConsensusObject.create)
+    ..a<$fixnum.Int64>(
+        11, _omitFieldNames ? '' : 'lamportVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<ChangedObject>(
+        12, _omitFieldNames ? '' : 'changedObjects', $pb.PbFieldType.PM,
+        subBuilder: ChangedObject.create)
+    ..pc<UnchangedConsensusObject>(13,
+        _omitFieldNames ? '' : 'unchangedConsensusObjects', $pb.PbFieldType.PM,
+        subBuilder: UnchangedConsensusObject.create)
     ..aOS(14, _omitFieldNames ? '' : 'auxiliaryDataDigest')
-    ..pc<$3.ObjectReference>(15, _omitFieldNames ? '' : 'unchangedLoadedRuntimeObjects', $pb.PbFieldType.PM, subBuilder: $3.ObjectReference.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<$3.ObjectReference>(
+        15,
+        _omitFieldNames ? '' : 'unchangedLoadedRuntimeObjects',
+        $pb.PbFieldType.PM,
+        subBuilder: $3.ObjectReference.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TransactionEffects clone() => TransactionEffects()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TransactionEffects copyWith(void Function(TransactionEffects) updates) => super.copyWith((message) => updates(message as TransactionEffects)) as TransactionEffects;
+  TransactionEffects copyWith(void Function(TransactionEffects) updates) =>
+      super.copyWith((message) => updates(message as TransactionEffects))
+          as TransactionEffects;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -100,9 +126,11 @@ class TransactionEffects extends $pb.GeneratedMessage {
   static TransactionEffects create() => TransactionEffects._();
   @$core.override
   TransactionEffects createEmptyInstance() => create();
-  static $pb.PbList<TransactionEffects> createRepeated() => $pb.PbList<TransactionEffects>();
+  static $pb.PbList<TransactionEffects> createRepeated() =>
+      $pb.PbList<TransactionEffects>();
   @$core.pragma('dart2js:noInline')
-  static TransactionEffects getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransactionEffects>(create);
+  static TransactionEffects getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TransactionEffects>(create);
   static TransactionEffects? _defaultInstance;
 
   /// This TransactionEffects serialized as BCS.
@@ -229,7 +257,8 @@ class TransactionEffects extends $pb.GeneratedMessage {
   /// and in order for a node to catch up and execute it without consensus sequencing,
   /// the version needs to be committed in the effects.
   @$pb.TagNumber(13)
-  $pb.PbList<UnchangedConsensusObject> get unchangedConsensusObjects => $_getList(12);
+  $pb.PbList<UnchangedConsensusObject> get unchangedConsensusObjects =>
+      $_getList(12);
 
   /// Auxiliary data that are not protocol-critical, generated as part of the effects but are stored separately.
   /// Storing it separately allows us to avoid bloating the effects with data that are not critical.
@@ -244,7 +273,8 @@ class TransactionEffects extends $pb.GeneratedMessage {
   void clearAuxiliaryDataDigest() => $_clearField(14);
 
   @$pb.TagNumber(15)
-  $pb.PbList<$3.ObjectReference> get unchangedLoadedRuntimeObjects => $_getList(14);
+  $pb.PbList<$3.ObjectReference> get unchangedLoadedRuntimeObjects =>
+      $_getList(14);
 }
 
 /// Input/output state of an object that was changed during execution.
@@ -281,29 +311,58 @@ class ChangedObject extends $pb.GeneratedMessage {
 
   ChangedObject._();
 
-  factory ChangedObject.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ChangedObject.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ChangedObject.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ChangedObject.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChangedObject', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ChangedObject',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'objectId')
-    ..e<ChangedObject_InputObjectState>(2, _omitFieldNames ? '' : 'inputState', $pb.PbFieldType.OE, defaultOrMaker: ChangedObject_InputObjectState.INPUT_OBJECT_STATE_UNKNOWN, valueOf: ChangedObject_InputObjectState.valueOf, enumValues: ChangedObject_InputObjectState.values)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'inputVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..e<ChangedObject_InputObjectState>(
+        2, _omitFieldNames ? '' : 'inputState', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            ChangedObject_InputObjectState.INPUT_OBJECT_STATE_UNKNOWN,
+        valueOf: ChangedObject_InputObjectState.valueOf,
+        enumValues: ChangedObject_InputObjectState.values)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'inputVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(4, _omitFieldNames ? '' : 'inputDigest')
-    ..aOM<$4.Owner>(5, _omitFieldNames ? '' : 'inputOwner', subBuilder: $4.Owner.create)
-    ..e<ChangedObject_OutputObjectState>(6, _omitFieldNames ? '' : 'outputState', $pb.PbFieldType.OE, defaultOrMaker: ChangedObject_OutputObjectState.OUTPUT_OBJECT_STATE_UNKNOWN, valueOf: ChangedObject_OutputObjectState.valueOf, enumValues: ChangedObject_OutputObjectState.values)
-    ..a<$fixnum.Int64>(7, _omitFieldNames ? '' : 'outputVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$4.Owner>(5, _omitFieldNames ? '' : 'inputOwner',
+        subBuilder: $4.Owner.create)
+    ..e<ChangedObject_OutputObjectState>(
+        6, _omitFieldNames ? '' : 'outputState', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            ChangedObject_OutputObjectState.OUTPUT_OBJECT_STATE_UNKNOWN,
+        valueOf: ChangedObject_OutputObjectState.valueOf,
+        enumValues: ChangedObject_OutputObjectState.values)
+    ..a<$fixnum.Int64>(
+        7, _omitFieldNames ? '' : 'outputVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(8, _omitFieldNames ? '' : 'outputDigest')
-    ..aOM<$4.Owner>(9, _omitFieldNames ? '' : 'outputOwner', subBuilder: $4.Owner.create)
-    ..e<ChangedObject_IdOperation>(10, _omitFieldNames ? '' : 'idOperation', $pb.PbFieldType.OE, defaultOrMaker: ChangedObject_IdOperation.ID_OPERATION_UNKNOWN, valueOf: ChangedObject_IdOperation.valueOf, enumValues: ChangedObject_IdOperation.values)
+    ..aOM<$4.Owner>(9, _omitFieldNames ? '' : 'outputOwner',
+        subBuilder: $4.Owner.create)
+    ..e<ChangedObject_IdOperation>(
+        10, _omitFieldNames ? '' : 'idOperation', $pb.PbFieldType.OE,
+        defaultOrMaker: ChangedObject_IdOperation.ID_OPERATION_UNKNOWN,
+        valueOf: ChangedObject_IdOperation.valueOf,
+        enumValues: ChangedObject_IdOperation.values)
     ..aOS(11, _omitFieldNames ? '' : 'objectType')
-    ..aOM<AccumulatorWrite>(12, _omitFieldNames ? '' : 'accumulatorWrite', subBuilder: AccumulatorWrite.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<AccumulatorWrite>(12, _omitFieldNames ? '' : 'accumulatorWrite',
+        subBuilder: AccumulatorWrite.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChangedObject clone() => ChangedObject()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ChangedObject copyWith(void Function(ChangedObject) updates) => super.copyWith((message) => updates(message as ChangedObject)) as ChangedObject;
+  ChangedObject copyWith(void Function(ChangedObject) updates) =>
+      super.copyWith((message) => updates(message as ChangedObject))
+          as ChangedObject;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -312,9 +371,11 @@ class ChangedObject extends $pb.GeneratedMessage {
   static ChangedObject create() => ChangedObject._();
   @$core.override
   ChangedObject createEmptyInstance() => create();
-  static $pb.PbList<ChangedObject> createRepeated() => $pb.PbList<ChangedObject>();
+  static $pb.PbList<ChangedObject> createRepeated() =>
+      $pb.PbList<ChangedObject>();
   @$core.pragma('dart2js:noInline')
-  static ChangedObject getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChangedObject>(create);
+  static ChangedObject getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ChangedObject>(create);
   static ChangedObject? _defaultInstance;
 
   /// ID of the object.
@@ -371,7 +432,8 @@ class ChangedObject extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   ChangedObject_OutputObjectState get outputState => $_getN(5);
   @$pb.TagNumber(6)
-  set outputState(ChangedObject_OutputObjectState value) => $_setField(6, value);
+  set outputState(ChangedObject_OutputObjectState value) =>
+      $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasOutputState() => $_has(5);
   @$pb.TagNumber(6)
@@ -457,19 +519,29 @@ class EventDigestEntry extends $pb.GeneratedMessage {
 
   EventDigestEntry._();
 
-  factory EventDigestEntry.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory EventDigestEntry.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory EventDigestEntry.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory EventDigestEntry.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EventDigestEntry', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'eventIndex', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'EventDigestEntry',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'eventIndex', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EventDigestEntry clone() => EventDigestEntry()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EventDigestEntry copyWith(void Function(EventDigestEntry) updates) => super.copyWith((message) => updates(message as EventDigestEntry)) as EventDigestEntry;
+  EventDigestEntry copyWith(void Function(EventDigestEntry) updates) =>
+      super.copyWith((message) => updates(message as EventDigestEntry))
+          as EventDigestEntry;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -478,9 +550,11 @@ class EventDigestEntry extends $pb.GeneratedMessage {
   static EventDigestEntry create() => EventDigestEntry._();
   @$core.override
   EventDigestEntry createEmptyInstance() => create();
-  static $pb.PbList<EventDigestEntry> createRepeated() => $pb.PbList<EventDigestEntry>();
+  static $pb.PbList<EventDigestEntry> createRepeated() =>
+      $pb.PbList<EventDigestEntry>();
   @$core.pragma('dart2js:noInline')
-  static EventDigestEntry getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EventDigestEntry>(create);
+  static EventDigestEntry getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<EventDigestEntry>(create);
   static EventDigestEntry? _defaultInstance;
 
   /// Index of the event within its transaction.
@@ -521,30 +595,54 @@ class AccumulatorWrite extends $pb.GeneratedMessage {
     if (valueKind != null) result.valueKind = valueKind;
     if (integerValue != null) result.integerValue = integerValue;
     if (integerTuple != null) result.integerTuple.addAll(integerTuple);
-    if (eventDigestValue != null) result.eventDigestValue.addAll(eventDigestValue);
+    if (eventDigestValue != null)
+      result.eventDigestValue.addAll(eventDigestValue);
     return result;
   }
 
   AccumulatorWrite._();
 
-  factory AccumulatorWrite.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory AccumulatorWrite.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory AccumulatorWrite.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AccumulatorWrite.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccumulatorWrite', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AccumulatorWrite',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'address')
     ..aOS(2, _omitFieldNames ? '' : 'accumulatorType')
-    ..e<AccumulatorWrite_AccumulatorOperation>(3, _omitFieldNames ? '' : 'operation', $pb.PbFieldType.OE, defaultOrMaker: AccumulatorWrite_AccumulatorOperation.ACCUMULATOR_OPERATION_UNKNOWN, valueOf: AccumulatorWrite_AccumulatorOperation.valueOf, enumValues: AccumulatorWrite_AccumulatorOperation.values)
-    ..e<AccumulatorWrite_AccumulatorValue>(4, _omitFieldNames ? '' : 'valueKind', $pb.PbFieldType.OE, defaultOrMaker: AccumulatorWrite_AccumulatorValue.ACCUMULATOR_VALUE_UNKNOWN, valueOf: AccumulatorWrite_AccumulatorValue.valueOf, enumValues: AccumulatorWrite_AccumulatorValue.values)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'integerValue', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..p<$fixnum.Int64>(6, _omitFieldNames ? '' : 'integerTuple', $pb.PbFieldType.KU6)
-    ..pc<EventDigestEntry>(7, _omitFieldNames ? '' : 'eventDigestValue', $pb.PbFieldType.PM, subBuilder: EventDigestEntry.create)
-    ..hasRequiredFields = false
-  ;
+    ..e<AccumulatorWrite_AccumulatorOperation>(
+        3, _omitFieldNames ? '' : 'operation', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            AccumulatorWrite_AccumulatorOperation.ACCUMULATOR_OPERATION_UNKNOWN,
+        valueOf: AccumulatorWrite_AccumulatorOperation.valueOf,
+        enumValues: AccumulatorWrite_AccumulatorOperation.values)
+    ..e<AccumulatorWrite_AccumulatorValue>(
+        4, _omitFieldNames ? '' : 'valueKind', $pb.PbFieldType.OE,
+        defaultOrMaker:
+            AccumulatorWrite_AccumulatorValue.ACCUMULATOR_VALUE_UNKNOWN,
+        valueOf: AccumulatorWrite_AccumulatorValue.valueOf,
+        enumValues: AccumulatorWrite_AccumulatorValue.values)
+    ..a<$fixnum.Int64>(
+        5, _omitFieldNames ? '' : 'integerValue', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..p<$fixnum.Int64>(
+        6, _omitFieldNames ? '' : 'integerTuple', $pb.PbFieldType.KU6)
+    ..pc<EventDigestEntry>(
+        7, _omitFieldNames ? '' : 'eventDigestValue', $pb.PbFieldType.PM,
+        subBuilder: EventDigestEntry.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AccumulatorWrite clone() => AccumulatorWrite()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AccumulatorWrite copyWith(void Function(AccumulatorWrite) updates) => super.copyWith((message) => updates(message as AccumulatorWrite)) as AccumulatorWrite;
+  AccumulatorWrite copyWith(void Function(AccumulatorWrite) updates) =>
+      super.copyWith((message) => updates(message as AccumulatorWrite))
+          as AccumulatorWrite;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -553,9 +651,11 @@ class AccumulatorWrite extends $pb.GeneratedMessage {
   static AccumulatorWrite create() => AccumulatorWrite._();
   @$core.override
   AccumulatorWrite createEmptyInstance() => create();
-  static $pb.PbList<AccumulatorWrite> createRepeated() => $pb.PbList<AccumulatorWrite>();
+  static $pb.PbList<AccumulatorWrite> createRepeated() =>
+      $pb.PbList<AccumulatorWrite>();
   @$core.pragma('dart2js:noInline')
-  static AccumulatorWrite getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccumulatorWrite>(create);
+  static AccumulatorWrite getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AccumulatorWrite>(create);
   static AccumulatorWrite? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -579,7 +679,8 @@ class AccumulatorWrite extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   AccumulatorWrite_AccumulatorOperation get operation => $_getN(2);
   @$pb.TagNumber(3)
-  set operation(AccumulatorWrite_AccumulatorOperation value) => $_setField(3, value);
+  set operation(AccumulatorWrite_AccumulatorOperation value) =>
+      $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasOperation() => $_has(2);
   @$pb.TagNumber(3)
@@ -588,7 +689,8 @@ class AccumulatorWrite extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   AccumulatorWrite_AccumulatorValue get valueKind => $_getN(3);
   @$pb.TagNumber(4)
-  set valueKind(AccumulatorWrite_AccumulatorValue value) => $_setField(4, value);
+  set valueKind(AccumulatorWrite_AccumulatorValue value) =>
+      $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasValueKind() => $_has(3);
   @$pb.TagNumber(4)
@@ -636,22 +738,39 @@ class UnchangedConsensusObject extends $pb.GeneratedMessage {
 
   UnchangedConsensusObject._();
 
-  factory UnchangedConsensusObject.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory UnchangedConsensusObject.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory UnchangedConsensusObject.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UnchangedConsensusObject.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UnchangedConsensusObject', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<UnchangedConsensusObject_UnchangedConsensusObjectKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: UnchangedConsensusObject_UnchangedConsensusObjectKind.UNCHANGED_CONSENSUS_OBJECT_KIND_UNKNOWN, valueOf: UnchangedConsensusObject_UnchangedConsensusObjectKind.valueOf, enumValues: UnchangedConsensusObject_UnchangedConsensusObjectKind.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UnchangedConsensusObject',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<UnchangedConsensusObject_UnchangedConsensusObjectKind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: UnchangedConsensusObject_UnchangedConsensusObjectKind
+            .UNCHANGED_CONSENSUS_OBJECT_KIND_UNKNOWN,
+        valueOf: UnchangedConsensusObject_UnchangedConsensusObjectKind.valueOf,
+        enumValues:
+            UnchangedConsensusObject_UnchangedConsensusObjectKind.values)
     ..aOS(2, _omitFieldNames ? '' : 'objectId')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(4, _omitFieldNames ? '' : 'digest')
     ..aOS(5, _omitFieldNames ? '' : 'objectType')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UnchangedConsensusObject clone() => UnchangedConsensusObject()..mergeFromMessage(this);
+  UnchangedConsensusObject clone() =>
+      UnchangedConsensusObject()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UnchangedConsensusObject copyWith(void Function(UnchangedConsensusObject) updates) => super.copyWith((message) => updates(message as UnchangedConsensusObject)) as UnchangedConsensusObject;
+  UnchangedConsensusObject copyWith(
+          void Function(UnchangedConsensusObject) updates) =>
+      super.copyWith((message) => updates(message as UnchangedConsensusObject))
+          as UnchangedConsensusObject;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -660,15 +779,18 @@ class UnchangedConsensusObject extends $pb.GeneratedMessage {
   static UnchangedConsensusObject create() => UnchangedConsensusObject._();
   @$core.override
   UnchangedConsensusObject createEmptyInstance() => create();
-  static $pb.PbList<UnchangedConsensusObject> createRepeated() => $pb.PbList<UnchangedConsensusObject>();
+  static $pb.PbList<UnchangedConsensusObject> createRepeated() =>
+      $pb.PbList<UnchangedConsensusObject>();
   @$core.pragma('dart2js:noInline')
-  static UnchangedConsensusObject getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UnchangedConsensusObject>(create);
+  static UnchangedConsensusObject getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UnchangedConsensusObject>(create);
   static UnchangedConsensusObject? _defaultInstance;
 
   @$pb.TagNumber(1)
   UnchangedConsensusObject_UnchangedConsensusObjectKind get kind => $_getN(0);
   @$pb.TagNumber(1)
-  set kind(UnchangedConsensusObject_UnchangedConsensusObjectKind value) => $_setField(1, value);
+  set kind(UnchangedConsensusObject_UnchangedConsensusObjectKind value) =>
+      $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasKind() => $_has(0);
   @$pb.TagNumber(1)
@@ -716,6 +838,7 @@ class UnchangedConsensusObject extends $pb.GeneratedMessage {
   void clearObjectType() => $_clearField(5);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

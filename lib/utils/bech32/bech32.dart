@@ -18,7 +18,8 @@ class Bech32Codec extends Codec<Bech32, String> {
   }
 
   @override
-  Bech32 decode(String encoded, [maxLength = Bech32Validations.maxInputLength]) {
+  Bech32 decode(String encoded,
+      [maxLength = Bech32Validations.maxInputLength]) {
     return Bech32Decoder().convert(encoded, maxLength);
   }
 
@@ -294,7 +295,3 @@ List<int> _createChecksum(String hrp, List<int> data) {
   }
   return result;
 }
-
-
-
-

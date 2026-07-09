@@ -21,23 +21,30 @@ import 'signature_verification_service.pbjson.dart';
 export 'signature_verification_service.pb.dart';
 
 abstract class SignatureVerificationServiceBase extends $pb.GeneratedService {
-  $async.Future<$4.VerifySignatureResponse> verifySignature($pb.ServerContext ctx, $4.VerifySignatureRequest request);
+  $async.Future<$4.VerifySignatureResponse> verifySignature(
+      $pb.ServerContext ctx, $4.VerifySignatureRequest request);
 
   $pb.GeneratedMessage createRequest($core.String methodName) {
     switch (methodName) {
-      case 'VerifySignature': return $4.VerifySignatureRequest();
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'VerifySignature':
+        return $4.VerifySignatureRequest();
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String methodName, $pb.GeneratedMessage request) {
+  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx,
+      $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
-      case 'VerifySignature': return verifySignature(ctx, request as $4.VerifySignatureRequest);
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'VerifySignature':
+        return verifySignature(ctx, request as $4.VerifySignatureRequest);
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $core.Map<$core.String, $core.dynamic> get $json => SignatureVerificationServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => SignatureVerificationServiceBase$messageJson;
+  $core.Map<$core.String, $core.dynamic> get $json =>
+      SignatureVerificationServiceBase$json;
+  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+      get $messageJson => SignatureVerificationServiceBase$messageJson;
 }
-

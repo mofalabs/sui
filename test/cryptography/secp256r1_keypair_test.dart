@@ -8,18 +8,80 @@ import 'package:sui/utils/sha.dart';
 
 void main() {
   const VALID_SECP256R1_SECRET_KEY = [
-    66, 37, 141, 205, 161, 76, 241, 17, 198, 2, 184, 151, 27, 140, 200, 67, 233,
-    30, 70, 202, 144, 81, 81, 192, 39, 68, 166, 176, 23, 230, 147, 22,
+    66,
+    37,
+    141,
+    205,
+    161,
+    76,
+    241,
+    17,
+    198,
+    2,
+    184,
+    151,
+    27,
+    140,
+    200,
+    67,
+    233,
+    30,
+    70,
+    202,
+    144,
+    81,
+    81,
+    192,
+    39,
+    68,
+    166,
+    176,
+    23,
+    230,
+    147,
+    22,
   ];
 
   /// Corresponding to the secret key above.
   const VALID_SECP256R1_PUBLIC_KEY = [
-    2, 39, 50, 43, 58, 137, 26, 10, 40, 13, 107, 193, 251, 44, 187, 35, 210, 143,
-    84, 144, 111, 214, 64, 127, 95, 116, 31, 109, 239, 87, 98, 96, 154,
+    2,
+    39,
+    50,
+    43,
+    58,
+    137,
+    26,
+    10,
+    40,
+    13,
+    107,
+    193,
+    251,
+    44,
+    187,
+    35,
+    210,
+    143,
+    84,
+    144,
+    111,
+    214,
+    64,
+    127,
+    95,
+    116,
+    31,
+    109,
+    239,
+    87,
+    98,
+    96,
+    154,
   ];
 
   /// Invalid private key with incorrect length
-  final INVALID_SECP256R1_SECRET_KEY = Uint8List.fromList(List<int>.filled(31, 1));
+  final INVALID_SECP256R1_SECRET_KEY =
+      Uint8List.fromList(List<int>.filled(31, 1));
 
   const TEST_MNEMONIC =
       'open genre century trouble allow pioneer love task chat salt drive income';
@@ -67,10 +129,15 @@ void main() {
       final msgHash = sha256(signData);
       final sig = keypair.signData(signData);
       final signature = SignatureData.fromBytes(sig);
-      int recId = Secp256r1Keypair.secp256r1.recoveryId(signature, msgHash, keypair.publicKeyBytes(false));
-      final publicKey = Secp256r1Keypair.secp256r1.ecRecover(recId, msgHash, signature);
+      int recId = Secp256r1Keypair.secp256r1
+          .recoveryId(signature, msgHash, keypair.publicKeyBytes(false));
+      final publicKey =
+          Secp256r1Keypair.secp256r1.ecRecover(recId, msgHash, signature);
 
-      expect(base64Encode(publicKey) == base64Encode(keypair.publicKeyBytes(false)), true);
+      expect(
+          base64Encode(publicKey) ==
+              base64Encode(keypair.publicKeyBytes(false)),
+          true);
     });
 
     test('invalid mnemonics to derive secp256r1 keypair', () {
@@ -105,8 +172,12 @@ void main() {
 
       final signatureWithBytes = (keypair.signPersonalMessage(message));
 
-      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
-      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+      expect(
+          keypair.verifyPersonalMessage(message, signatureWithBytes.signature),
+          true);
+      expect(
+          keypair.verifyPersonalMessage(message, signatureWithBytes.signature),
+          true);
     });
   });
 }

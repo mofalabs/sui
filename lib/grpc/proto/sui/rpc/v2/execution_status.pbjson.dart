@@ -18,8 +18,25 @@ import 'dart:typed_data' as $typed_data;
 const ExecutionStatus$json = {
   '1': 'ExecutionStatus',
   '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '9': 0, '10': 'success', '17': true},
-    {'1': 'error', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutionError', '9': 1, '10': 'error', '17': true},
+    {
+      '1': 'success',
+      '3': 1,
+      '4': 1,
+      '5': 8,
+      '9': 0,
+      '10': 'success',
+      '17': true
+    },
+    {
+      '1': 'error',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutionError',
+      '9': 1,
+      '10': 'error',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_success'},
@@ -37,18 +54,107 @@ final $typed_data.Uint8List executionStatusDescriptor = $convert.base64Decode(
 const ExecutionError$json = {
   '1': 'ExecutionError',
   '2': [
-    {'1': 'description', '3': 1, '4': 1, '5': 9, '9': 1, '10': 'description', '17': true},
-    {'1': 'command', '3': 2, '4': 1, '5': 4, '9': 2, '10': 'command', '17': true},
-    {'1': 'kind', '3': 3, '4': 1, '5': 14, '6': '.sui.rpc.v2.ExecutionError.ExecutionErrorKind', '9': 3, '10': 'kind', '17': true},
-    {'1': 'abort', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveAbort', '9': 0, '10': 'abort'},
-    {'1': 'size_error', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.SizeError', '9': 0, '10': 'sizeError'},
-    {'1': 'command_argument_error', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.CommandArgumentError', '9': 0, '10': 'commandArgumentError'},
-    {'1': 'type_argument_error', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.TypeArgumentError', '9': 0, '10': 'typeArgumentError'},
-    {'1': 'package_upgrade_error', '3': 8, '4': 1, '5': 11, '6': '.sui.rpc.v2.PackageUpgradeError', '9': 0, '10': 'packageUpgradeError'},
-    {'1': 'index_error', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.IndexError', '9': 0, '10': 'indexError'},
+    {
+      '1': 'description',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'description',
+      '17': true
+    },
+    {
+      '1': 'command',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'command',
+      '17': true
+    },
+    {
+      '1': 'kind',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.ExecutionError.ExecutionErrorKind',
+      '9': 3,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'abort',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveAbort',
+      '9': 0,
+      '10': 'abort'
+    },
+    {
+      '1': 'size_error',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SizeError',
+      '9': 0,
+      '10': 'sizeError'
+    },
+    {
+      '1': 'command_argument_error',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CommandArgumentError',
+      '9': 0,
+      '10': 'commandArgumentError'
+    },
+    {
+      '1': 'type_argument_error',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.TypeArgumentError',
+      '9': 0,
+      '10': 'typeArgumentError'
+    },
+    {
+      '1': 'package_upgrade_error',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.PackageUpgradeError',
+      '9': 0,
+      '10': 'packageUpgradeError'
+    },
+    {
+      '1': 'index_error',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.IndexError',
+      '9': 0,
+      '10': 'indexError'
+    },
     {'1': 'object_id', '3': 10, '4': 1, '5': 9, '9': 0, '10': 'objectId'},
-    {'1': 'coin_deny_list_error', '3': 11, '4': 1, '5': 11, '6': '.sui.rpc.v2.CoinDenyListError', '9': 0, '10': 'coinDenyListError'},
-    {'1': 'congested_objects', '3': 12, '4': 1, '5': 11, '6': '.sui.rpc.v2.CongestedObjects', '9': 0, '10': 'congestedObjects'},
+    {
+      '1': 'coin_deny_list_error',
+      '3': 11,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CoinDenyListError',
+      '9': 0,
+      '10': 'coinDenyListError'
+    },
+    {
+      '1': 'congested_objects',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CongestedObjects',
+      '9': 0,
+      '10': 'congestedObjects'
+    },
   ],
   '4': [ExecutionError_ExecutionErrorKind$json],
   '8': [
@@ -156,9 +262,35 @@ final $typed_data.Uint8List executionErrorDescriptor = $convert.base64Decode(
 const MoveAbort$json = {
   '1': 'MoveAbort',
   '2': [
-    {'1': 'abort_code', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'abortCode', '17': true},
-    {'1': 'location', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveLocation', '9': 1, '10': 'location', '17': true},
-    {'1': 'clever_error', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.CleverError', '9': 2, '10': 'cleverError', '17': true},
+    {
+      '1': 'abort_code',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'abortCode',
+      '17': true
+    },
+    {
+      '1': 'location',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveLocation',
+      '9': 1,
+      '10': 'location',
+      '17': true
+    },
+    {
+      '1': 'clever_error',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CleverError',
+      '9': 2,
+      '10': 'cleverError',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_abort_code'},
@@ -178,11 +310,43 @@ final $typed_data.Uint8List moveAbortDescriptor = $convert.base64Decode(
 const MoveLocation$json = {
   '1': 'MoveLocation',
   '2': [
-    {'1': 'package', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'package', '17': true},
+    {
+      '1': 'package',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'package',
+      '17': true
+    },
     {'1': 'module', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'module', '17': true},
-    {'1': 'function', '3': 3, '4': 1, '5': 13, '9': 2, '10': 'function', '17': true},
-    {'1': 'instruction', '3': 4, '4': 1, '5': 13, '9': 3, '10': 'instruction', '17': true},
-    {'1': 'function_name', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'functionName', '17': true},
+    {
+      '1': 'function',
+      '3': 3,
+      '4': 1,
+      '5': 13,
+      '9': 2,
+      '10': 'function',
+      '17': true
+    },
+    {
+      '1': 'instruction',
+      '3': 4,
+      '4': 1,
+      '5': 13,
+      '9': 3,
+      '10': 'instruction',
+      '17': true
+    },
+    {
+      '1': 'function_name',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'functionName',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package'},
@@ -205,10 +369,42 @@ final $typed_data.Uint8List moveLocationDescriptor = $convert.base64Decode(
 const CleverError$json = {
   '1': 'CleverError',
   '2': [
-    {'1': 'error_code', '3': 1, '4': 1, '5': 4, '9': 1, '10': 'errorCode', '17': true},
-    {'1': 'line_number', '3': 2, '4': 1, '5': 4, '9': 2, '10': 'lineNumber', '17': true},
-    {'1': 'constant_name', '3': 3, '4': 1, '5': 9, '9': 3, '10': 'constantName', '17': true},
-    {'1': 'constant_type', '3': 4, '4': 1, '5': 9, '9': 4, '10': 'constantType', '17': true},
+    {
+      '1': 'error_code',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'errorCode',
+      '17': true
+    },
+    {
+      '1': 'line_number',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'lineNumber',
+      '17': true
+    },
+    {
+      '1': 'constant_name',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'constantName',
+      '17': true
+    },
+    {
+      '1': 'constant_type',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'constantType',
+      '17': true
+    },
     {'1': 'rendered', '3': 5, '4': 1, '5': 9, '9': 0, '10': 'rendered'},
     {'1': 'raw', '3': 6, '4': 1, '5': 12, '9': 0, '10': 'raw'},
   ],
@@ -235,7 +431,15 @@ const SizeError$json = {
   '1': 'SizeError',
   '2': [
     {'1': 'size', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'size', '17': true},
-    {'1': 'max_size', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'maxSize', '17': true},
+    {
+      '1': 'max_size',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'maxSize',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_size'},
@@ -253,7 +457,15 @@ const IndexError$json = {
   '1': 'IndexError',
   '2': [
     {'1': 'index', '3': 1, '4': 1, '5': 13, '9': 0, '10': 'index', '17': true},
-    {'1': 'subresult', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'subresult', '17': true},
+    {
+      '1': 'subresult',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'subresult',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_index'},
@@ -270,8 +482,24 @@ final $typed_data.Uint8List indexErrorDescriptor = $convert.base64Decode(
 const CoinDenyListError$json = {
   '1': 'CoinDenyListError',
   '2': [
-    {'1': 'address', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'address', '17': true},
-    {'1': 'coin_type', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'coinType', '17': true},
+    {
+      '1': 'address',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'address',
+      '17': true
+    },
+    {
+      '1': 'coin_type',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'coinType',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_address'},
@@ -300,9 +528,35 @@ final $typed_data.Uint8List congestedObjectsDescriptor = $convert.base64Decode(
 const CommandArgumentError$json = {
   '1': 'CommandArgumentError',
   '2': [
-    {'1': 'argument', '3': 1, '4': 1, '5': 13, '9': 0, '10': 'argument', '17': true},
-    {'1': 'kind', '3': 2, '4': 1, '5': 14, '6': '.sui.rpc.v2.CommandArgumentError.CommandArgumentErrorKind', '9': 1, '10': 'kind', '17': true},
-    {'1': 'index_error', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.IndexError', '9': 2, '10': 'indexError', '17': true},
+    {
+      '1': 'argument',
+      '3': 1,
+      '4': 1,
+      '5': 13,
+      '9': 0,
+      '10': 'argument',
+      '17': true
+    },
+    {
+      '1': 'kind',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.CommandArgumentError.CommandArgumentErrorKind',
+      '9': 1,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'index_error',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.IndexError',
+      '9': 2,
+      '10': 'indexError',
+      '17': true
+    },
   ],
   '4': [CommandArgumentError_CommandArgumentErrorKind$json],
   '8': [
@@ -363,11 +617,44 @@ final $typed_data.Uint8List commandArgumentErrorDescriptor = $convert.base64Deco
 const PackageUpgradeError$json = {
   '1': 'PackageUpgradeError',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.PackageUpgradeError.PackageUpgradeErrorKind', '9': 0, '10': 'kind', '17': true},
-    {'1': 'package_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'packageId', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.PackageUpgradeError.PackageUpgradeErrorKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'package_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'packageId',
+      '17': true
+    },
     {'1': 'digest', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'digest', '17': true},
-    {'1': 'policy', '3': 4, '4': 1, '5': 13, '9': 3, '10': 'policy', '17': true},
-    {'1': 'ticket_id', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'ticketId', '17': true},
+    {
+      '1': 'policy',
+      '3': 4,
+      '4': 1,
+      '5': 13,
+      '9': 3,
+      '10': 'policy',
+      '17': true
+    },
+    {
+      '1': 'ticket_id',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'ticketId',
+      '17': true
+    },
   ],
   '4': [PackageUpgradeError_PackageUpgradeErrorKind$json],
   '8': [
@@ -410,8 +697,25 @@ final $typed_data.Uint8List packageUpgradeErrorDescriptor = $convert.base64Decod
 const TypeArgumentError$json = {
   '1': 'TypeArgumentError',
   '2': [
-    {'1': 'type_argument', '3': 1, '4': 1, '5': 13, '9': 0, '10': 'typeArgument', '17': true},
-    {'1': 'kind', '3': 2, '4': 1, '5': 14, '6': '.sui.rpc.v2.TypeArgumentError.TypeArgumentErrorKind', '9': 1, '10': 'kind', '17': true},
+    {
+      '1': 'type_argument',
+      '3': 1,
+      '4': 1,
+      '5': 13,
+      '9': 0,
+      '10': 'typeArgument',
+      '17': true
+    },
+    {
+      '1': 'kind',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.TypeArgumentError.TypeArgumentErrorKind',
+      '9': 1,
+      '10': 'kind',
+      '17': true
+    },
   ],
   '4': [TypeArgumentError_TypeArgumentErrorKind$json],
   '8': [
@@ -438,4 +742,3 @@ final $typed_data.Uint8List typeArgumentErrorDescriptor = $convert.base64Decode(
     'ogVFlQRV9BUkdVTUVOVF9FUlJPUl9LSU5EX1VOS05PV04QABISCg5UWVBFX05PVF9GT1VORBAB'
     'EhwKGENPTlNUUkFJTlRfTk9UX1NBVElTRklFRBACQhAKDl90eXBlX2FyZ3VtZW50QgcKBV9raW'
     '5k');
-

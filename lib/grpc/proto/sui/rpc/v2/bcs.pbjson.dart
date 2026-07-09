@@ -31,4 +31,3 @@ const Bcs$json = {
 final $typed_data.Uint8List bcsDescriptor = $convert.base64Decode(
     'CgNCY3MSFwoEbmFtZRgBIAEoCUgAUgRuYW1liAEBEhkKBXZhbHVlGAIgASgMSAFSBXZhbHVliA'
     'EBQgcKBV9uYW1lQggKBl92YWx1ZQ==');
-

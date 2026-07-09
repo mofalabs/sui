@@ -18,12 +18,62 @@ import 'dart:typed_data' as $typed_data;
 const UserSignature$json = {
   '1': 'UserSignature',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 1, '10': 'bcs', '17': true},
-    {'1': 'scheme', '3': 2, '4': 1, '5': 14, '6': '.sui.rpc.v2.SignatureScheme', '9': 2, '10': 'scheme', '17': true},
-    {'1': 'simple', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.SimpleSignature', '9': 0, '10': 'simple'},
-    {'1': 'multisig', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.MultisigAggregatedSignature', '9': 0, '10': 'multisig'},
-    {'1': 'zklogin', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginAuthenticator', '9': 0, '10': 'zklogin'},
-    {'1': 'passkey', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.PasskeyAuthenticator', '9': 0, '10': 'passkey'},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 1,
+      '10': 'bcs',
+      '17': true
+    },
+    {
+      '1': 'scheme',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.SignatureScheme',
+      '9': 2,
+      '10': 'scheme',
+      '17': true
+    },
+    {
+      '1': 'simple',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SimpleSignature',
+      '9': 0,
+      '10': 'simple'
+    },
+    {
+      '1': 'multisig',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MultisigAggregatedSignature',
+      '9': 0,
+      '10': 'multisig'
+    },
+    {
+      '1': 'zklogin',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginAuthenticator',
+      '9': 0,
+      '10': 'zklogin'
+    },
+    {
+      '1': 'passkey',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.PasskeyAuthenticator',
+      '9': 0,
+      '10': 'passkey'
+    },
   ],
   '8': [
     {'1': 'signature'},
@@ -47,9 +97,34 @@ final $typed_data.Uint8List userSignatureDescriptor = $convert.base64Decode(
 const SimpleSignature$json = {
   '1': 'SimpleSignature',
   '2': [
-    {'1': 'scheme', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.SignatureScheme', '9': 0, '10': 'scheme', '17': true},
-    {'1': 'signature', '3': 2, '4': 1, '5': 12, '9': 1, '10': 'signature', '17': true},
-    {'1': 'public_key', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'publicKey', '17': true},
+    {
+      '1': 'scheme',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.SignatureScheme',
+      '9': 0,
+      '10': 'scheme',
+      '17': true
+    },
+    {
+      '1': 'signature',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 1,
+      '10': 'signature',
+      '17': true
+    },
+    {
+      '1': 'public_key',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'publicKey',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_scheme'},
@@ -70,7 +145,15 @@ const ZkLoginPublicIdentifier$json = {
   '1': 'ZkLoginPublicIdentifier',
   '2': [
     {'1': 'iss', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'iss', '17': true},
-    {'1': 'address_seed', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'addressSeed', '17': true},
+    {
+      '1': 'address_seed',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'addressSeed',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_iss'},
@@ -88,9 +171,35 @@ final $typed_data.Uint8List zkLoginPublicIdentifierDescriptor = $convert.base64D
 const MultisigMemberPublicKey$json = {
   '1': 'MultisigMemberPublicKey',
   '2': [
-    {'1': 'scheme', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.SignatureScheme', '9': 0, '10': 'scheme', '17': true},
-    {'1': 'public_key', '3': 2, '4': 1, '5': 12, '9': 1, '10': 'publicKey', '17': true},
-    {'1': 'zklogin', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginPublicIdentifier', '9': 2, '10': 'zklogin', '17': true},
+    {
+      '1': 'scheme',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.SignatureScheme',
+      '9': 0,
+      '10': 'scheme',
+      '17': true
+    },
+    {
+      '1': 'public_key',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 1,
+      '10': 'publicKey',
+      '17': true
+    },
+    {
+      '1': 'zklogin',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginPublicIdentifier',
+      '9': 2,
+      '10': 'zklogin',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_scheme'},
@@ -111,8 +220,25 @@ final $typed_data.Uint8List multisigMemberPublicKeyDescriptor = $convert.base64D
 const MultisigMember$json = {
   '1': 'MultisigMember',
   '2': [
-    {'1': 'public_key', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.MultisigMemberPublicKey', '9': 0, '10': 'publicKey', '17': true},
-    {'1': 'weight', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'weight', '17': true},
+    {
+      '1': 'public_key',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MultisigMemberPublicKey',
+      '9': 0,
+      '10': 'publicKey',
+      '17': true
+    },
+    {
+      '1': 'weight',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'weight',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_public_key'},
@@ -130,8 +256,23 @@ final $typed_data.Uint8List multisigMemberDescriptor = $convert.base64Decode(
 const MultisigCommittee$json = {
   '1': 'MultisigCommittee',
   '2': [
-    {'1': 'members', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.MultisigMember', '10': 'members'},
-    {'1': 'threshold', '3': 2, '4': 1, '5': 13, '9': 0, '10': 'threshold', '17': true},
+    {
+      '1': 'members',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.MultisigMember',
+      '10': 'members'
+    },
+    {
+      '1': 'threshold',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 0,
+      '10': 'threshold',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_threshold'},
@@ -148,10 +289,42 @@ final $typed_data.Uint8List multisigCommitteeDescriptor = $convert.base64Decode(
 const MultisigAggregatedSignature$json = {
   '1': 'MultisigAggregatedSignature',
   '2': [
-    {'1': 'signatures', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.MultisigMemberSignature', '10': 'signatures'},
-    {'1': 'bitmap', '3': 2, '4': 1, '5': 13, '9': 0, '10': 'bitmap', '17': true},
-    {'1': 'legacy_bitmap', '3': 3, '4': 1, '5': 12, '9': 1, '10': 'legacyBitmap', '17': true},
-    {'1': 'committee', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.MultisigCommittee', '9': 2, '10': 'committee', '17': true},
+    {
+      '1': 'signatures',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.MultisigMemberSignature',
+      '10': 'signatures'
+    },
+    {
+      '1': 'bitmap',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 0,
+      '10': 'bitmap',
+      '17': true
+    },
+    {
+      '1': 'legacy_bitmap',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 1,
+      '10': 'legacyBitmap',
+      '17': true
+    },
+    {
+      '1': 'committee',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MultisigCommittee',
+      '9': 2,
+      '10': 'committee',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_bitmap'},
@@ -173,10 +346,45 @@ final $typed_data.Uint8List multisigAggregatedSignatureDescriptor = $convert.bas
 const MultisigMemberSignature$json = {
   '1': 'MultisigMemberSignature',
   '2': [
-    {'1': 'scheme', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.SignatureScheme', '9': 0, '10': 'scheme', '17': true},
-    {'1': 'signature', '3': 2, '4': 1, '5': 12, '9': 1, '10': 'signature', '17': true},
-    {'1': 'zklogin', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginAuthenticator', '9': 2, '10': 'zklogin', '17': true},
-    {'1': 'passkey', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.PasskeyAuthenticator', '9': 3, '10': 'passkey', '17': true},
+    {
+      '1': 'scheme',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.SignatureScheme',
+      '9': 0,
+      '10': 'scheme',
+      '17': true
+    },
+    {
+      '1': 'signature',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 1,
+      '10': 'signature',
+      '17': true
+    },
+    {
+      '1': 'zklogin',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginAuthenticator',
+      '9': 2,
+      '10': 'zklogin',
+      '17': true
+    },
+    {
+      '1': 'passkey',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.PasskeyAuthenticator',
+      '9': 3,
+      '10': 'passkey',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_scheme'},
@@ -199,11 +407,55 @@ final $typed_data.Uint8List multisigMemberSignatureDescriptor = $convert.base64D
 const ZkLoginAuthenticator$json = {
   '1': 'ZkLoginAuthenticator',
   '2': [
-    {'1': 'inputs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginInputs', '9': 0, '10': 'inputs', '17': true},
-    {'1': 'max_epoch', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'maxEpoch', '17': true},
-    {'1': 'signature', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.SimpleSignature', '9': 2, '10': 'signature', '17': true},
-    {'1': 'public_identifier', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginPublicIdentifier', '9': 3, '10': 'publicIdentifier', '17': true},
-    {'1': 'jwk_id', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.JwkId', '9': 4, '10': 'jwkId', '17': true},
+    {
+      '1': 'inputs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginInputs',
+      '9': 0,
+      '10': 'inputs',
+      '17': true
+    },
+    {
+      '1': 'max_epoch',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'maxEpoch',
+      '17': true
+    },
+    {
+      '1': 'signature',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SimpleSignature',
+      '9': 2,
+      '10': 'signature',
+      '17': true
+    },
+    {
+      '1': 'public_identifier',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginPublicIdentifier',
+      '9': 3,
+      '10': 'publicIdentifier',
+      '17': true
+    },
+    {
+      '1': 'jwk_id',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.JwkId',
+      '9': 4,
+      '10': 'jwkId',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_inputs'},
@@ -228,10 +480,44 @@ final $typed_data.Uint8List zkLoginAuthenticatorDescriptor = $convert.base64Deco
 const ZkLoginInputs$json = {
   '1': 'ZkLoginInputs',
   '2': [
-    {'1': 'proof_points', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginProof', '9': 0, '10': 'proofPoints', '17': true},
-    {'1': 'iss_base64_details', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.ZkLoginClaim', '9': 1, '10': 'issBase64Details', '17': true},
-    {'1': 'header_base64', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'headerBase64', '17': true},
-    {'1': 'address_seed', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'addressSeed', '17': true},
+    {
+      '1': 'proof_points',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginProof',
+      '9': 0,
+      '10': 'proofPoints',
+      '17': true
+    },
+    {
+      '1': 'iss_base64_details',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ZkLoginClaim',
+      '9': 1,
+      '10': 'issBase64Details',
+      '17': true
+    },
+    {
+      '1': 'header_base64',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'headerBase64',
+      '17': true
+    },
+    {
+      '1': 'address_seed',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'addressSeed',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_proof_points'},
@@ -254,9 +540,36 @@ final $typed_data.Uint8List zkLoginInputsDescriptor = $convert.base64Decode(
 const ZkLoginProof$json = {
   '1': 'ZkLoginProof',
   '2': [
-    {'1': 'a', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.CircomG1', '9': 0, '10': 'a', '17': true},
-    {'1': 'b', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.CircomG2', '9': 1, '10': 'b', '17': true},
-    {'1': 'c', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.CircomG1', '9': 2, '10': 'c', '17': true},
+    {
+      '1': 'a',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CircomG1',
+      '9': 0,
+      '10': 'a',
+      '17': true
+    },
+    {
+      '1': 'b',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CircomG2',
+      '9': 1,
+      '10': 'b',
+      '17': true
+    },
+    {
+      '1': 'c',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CircomG1',
+      '9': 2,
+      '10': 'c',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_a'},
@@ -276,7 +589,15 @@ const ZkLoginClaim$json = {
   '1': 'ZkLoginClaim',
   '2': [
     {'1': 'value', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'value', '17': true},
-    {'1': 'index_mod_4', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'indexMod4', '17': true},
+    {
+      '1': 'index_mod_4',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'indexMod4',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_value'},
@@ -341,9 +662,34 @@ final $typed_data.Uint8List circomG2Descriptor = $convert.base64Decode(
 const PasskeyAuthenticator$json = {
   '1': 'PasskeyAuthenticator',
   '2': [
-    {'1': 'authenticator_data', '3': 1, '4': 1, '5': 12, '9': 0, '10': 'authenticatorData', '17': true},
-    {'1': 'client_data_json', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'clientDataJson', '17': true},
-    {'1': 'signature', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.SimpleSignature', '9': 2, '10': 'signature', '17': true},
+    {
+      '1': 'authenticator_data',
+      '3': 1,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'authenticatorData',
+      '17': true
+    },
+    {
+      '1': 'client_data_json',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'clientDataJson',
+      '17': true
+    },
+    {
+      '1': 'signature',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SimpleSignature',
+      '9': 2,
+      '10': 'signature',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_authenticator_data'},
@@ -365,7 +711,14 @@ const ValidatorCommittee$json = {
   '1': 'ValidatorCommittee',
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
-    {'1': 'members', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.ValidatorCommitteeMember', '10': 'members'},
+    {
+      '1': 'members',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorCommitteeMember',
+      '10': 'members'
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -382,7 +735,15 @@ final $typed_data.Uint8List validatorCommitteeDescriptor = $convert.base64Decode
 const ValidatorCommitteeMember$json = {
   '1': 'ValidatorCommitteeMember',
   '2': [
-    {'1': 'public_key', '3': 1, '4': 1, '5': 12, '9': 0, '10': 'publicKey', '17': true},
+    {
+      '1': 'public_key',
+      '3': 1,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'publicKey',
+      '17': true
+    },
     {'1': 'weight', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'weight', '17': true},
   ],
   '8': [
@@ -402,8 +763,24 @@ const ValidatorAggregatedSignature$json = {
   '1': 'ValidatorAggregatedSignature',
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
-    {'1': 'signature', '3': 2, '4': 1, '5': 12, '9': 1, '10': 'signature', '17': true},
-    {'1': 'bitmap', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'bitmap', '17': true},
+    {
+      '1': 'signature',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 1,
+      '10': 'signature',
+      '17': true
+    },
+    {
+      '1': 'bitmap',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'bitmap',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -413,8 +790,8 @@ const ValidatorAggregatedSignature$json = {
 };
 
 /// Descriptor for `ValidatorAggregatedSignature`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List validatorAggregatedSignatureDescriptor = $convert.base64Decode(
-    'ChxWYWxpZGF0b3JBZ2dyZWdhdGVkU2lnbmF0dXJlEhkKBWVwb2NoGAEgASgESABSBWVwb2NoiA'
-    'EBEiEKCXNpZ25hdHVyZRgCIAEoDEgBUglzaWduYXR1cmWIAQESGwoGYml0bWFwGAMgASgMSAJS'
-    'BmJpdG1hcIgBAUIICgZfZXBvY2hCDAoKX3NpZ25hdHVyZUIJCgdfYml0bWFw');
-
+final $typed_data.Uint8List validatorAggregatedSignatureDescriptor =
+    $convert.base64Decode(
+        'ChxWYWxpZGF0b3JBZ2dyZWdhdGVkU2lnbmF0dXJlEhkKBWVwb2NoGAEgASgESABSBWVwb2NoiA'
+        'EBEiEKCXNpZ25hdHVyZRgCIAEoDEgBUglzaWduYXR1cmWIAQESGwoGYml0bWFwGAMgASgMSAJS'
+        'BmJpdG1hcIgBAUIICgZfZXBvY2hCDAoKX3NpZ25hdHVyZUIJCgdfYml0bWFw');

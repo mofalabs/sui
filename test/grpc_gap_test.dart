@@ -49,7 +49,8 @@ void main() {
     expect(derived, f.fieldId);
 
     // And fetching the field object via name resolves to the same object.
-    final obj = await client.getDynamicFieldObject(framework, nameType, nameBcs);
+    final obj =
+        await client.getDynamicFieldObject(framework, nameType, nameBcs);
     expect(obj.objectId, f.fieldId);
   });
 

@@ -18,8 +18,24 @@ import 'dart:typed_data' as $typed_data;
 const BalanceChange$json = {
   '1': 'BalanceChange',
   '2': [
-    {'1': 'address', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'address', '17': true},
-    {'1': 'coin_type', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'coinType', '17': true},
+    {
+      '1': 'address',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'address',
+      '17': true
+    },
+    {
+      '1': 'coin_type',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'coinType',
+      '17': true
+    },
     {'1': 'amount', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'amount', '17': true},
   ],
   '8': [
@@ -34,4 +50,3 @@ final $typed_data.Uint8List balanceChangeDescriptor = $convert.base64Decode(
     'Cg1CYWxhbmNlQ2hhbmdlEh0KB2FkZHJlc3MYASABKAlIAFIHYWRkcmVzc4gBARIgCgljb2luX3'
     'R5cGUYAiABKAlIAVIIY29pblR5cGWIAQESGwoGYW1vdW50GAMgASgJSAJSBmFtb3VudIgBAUIK'
     'CghfYWRkcmVzc0IMCgpfY29pbl90eXBlQgkKB19hbW91bnQ=');
-

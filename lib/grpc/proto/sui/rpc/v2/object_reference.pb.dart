@@ -33,20 +33,29 @@ class ObjectReference extends $pb.GeneratedMessage {
 
   ObjectReference._();
 
-  factory ObjectReference.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ObjectReference.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ObjectReference.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ObjectReference.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ObjectReference', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ObjectReference',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'objectId')
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(3, _omitFieldNames ? '' : 'digest')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ObjectReference clone() => ObjectReference()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ObjectReference copyWith(void Function(ObjectReference) updates) => super.copyWith((message) => updates(message as ObjectReference)) as ObjectReference;
+  ObjectReference copyWith(void Function(ObjectReference) updates) =>
+      super.copyWith((message) => updates(message as ObjectReference))
+          as ObjectReference;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -55,9 +64,11 @@ class ObjectReference extends $pb.GeneratedMessage {
   static ObjectReference create() => ObjectReference._();
   @$core.override
   ObjectReference createEmptyInstance() => create();
-  static $pb.PbList<ObjectReference> createRepeated() => $pb.PbList<ObjectReference>();
+  static $pb.PbList<ObjectReference> createRepeated() =>
+      $pb.PbList<ObjectReference>();
   @$core.pragma('dart2js:noInline')
-  static ObjectReference getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ObjectReference>(create);
+  static ObjectReference getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ObjectReference>(create);
   static ObjectReference? _defaultInstance;
 
   /// The object id of this object.
@@ -91,6 +102,7 @@ class ObjectReference extends $pb.GeneratedMessage {
   void clearDigest() => $_clearField(3);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

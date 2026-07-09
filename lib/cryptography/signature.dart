@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:sui/bcs/sui_bcs.dart';
@@ -71,7 +70,8 @@ String toSerializedSignature(
   final serializedSignature = Uint8List(
     1 + signature.length + pubKey.toRawBytes().length,
   );
-  serializedSignature.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme)]);
+  serializedSignature
+      .setAll(0, [SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(signatureScheme)]);
   serializedSignature.setAll(1, signature);
   serializedSignature.setAll(1 + signature.length, pubKey.toRawBytes());
   return base64Encode(serializedSignature);
@@ -89,19 +89,20 @@ SignaturePubkeyPair parseSerializedSignature(
   }
 
   if (signatureScheme == SignatureScheme.ZkLogin) {
-		final signatureBytes = bytes.sublist(1);
-		final signature = parseZkLoginSignature(signatureBytes);
-		final iss = extractClaimValue<String>(signature.inputs.issBase64Details, 'iss');
+    final signatureBytes = bytes.sublist(1);
+    final signature = parseZkLoginSignature(signatureBytes);
+    final iss =
+        extractClaimValue<String>(signature.inputs.issBase64Details, 'iss');
     final addressSeed = BigInt.parse(signature.inputs.addressSeed);
-		final address = computeZkLoginAddressFromSeed(addressSeed, iss);
+    final address = computeZkLoginAddressFromSeed(addressSeed, iss);
     final zkLgoin = {
-				"inputs": signature.inputs,
-				"maxEpoch": signature.maxEpoch,
-				"userSignature": signature.userSignature,
-				"iss": iss,
-				"address": address,
-        "addressSeed": addressSeed,
-		};
+      "inputs": signature.inputs,
+      "maxEpoch": signature.maxEpoch,
+      "userSignature": signature.userSignature,
+      "iss": iss,
+      "address": address,
+      "addressSeed": addressSeed,
+    };
     return SignaturePubkeyPair(signatureScheme, bytes, zkLogin: zkLgoin);
   }
 
@@ -110,9 +111,11 @@ SignaturePubkeyPair parseSerializedSignature(
       case SignatureScheme.Ed25519:
         return Ed25519PublicKey.fromBytes(bytes);
       case SignatureScheme.Secp256k1:
-        return Secp256PublicKey.fromBytes(bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256k1);
+        return Secp256PublicKey.fromBytes(
+            bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256k1);
       case SignatureScheme.Secp256r1:
-        return Secp256PublicKey.fromBytes(bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256r1);
+        return Secp256PublicKey.fromBytes(
+            bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256r1);
       default:
         throw ArgumentError("Undefined Scheme: $scheme");
     }

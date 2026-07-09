@@ -16,19 +16,27 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 /// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 class SimulateTransactionRequest_TransactionChecks extends $pb.ProtobufEnum {
-  static const SimulateTransactionRequest_TransactionChecks ENABLED = SimulateTransactionRequest_TransactionChecks._(0, _omitEnumNames ? '' : 'ENABLED');
-  static const SimulateTransactionRequest_TransactionChecks DISABLED = SimulateTransactionRequest_TransactionChecks._(1, _omitEnumNames ? '' : 'DISABLED');
+  static const SimulateTransactionRequest_TransactionChecks ENABLED =
+      SimulateTransactionRequest_TransactionChecks._(
+          0, _omitEnumNames ? '' : 'ENABLED');
+  static const SimulateTransactionRequest_TransactionChecks DISABLED =
+      SimulateTransactionRequest_TransactionChecks._(
+          1, _omitEnumNames ? '' : 'DISABLED');
 
-  static const $core.List<SimulateTransactionRequest_TransactionChecks> values = <SimulateTransactionRequest_TransactionChecks> [
+  static const $core.List<SimulateTransactionRequest_TransactionChecks> values =
+      <SimulateTransactionRequest_TransactionChecks>[
     ENABLED,
     DISABLED,
   ];
 
-  static final $core.List<SimulateTransactionRequest_TransactionChecks?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 1);
-  static SimulateTransactionRequest_TransactionChecks? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<SimulateTransactionRequest_TransactionChecks?>
+      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 1);
+  static SimulateTransactionRequest_TransactionChecks? valueOf(
+          $core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const SimulateTransactionRequest_TransactionChecks._(super.value, super.name);
 }
 
-
-const $core.bool _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');

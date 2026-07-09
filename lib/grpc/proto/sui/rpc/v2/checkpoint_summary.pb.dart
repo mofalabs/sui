@@ -64,42 +64,65 @@ class CheckpointSummary extends $pb.GeneratedMessage {
     if (digest != null) result.digest = digest;
     if (epoch != null) result.epoch = epoch;
     if (sequenceNumber != null) result.sequenceNumber = sequenceNumber;
-    if (totalNetworkTransactions != null) result.totalNetworkTransactions = totalNetworkTransactions;
+    if (totalNetworkTransactions != null)
+      result.totalNetworkTransactions = totalNetworkTransactions;
     if (contentDigest != null) result.contentDigest = contentDigest;
     if (previousDigest != null) result.previousDigest = previousDigest;
-    if (epochRollingGasCostSummary != null) result.epochRollingGasCostSummary = epochRollingGasCostSummary;
+    if (epochRollingGasCostSummary != null)
+      result.epochRollingGasCostSummary = epochRollingGasCostSummary;
     if (timestamp != null) result.timestamp = timestamp;
     if (commitments != null) result.commitments.addAll(commitments);
     if (endOfEpochData != null) result.endOfEpochData = endOfEpochData;
-    if (versionSpecificData != null) result.versionSpecificData = versionSpecificData;
+    if (versionSpecificData != null)
+      result.versionSpecificData = versionSpecificData;
     return result;
   }
 
   CheckpointSummary._();
 
-  factory CheckpointSummary.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CheckpointSummary.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CheckpointSummary.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CheckpointSummary.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CheckpointSummary', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CheckpointSummary',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'sequenceNumber', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'totalNetworkTransactions', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        4, _omitFieldNames ? '' : 'sequenceNumber', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'totalNetworkTransactions',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(6, _omitFieldNames ? '' : 'contentDigest')
     ..aOS(7, _omitFieldNames ? '' : 'previousDigest')
-    ..aOM<$1.GasCostSummary>(8, _omitFieldNames ? '' : 'epochRollingGasCostSummary', subBuilder: $1.GasCostSummary.create)
-    ..aOM<$2.Timestamp>(9, _omitFieldNames ? '' : 'timestamp', subBuilder: $2.Timestamp.create)
-    ..pc<CheckpointCommitment>(10, _omitFieldNames ? '' : 'commitments', $pb.PbFieldType.PM, subBuilder: CheckpointCommitment.create)
-    ..aOM<EndOfEpochData>(11, _omitFieldNames ? '' : 'endOfEpochData', subBuilder: EndOfEpochData.create)
-    ..a<$core.List<$core.int>>(12, _omitFieldNames ? '' : 'versionSpecificData', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<$1.GasCostSummary>(
+        8, _omitFieldNames ? '' : 'epochRollingGasCostSummary',
+        subBuilder: $1.GasCostSummary.create)
+    ..aOM<$2.Timestamp>(9, _omitFieldNames ? '' : 'timestamp',
+        subBuilder: $2.Timestamp.create)
+    ..pc<CheckpointCommitment>(
+        10, _omitFieldNames ? '' : 'commitments', $pb.PbFieldType.PM,
+        subBuilder: CheckpointCommitment.create)
+    ..aOM<EndOfEpochData>(11, _omitFieldNames ? '' : 'endOfEpochData',
+        subBuilder: EndOfEpochData.create)
+    ..a<$core.List<$core.int>>(
+        12, _omitFieldNames ? '' : 'versionSpecificData', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CheckpointSummary clone() => CheckpointSummary()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckpointSummary copyWith(void Function(CheckpointSummary) updates) => super.copyWith((message) => updates(message as CheckpointSummary)) as CheckpointSummary;
+  CheckpointSummary copyWith(void Function(CheckpointSummary) updates) =>
+      super.copyWith((message) => updates(message as CheckpointSummary))
+          as CheckpointSummary;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -108,9 +131,11 @@ class CheckpointSummary extends $pb.GeneratedMessage {
   static CheckpointSummary create() => CheckpointSummary._();
   @$core.override
   CheckpointSummary createEmptyInstance() => create();
-  static $pb.PbList<CheckpointSummary> createRepeated() => $pb.PbList<CheckpointSummary>();
+  static $pb.PbList<CheckpointSummary> createRepeated() =>
+      $pb.PbList<CheckpointSummary>();
   @$core.pragma('dart2js:noInline')
-  static CheckpointSummary getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CheckpointSummary>(create);
+  static CheckpointSummary getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckpointSummary>(create);
   static CheckpointSummary? _defaultInstance;
 
   /// This CheckpointSummary serialized as BCS.
@@ -193,7 +218,8 @@ class CheckpointSummary extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $1.GasCostSummary get epochRollingGasCostSummary => $_getN(7);
   @$pb.TagNumber(8)
-  set epochRollingGasCostSummary($1.GasCostSummary value) => $_setField(8, value);
+  set epochRollingGasCostSummary($1.GasCostSummary value) =>
+      $_setField(8, value);
   @$pb.TagNumber(8)
   $core.bool hasEpochRollingGasCostSummary() => $_has(7);
   @$pb.TagNumber(8)
@@ -253,28 +279,45 @@ class EndOfEpochData extends $pb.GeneratedMessage {
     $core.Iterable<CheckpointCommitment>? epochCommitments,
   }) {
     final result = create();
-    if (nextEpochCommittee != null) result.nextEpochCommittee.addAll(nextEpochCommittee);
-    if (nextEpochProtocolVersion != null) result.nextEpochProtocolVersion = nextEpochProtocolVersion;
-    if (epochCommitments != null) result.epochCommitments.addAll(epochCommitments);
+    if (nextEpochCommittee != null)
+      result.nextEpochCommittee.addAll(nextEpochCommittee);
+    if (nextEpochProtocolVersion != null)
+      result.nextEpochProtocolVersion = nextEpochProtocolVersion;
+    if (epochCommitments != null)
+      result.epochCommitments.addAll(epochCommitments);
     return result;
   }
 
   EndOfEpochData._();
 
-  factory EndOfEpochData.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory EndOfEpochData.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory EndOfEpochData.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory EndOfEpochData.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EndOfEpochData', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<$3.ValidatorCommitteeMember>(1, _omitFieldNames ? '' : 'nextEpochCommittee', $pb.PbFieldType.PM, subBuilder: $3.ValidatorCommitteeMember.create)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'nextEpochProtocolVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<CheckpointCommitment>(3, _omitFieldNames ? '' : 'epochCommitments', $pb.PbFieldType.PM, subBuilder: CheckpointCommitment.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'EndOfEpochData',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<$3.ValidatorCommitteeMember>(
+        1, _omitFieldNames ? '' : 'nextEpochCommittee', $pb.PbFieldType.PM,
+        subBuilder: $3.ValidatorCommitteeMember.create)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'nextEpochProtocolVersion',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<CheckpointCommitment>(
+        3, _omitFieldNames ? '' : 'epochCommitments', $pb.PbFieldType.PM,
+        subBuilder: CheckpointCommitment.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   EndOfEpochData clone() => EndOfEpochData()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  EndOfEpochData copyWith(void Function(EndOfEpochData) updates) => super.copyWith((message) => updates(message as EndOfEpochData)) as EndOfEpochData;
+  EndOfEpochData copyWith(void Function(EndOfEpochData) updates) =>
+      super.copyWith((message) => updates(message as EndOfEpochData))
+          as EndOfEpochData;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -283,14 +326,17 @@ class EndOfEpochData extends $pb.GeneratedMessage {
   static EndOfEpochData create() => EndOfEpochData._();
   @$core.override
   EndOfEpochData createEmptyInstance() => create();
-  static $pb.PbList<EndOfEpochData> createRepeated() => $pb.PbList<EndOfEpochData>();
+  static $pb.PbList<EndOfEpochData> createRepeated() =>
+      $pb.PbList<EndOfEpochData>();
   @$core.pragma('dart2js:noInline')
-  static EndOfEpochData getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EndOfEpochData>(create);
+  static EndOfEpochData getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<EndOfEpochData>(create);
   static EndOfEpochData? _defaultInstance;
 
   /// The set of validators that will be in the `ValidatorCommittee` for the next epoch.
   @$pb.TagNumber(1)
-  $pb.PbList<$3.ValidatorCommitteeMember> get nextEpochCommittee => $_getList(0);
+  $pb.PbList<$3.ValidatorCommitteeMember> get nextEpochCommittee =>
+      $_getList(0);
 
   /// The protocol version that is in effect during the next epoch.
   @$pb.TagNumber(2)
@@ -321,19 +367,33 @@ class CheckpointCommitment extends $pb.GeneratedMessage {
 
   CheckpointCommitment._();
 
-  factory CheckpointCommitment.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CheckpointCommitment.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CheckpointCommitment.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CheckpointCommitment.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CheckpointCommitment', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<CheckpointCommitment_CheckpointCommitmentKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: CheckpointCommitment_CheckpointCommitmentKind.CHECKPOINT_COMMITMENT_KIND_UNKNOWN, valueOf: CheckpointCommitment_CheckpointCommitmentKind.valueOf, enumValues: CheckpointCommitment_CheckpointCommitmentKind.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CheckpointCommitment',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<CheckpointCommitment_CheckpointCommitmentKind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: CheckpointCommitment_CheckpointCommitmentKind
+            .CHECKPOINT_COMMITMENT_KIND_UNKNOWN,
+        valueOf: CheckpointCommitment_CheckpointCommitmentKind.valueOf,
+        enumValues: CheckpointCommitment_CheckpointCommitmentKind.values)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckpointCommitment clone() => CheckpointCommitment()..mergeFromMessage(this);
+  CheckpointCommitment clone() =>
+      CheckpointCommitment()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckpointCommitment copyWith(void Function(CheckpointCommitment) updates) => super.copyWith((message) => updates(message as CheckpointCommitment)) as CheckpointCommitment;
+  CheckpointCommitment copyWith(void Function(CheckpointCommitment) updates) =>
+      super.copyWith((message) => updates(message as CheckpointCommitment))
+          as CheckpointCommitment;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -342,15 +402,18 @@ class CheckpointCommitment extends $pb.GeneratedMessage {
   static CheckpointCommitment create() => CheckpointCommitment._();
   @$core.override
   CheckpointCommitment createEmptyInstance() => create();
-  static $pb.PbList<CheckpointCommitment> createRepeated() => $pb.PbList<CheckpointCommitment>();
+  static $pb.PbList<CheckpointCommitment> createRepeated() =>
+      $pb.PbList<CheckpointCommitment>();
   @$core.pragma('dart2js:noInline')
-  static CheckpointCommitment getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CheckpointCommitment>(create);
+  static CheckpointCommitment getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckpointCommitment>(create);
   static CheckpointCommitment? _defaultInstance;
 
   @$pb.TagNumber(1)
   CheckpointCommitment_CheckpointCommitmentKind get kind => $_getN(0);
   @$pb.TagNumber(1)
-  set kind(CheckpointCommitment_CheckpointCommitmentKind value) => $_setField(1, value);
+  set kind(CheckpointCommitment_CheckpointCommitmentKind value) =>
+      $_setField(1, value);
   @$pb.TagNumber(1)
   $core.bool hasKind() => $_has(0);
   @$pb.TagNumber(1)
@@ -366,6 +429,7 @@ class CheckpointCommitment extends $pb.GeneratedMessage {
   void clearDigest() => $_clearField(2);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

@@ -6,18 +6,7 @@ import 'package:sui/bcs/sui_bcs.dart';
 
 typedef PureCreator<T> = T Function(dynamic);
 
-enum PureType {
-  u8,
-  u16,
-  u32,
-  u64,
-  u128,
-  u256,
-  bool,
-  id,
-  string,
-  address
-}
+enum PureType { u8, u16, u32, u64, u128, u256, bool, id, string, address }
 
 class Pure {
   final PureCreator _makePure;
@@ -29,11 +18,13 @@ class Pure {
       return _makePure(schemaFromName(typeOrSerializedValue).serialize(value));
     }
 
-    if (typeOrSerializedValue is Uint8List || typeOrSerializedValue is SerializedBcs) {
+    if (typeOrSerializedValue is Uint8List ||
+        typeOrSerializedValue is SerializedBcs) {
       return _makePure(typeOrSerializedValue);
     }
 
-    throw ArgumentError('pure must be called with either a bcs type name, or a serialized bcs value');
+    throw ArgumentError(
+        'pure must be called with either a bcs type name, or a serialized bcs value');
   }
 
   dynamic u8(int value) => _makePure(SuiBcs.U8.serialize(value));
@@ -58,16 +49,25 @@ class Pure {
 
 BcsType schemaFromName(String name) {
   switch (name) {
-    case 'u8': return SuiBcs.U8;
-    case 'u16': return SuiBcs.U16;
-    case 'u32': return SuiBcs.U32;
-    case 'u64': return SuiBcs.U64;
-    case 'u128': return SuiBcs.U128;
-    case 'u256': return SuiBcs.U256;
-    case 'bool': return SuiBcs.BOOL;
-    case 'string': return SuiBcs.STRING;
+    case 'u8':
+      return SuiBcs.U8;
+    case 'u16':
+      return SuiBcs.U16;
+    case 'u32':
+      return SuiBcs.U32;
+    case 'u64':
+      return SuiBcs.U64;
+    case 'u128':
+      return SuiBcs.U128;
+    case 'u256':
+      return SuiBcs.U256;
+    case 'bool':
+      return SuiBcs.BOOL;
+    case 'string':
+      return SuiBcs.STRING;
     case 'id':
-    case 'address': return SuiBcs.Address;
+    case 'address':
+      return SuiBcs.Address;
   }
 
   final generic = RegExp(r'^(vector|option)<(.+)>$').firstMatch(name);

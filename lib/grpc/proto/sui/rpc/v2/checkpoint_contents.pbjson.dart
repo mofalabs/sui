@@ -18,10 +18,34 @@ import 'dart:typed_data' as $typed_data;
 const CheckpointContents$json = {
   '1': 'CheckpointContents',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'bcs', '17': true},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'bcs',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 5, '9': 2, '10': 'version', '17': true},
-    {'1': 'transactions', '3': 4, '4': 3, '5': 11, '6': '.sui.rpc.v2.CheckpointedTransactionInfo', '10': 'transactions'},
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'transactions',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CheckpointedTransactionInfo',
+      '10': 'transactions'
+    },
   ],
   '8': [
     {'1': '_bcs'},
@@ -42,10 +66,40 @@ final $typed_data.Uint8List checkpointContentsDescriptor = $convert.base64Decode
 const CheckpointedTransactionInfo$json = {
   '1': 'CheckpointedTransactionInfo',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'transaction', '17': true},
-    {'1': 'effects', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'effects', '17': true},
-    {'1': 'signatures', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.UserSignature', '10': 'signatures'},
-    {'1': 'address_aliases_versions', '3': 4, '4': 3, '5': 11, '6': '.sui.rpc.v2.AddressAliasesVersion', '10': 'addressAliasesVersions'},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'transaction',
+      '17': true
+    },
+    {
+      '1': 'effects',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'effects',
+      '17': true
+    },
+    {
+      '1': 'signatures',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.UserSignature',
+      '10': 'signatures'
+    },
+    {
+      '1': 'address_aliases_versions',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.AddressAliasesVersion',
+      '10': 'addressAliasesVersions'
+    },
   ],
   '8': [
     {'1': '_transaction'},
@@ -66,7 +120,15 @@ final $typed_data.Uint8List checkpointedTransactionInfoDescriptor = $convert.bas
 const AddressAliasesVersion$json = {
   '1': 'AddressAliasesVersion',
   '2': [
-    {'1': 'version', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'version', '17': true},
+    {
+      '1': 'version',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'version',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_version'},
@@ -77,4 +139,3 @@ const AddressAliasesVersion$json = {
 final $typed_data.Uint8List addressAliasesVersionDescriptor = $convert.base64Decode(
     'ChVBZGRyZXNzQWxpYXNlc1ZlcnNpb24SHQoHdmVyc2lvbhgBIAEoBEgAUgd2ZXJzaW9uiAEBQg'
     'oKCF92ZXJzaW9u');
-

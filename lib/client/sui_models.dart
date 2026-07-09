@@ -23,8 +23,7 @@ class SuiOwner {
         Owner_OwnerKind.OBJECT =>
           SuiOwner(kind: SuiOwnerKind.object, address: o.address),
         Owner_OwnerKind.SHARED => SuiOwner(
-            kind: SuiOwnerKind.shared,
-            initialSharedVersion: o.version.toInt()),
+            kind: SuiOwnerKind.shared, initialSharedVersion: o.version.toInt()),
         Owner_OwnerKind.IMMUTABLE => SuiOwner(kind: SuiOwnerKind.immutable),
         _ => SuiOwner(kind: SuiOwnerKind.unknown),
       };

@@ -38,21 +38,34 @@ class VerifySignatureRequest extends $pb.GeneratedMessage {
 
   VerifySignatureRequest._();
 
-  factory VerifySignatureRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory VerifySignatureRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory VerifySignatureRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory VerifySignatureRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifySignatureRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'message', subBuilder: $0.Bcs.create)
-    ..aOM<$1.UserSignature>(2, _omitFieldNames ? '' : 'signature', subBuilder: $1.UserSignature.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'VerifySignatureRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'message',
+        subBuilder: $0.Bcs.create)
+    ..aOM<$1.UserSignature>(2, _omitFieldNames ? '' : 'signature',
+        subBuilder: $1.UserSignature.create)
     ..aOS(3, _omitFieldNames ? '' : 'address')
-    ..pc<$2.ActiveJwk>(4, _omitFieldNames ? '' : 'jwks', $pb.PbFieldType.PM, subBuilder: $2.ActiveJwk.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<$2.ActiveJwk>(4, _omitFieldNames ? '' : 'jwks', $pb.PbFieldType.PM,
+        subBuilder: $2.ActiveJwk.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VerifySignatureRequest clone() => VerifySignatureRequest()..mergeFromMessage(this);
+  VerifySignatureRequest clone() =>
+      VerifySignatureRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VerifySignatureRequest copyWith(void Function(VerifySignatureRequest) updates) => super.copyWith((message) => updates(message as VerifySignatureRequest)) as VerifySignatureRequest;
+  VerifySignatureRequest copyWith(
+          void Function(VerifySignatureRequest) updates) =>
+      super.copyWith((message) => updates(message as VerifySignatureRequest))
+          as VerifySignatureRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -61,9 +74,11 @@ class VerifySignatureRequest extends $pb.GeneratedMessage {
   static VerifySignatureRequest create() => VerifySignatureRequest._();
   @$core.override
   VerifySignatureRequest createEmptyInstance() => create();
-  static $pb.PbList<VerifySignatureRequest> createRepeated() => $pb.PbList<VerifySignatureRequest>();
+  static $pb.PbList<VerifySignatureRequest> createRepeated() =>
+      $pb.PbList<VerifySignatureRequest>();
   @$core.pragma('dart2js:noInline')
-  static VerifySignatureRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<VerifySignatureRequest>(create);
+  static VerifySignatureRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<VerifySignatureRequest>(create);
   static VerifySignatureRequest? _defaultInstance;
 
   /// The message to verify against.
@@ -127,19 +142,29 @@ class VerifySignatureResponse extends $pb.GeneratedMessage {
 
   VerifySignatureResponse._();
 
-  factory VerifySignatureResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory VerifySignatureResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory VerifySignatureResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory VerifySignatureResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VerifySignatureResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'VerifySignatureResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'isValid')
     ..aOS(2, _omitFieldNames ? '' : 'reason')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VerifySignatureResponse clone() => VerifySignatureResponse()..mergeFromMessage(this);
+  VerifySignatureResponse clone() =>
+      VerifySignatureResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VerifySignatureResponse copyWith(void Function(VerifySignatureResponse) updates) => super.copyWith((message) => updates(message as VerifySignatureResponse)) as VerifySignatureResponse;
+  VerifySignatureResponse copyWith(
+          void Function(VerifySignatureResponse) updates) =>
+      super.copyWith((message) => updates(message as VerifySignatureResponse))
+          as VerifySignatureResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -148,9 +173,11 @@ class VerifySignatureResponse extends $pb.GeneratedMessage {
   static VerifySignatureResponse create() => VerifySignatureResponse._();
   @$core.override
   VerifySignatureResponse createEmptyInstance() => create();
-  static $pb.PbList<VerifySignatureResponse> createRepeated() => $pb.PbList<VerifySignatureResponse>();
+  static $pb.PbList<VerifySignatureResponse> createRepeated() =>
+      $pb.PbList<VerifySignatureResponse>();
   @$core.pragma('dart2js:noInline')
-  static VerifySignatureResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<VerifySignatureResponse>(create);
+  static VerifySignatureResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<VerifySignatureResponse>(create);
   static VerifySignatureResponse? _defaultInstance;
 
   /// Indicates if the provided signature was valid given the requested parameters.
@@ -180,11 +207,17 @@ class SignatureVerificationServiceApi {
   SignatureVerificationServiceApi(this._client);
 
   /// Perform signature verification of a UserSignature against the provided message.
-  $async.Future<VerifySignatureResponse> verifySignature($pb.ClientContext? ctx, VerifySignatureRequest request) =>
-    _client.invoke<VerifySignatureResponse>(ctx, 'SignatureVerificationService', 'VerifySignature', request, VerifySignatureResponse())
-  ;
+  $async.Future<VerifySignatureResponse> verifySignature(
+          $pb.ClientContext? ctx, VerifySignatureRequest request) =>
+      _client.invoke<VerifySignatureResponse>(
+          ctx,
+          'SignatureVerificationService',
+          'VerifySignature',
+          request,
+          VerifySignatureResponse());
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

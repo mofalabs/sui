@@ -42,7 +42,16 @@ import 'transaction.pbjson.dart' as $10;
 const SubscribeCheckpointsRequest$json = {
   '1': 'SubscribeCheckpointsRequest',
   '2': [
-    {'1': 'read_mask', '3': 1, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 0, '10': 'readMask', '17': true},
+    {
+      '1': 'read_mask',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 0,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_read_mask'},
@@ -50,16 +59,26 @@ const SubscribeCheckpointsRequest$json = {
 };
 
 /// Descriptor for `SubscribeCheckpointsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List subscribeCheckpointsRequestDescriptor = $convert.base64Decode(
-    'ChtTdWJzY3JpYmVDaGVja3BvaW50c1JlcXVlc3QSPAoJcmVhZF9tYXNrGAEgASgLMhouZ29vZ2'
-    'xlLnByb3RvYnVmLkZpZWxkTWFza0gAUghyZWFkTWFza4gBAUIMCgpfcmVhZF9tYXNr');
+final $typed_data.Uint8List subscribeCheckpointsRequestDescriptor =
+    $convert.base64Decode(
+        'ChtTdWJzY3JpYmVDaGVja3BvaW50c1JlcXVlc3QSPAoJcmVhZF9tYXNrGAEgASgLMhouZ29vZ2'
+        'xlLnByb3RvYnVmLkZpZWxkTWFza0gAUghyZWFkTWFza4gBAUIMCgpfcmVhZF9tYXNr');
 
 @$core.Deprecated('Use subscribeCheckpointsResponseDescriptor instead')
 const SubscribeCheckpointsResponse$json = {
   '1': 'SubscribeCheckpointsResponse',
   '2': [
     {'1': 'cursor', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'cursor', '17': true},
-    {'1': 'checkpoint', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.Checkpoint', '9': 1, '10': 'checkpoint', '17': true},
+    {
+      '1': 'checkpoint',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Checkpoint',
+      '9': 1,
+      '10': 'checkpoint',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_cursor'},
@@ -68,20 +87,27 @@ const SubscribeCheckpointsResponse$json = {
 };
 
 /// Descriptor for `SubscribeCheckpointsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List subscribeCheckpointsResponseDescriptor = $convert.base64Decode(
-    'ChxTdWJzY3JpYmVDaGVja3BvaW50c1Jlc3BvbnNlEhsKBmN1cnNvchgBIAEoBEgAUgZjdXJzb3'
-    'KIAQESOwoKY2hlY2twb2ludBgCIAEoCzIWLnN1aS5ycGMudjIuQ2hlY2twb2ludEgBUgpjaGVj'
-    'a3BvaW50iAEBQgkKB19jdXJzb3JCDQoLX2NoZWNrcG9pbnQ=');
+final $typed_data.Uint8List subscribeCheckpointsResponseDescriptor =
+    $convert.base64Decode(
+        'ChxTdWJzY3JpYmVDaGVja3BvaW50c1Jlc3BvbnNlEhsKBmN1cnNvchgBIAEoBEgAUgZjdXJzb3'
+        'KIAQESOwoKY2hlY2twb2ludBgCIAEoCzIWLnN1aS5ycGMudjIuQ2hlY2twb2ludEgBUgpjaGVj'
+        'a3BvaW50iAEBQgkKB19jdXJzb3JCDQoLX2NoZWNrcG9pbnQ=');
 
 const $core.Map<$core.String, $core.dynamic> SubscriptionServiceBase$json = {
   '1': 'SubscriptionService',
   '2': [
-    {'1': 'SubscribeCheckpoints', '2': '.sui.rpc.v2.SubscribeCheckpointsRequest', '3': '.sui.rpc.v2.SubscribeCheckpointsResponse', '6': true},
+    {
+      '1': 'SubscribeCheckpoints',
+      '2': '.sui.rpc.v2.SubscribeCheckpointsRequest',
+      '3': '.sui.rpc.v2.SubscribeCheckpointsResponse',
+      '6': true
+    },
   ],
 };
 
 @$core.Deprecated('Use subscriptionServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> SubscriptionServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    SubscriptionServiceBase$messageJson = {
   '.sui.rpc.v2.SubscribeCheckpointsRequest': SubscribeCheckpointsRequest$json,
   '.google.protobuf.FieldMask': $0.FieldMask$json,
   '.sui.rpc.v2.SubscribeCheckpointsResponse': SubscribeCheckpointsResponse$json,
@@ -93,12 +119,15 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Subscripti
   '.sui.rpc.v2.CheckpointCommitment': $2.CheckpointCommitment$json,
   '.sui.rpc.v2.EndOfEpochData': $2.EndOfEpochData$json,
   '.sui.rpc.v2.ValidatorCommitteeMember': $6.ValidatorCommitteeMember$json,
-  '.sui.rpc.v2.ValidatorAggregatedSignature': $6.ValidatorAggregatedSignature$json,
+  '.sui.rpc.v2.ValidatorAggregatedSignature':
+      $6.ValidatorAggregatedSignature$json,
   '.sui.rpc.v2.CheckpointContents': $7.CheckpointContents$json,
-  '.sui.rpc.v2.CheckpointedTransactionInfo': $7.CheckpointedTransactionInfo$json,
+  '.sui.rpc.v2.CheckpointedTransactionInfo':
+      $7.CheckpointedTransactionInfo$json,
   '.sui.rpc.v2.UserSignature': $6.UserSignature$json,
   '.sui.rpc.v2.SimpleSignature': $6.SimpleSignature$json,
-  '.sui.rpc.v2.MultisigAggregatedSignature': $6.MultisigAggregatedSignature$json,
+  '.sui.rpc.v2.MultisigAggregatedSignature':
+      $6.MultisigAggregatedSignature$json,
   '.sui.rpc.v2.MultisigMemberSignature': $6.MultisigMemberSignature$json,
   '.sui.rpc.v2.ZkLoginAuthenticator': $6.ZkLoginAuthenticator$json,
   '.sui.rpc.v2.ZkLoginInputs': $6.ZkLoginInputs$json,
@@ -150,7 +179,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Subscripti
   '.sui.rpc.v2.Linkage': $16.Linkage$json,
   '.sui.rpc.v2.Display': $14.Display$json,
   '.sui.rpc.v2.ConsensusCommitPrologue': $10.ConsensusCommitPrologue$json,
-  '.sui.rpc.v2.ConsensusDeterminedVersionAssignments': $10.ConsensusDeterminedVersionAssignments$json,
+  '.sui.rpc.v2.ConsensusDeterminedVersionAssignments':
+      $10.ConsensusDeterminedVersionAssignments$json,
   '.sui.rpc.v2.CanceledTransaction': $10.CanceledTransaction$json,
   '.sui.rpc.v2.VersionAssignment': $10.VersionAssignment$json,
   '.sui.rpc.v2.AuthenticatorStateUpdate': $10.AuthenticatorStateUpdate$json,
@@ -161,7 +191,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> Subscripti
   '.sui.rpc.v2.AuthenticatorStateExpire': $10.AuthenticatorStateExpire$json,
   '.sui.rpc.v2.ExecutionTimeObservations': $10.ExecutionTimeObservations$json,
   '.sui.rpc.v2.ExecutionTimeObservation': $10.ExecutionTimeObservation$json,
-  '.sui.rpc.v2.ValidatorExecutionTimeObservation': $10.ValidatorExecutionTimeObservation$json,
+  '.sui.rpc.v2.ValidatorExecutionTimeObservation':
+      $10.ValidatorExecutionTimeObservation$json,
   '.google.protobuf.Duration': $17.Duration$json,
   '.sui.rpc.v2.RandomnessStateUpdate': $10.RandomnessStateUpdate$json,
   '.sui.rpc.v2.GasPayment': $10.GasPayment$json,
@@ -195,4 +226,3 @@ final $typed_data.Uint8List subscriptionServiceDescriptor = $convert.base64Decod
     'ChNTdWJzY3JpcHRpb25TZXJ2aWNlEmsKFFN1YnNjcmliZUNoZWNrcG9pbnRzEicuc3VpLnJwYy'
     '52Mi5TdWJzY3JpYmVDaGVja3BvaW50c1JlcXVlc3QaKC5zdWkucnBjLnYyLlN1YnNjcmliZUNo'
     'ZWNrcG9pbnRzUmVzcG9uc2UwAQ==');
-

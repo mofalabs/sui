@@ -32,19 +32,27 @@ class Bcs extends $pb.GeneratedMessage {
 
   Bcs._();
 
-  factory Bcs.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Bcs.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Bcs.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Bcs.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Bcs', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Bcs',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'value', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'value', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Bcs clone() => Bcs()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Bcs copyWith(void Function(Bcs) updates) => super.copyWith((message) => updates(message as Bcs)) as Bcs;
+  Bcs copyWith(void Function(Bcs) updates) =>
+      super.copyWith((message) => updates(message as Bcs)) as Bcs;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -55,7 +63,8 @@ class Bcs extends $pb.GeneratedMessage {
   Bcs createEmptyInstance() => create();
   static $pb.PbList<Bcs> createRepeated() => $pb.PbList<Bcs>();
   @$core.pragma('dart2js:noInline')
-  static Bcs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Bcs>(create);
+  static Bcs getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Bcs>(create);
   static Bcs? _defaultInstance;
 
   /// Name that identifies the type of the serialized value.
@@ -79,6 +88,7 @@ class Bcs extends $pb.GeneratedMessage {
   void clearValue() => $_clearField(2);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

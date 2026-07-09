@@ -35,7 +35,16 @@ final $typed_data.Uint8List lookupNameRequestDescriptor = $convert.base64Decode(
 const LookupNameResponse$json = {
   '1': 'LookupNameResponse',
   '2': [
-    {'1': 'record', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.NameRecord', '9': 0, '10': 'record', '17': true},
+    {
+      '1': 'record',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.NameRecord',
+      '9': 0,
+      '10': 'record',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_record'},
@@ -51,7 +60,15 @@ final $typed_data.Uint8List lookupNameResponseDescriptor = $convert.base64Decode
 const ReverseLookupNameRequest$json = {
   '1': 'ReverseLookupNameRequest',
   '2': [
-    {'1': 'address', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'address', '17': true},
+    {
+      '1': 'address',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'address',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_address'},
@@ -59,15 +76,25 @@ const ReverseLookupNameRequest$json = {
 };
 
 /// Descriptor for `ReverseLookupNameRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List reverseLookupNameRequestDescriptor = $convert.base64Decode(
-    'ChhSZXZlcnNlTG9va3VwTmFtZVJlcXVlc3QSHQoHYWRkcmVzcxgBIAEoCUgAUgdhZGRyZXNziA'
-    'EBQgoKCF9hZGRyZXNz');
+final $typed_data.Uint8List reverseLookupNameRequestDescriptor =
+    $convert.base64Decode(
+        'ChhSZXZlcnNlTG9va3VwTmFtZVJlcXVlc3QSHQoHYWRkcmVzcxgBIAEoCUgAUgdhZGRyZXNziA'
+        'EBQgoKCF9hZGRyZXNz');
 
 @$core.Deprecated('Use reverseLookupNameResponseDescriptor instead')
 const ReverseLookupNameResponse$json = {
   '1': 'ReverseLookupNameResponse',
   '2': [
-    {'1': 'record', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.NameRecord', '9': 0, '10': 'record', '17': true},
+    {
+      '1': 'record',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.NameRecord',
+      '9': 0,
+      '10': 'record',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_record'},
@@ -75,9 +102,10 @@ const ReverseLookupNameResponse$json = {
 };
 
 /// Descriptor for `ReverseLookupNameResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List reverseLookupNameResponseDescriptor = $convert.base64Decode(
-    'ChlSZXZlcnNlTG9va3VwTmFtZVJlc3BvbnNlEjMKBnJlY29yZBgBIAEoCzIWLnN1aS5ycGMudj'
-    'IuTmFtZVJlY29yZEgAUgZyZWNvcmSIAQFCCQoHX3JlY29yZA==');
+final $typed_data.Uint8List reverseLookupNameResponseDescriptor =
+    $convert.base64Decode(
+        'ChlSZXZlcnNlTG9va3VwTmFtZVJlc3BvbnNlEjMKBnJlY29yZBgBIAEoCzIWLnN1aS5ycGMudj'
+        'IuTmFtZVJlY29yZEgAUgZyZWNvcmSIAQFCCQoHX3JlY29yZA==');
 
 @$core.Deprecated('Use nameRecordDescriptor instead')
 const NameRecord$json = {
@@ -85,10 +113,42 @@ const NameRecord$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'id', '17': true},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'name', '17': true},
-    {'1': 'registration_nft_id', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'registrationNftId', '17': true},
-    {'1': 'expiration_timestamp', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 3, '10': 'expirationTimestamp', '17': true},
-    {'1': 'target_address', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'targetAddress', '17': true},
-    {'1': 'data', '3': 6, '4': 3, '5': 11, '6': '.sui.rpc.v2.NameRecord.DataEntry', '10': 'data'},
+    {
+      '1': 'registration_nft_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'registrationNftId',
+      '17': true
+    },
+    {
+      '1': 'expiration_timestamp',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 3,
+      '10': 'expirationTimestamp',
+      '17': true
+    },
+    {
+      '1': 'target_address',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'targetAddress',
+      '17': true
+    },
+    {
+      '1': 'data',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.NameRecord.DataEntry',
+      '10': 'data'
+    },
   ],
   '3': [NameRecord_DataEntry$json],
   '8': [
@@ -124,13 +184,22 @@ final $typed_data.Uint8List nameRecordDescriptor = $convert.base64Decode(
 const $core.Map<$core.String, $core.dynamic> NameServiceBase$json = {
   '1': 'NameService',
   '2': [
-    {'1': 'LookupName', '2': '.sui.rpc.v2.LookupNameRequest', '3': '.sui.rpc.v2.LookupNameResponse'},
-    {'1': 'ReverseLookupName', '2': '.sui.rpc.v2.ReverseLookupNameRequest', '3': '.sui.rpc.v2.ReverseLookupNameResponse'},
+    {
+      '1': 'LookupName',
+      '2': '.sui.rpc.v2.LookupNameRequest',
+      '3': '.sui.rpc.v2.LookupNameResponse'
+    },
+    {
+      '1': 'ReverseLookupName',
+      '2': '.sui.rpc.v2.ReverseLookupNameRequest',
+      '3': '.sui.rpc.v2.ReverseLookupNameResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use nameServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> NameServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    NameServiceBase$messageJson = {
   '.sui.rpc.v2.LookupNameRequest': LookupNameRequest$json,
   '.sui.rpc.v2.LookupNameResponse': LookupNameResponse$json,
   '.sui.rpc.v2.NameRecord': NameRecord$json,
@@ -146,4 +215,3 @@ final $typed_data.Uint8List nameServiceDescriptor = $convert.base64Decode(
     'VzdBoeLnN1aS5ycGMudjIuTG9va3VwTmFtZVJlc3BvbnNlEmAKEVJldmVyc2VMb29rdXBOYW1l'
     'EiQuc3VpLnJwYy52Mi5SZXZlcnNlTG9va3VwTmFtZVJlcXVlc3QaJS5zdWkucnBjLnYyLlJldm'
     'Vyc2VMb29rdXBOYW1lUmVzcG9uc2U=');
-

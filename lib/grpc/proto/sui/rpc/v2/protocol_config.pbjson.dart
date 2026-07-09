@@ -18,11 +18,36 @@ import 'dart:typed_data' as $typed_data;
 const ProtocolConfig$json = {
   '1': 'ProtocolConfig',
   '2': [
-    {'1': 'protocol_version', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'protocolVersion', '17': true},
-    {'1': 'feature_flags', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.ProtocolConfig.FeatureFlagsEntry', '10': 'featureFlags'},
-    {'1': 'attributes', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.ProtocolConfig.AttributesEntry', '10': 'attributes'},
+    {
+      '1': 'protocol_version',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'protocolVersion',
+      '17': true
+    },
+    {
+      '1': 'feature_flags',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ProtocolConfig.FeatureFlagsEntry',
+      '10': 'featureFlags'
+    },
+    {
+      '1': 'attributes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ProtocolConfig.AttributesEntry',
+      '10': 'attributes'
+    },
   ],
-  '3': [ProtocolConfig_FeatureFlagsEntry$json, ProtocolConfig_AttributesEntry$json],
+  '3': [
+    ProtocolConfig_FeatureFlagsEntry$json,
+    ProtocolConfig_AttributesEntry$json
+  ],
   '8': [
     {'1': '_protocol_version'},
   ],
@@ -57,4 +82,3 @@ final $typed_data.Uint8List protocolConfigDescriptor = $convert.base64Decode(
     'cxo/ChFGZWF0dXJlRmxhZ3NFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCF'
     'IFdmFsdWU6AjgBGj0KD0F0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1'
     'ZRgCIAEoCVIFdmFsdWU6AjgBQhMKEV9wcm90b2NvbF92ZXJzaW9u');
-

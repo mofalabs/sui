@@ -116,7 +116,9 @@ class GrpcWebTransport {
       }
     }
 
-    if (resp.statusCode != null && resp.statusCode! >= 400 && (resp.data == null || resp.data!.isEmpty)) {
+    if (resp.statusCode != null &&
+        resp.statusCode! >= 400 &&
+        (resp.data == null || resp.data!.isEmpty)) {
       throw GrpcWebException(
         GrpcStatus.unknown,
         'HTTP ${resp.statusCode} with empty body',
@@ -227,7 +229,9 @@ class GrpcWebTransport {
       if (idx <= 0) continue;
       final key = line.substring(0, idx).trim().toLowerCase();
       final value = line.substring(idx + 1).trim();
-      if (key == 'grpc-status') status = int.tryParse(value) ?? GrpcStatus.unknown;
+      if (key == 'grpc-status') {
+        status = int.tryParse(value) ?? GrpcStatus.unknown;
+      }
       if (key == 'grpc-message') message = Uri.decodeFull(value);
     }
     if (status != GrpcStatus.ok) {

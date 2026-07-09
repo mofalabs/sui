@@ -15,27 +15,37 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Argument_ArgumentKind extends $pb.ProtobufEnum {
-  static const Argument_ArgumentKind ARGUMENT_KIND_UNKNOWN = Argument_ArgumentKind._(0, _omitEnumNames ? '' : 'ARGUMENT_KIND_UNKNOWN');
+  static const Argument_ArgumentKind ARGUMENT_KIND_UNKNOWN =
+      Argument_ArgumentKind._(0, _omitEnumNames ? '' : 'ARGUMENT_KIND_UNKNOWN');
+
   /// The gas coin.
-  static const Argument_ArgumentKind GAS = Argument_ArgumentKind._(1, _omitEnumNames ? '' : 'GAS');
+  static const Argument_ArgumentKind GAS =
+      Argument_ArgumentKind._(1, _omitEnumNames ? '' : 'GAS');
+
   /// One of the input objects or primitive values (from
   /// `ProgrammableTransaction` inputs).
-  static const Argument_ArgumentKind INPUT = Argument_ArgumentKind._(2, _omitEnumNames ? '' : 'INPUT');
-  /// The result of another command (from `ProgrammableTransaction` commands).
-  static const Argument_ArgumentKind RESULT = Argument_ArgumentKind._(3, _omitEnumNames ? '' : 'RESULT');
+  static const Argument_ArgumentKind INPUT =
+      Argument_ArgumentKind._(2, _omitEnumNames ? '' : 'INPUT');
 
-  static const $core.List<Argument_ArgumentKind> values = <Argument_ArgumentKind> [
+  /// The result of another command (from `ProgrammableTransaction` commands).
+  static const Argument_ArgumentKind RESULT =
+      Argument_ArgumentKind._(3, _omitEnumNames ? '' : 'RESULT');
+
+  static const $core.List<Argument_ArgumentKind> values =
+      <Argument_ArgumentKind>[
     ARGUMENT_KIND_UNKNOWN,
     GAS,
     INPUT,
     RESULT,
   ];
 
-  static final $core.List<Argument_ArgumentKind?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 3);
-  static Argument_ArgumentKind? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<Argument_ArgumentKind?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static Argument_ArgumentKind? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const Argument_ArgumentKind._(super.value, super.name);
 }
 
-
-const $core.bool _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');

@@ -75,7 +75,7 @@ class Ed25519PublicKey with PublicKey {
 
   @override
   int flag() => SIGNATURE_SCHEME_TO_FLAG.Ed25519;
-  
+
   @override
   bool verify(Uint8List data, Uint8List signature) {
     if (signature.length != 64) {

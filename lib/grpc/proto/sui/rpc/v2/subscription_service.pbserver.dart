@@ -21,23 +21,31 @@ import 'subscription_service.pbjson.dart';
 export 'subscription_service.pb.dart';
 
 abstract class SubscriptionServiceBase extends $pb.GeneratedService {
-  $async.Future<$23.SubscribeCheckpointsResponse> subscribeCheckpoints($pb.ServerContext ctx, $23.SubscribeCheckpointsRequest request);
+  $async.Future<$23.SubscribeCheckpointsResponse> subscribeCheckpoints(
+      $pb.ServerContext ctx, $23.SubscribeCheckpointsRequest request);
 
   $pb.GeneratedMessage createRequest($core.String methodName) {
     switch (methodName) {
-      case 'SubscribeCheckpoints': return $23.SubscribeCheckpointsRequest();
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'SubscribeCheckpoints':
+        return $23.SubscribeCheckpointsRequest();
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String methodName, $pb.GeneratedMessage request) {
+  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx,
+      $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
-      case 'SubscribeCheckpoints': return subscribeCheckpoints(ctx, request as $23.SubscribeCheckpointsRequest);
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'SubscribeCheckpoints':
+        return subscribeCheckpoints(
+            ctx, request as $23.SubscribeCheckpointsRequest);
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $core.Map<$core.String, $core.dynamic> get $json => SubscriptionServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => SubscriptionServiceBase$messageJson;
+  $core.Map<$core.String, $core.dynamic> get $json =>
+      SubscriptionServiceBase$json;
+  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+      get $messageJson => SubscriptionServiceBase$messageJson;
 }
-

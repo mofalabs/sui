@@ -26,8 +26,8 @@ void main() {
     test('validateMnemonic accepts valid, rejects invalid', () {
       expect(bip39.validateMnemonic(mnemonic), isTrue);
       expect(bip39.validateMnemonic('$mnemonic wrong'), isFalse);
-      expect(bip39.validateMnemonic('not a real mnemonic phrase at all'),
-          isFalse);
+      expect(
+          bip39.validateMnemonic('not a real mnemonic phrase at all'), isFalse);
     });
 
     test('generateMnemonic produces a valid 12-word phrase', () {

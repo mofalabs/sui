@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -8,14 +7,13 @@ import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 
 void main() {
   const VALID_SECRET_KEY =
-    'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIg==';
+      'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIg==';
   const INVALID_SECRET_KEY =
-    'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIG==';
+      'mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIG==';
   const TEST_MNEMONIC =
-    'result crisp session latin must fruit genuine question prevent start coconut brave speak student dismiss';
+      'result crisp session latin must fruit genuine question prevent start coconut brave speak student dismiss';
 
   group('ed25519-keypair', () {
-
     test('keypair', () {
       final keypair = Ed25519Keypair();
       expect(keypair.publicKeyBytes().length == 32, true);
@@ -35,10 +33,13 @@ void main() {
       }, throwsException);
     });
 
-    test('creating keypair from invalid secret key succeeds if validation is skipped', () {
+    test(
+        'creating keypair from invalid secret key succeeds if validation is skipped',
+        () {
       expect(() {
         Uint8List secretKey = base64Decode(INVALID_SECRET_KEY);
-        final keypair = Ed25519Keypair.fromSecretKey(secretKey, skipValidation: true);
+        final keypair =
+            Ed25519Keypair.fromSecretKey(secretKey, skipValidation: true);
         final publicKey = base64Encode(keypair.publicKeyBytes());
         return publicKey == 'Gy9JCW4+Xb0Pz6nAwM2S2as7IVRLNNXdSmXZi4eLmSA=';
       }, throwsException);
@@ -55,7 +56,8 @@ void main() {
       final keypair = Ed25519Keypair();
       final signData = Uint8List.fromList(utf8.encode('hello world'));
       final signature = keypair.signData(signData);
-      final isValid = ed25519.verify(keypair.keyPair().publicKey, signData, signature);
+      final isValid =
+          ed25519.verify(keypair.keyPair().publicKey, signData, signature);
       expect(isValid, true);
     });
 
@@ -63,7 +65,10 @@ void main() {
       final keypair = Ed25519Keypair.fromMnemonics(TEST_MNEMONIC);
       final publicKey = base64Encode(keypair.publicKeyBytes());
       expect(publicKey == 'aFstb5h4TddjJJryHJL1iMob6AxAqYxVv3yRt05aweI=', true);
-      expect(keypair.getPublicKey().toSuiAddress() == '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973', true);
+      expect(
+          keypair.getPublicKey().toSuiAddress() ==
+              '0x936accb491f0facaac668baaedcf4d0cfc6da1120b66f77fa6a43af718669973',
+          true);
     });
 
     test('incorrect coin type node for ed25519 derivation path', () {
@@ -90,9 +95,12 @@ void main() {
 
       final signatureWithBytes = (keypair.signPersonalMessage(message));
 
-      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
-      expect(keypair.verifyPersonalMessage(message, signatureWithBytes.signature), true);
+      expect(
+          keypair.verifyPersonalMessage(message, signatureWithBytes.signature),
+          true);
+      expect(
+          keypair.verifyPersonalMessage(message, signatureWithBytes.signature),
+          true);
     });
-
   });
 }

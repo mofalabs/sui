@@ -38,7 +38,9 @@ Dio _dioWith(_MockAdapter adapter) => Dio()..httpClientAdapter = adapter;
 void main() {
   test('getChainIdentifier parses data', () async {
     final adapter = _MockAdapter((_) => {
-          'data': {'chainIdentifier': '4btiuiMPvEENsttpZC7CZ53DruC3MAgfznDbASZ7DR6S'}
+          'data': {
+            'chainIdentifier': '4btiuiMPvEENsttpZC7CZ53DruC3MAgfznDbASZ7DR6S'
+          }
         });
     final client =
         SuiGraphQLClient(endpoint: 'https://x/graphql', dio: _dioWith(adapter));

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -25,9 +24,10 @@ class Secp256k1Keypair with Keypair {
         throw ArgumentError('Invalid private key.');
       }
       _keypair = keypair;
-    } else { 
-     Uint8List secretKey = secp256k1.generatePrivateKeyBytes();
-     Uint8List publicKey = secp256k1.getPublicKeyFromPrivateKeyBytes(secretKey);
+    } else {
+      Uint8List secretKey = secp256k1.generatePrivateKeyBytes();
+      Uint8List publicKey =
+          secp256k1.getPublicKeyFromPrivateKeyBytes(secretKey);
       _keypair = Secp256KeypairData(publicKey, secretKey);
     }
   }
@@ -45,11 +45,10 @@ class Secp256k1Keypair with Keypair {
   /// Create a keypair from a raw secret key byte array.
   ///
   /// Throw error if the provided secret key is invalid and validation is not skipped.
-  static Secp256k1Keypair fromSecretKey(
-    Uint8List secretKey,
-    { bool? skipValidation }
-  ) {
-    Uint8List publicKey = secp256k1.getPublicKeyFromPrivateKeyBytes(secretKey, false);
+  static Secp256k1Keypair fromSecretKey(Uint8List secretKey,
+      {bool? skipValidation}) {
+    Uint8List publicKey =
+        secp256k1.getPublicKeyFromPrivateKeyBytes(secretKey, false);
     if (skipValidation == null || !skipValidation) {
       final signData = utf8.encode('sui validation');
       final msgHash = sha256(signData);
@@ -80,7 +79,8 @@ class Secp256k1Keypair with Keypair {
   }
 
   Uint8List publicKeyBytes([bool isCompressed = true]) {
-    return secp256k1.getPublicKeyFromPrivateKeyBytes(_keypair.secretKey, isCompressed);
+    return secp256k1.getPublicKeyFromPrivateKeyBytes(
+        _keypair.secretKey, isCompressed);
   }
 
   @override
@@ -111,11 +111,13 @@ class Secp256k1Keypair with Keypair {
   @override
   bool verify(Uint8List data, Uint8List signature, Uint8List publicKey) {
     final msgHash = sha256(data);
-    return secp256k1.verifySignature(msgHash, SignatureData.fromBytes(signature), publicKey);
+    return secp256k1.verifySignature(
+        msgHash, SignatureData.fromBytes(signature), publicKey);
   }
-  
+
   @override
-  bool verifySerialized(Uint8List message, String signature, Uint8List publicKey) {
+  bool verifySerialized(
+      Uint8List message, String signature, Uint8List publicKey) {
     final parsed = parseSerializedSignature(signature);
     if (parsed.signatureScheme != SignatureScheme.Secp256k1) {
       throw ArgumentError('Invalid signature scheme');

@@ -33,4 +33,3 @@ final $typed_data.Uint8List signatureSchemeDescriptor = $convert.base64Decode(
     'Cg9TaWduYXR1cmVTY2hlbWUSCwoHRUQyNTUxORAAEg0KCVNFQ1AyNTZLMRABEg0KCVNFQ1AyNT'
     'ZSMRACEgwKCE1VTFRJU0lHEAMSDAoIQkxTMTIzODEQBBILCgdaS0xPR0lOEAUSCwoHUEFTU0tF'
     'WRAG');
-

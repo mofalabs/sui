@@ -1,4 +1,3 @@
-
 class RPCErrorRequest {
   String method;
   dynamic args;

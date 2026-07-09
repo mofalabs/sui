@@ -31,18 +31,26 @@ class GetPackageRequest extends $pb.GeneratedMessage {
 
   GetPackageRequest._();
 
-  factory GetPackageRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GetPackageRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GetPackageRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetPackageRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetPackageRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetPackageRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPackageRequest clone() => GetPackageRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPackageRequest copyWith(void Function(GetPackageRequest) updates) => super.copyWith((message) => updates(message as GetPackageRequest)) as GetPackageRequest;
+  GetPackageRequest copyWith(void Function(GetPackageRequest) updates) =>
+      super.copyWith((message) => updates(message as GetPackageRequest))
+          as GetPackageRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -51,9 +59,11 @@ class GetPackageRequest extends $pb.GeneratedMessage {
   static GetPackageRequest create() => GetPackageRequest._();
   @$core.override
   GetPackageRequest createEmptyInstance() => create();
-  static $pb.PbList<GetPackageRequest> createRepeated() => $pb.PbList<GetPackageRequest>();
+  static $pb.PbList<GetPackageRequest> createRepeated() =>
+      $pb.PbList<GetPackageRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetPackageRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPackageRequest>(create);
+  static GetPackageRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetPackageRequest>(create);
   static GetPackageRequest? _defaultInstance;
 
   /// Required. The `storage_id` of the requested package.
@@ -78,18 +88,27 @@ class GetPackageResponse extends $pb.GeneratedMessage {
 
   GetPackageResponse._();
 
-  factory GetPackageResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GetPackageResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GetPackageResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetPackageResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetPackageResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.Package>(1, _omitFieldNames ? '' : 'package', subBuilder: $0.Package.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetPackageResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.Package>(1, _omitFieldNames ? '' : 'package',
+        subBuilder: $0.Package.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetPackageResponse clone() => GetPackageResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetPackageResponse copyWith(void Function(GetPackageResponse) updates) => super.copyWith((message) => updates(message as GetPackageResponse)) as GetPackageResponse;
+  GetPackageResponse copyWith(void Function(GetPackageResponse) updates) =>
+      super.copyWith((message) => updates(message as GetPackageResponse))
+          as GetPackageResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -98,9 +117,11 @@ class GetPackageResponse extends $pb.GeneratedMessage {
   static GetPackageResponse create() => GetPackageResponse._();
   @$core.override
   GetPackageResponse createEmptyInstance() => create();
-  static $pb.PbList<GetPackageResponse> createRepeated() => $pb.PbList<GetPackageResponse>();
+  static $pb.PbList<GetPackageResponse> createRepeated() =>
+      $pb.PbList<GetPackageResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetPackageResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetPackageResponse>(create);
+  static GetPackageResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetPackageResponse>(create);
   static GetPackageResponse? _defaultInstance;
 
   /// The package.
@@ -131,20 +152,28 @@ class GetDatatypeRequest extends $pb.GeneratedMessage {
 
   GetDatatypeRequest._();
 
-  factory GetDatatypeRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GetDatatypeRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GetDatatypeRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetDatatypeRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetDatatypeRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetDatatypeRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
     ..aOS(2, _omitFieldNames ? '' : 'moduleName')
     ..aOS(3, _omitFieldNames ? '' : 'name')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetDatatypeRequest clone() => GetDatatypeRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetDatatypeRequest copyWith(void Function(GetDatatypeRequest) updates) => super.copyWith((message) => updates(message as GetDatatypeRequest)) as GetDatatypeRequest;
+  GetDatatypeRequest copyWith(void Function(GetDatatypeRequest) updates) =>
+      super.copyWith((message) => updates(message as GetDatatypeRequest))
+          as GetDatatypeRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -153,9 +182,11 @@ class GetDatatypeRequest extends $pb.GeneratedMessage {
   static GetDatatypeRequest create() => GetDatatypeRequest._();
   @$core.override
   GetDatatypeRequest createEmptyInstance() => create();
-  static $pb.PbList<GetDatatypeRequest> createRepeated() => $pb.PbList<GetDatatypeRequest>();
+  static $pb.PbList<GetDatatypeRequest> createRepeated() =>
+      $pb.PbList<GetDatatypeRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetDatatypeRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetDatatypeRequest>(create);
+  static GetDatatypeRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetDatatypeRequest>(create);
   static GetDatatypeRequest? _defaultInstance;
 
   /// Required. The `storage_id` of the requested package.
@@ -200,18 +231,27 @@ class GetDatatypeResponse extends $pb.GeneratedMessage {
 
   GetDatatypeResponse._();
 
-  factory GetDatatypeResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GetDatatypeResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GetDatatypeResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetDatatypeResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetDatatypeResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.DatatypeDescriptor>(1, _omitFieldNames ? '' : 'datatype', subBuilder: $0.DatatypeDescriptor.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetDatatypeResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.DatatypeDescriptor>(1, _omitFieldNames ? '' : 'datatype',
+        subBuilder: $0.DatatypeDescriptor.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetDatatypeResponse clone() => GetDatatypeResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetDatatypeResponse copyWith(void Function(GetDatatypeResponse) updates) => super.copyWith((message) => updates(message as GetDatatypeResponse)) as GetDatatypeResponse;
+  GetDatatypeResponse copyWith(void Function(GetDatatypeResponse) updates) =>
+      super.copyWith((message) => updates(message as GetDatatypeResponse))
+          as GetDatatypeResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -220,9 +260,11 @@ class GetDatatypeResponse extends $pb.GeneratedMessage {
   static GetDatatypeResponse create() => GetDatatypeResponse._();
   @$core.override
   GetDatatypeResponse createEmptyInstance() => create();
-  static $pb.PbList<GetDatatypeResponse> createRepeated() => $pb.PbList<GetDatatypeResponse>();
+  static $pb.PbList<GetDatatypeResponse> createRepeated() =>
+      $pb.PbList<GetDatatypeResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetDatatypeResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetDatatypeResponse>(create);
+  static GetDatatypeResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetDatatypeResponse>(create);
   static GetDatatypeResponse? _defaultInstance;
 
   /// The datatype.
@@ -253,20 +295,28 @@ class GetFunctionRequest extends $pb.GeneratedMessage {
 
   GetFunctionRequest._();
 
-  factory GetFunctionRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GetFunctionRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GetFunctionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetFunctionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetFunctionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetFunctionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
     ..aOS(2, _omitFieldNames ? '' : 'moduleName')
     ..aOS(3, _omitFieldNames ? '' : 'name')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetFunctionRequest clone() => GetFunctionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetFunctionRequest copyWith(void Function(GetFunctionRequest) updates) => super.copyWith((message) => updates(message as GetFunctionRequest)) as GetFunctionRequest;
+  GetFunctionRequest copyWith(void Function(GetFunctionRequest) updates) =>
+      super.copyWith((message) => updates(message as GetFunctionRequest))
+          as GetFunctionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -275,9 +325,11 @@ class GetFunctionRequest extends $pb.GeneratedMessage {
   static GetFunctionRequest create() => GetFunctionRequest._();
   @$core.override
   GetFunctionRequest createEmptyInstance() => create();
-  static $pb.PbList<GetFunctionRequest> createRepeated() => $pb.PbList<GetFunctionRequest>();
+  static $pb.PbList<GetFunctionRequest> createRepeated() =>
+      $pb.PbList<GetFunctionRequest>();
   @$core.pragma('dart2js:noInline')
-  static GetFunctionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetFunctionRequest>(create);
+  static GetFunctionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetFunctionRequest>(create);
   static GetFunctionRequest? _defaultInstance;
 
   /// Required. The `storage_id` of the requested package.
@@ -322,18 +374,27 @@ class GetFunctionResponse extends $pb.GeneratedMessage {
 
   GetFunctionResponse._();
 
-  factory GetFunctionResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GetFunctionResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GetFunctionResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetFunctionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetFunctionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.FunctionDescriptor>(1, _omitFieldNames ? '' : 'function', subBuilder: $0.FunctionDescriptor.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetFunctionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.FunctionDescriptor>(1, _omitFieldNames ? '' : 'function',
+        subBuilder: $0.FunctionDescriptor.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GetFunctionResponse clone() => GetFunctionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GetFunctionResponse copyWith(void Function(GetFunctionResponse) updates) => super.copyWith((message) => updates(message as GetFunctionResponse)) as GetFunctionResponse;
+  GetFunctionResponse copyWith(void Function(GetFunctionResponse) updates) =>
+      super.copyWith((message) => updates(message as GetFunctionResponse))
+          as GetFunctionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -342,9 +403,11 @@ class GetFunctionResponse extends $pb.GeneratedMessage {
   static GetFunctionResponse create() => GetFunctionResponse._();
   @$core.override
   GetFunctionResponse createEmptyInstance() => create();
-  static $pb.PbList<GetFunctionResponse> createRepeated() => $pb.PbList<GetFunctionResponse>();
+  static $pb.PbList<GetFunctionResponse> createRepeated() =>
+      $pb.PbList<GetFunctionResponse>();
   @$core.pragma('dart2js:noInline')
-  static GetFunctionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetFunctionResponse>(create);
+  static GetFunctionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetFunctionResponse>(create);
   static GetFunctionResponse? _defaultInstance;
 
   /// The function.
@@ -375,20 +438,32 @@ class ListPackageVersionsRequest extends $pb.GeneratedMessage {
 
   ListPackageVersionsRequest._();
 
-  factory ListPackageVersionsRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ListPackageVersionsRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ListPackageVersionsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListPackageVersionsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListPackageVersionsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListPackageVersionsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'pageSize', $pb.PbFieldType.OU3)
-    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'pageToken', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.List<$core.int>>(
+        3, _omitFieldNames ? '' : 'pageToken', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPackageVersionsRequest clone() => ListPackageVersionsRequest()..mergeFromMessage(this);
+  ListPackageVersionsRequest clone() =>
+      ListPackageVersionsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPackageVersionsRequest copyWith(void Function(ListPackageVersionsRequest) updates) => super.copyWith((message) => updates(message as ListPackageVersionsRequest)) as ListPackageVersionsRequest;
+  ListPackageVersionsRequest copyWith(
+          void Function(ListPackageVersionsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ListPackageVersionsRequest))
+          as ListPackageVersionsRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -397,9 +472,11 @@ class ListPackageVersionsRequest extends $pb.GeneratedMessage {
   static ListPackageVersionsRequest create() => ListPackageVersionsRequest._();
   @$core.override
   ListPackageVersionsRequest createEmptyInstance() => create();
-  static $pb.PbList<ListPackageVersionsRequest> createRepeated() => $pb.PbList<ListPackageVersionsRequest>();
+  static $pb.PbList<ListPackageVersionsRequest> createRepeated() =>
+      $pb.PbList<ListPackageVersionsRequest>();
   @$core.pragma('dart2js:noInline')
-  static ListPackageVersionsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListPackageVersionsRequest>(create);
+  static ListPackageVersionsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListPackageVersionsRequest>(create);
   static ListPackageVersionsRequest? _defaultInstance;
 
   /// Required. The `storage_id` of any version of the package.
@@ -452,30 +529,47 @@ class ListPackageVersionsResponse extends $pb.GeneratedMessage {
 
   ListPackageVersionsResponse._();
 
-  factory ListPackageVersionsResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ListPackageVersionsResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ListPackageVersionsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ListPackageVersionsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListPackageVersionsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<PackageVersion>(1, _omitFieldNames ? '' : 'versions', $pb.PbFieldType.PM, subBuilder: PackageVersion.create)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'nextPageToken', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListPackageVersionsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<PackageVersion>(
+        1, _omitFieldNames ? '' : 'versions', $pb.PbFieldType.PM,
+        subBuilder: PackageVersion.create)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'nextPageToken', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPackageVersionsResponse clone() => ListPackageVersionsResponse()..mergeFromMessage(this);
+  ListPackageVersionsResponse clone() =>
+      ListPackageVersionsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ListPackageVersionsResponse copyWith(void Function(ListPackageVersionsResponse) updates) => super.copyWith((message) => updates(message as ListPackageVersionsResponse)) as ListPackageVersionsResponse;
+  ListPackageVersionsResponse copyWith(
+          void Function(ListPackageVersionsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ListPackageVersionsResponse))
+          as ListPackageVersionsResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ListPackageVersionsResponse create() => ListPackageVersionsResponse._();
+  static ListPackageVersionsResponse create() =>
+      ListPackageVersionsResponse._();
   @$core.override
   ListPackageVersionsResponse createEmptyInstance() => create();
-  static $pb.PbList<ListPackageVersionsResponse> createRepeated() => $pb.PbList<ListPackageVersionsResponse>();
+  static $pb.PbList<ListPackageVersionsResponse> createRepeated() =>
+      $pb.PbList<ListPackageVersionsResponse>();
   @$core.pragma('dart2js:noInline')
-  static ListPackageVersionsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListPackageVersionsResponse>(create);
+  static ListPackageVersionsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ListPackageVersionsResponse>(create);
   static ListPackageVersionsResponse? _defaultInstance;
 
   /// List of all package versions, ordered by version.
@@ -508,19 +602,28 @@ class PackageVersion extends $pb.GeneratedMessage {
 
   PackageVersion._();
 
-  factory PackageVersion.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory PackageVersion.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory PackageVersion.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory PackageVersion.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PackageVersion', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PackageVersion',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PackageVersion clone() => PackageVersion()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PackageVersion copyWith(void Function(PackageVersion) updates) => super.copyWith((message) => updates(message as PackageVersion)) as PackageVersion;
+  PackageVersion copyWith(void Function(PackageVersion) updates) =>
+      super.copyWith((message) => updates(message as PackageVersion))
+          as PackageVersion;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -529,9 +632,11 @@ class PackageVersion extends $pb.GeneratedMessage {
   static PackageVersion create() => PackageVersion._();
   @$core.override
   PackageVersion createEmptyInstance() => create();
-  static $pb.PbList<PackageVersion> createRepeated() => $pb.PbList<PackageVersion>();
+  static $pb.PbList<PackageVersion> createRepeated() =>
+      $pb.PbList<PackageVersion>();
   @$core.pragma('dart2js:noInline')
-  static PackageVersion getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackageVersion>(create);
+  static PackageVersion getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PackageVersion>(create);
   static PackageVersion? _defaultInstance;
 
   /// The storage ID of this package version
@@ -560,20 +665,25 @@ class MovePackageServiceApi {
 
   MovePackageServiceApi(this._client);
 
-  $async.Future<GetPackageResponse> getPackage($pb.ClientContext? ctx, GetPackageRequest request) =>
-    _client.invoke<GetPackageResponse>(ctx, 'MovePackageService', 'GetPackage', request, GetPackageResponse())
-  ;
-  $async.Future<GetDatatypeResponse> getDatatype($pb.ClientContext? ctx, GetDatatypeRequest request) =>
-    _client.invoke<GetDatatypeResponse>(ctx, 'MovePackageService', 'GetDatatype', request, GetDatatypeResponse())
-  ;
-  $async.Future<GetFunctionResponse> getFunction($pb.ClientContext? ctx, GetFunctionRequest request) =>
-    _client.invoke<GetFunctionResponse>(ctx, 'MovePackageService', 'GetFunction', request, GetFunctionResponse())
-  ;
-  $async.Future<ListPackageVersionsResponse> listPackageVersions($pb.ClientContext? ctx, ListPackageVersionsRequest request) =>
-    _client.invoke<ListPackageVersionsResponse>(ctx, 'MovePackageService', 'ListPackageVersions', request, ListPackageVersionsResponse())
-  ;
+  $async.Future<GetPackageResponse> getPackage(
+          $pb.ClientContext? ctx, GetPackageRequest request) =>
+      _client.invoke<GetPackageResponse>(ctx, 'MovePackageService',
+          'GetPackage', request, GetPackageResponse());
+  $async.Future<GetDatatypeResponse> getDatatype(
+          $pb.ClientContext? ctx, GetDatatypeRequest request) =>
+      _client.invoke<GetDatatypeResponse>(ctx, 'MovePackageService',
+          'GetDatatype', request, GetDatatypeResponse());
+  $async.Future<GetFunctionResponse> getFunction(
+          $pb.ClientContext? ctx, GetFunctionRequest request) =>
+      _client.invoke<GetFunctionResponse>(ctx, 'MovePackageService',
+          'GetFunction', request, GetFunctionResponse());
+  $async.Future<ListPackageVersionsResponse> listPackageVersions(
+          $pb.ClientContext? ctx, ListPackageVersionsRequest request) =>
+      _client.invoke<ListPackageVersionsResponse>(ctx, 'MovePackageService',
+          'ListPackageVersions', request, ListPackageVersionsResponse());
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

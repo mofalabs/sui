@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:sui/cryptography/ed25519_keypair.dart';
@@ -68,7 +67,8 @@ class SuiAccount {
     return account;
   }
 
-  factory SuiAccount.fromPrivateKey(String privateKey, [SignatureScheme? scheme]) {
+  factory SuiAccount.fromPrivateKey(String privateKey,
+      [SignatureScheme? scheme]) {
     String sk = privateKey;
     SignatureScheme? se = scheme;
     if (privateKey.startsWith('suiprivkey')) {
@@ -108,7 +108,7 @@ class SuiAccount {
     return SuiAccount.fromPrivateKey(Hex.encode(privKey), scheme);
   }
 
-  static String generateMnemonic({int strength = 128 }) {
+  static String generateMnemonic({int strength = 128}) {
     return mnemonic.generateMnemonic(strength: strength);
   }
 
@@ -135,7 +135,8 @@ class SuiAccount {
 
   /// This returns the Bech32 secret key string for this keypair.
   String privateKey() {
-    return encodeSuiPrivateKey(_keypair.getSecretKey(), _keypair.getKeyScheme());
+    return encodeSuiPrivateKey(
+        _keypair.getSecretKey(), _keypair.getKeyScheme());
   }
 
   Uint8List getPublicKey() {
@@ -147,15 +148,13 @@ class SuiAccount {
   }
 
   SignaturePubkeyPair signData(Uint8List data) {
-    return SignaturePubkeyPair(
-      _keypair.getKeyScheme(),
-      _keypair.signData(data),
-      pubKey: _keypair.getPublicKey()
-    );
+    return SignaturePubkeyPair(_keypair.getKeyScheme(), _keypair.signData(data),
+        pubKey: _keypair.getPublicKey());
   }
 
   bool verify(Uint8List data, SignaturePubkeyPair signature) {
-    bool success = _keypair.verify(data, signature.signature, signature.pubKey!.toRawBytes());
+    bool success = _keypair.verify(
+        data, signature.signature, signature.pubKey!.toRawBytes());
     return success;
   }
 }

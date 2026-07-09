@@ -49,20 +49,61 @@ const GetServiceInfoRequest$json = {
 };
 
 /// Descriptor for `GetServiceInfoRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getServiceInfoRequestDescriptor = $convert.base64Decode(
-    'ChVHZXRTZXJ2aWNlSW5mb1JlcXVlc3Q=');
+final $typed_data.Uint8List getServiceInfoRequestDescriptor =
+    $convert.base64Decode('ChVHZXRTZXJ2aWNlSW5mb1JlcXVlc3Q=');
 
 @$core.Deprecated('Use getServiceInfoResponseDescriptor instead')
 const GetServiceInfoResponse$json = {
   '1': 'GetServiceInfoResponse',
   '2': [
-    {'1': 'chain_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'chainId', '17': true},
+    {
+      '1': 'chain_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'chainId',
+      '17': true
+    },
     {'1': 'chain', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'chain', '17': true},
     {'1': 'epoch', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'epoch', '17': true},
-    {'1': 'checkpoint_height', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'checkpointHeight', '17': true},
-    {'1': 'timestamp', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 4, '10': 'timestamp', '17': true},
-    {'1': 'lowest_available_checkpoint', '3': 6, '4': 1, '5': 4, '9': 5, '10': 'lowestAvailableCheckpoint', '17': true},
-    {'1': 'lowest_available_checkpoint_objects', '3': 7, '4': 1, '5': 4, '9': 6, '10': 'lowestAvailableCheckpointObjects', '17': true},
+    {
+      '1': 'checkpoint_height',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'checkpointHeight',
+      '17': true
+    },
+    {
+      '1': 'timestamp',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 4,
+      '10': 'timestamp',
+      '17': true
+    },
+    {
+      '1': 'lowest_available_checkpoint',
+      '3': 6,
+      '4': 1,
+      '5': 4,
+      '9': 5,
+      '10': 'lowestAvailableCheckpoint',
+      '17': true
+    },
+    {
+      '1': 'lowest_available_checkpoint_objects',
+      '3': 7,
+      '4': 1,
+      '5': 4,
+      '9': 6,
+      '10': 'lowestAvailableCheckpointObjects',
+      '17': true
+    },
     {'1': 'server', '3': 8, '4': 1, '5': 9, '9': 7, '10': 'server', '17': true},
   ],
   '8': [
@@ -95,9 +136,34 @@ final $typed_data.Uint8List getServiceInfoResponseDescriptor = $convert.base64De
 const GetObjectRequest$json = {
   '1': 'GetObjectRequest',
   '2': [
-    {'1': 'object_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'objectId', '17': true},
-    {'1': 'version', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'version', '17': true},
-    {'1': 'read_mask', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 2, '10': 'readMask', '17': true},
+    {
+      '1': 'object_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'read_mask',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 2,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_object_id'},
@@ -117,7 +183,16 @@ final $typed_data.Uint8List getObjectRequestDescriptor = $convert.base64Decode(
 const GetObjectResponse$json = {
   '1': 'GetObjectResponse',
   '2': [
-    {'1': 'object', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Object', '9': 0, '10': 'object', '17': true},
+    {
+      '1': 'object',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '9': 0,
+      '10': 'object',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_object'},
@@ -133,8 +208,24 @@ final $typed_data.Uint8List getObjectResponseDescriptor = $convert.base64Decode(
 const BatchGetObjectsRequest$json = {
   '1': 'BatchGetObjectsRequest',
   '2': [
-    {'1': 'requests', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.GetObjectRequest', '10': 'requests'},
-    {'1': 'read_mask', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 0, '10': 'readMask', '17': true},
+    {
+      '1': 'requests',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.GetObjectRequest',
+      '10': 'requests'
+    },
+    {
+      '1': 'read_mask',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 0,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_read_mask'},
@@ -151,21 +242,45 @@ final $typed_data.Uint8List batchGetObjectsRequestDescriptor = $convert.base64De
 const BatchGetObjectsResponse$json = {
   '1': 'BatchGetObjectsResponse',
   '2': [
-    {'1': 'objects', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.GetObjectResult', '10': 'objects'},
+    {
+      '1': 'objects',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.GetObjectResult',
+      '10': 'objects'
+    },
   ],
 };
 
 /// Descriptor for `BatchGetObjectsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List batchGetObjectsResponseDescriptor = $convert.base64Decode(
-    'ChdCYXRjaEdldE9iamVjdHNSZXNwb25zZRI1CgdvYmplY3RzGAEgAygLMhsuc3VpLnJwYy52Mi'
-    '5HZXRPYmplY3RSZXN1bHRSB29iamVjdHM=');
+final $typed_data.Uint8List batchGetObjectsResponseDescriptor =
+    $convert.base64Decode(
+        'ChdCYXRjaEdldE9iamVjdHNSZXNwb25zZRI1CgdvYmplY3RzGAEgAygLMhsuc3VpLnJwYy52Mi'
+        '5HZXRPYmplY3RSZXN1bHRSB29iamVjdHM=');
 
 @$core.Deprecated('Use getObjectResultDescriptor instead')
 const GetObjectResult$json = {
   '1': 'GetObjectResult',
   '2': [
-    {'1': 'object', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Object', '9': 0, '10': 'object'},
-    {'1': 'error', '3': 2, '4': 1, '5': 11, '6': '.google.rpc.Status', '9': 0, '10': 'error'},
+    {
+      '1': 'object',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '9': 0,
+      '10': 'object'
+    },
+    {
+      '1': 'error',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.rpc.Status',
+      '9': 0,
+      '10': 'error'
+    },
   ],
   '8': [
     {'1': 'result'},
@@ -183,7 +298,16 @@ const GetTransactionRequest$json = {
   '1': 'GetTransactionRequest',
   '2': [
     {'1': 'digest', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'digest', '17': true},
-    {'1': 'read_mask', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 1, '10': 'readMask', '17': true},
+    {
+      '1': 'read_mask',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 1,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_digest'},
@@ -201,7 +325,16 @@ final $typed_data.Uint8List getTransactionRequestDescriptor = $convert.base64Dec
 const GetTransactionResponse$json = {
   '1': 'GetTransactionResponse',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutedTransaction', '9': 0, '10': 'transaction', '17': true},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutedTransaction',
+      '9': 0,
+      '10': 'transaction',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_transaction'},
@@ -219,7 +352,16 @@ const BatchGetTransactionsRequest$json = {
   '1': 'BatchGetTransactionsRequest',
   '2': [
     {'1': 'digests', '3': 1, '4': 3, '5': 9, '10': 'digests'},
-    {'1': 'read_mask', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 0, '10': 'readMask', '17': true},
+    {
+      '1': 'read_mask',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 0,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_read_mask'},
@@ -227,30 +369,55 @@ const BatchGetTransactionsRequest$json = {
 };
 
 /// Descriptor for `BatchGetTransactionsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List batchGetTransactionsRequestDescriptor = $convert.base64Decode(
-    'ChtCYXRjaEdldFRyYW5zYWN0aW9uc1JlcXVlc3QSGAoHZGlnZXN0cxgBIAMoCVIHZGlnZXN0cx'
-    'I8CglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrSABSCHJlYWRN'
-    'YXNriAEBQgwKCl9yZWFkX21hc2s=');
+final $typed_data.Uint8List batchGetTransactionsRequestDescriptor =
+    $convert.base64Decode(
+        'ChtCYXRjaEdldFRyYW5zYWN0aW9uc1JlcXVlc3QSGAoHZGlnZXN0cxgBIAMoCVIHZGlnZXN0cx'
+        'I8CglyZWFkX21hc2sYAiABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRNYXNrSABSCHJlYWRN'
+        'YXNriAEBQgwKCl9yZWFkX21hc2s=');
 
 @$core.Deprecated('Use batchGetTransactionsResponseDescriptor instead')
 const BatchGetTransactionsResponse$json = {
   '1': 'BatchGetTransactionsResponse',
   '2': [
-    {'1': 'transactions', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.GetTransactionResult', '10': 'transactions'},
+    {
+      '1': 'transactions',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.GetTransactionResult',
+      '10': 'transactions'
+    },
   ],
 };
 
 /// Descriptor for `BatchGetTransactionsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List batchGetTransactionsResponseDescriptor = $convert.base64Decode(
-    'ChxCYXRjaEdldFRyYW5zYWN0aW9uc1Jlc3BvbnNlEkQKDHRyYW5zYWN0aW9ucxgBIAMoCzIgLn'
-    'N1aS5ycGMudjIuR2V0VHJhbnNhY3Rpb25SZXN1bHRSDHRyYW5zYWN0aW9ucw==');
+final $typed_data.Uint8List batchGetTransactionsResponseDescriptor =
+    $convert.base64Decode(
+        'ChxCYXRjaEdldFRyYW5zYWN0aW9uc1Jlc3BvbnNlEkQKDHRyYW5zYWN0aW9ucxgBIAMoCzIgLn'
+        'N1aS5ycGMudjIuR2V0VHJhbnNhY3Rpb25SZXN1bHRSDHRyYW5zYWN0aW9ucw==');
 
 @$core.Deprecated('Use getTransactionResultDescriptor instead')
 const GetTransactionResult$json = {
   '1': 'GetTransactionResult',
   '2': [
-    {'1': 'transaction', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutedTransaction', '9': 0, '10': 'transaction'},
-    {'1': 'error', '3': 2, '4': 1, '5': 11, '6': '.google.rpc.Status', '9': 0, '10': 'error'},
+    {
+      '1': 'transaction',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutedTransaction',
+      '9': 0,
+      '10': 'transaction'
+    },
+    {
+      '1': 'error',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.rpc.Status',
+      '9': 0,
+      '10': 'error'
+    },
   ],
   '8': [
     {'1': 'result'},
@@ -267,9 +434,25 @@ final $typed_data.Uint8List getTransactionResultDescriptor = $convert.base64Deco
 const GetCheckpointRequest$json = {
   '1': 'GetCheckpointRequest',
   '2': [
-    {'1': 'sequence_number', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'sequenceNumber'},
+    {
+      '1': 'sequence_number',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'sequenceNumber'
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'digest'},
-    {'1': 'read_mask', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 1, '10': 'readMask', '17': true},
+    {
+      '1': 'read_mask',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 1,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': 'checkpoint_id'},
@@ -288,7 +471,16 @@ final $typed_data.Uint8List getCheckpointRequestDescriptor = $convert.base64Deco
 const GetCheckpointResponse$json = {
   '1': 'GetCheckpointResponse',
   '2': [
-    {'1': 'checkpoint', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Checkpoint', '9': 0, '10': 'checkpoint', '17': true},
+    {
+      '1': 'checkpoint',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Checkpoint',
+      '9': 0,
+      '10': 'checkpoint',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_checkpoint'},
@@ -305,7 +497,16 @@ const GetEpochRequest$json = {
   '1': 'GetEpochRequest',
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
-    {'1': 'read_mask', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 1, '10': 'readMask', '17': true},
+    {
+      '1': 'read_mask',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 1,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -323,7 +524,16 @@ final $typed_data.Uint8List getEpochRequestDescriptor = $convert.base64Decode(
 const GetEpochResponse$json = {
   '1': 'GetEpochResponse',
   '2': [
-    {'1': 'epoch', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Epoch', '9': 0, '10': 'epoch', '17': true},
+    {
+      '1': 'epoch',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Epoch',
+      '9': 0,
+      '10': 'epoch',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -338,18 +548,47 @@ final $typed_data.Uint8List getEpochResponseDescriptor = $convert.base64Decode(
 const $core.Map<$core.String, $core.dynamic> LedgerServiceBase$json = {
   '1': 'LedgerService',
   '2': [
-    {'1': 'GetServiceInfo', '2': '.sui.rpc.v2.GetServiceInfoRequest', '3': '.sui.rpc.v2.GetServiceInfoResponse'},
-    {'1': 'GetObject', '2': '.sui.rpc.v2.GetObjectRequest', '3': '.sui.rpc.v2.GetObjectResponse'},
-    {'1': 'BatchGetObjects', '2': '.sui.rpc.v2.BatchGetObjectsRequest', '3': '.sui.rpc.v2.BatchGetObjectsResponse'},
-    {'1': 'GetTransaction', '2': '.sui.rpc.v2.GetTransactionRequest', '3': '.sui.rpc.v2.GetTransactionResponse'},
-    {'1': 'BatchGetTransactions', '2': '.sui.rpc.v2.BatchGetTransactionsRequest', '3': '.sui.rpc.v2.BatchGetTransactionsResponse'},
-    {'1': 'GetCheckpoint', '2': '.sui.rpc.v2.GetCheckpointRequest', '3': '.sui.rpc.v2.GetCheckpointResponse'},
-    {'1': 'GetEpoch', '2': '.sui.rpc.v2.GetEpochRequest', '3': '.sui.rpc.v2.GetEpochResponse'},
+    {
+      '1': 'GetServiceInfo',
+      '2': '.sui.rpc.v2.GetServiceInfoRequest',
+      '3': '.sui.rpc.v2.GetServiceInfoResponse'
+    },
+    {
+      '1': 'GetObject',
+      '2': '.sui.rpc.v2.GetObjectRequest',
+      '3': '.sui.rpc.v2.GetObjectResponse'
+    },
+    {
+      '1': 'BatchGetObjects',
+      '2': '.sui.rpc.v2.BatchGetObjectsRequest',
+      '3': '.sui.rpc.v2.BatchGetObjectsResponse'
+    },
+    {
+      '1': 'GetTransaction',
+      '2': '.sui.rpc.v2.GetTransactionRequest',
+      '3': '.sui.rpc.v2.GetTransactionResponse'
+    },
+    {
+      '1': 'BatchGetTransactions',
+      '2': '.sui.rpc.v2.BatchGetTransactionsRequest',
+      '3': '.sui.rpc.v2.BatchGetTransactionsResponse'
+    },
+    {
+      '1': 'GetCheckpoint',
+      '2': '.sui.rpc.v2.GetCheckpointRequest',
+      '3': '.sui.rpc.v2.GetCheckpointResponse'
+    },
+    {
+      '1': 'GetEpoch',
+      '2': '.sui.rpc.v2.GetEpochRequest',
+      '3': '.sui.rpc.v2.GetEpochResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use ledgerServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> LedgerServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    LedgerServiceBase$messageJson = {
   '.sui.rpc.v2.GetServiceInfoRequest': GetServiceInfoRequest$json,
   '.sui.rpc.v2.GetServiceInfoResponse': GetServiceInfoResponse$json,
   '.google.protobuf.Timestamp': $0.Timestamp$json,
@@ -401,7 +640,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> LedgerServ
   '.sui.rpc.v2.SystemPackage': $12.SystemPackage$json,
   '.sui.rpc.v2.GenesisTransaction': $12.GenesisTransaction$json,
   '.sui.rpc.v2.ConsensusCommitPrologue': $12.ConsensusCommitPrologue$json,
-  '.sui.rpc.v2.ConsensusDeterminedVersionAssignments': $12.ConsensusDeterminedVersionAssignments$json,
+  '.sui.rpc.v2.ConsensusDeterminedVersionAssignments':
+      $12.ConsensusDeterminedVersionAssignments$json,
   '.sui.rpc.v2.CanceledTransaction': $12.CanceledTransaction$json,
   '.sui.rpc.v2.VersionAssignment': $12.VersionAssignment$json,
   '.sui.rpc.v2.AuthenticatorStateUpdate': $12.AuthenticatorStateUpdate$json,
@@ -413,7 +653,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> LedgerServ
   '.sui.rpc.v2.AuthenticatorStateExpire': $12.AuthenticatorStateExpire$json,
   '.sui.rpc.v2.ExecutionTimeObservations': $12.ExecutionTimeObservations$json,
   '.sui.rpc.v2.ExecutionTimeObservation': $12.ExecutionTimeObservation$json,
-  '.sui.rpc.v2.ValidatorExecutionTimeObservation': $12.ValidatorExecutionTimeObservation$json,
+  '.sui.rpc.v2.ValidatorExecutionTimeObservation':
+      $12.ValidatorExecutionTimeObservation$json,
   '.google.protobuf.Duration': $16.Duration$json,
   '.sui.rpc.v2.RandomnessStateUpdate': $12.RandomnessStateUpdate$json,
   '.sui.rpc.v2.GasPayment': $12.GasPayment$json,
@@ -421,7 +662,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> LedgerServ
   '.sui.rpc.v2.TransactionExpiration': $12.TransactionExpiration$json,
   '.sui.rpc.v2.UserSignature': $18.UserSignature$json,
   '.sui.rpc.v2.SimpleSignature': $18.SimpleSignature$json,
-  '.sui.rpc.v2.MultisigAggregatedSignature': $18.MultisigAggregatedSignature$json,
+  '.sui.rpc.v2.MultisigAggregatedSignature':
+      $18.MultisigAggregatedSignature$json,
   '.sui.rpc.v2.MultisigMemberSignature': $18.MultisigMemberSignature$json,
   '.sui.rpc.v2.ZkLoginAuthenticator': $18.ZkLoginAuthenticator$json,
   '.sui.rpc.v2.ZkLoginInputs': $18.ZkLoginInputs$json,
@@ -466,9 +708,11 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> LedgerServ
   '.sui.rpc.v2.CheckpointCommitment': $24.CheckpointCommitment$json,
   '.sui.rpc.v2.EndOfEpochData': $24.EndOfEpochData$json,
   '.sui.rpc.v2.ValidatorCommitteeMember': $18.ValidatorCommitteeMember$json,
-  '.sui.rpc.v2.ValidatorAggregatedSignature': $18.ValidatorAggregatedSignature$json,
+  '.sui.rpc.v2.ValidatorAggregatedSignature':
+      $18.ValidatorAggregatedSignature$json,
   '.sui.rpc.v2.CheckpointContents': $25.CheckpointContents$json,
-  '.sui.rpc.v2.CheckpointedTransactionInfo': $25.CheckpointedTransactionInfo$json,
+  '.sui.rpc.v2.CheckpointedTransactionInfo':
+      $25.CheckpointedTransactionInfo$json,
   '.sui.rpc.v2.AddressAliasesVersion': $25.AddressAliasesVersion$json,
   '.sui.rpc.v2.GetEpochRequest': GetEpochRequest$json,
   '.sui.rpc.v2.GetEpochResponse': GetEpochResponse$json,
@@ -479,14 +723,17 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> LedgerServ
   '.sui.rpc.v2.Validator': $26.Validator$json,
   '.sui.rpc.v2.MoveTable': $26.MoveTable$json,
   '.sui.rpc.v2.StakingPool': $26.StakingPool$json,
-  '.sui.rpc.v2.ValidatorSet.AtRiskValidatorsEntry': $26.ValidatorSet_AtRiskValidatorsEntry$json,
+  '.sui.rpc.v2.ValidatorSet.AtRiskValidatorsEntry':
+      $26.ValidatorSet_AtRiskValidatorsEntry$json,
   '.sui.rpc.v2.StorageFund': $26.StorageFund$json,
   '.sui.rpc.v2.SystemParameters': $26.SystemParameters$json,
   '.sui.rpc.v2.ValidatorReportRecord': $26.ValidatorReportRecord$json,
   '.sui.rpc.v2.StakeSubsidy': $26.StakeSubsidy$json,
   '.sui.rpc.v2.ProtocolConfig': $27.ProtocolConfig$json,
-  '.sui.rpc.v2.ProtocolConfig.FeatureFlagsEntry': $27.ProtocolConfig_FeatureFlagsEntry$json,
-  '.sui.rpc.v2.ProtocolConfig.AttributesEntry': $27.ProtocolConfig_AttributesEntry$json,
+  '.sui.rpc.v2.ProtocolConfig.FeatureFlagsEntry':
+      $27.ProtocolConfig_FeatureFlagsEntry$json,
+  '.sui.rpc.v2.ProtocolConfig.AttributesEntry':
+      $27.ProtocolConfig_AttributesEntry$json,
 };
 
 /// Descriptor for `LedgerService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
@@ -503,4 +750,3 @@ final $typed_data.Uint8List ledgerServiceDescriptor = $convert.base64Decode(
     'RDaGVja3BvaW50UmVxdWVzdBohLnN1aS5ycGMudjIuR2V0Q2hlY2twb2ludFJlc3BvbnNlEkUK'
     'CEdldEVwb2NoEhsuc3VpLnJwYy52Mi5HZXRFcG9jaFJlcXVlc3QaHC5zdWkucnBjLnYyLkdldE'
     'Vwb2NoUmVzcG9uc2U=');
-

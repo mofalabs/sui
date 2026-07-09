@@ -21,8 +21,7 @@ const HARDENED_OFFSET = 0x80000000;
 String replaceDerive(String val) => val.replaceAll("'", "");
 
 Uint8List hmacSha512(Uint8List hmacKey, Uint8List data) {
-  final hmac = HMac(SHA512Digest(), 128) 
-    ..init(KeyParameter(hmacKey));
+  final hmac = HMac(SHA512Digest(), 128)..init(KeyParameter(hmacKey));
 
   return hmac.process(data);
 }
@@ -67,10 +66,10 @@ bool isValidPath(String path) {
     return false;
   }
   return !path
-    .split("/")
-    .sublist(1)
-    .map(replaceDerive)
-    .any((e) => int.tryParse(e) == null);
+      .split("/")
+      .sublist(1)
+      .map(replaceDerive)
+      .any((e) => int.tryParse(e) == null);
 }
 
 Keys derivePath(String path, String seed, {int offset = HARDENED_OFFSET}) {
@@ -80,12 +79,12 @@ Keys derivePath(String path, String seed, {int offset = HARDENED_OFFSET}) {
 
   final keys = getMasterKeyFromSeed(seed);
   final segments = path
-    .split("/")
-    .sublist(1)
-    .map(replaceDerive)
-    .map((el) => int.parse(el, radix: 10));
+      .split("/")
+      .sublist(1)
+      .map(replaceDerive)
+      .map((el) => int.parse(el, radix: 10));
 
-  Keys parentKeys = keys; 
+  Keys parentKeys = keys;
   for (int i in segments) {
     parentKeys = ckdPriv(parentKeys, i + offset);
   }

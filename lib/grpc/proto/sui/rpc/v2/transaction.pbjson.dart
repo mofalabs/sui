@@ -18,13 +18,57 @@ import 'dart:typed_data' as $typed_data;
 const Transaction$json = {
   '1': 'Transaction',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'bcs', '17': true},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'bcs',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 5, '9': 2, '10': 'version', '17': true},
-    {'1': 'kind', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.TransactionKind', '9': 3, '10': 'kind', '17': true},
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'kind',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.TransactionKind',
+      '9': 3,
+      '10': 'kind',
+      '17': true
+    },
     {'1': 'sender', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'sender', '17': true},
-    {'1': 'gas_payment', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.GasPayment', '9': 5, '10': 'gasPayment', '17': true},
-    {'1': 'expiration', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.TransactionExpiration', '9': 6, '10': 'expiration', '17': true},
+    {
+      '1': 'gas_payment',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.GasPayment',
+      '9': 5,
+      '10': 'gasPayment',
+      '17': true
+    },
+    {
+      '1': 'expiration',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.TransactionExpiration',
+      '9': 6,
+      '10': 'expiration',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_bcs'},
@@ -52,7 +96,14 @@ final $typed_data.Uint8List transactionDescriptor = $convert.base64Decode(
 const GasPayment$json = {
   '1': 'GasPayment',
   '2': [
-    {'1': 'objects', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.ObjectReference', '10': 'objects'},
+    {
+      '1': 'objects',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ObjectReference',
+      '10': 'objects'
+    },
     {'1': 'owner', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'owner', '17': true},
     {'1': 'price', '3': 3, '4': 1, '5': 4, '9': 1, '10': 'price', '17': true},
     {'1': 'budget', '3': 4, '4': 1, '5': 4, '9': 2, '10': 'budget', '17': true},
@@ -75,11 +126,46 @@ final $typed_data.Uint8List gasPaymentDescriptor = $convert.base64Decode(
 const TransactionExpiration$json = {
   '1': 'TransactionExpiration',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.TransactionExpiration.TransactionExpirationKind', '9': 0, '10': 'kind', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.TransactionExpiration.TransactionExpirationKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
     {'1': 'epoch', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'epoch', '17': true},
-    {'1': 'min_epoch', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'minEpoch', '17': true},
-    {'1': 'min_timestamp', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 3, '10': 'minTimestamp', '17': true},
-    {'1': 'max_timestamp', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 4, '10': 'maxTimestamp', '17': true},
+    {
+      '1': 'min_epoch',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'minEpoch',
+      '17': true
+    },
+    {
+      '1': 'min_timestamp',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 3,
+      '10': 'minTimestamp',
+      '17': true
+    },
+    {
+      '1': 'max_timestamp',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 4,
+      '10': 'maxTimestamp',
+      '17': true
+    },
     {'1': 'chain', '3': 6, '4': 1, '5': 9, '9': 5, '10': 'chain', '17': true},
     {'1': 'nonce', '3': 7, '4': 1, '5': 13, '9': 6, '10': 'nonce', '17': true},
   ],
@@ -124,14 +210,79 @@ final $typed_data.Uint8List transactionExpirationDescriptor = $convert.base64Dec
 const TransactionKind$json = {
   '1': 'TransactionKind',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.TransactionKind.Kind', '9': 1, '10': 'kind', '17': true},
-    {'1': 'programmable_transaction', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.ProgrammableTransaction', '9': 0, '10': 'programmableTransaction'},
-    {'1': 'change_epoch', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.ChangeEpoch', '9': 0, '10': 'changeEpoch'},
-    {'1': 'genesis', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.GenesisTransaction', '9': 0, '10': 'genesis'},
-    {'1': 'consensus_commit_prologue', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.ConsensusCommitPrologue', '9': 0, '10': 'consensusCommitPrologue'},
-    {'1': 'authenticator_state_update', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.AuthenticatorStateUpdate', '9': 0, '10': 'authenticatorStateUpdate'},
-    {'1': 'end_of_epoch', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.EndOfEpochTransaction', '9': 0, '10': 'endOfEpoch'},
-    {'1': 'randomness_state_update', '3': 8, '4': 1, '5': 11, '6': '.sui.rpc.v2.RandomnessStateUpdate', '9': 0, '10': 'randomnessStateUpdate'},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.TransactionKind.Kind',
+      '9': 1,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'programmable_transaction',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ProgrammableTransaction',
+      '9': 0,
+      '10': 'programmableTransaction'
+    },
+    {
+      '1': 'change_epoch',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ChangeEpoch',
+      '9': 0,
+      '10': 'changeEpoch'
+    },
+    {
+      '1': 'genesis',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.GenesisTransaction',
+      '9': 0,
+      '10': 'genesis'
+    },
+    {
+      '1': 'consensus_commit_prologue',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ConsensusCommitPrologue',
+      '9': 0,
+      '10': 'consensusCommitPrologue'
+    },
+    {
+      '1': 'authenticator_state_update',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.AuthenticatorStateUpdate',
+      '9': 0,
+      '10': 'authenticatorStateUpdate'
+    },
+    {
+      '1': 'end_of_epoch',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.EndOfEpochTransaction',
+      '9': 0,
+      '10': 'endOfEpoch'
+    },
+    {
+      '1': 'randomness_state_update',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.RandomnessStateUpdate',
+      '9': 0,
+      '10': 'randomnessStateUpdate'
+    },
   ],
   '4': [TransactionKind_Kind$json],
   '8': [
@@ -185,8 +336,22 @@ final $typed_data.Uint8List transactionKindDescriptor = $convert.base64Decode(
 const ProgrammableTransaction$json = {
   '1': 'ProgrammableTransaction',
   '2': [
-    {'1': 'inputs', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.Input', '10': 'inputs'},
-    {'1': 'commands', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.Command', '10': 'commands'},
+    {
+      '1': 'inputs',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Input',
+      '10': 'inputs'
+    },
+    {
+      '1': 'commands',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Command',
+      '10': 'commands'
+    },
   ],
 };
 
@@ -200,13 +365,69 @@ final $typed_data.Uint8List programmableTransactionDescriptor = $convert.base64D
 const Command$json = {
   '1': 'Command',
   '2': [
-    {'1': 'move_call', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveCall', '9': 0, '10': 'moveCall'},
-    {'1': 'transfer_objects', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.TransferObjects', '9': 0, '10': 'transferObjects'},
-    {'1': 'split_coins', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.SplitCoins', '9': 0, '10': 'splitCoins'},
-    {'1': 'merge_coins', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.MergeCoins', '9': 0, '10': 'mergeCoins'},
-    {'1': 'publish', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.Publish', '9': 0, '10': 'publish'},
-    {'1': 'make_move_vector', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.MakeMoveVector', '9': 0, '10': 'makeMoveVector'},
-    {'1': 'upgrade', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.Upgrade', '9': 0, '10': 'upgrade'},
+    {
+      '1': 'move_call',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveCall',
+      '9': 0,
+      '10': 'moveCall'
+    },
+    {
+      '1': 'transfer_objects',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.TransferObjects',
+      '9': 0,
+      '10': 'transferObjects'
+    },
+    {
+      '1': 'split_coins',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SplitCoins',
+      '9': 0,
+      '10': 'splitCoins'
+    },
+    {
+      '1': 'merge_coins',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MergeCoins',
+      '9': 0,
+      '10': 'mergeCoins'
+    },
+    {
+      '1': 'publish',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Publish',
+      '9': 0,
+      '10': 'publish'
+    },
+    {
+      '1': 'make_move_vector',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MakeMoveVector',
+      '9': 0,
+      '10': 'makeMoveVector'
+    },
+    {
+      '1': 'upgrade',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Upgrade',
+      '9': 0,
+      '10': 'upgrade'
+    },
   ],
   '8': [
     {'1': 'command'},
@@ -228,11 +449,34 @@ final $typed_data.Uint8List commandDescriptor = $convert.base64Decode(
 const MoveCall$json = {
   '1': 'MoveCall',
   '2': [
-    {'1': 'package', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'package', '17': true},
+    {
+      '1': 'package',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'package',
+      '17': true
+    },
     {'1': 'module', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'module', '17': true},
-    {'1': 'function', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'function', '17': true},
+    {
+      '1': 'function',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'function',
+      '17': true
+    },
     {'1': 'type_arguments', '3': 4, '4': 3, '5': 9, '10': 'typeArguments'},
-    {'1': 'arguments', '3': 5, '4': 3, '5': 11, '6': '.sui.rpc.v2.Argument', '10': 'arguments'},
+    {
+      '1': 'arguments',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '10': 'arguments'
+    },
   ],
   '8': [
     {'1': '_package'},
@@ -253,8 +497,24 @@ final $typed_data.Uint8List moveCallDescriptor = $convert.base64Decode(
 const TransferObjects$json = {
   '1': 'TransferObjects',
   '2': [
-    {'1': 'objects', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.Argument', '10': 'objects'},
-    {'1': 'address', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.Argument', '9': 0, '10': 'address', '17': true},
+    {
+      '1': 'objects',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '10': 'objects'
+    },
+    {
+      '1': 'address',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '9': 0,
+      '10': 'address',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_address'},
@@ -271,8 +531,24 @@ final $typed_data.Uint8List transferObjectsDescriptor = $convert.base64Decode(
 const SplitCoins$json = {
   '1': 'SplitCoins',
   '2': [
-    {'1': 'coin', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Argument', '9': 0, '10': 'coin', '17': true},
-    {'1': 'amounts', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.Argument', '10': 'amounts'},
+    {
+      '1': 'coin',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '9': 0,
+      '10': 'coin',
+      '17': true
+    },
+    {
+      '1': 'amounts',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '10': 'amounts'
+    },
   ],
   '8': [
     {'1': '_coin'},
@@ -289,8 +565,24 @@ final $typed_data.Uint8List splitCoinsDescriptor = $convert.base64Decode(
 const MergeCoins$json = {
   '1': 'MergeCoins',
   '2': [
-    {'1': 'coin', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Argument', '9': 0, '10': 'coin', '17': true},
-    {'1': 'coins_to_merge', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.Argument', '10': 'coinsToMerge'},
+    {
+      '1': 'coin',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '9': 0,
+      '10': 'coin',
+      '17': true
+    },
+    {
+      '1': 'coins_to_merge',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '10': 'coinsToMerge'
+    },
   ],
   '8': [
     {'1': '_coin'},
@@ -321,8 +613,23 @@ final $typed_data.Uint8List publishDescriptor = $convert.base64Decode(
 const MakeMoveVector$json = {
   '1': 'MakeMoveVector',
   '2': [
-    {'1': 'element_type', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'elementType', '17': true},
-    {'1': 'elements', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.Argument', '10': 'elements'},
+    {
+      '1': 'element_type',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'elementType',
+      '17': true
+    },
+    {
+      '1': 'elements',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '10': 'elements'
+    },
   ],
   '8': [
     {'1': '_element_type'},
@@ -341,8 +648,25 @@ const Upgrade$json = {
   '2': [
     {'1': 'modules', '3': 1, '4': 3, '5': 12, '10': 'modules'},
     {'1': 'dependencies', '3': 2, '4': 3, '5': 9, '10': 'dependencies'},
-    {'1': 'package', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'package', '17': true},
-    {'1': 'ticket', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.Argument', '9': 1, '10': 'ticket', '17': true},
+    {
+      '1': 'package',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'package',
+      '17': true
+    },
+    {
+      '1': 'ticket',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Argument',
+      '9': 1,
+      '10': 'ticket',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package'},
@@ -362,9 +686,33 @@ const RandomnessStateUpdate$json = {
   '1': 'RandomnessStateUpdate',
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
-    {'1': 'randomness_round', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'randomnessRound', '17': true},
-    {'1': 'random_bytes', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'randomBytes', '17': true},
-    {'1': 'randomness_object_initial_shared_version', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'randomnessObjectInitialSharedVersion', '17': true},
+    {
+      '1': 'randomness_round',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'randomnessRound',
+      '17': true
+    },
+    {
+      '1': 'random_bytes',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'randomBytes',
+      '17': true
+    },
+    {
+      '1': 'randomness_object_initial_shared_version',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'randomnessObjectInitialSharedVersion',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -388,13 +736,69 @@ const ChangeEpoch$json = {
   '1': 'ChangeEpoch',
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
-    {'1': 'protocol_version', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'protocolVersion', '17': true},
-    {'1': 'storage_charge', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'storageCharge', '17': true},
-    {'1': 'computation_charge', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'computationCharge', '17': true},
-    {'1': 'storage_rebate', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'storageRebate', '17': true},
-    {'1': 'non_refundable_storage_fee', '3': 6, '4': 1, '5': 4, '9': 5, '10': 'nonRefundableStorageFee', '17': true},
-    {'1': 'epoch_start_timestamp', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 6, '10': 'epochStartTimestamp', '17': true},
-    {'1': 'system_packages', '3': 8, '4': 3, '5': 11, '6': '.sui.rpc.v2.SystemPackage', '10': 'systemPackages'},
+    {
+      '1': 'protocol_version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'protocolVersion',
+      '17': true
+    },
+    {
+      '1': 'storage_charge',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'storageCharge',
+      '17': true
+    },
+    {
+      '1': 'computation_charge',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'computationCharge',
+      '17': true
+    },
+    {
+      '1': 'storage_rebate',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'storageRebate',
+      '17': true
+    },
+    {
+      '1': 'non_refundable_storage_fee',
+      '3': 6,
+      '4': 1,
+      '5': 4,
+      '9': 5,
+      '10': 'nonRefundableStorageFee',
+      '17': true
+    },
+    {
+      '1': 'epoch_start_timestamp',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 6,
+      '10': 'epochStartTimestamp',
+      '17': true
+    },
+    {
+      '1': 'system_packages',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.SystemPackage',
+      '10': 'systemPackages'
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -425,7 +829,15 @@ final $typed_data.Uint8List changeEpochDescriptor = $convert.base64Decode(
 const SystemPackage$json = {
   '1': 'SystemPackage',
   '2': [
-    {'1': 'version', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'version', '17': true},
+    {
+      '1': 'version',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'version',
+      '17': true
+    },
     {'1': 'modules', '3': 2, '4': 3, '5': 12, '10': 'modules'},
     {'1': 'dependencies', '3': 3, '4': 3, '5': 9, '10': 'dependencies'},
   ],
@@ -444,7 +856,14 @@ final $typed_data.Uint8List systemPackageDescriptor = $convert.base64Decode(
 const GenesisTransaction$json = {
   '1': 'GenesisTransaction',
   '2': [
-    {'1': 'objects', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.Object', '10': 'objects'},
+    {
+      '1': 'objects',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '10': 'objects'
+    },
   ],
 };
 
@@ -459,11 +878,53 @@ const ConsensusCommitPrologue$json = {
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
     {'1': 'round', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'round', '17': true},
-    {'1': 'commit_timestamp', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 2, '10': 'commitTimestamp', '17': true},
-    {'1': 'consensus_commit_digest', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'consensusCommitDigest', '17': true},
-    {'1': 'sub_dag_index', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'subDagIndex', '17': true},
-    {'1': 'consensus_determined_version_assignments', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.ConsensusDeterminedVersionAssignments', '9': 5, '10': 'consensusDeterminedVersionAssignments', '17': true},
-    {'1': 'additional_state_digest', '3': 7, '4': 1, '5': 9, '9': 6, '10': 'additionalStateDigest', '17': true},
+    {
+      '1': 'commit_timestamp',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 2,
+      '10': 'commitTimestamp',
+      '17': true
+    },
+    {
+      '1': 'consensus_commit_digest',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'consensusCommitDigest',
+      '17': true
+    },
+    {
+      '1': 'sub_dag_index',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'subDagIndex',
+      '17': true
+    },
+    {
+      '1': 'consensus_determined_version_assignments',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ConsensusDeterminedVersionAssignments',
+      '9': 5,
+      '10': 'consensusDeterminedVersionAssignments',
+      '17': true
+    },
+    {
+      '1': 'additional_state_digest',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'additionalStateDigest',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -495,9 +956,33 @@ final $typed_data.Uint8List consensusCommitPrologueDescriptor = $convert.base64D
 const VersionAssignment$json = {
   '1': 'VersionAssignment',
   '2': [
-    {'1': 'object_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'objectId', '17': true},
-    {'1': 'start_version', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'startVersion', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'version', '17': true},
+    {
+      '1': 'object_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'start_version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'startVersion',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_object_id'},
@@ -518,7 +1003,14 @@ const CanceledTransaction$json = {
   '1': 'CanceledTransaction',
   '2': [
     {'1': 'digest', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'digest', '17': true},
-    {'1': 'version_assignments', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.VersionAssignment', '10': 'versionAssignments'},
+    {
+      '1': 'version_assignments',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.VersionAssignment',
+      '10': 'versionAssignments'
+    },
   ],
   '8': [
     {'1': '_digest'},
@@ -535,8 +1027,23 @@ final $typed_data.Uint8List canceledTransactionDescriptor = $convert.base64Decod
 const ConsensusDeterminedVersionAssignments$json = {
   '1': 'ConsensusDeterminedVersionAssignments',
   '2': [
-    {'1': 'version', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'version', '17': true},
-    {'1': 'canceled_transactions', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.CanceledTransaction', '10': 'canceledTransactions'},
+    {
+      '1': 'version',
+      '3': 1,
+      '4': 1,
+      '5': 5,
+      '9': 0,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'canceled_transactions',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CanceledTransaction',
+      '10': 'canceledTransactions'
+    },
   ],
   '8': [
     {'1': '_version'},
@@ -544,11 +1051,12 @@ const ConsensusDeterminedVersionAssignments$json = {
 };
 
 /// Descriptor for `ConsensusDeterminedVersionAssignments`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List consensusDeterminedVersionAssignmentsDescriptor = $convert.base64Decode(
-    'CiVDb25zZW5zdXNEZXRlcm1pbmVkVmVyc2lvbkFzc2lnbm1lbnRzEh0KB3ZlcnNpb24YASABKA'
-    'VIAFIHdmVyc2lvbogBARJUChVjYW5jZWxlZF90cmFuc2FjdGlvbnMYAyADKAsyHy5zdWkucnBj'
-    'LnYyLkNhbmNlbGVkVHJhbnNhY3Rpb25SFGNhbmNlbGVkVHJhbnNhY3Rpb25zQgoKCF92ZXJzaW'
-    '9u');
+final $typed_data.Uint8List consensusDeterminedVersionAssignmentsDescriptor =
+    $convert.base64Decode(
+        'CiVDb25zZW5zdXNEZXRlcm1pbmVkVmVyc2lvbkFzc2lnbm1lbnRzEh0KB3ZlcnNpb24YASABKA'
+        'VIAFIHdmVyc2lvbogBARJUChVjYW5jZWxlZF90cmFuc2FjdGlvbnMYAyADKAsyHy5zdWkucnBj'
+        'LnYyLkNhbmNlbGVkVHJhbnNhY3Rpb25SFGNhbmNlbGVkVHJhbnNhY3Rpb25zQgoKCF92ZXJzaW'
+        '9u');
 
 @$core.Deprecated('Use authenticatorStateUpdateDescriptor instead')
 const AuthenticatorStateUpdate$json = {
@@ -556,8 +1064,23 @@ const AuthenticatorStateUpdate$json = {
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
     {'1': 'round', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'round', '17': true},
-    {'1': 'new_active_jwks', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.ActiveJwk', '10': 'newActiveJwks'},
-    {'1': 'authenticator_object_initial_shared_version', '3': 4, '4': 1, '5': 4, '9': 2, '10': 'authenticatorObjectInitialSharedVersion', '17': true},
+    {
+      '1': 'new_active_jwks',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ActiveJwk',
+      '10': 'newActiveJwks'
+    },
+    {
+      '1': 'authenticator_object_initial_shared_version',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'authenticatorObjectInitialSharedVersion',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -579,8 +1102,26 @@ final $typed_data.Uint8List authenticatorStateUpdateDescriptor = $convert.base64
 const ActiveJwk$json = {
   '1': 'ActiveJwk',
   '2': [
-    {'1': 'id', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.JwkId', '9': 0, '10': 'id', '17': true},
-    {'1': 'jwk', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.Jwk', '9': 1, '10': 'jwk', '17': true},
+    {
+      '1': 'id',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.JwkId',
+      '9': 0,
+      '10': 'id',
+      '17': true
+    },
+    {
+      '1': 'jwk',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Jwk',
+      '9': 1,
+      '10': 'jwk',
+      '17': true
+    },
     {'1': 'epoch', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'epoch', '17': true},
   ],
   '8': [
@@ -600,7 +1141,14 @@ final $typed_data.Uint8List activeJwkDescriptor = $convert.base64Decode(
 const EndOfEpochTransaction$json = {
   '1': 'EndOfEpochTransaction',
   '2': [
-    {'1': 'transactions', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.EndOfEpochTransactionKind', '10': 'transactions'},
+    {
+      '1': 'transactions',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.EndOfEpochTransactionKind',
+      '10': 'transactions'
+    },
   ],
 };
 
@@ -613,12 +1161,59 @@ final $typed_data.Uint8List endOfEpochTransactionDescriptor = $convert.base64Dec
 const EndOfEpochTransactionKind$json = {
   '1': 'EndOfEpochTransactionKind',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.EndOfEpochTransactionKind.Kind', '9': 1, '10': 'kind', '17': true},
-    {'1': 'change_epoch', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.ChangeEpoch', '9': 0, '10': 'changeEpoch'},
-    {'1': 'authenticator_state_expire', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.AuthenticatorStateExpire', '9': 0, '10': 'authenticatorStateExpire'},
-    {'1': 'execution_time_observations', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutionTimeObservations', '9': 0, '10': 'executionTimeObservations'},
-    {'1': 'bridge_chain_id', '3': 5, '4': 1, '5': 9, '9': 0, '10': 'bridgeChainId'},
-    {'1': 'bridge_object_version', '3': 6, '4': 1, '5': 4, '9': 0, '10': 'bridgeObjectVersion'},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.EndOfEpochTransactionKind.Kind',
+      '9': 1,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'change_epoch',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ChangeEpoch',
+      '9': 0,
+      '10': 'changeEpoch'
+    },
+    {
+      '1': 'authenticator_state_expire',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.AuthenticatorStateExpire',
+      '9': 0,
+      '10': 'authenticatorStateExpire'
+    },
+    {
+      '1': 'execution_time_observations',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutionTimeObservations',
+      '9': 0,
+      '10': 'executionTimeObservations'
+    },
+    {
+      '1': 'bridge_chain_id',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'bridgeChainId'
+    },
+    {
+      '1': 'bridge_object_version',
+      '3': 6,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'bridgeObjectVersion'
+    },
     {'1': 'storage_cost', '3': 7, '4': 1, '5': 4, '9': 0, '10': 'storageCost'},
   ],
   '4': [EndOfEpochTransactionKind_Kind$json],
@@ -673,8 +1268,24 @@ final $typed_data.Uint8List endOfEpochTransactionKindDescriptor = $convert.base6
 const AuthenticatorStateExpire$json = {
   '1': 'AuthenticatorStateExpire',
   '2': [
-    {'1': 'min_epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'minEpoch', '17': true},
-    {'1': 'authenticator_object_initial_shared_version', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'authenticatorObjectInitialSharedVersion', '17': true},
+    {
+      '1': 'min_epoch',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'minEpoch',
+      '17': true
+    },
+    {
+      '1': 'authenticator_object_initial_shared_version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'authenticatorObjectInitialSharedVersion',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_min_epoch'},
@@ -693,8 +1304,23 @@ final $typed_data.Uint8List authenticatorStateExpireDescriptor = $convert.base64
 const ExecutionTimeObservations$json = {
   '1': 'ExecutionTimeObservations',
   '2': [
-    {'1': 'version', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'version', '17': true},
-    {'1': 'observations', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.ExecutionTimeObservation', '10': 'observations'},
+    {
+      '1': 'version',
+      '3': 1,
+      '4': 1,
+      '5': 5,
+      '9': 0,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'observations',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutionTimeObservation',
+      '10': 'observations'
+    },
   ],
   '8': [
     {'1': '_version'},
@@ -711,9 +1337,34 @@ final $typed_data.Uint8List executionTimeObservationsDescriptor = $convert.base6
 const ExecutionTimeObservation$json = {
   '1': 'ExecutionTimeObservation',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.ExecutionTimeObservation.ExecutionTimeObservationKind', '9': 0, '10': 'kind', '17': true},
-    {'1': 'move_entry_point', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveCall', '9': 1, '10': 'moveEntryPoint', '17': true},
-    {'1': 'validator_observations', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.ValidatorExecutionTimeObservation', '10': 'validatorObservations'},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.ExecutionTimeObservation.ExecutionTimeObservationKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'move_entry_point',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveCall',
+      '9': 1,
+      '10': 'moveEntryPoint',
+      '17': true
+    },
+    {
+      '1': 'validator_observations',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorExecutionTimeObservation',
+      '10': 'validatorObservations'
+    },
   ],
   '4': [ExecutionTimeObservation_ExecutionTimeObservationKind$json],
   '8': [
@@ -754,8 +1405,25 @@ final $typed_data.Uint8List executionTimeObservationDescriptor = $convert.base64
 const ValidatorExecutionTimeObservation$json = {
   '1': 'ValidatorExecutionTimeObservation',
   '2': [
-    {'1': 'validator', '3': 1, '4': 1, '5': 12, '9': 0, '10': 'validator', '17': true},
-    {'1': 'duration', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '9': 1, '10': 'duration', '17': true},
+    {
+      '1': 'validator',
+      '3': 1,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'validator',
+      '17': true
+    },
+    {
+      '1': 'duration',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '9': 1,
+      '10': 'duration',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_validator'},
@@ -764,8 +1432,8 @@ const ValidatorExecutionTimeObservation$json = {
 };
 
 /// Descriptor for `ValidatorExecutionTimeObservation`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List validatorExecutionTimeObservationDescriptor = $convert.base64Decode(
-    'CiFWYWxpZGF0b3JFeGVjdXRpb25UaW1lT2JzZXJ2YXRpb24SIQoJdmFsaWRhdG9yGAEgASgMSA'
-    'BSCXZhbGlkYXRvcogBARI6CghkdXJhdGlvbhgCIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJh'
-    'dGlvbkgBUghkdXJhdGlvbogBAUIMCgpfdmFsaWRhdG9yQgsKCV9kdXJhdGlvbg==');
-
+final $typed_data.Uint8List validatorExecutionTimeObservationDescriptor =
+    $convert.base64Decode(
+        'CiFWYWxpZGF0b3JFeGVjdXRpb25UaW1lT2JzZXJ2YXRpb24SIQoJdmFsaWRhdG9yGAEgASgMSA'
+        'BSCXZhbGlkYXRvcogBARI6CghkdXJhdGlvbhgCIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJh'
+        'dGlvbkgBUghkdXJhdGlvbogBAUIMCgpfdmFsaWRhdG9yQgsKCV9kdXJhdGlvbg==');

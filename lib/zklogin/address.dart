@@ -8,19 +8,20 @@ import 'package:sui/utils/sha.dart';
 import 'package:sui/zklogin/utils.dart';
 
 String computeZkLoginAddressFromSeed(BigInt addressSeed, String iss) {
-	final addressSeedBytesBigEndian = toBigEndianBytes(addressSeed, 32);
-	if (iss == 'accounts.google.com') {
-		iss = 'https://accounts.google.com';
-	}
-	final addressParamBytes = utf8.encode(iss);
-	final tmp = Uint8List(2 + addressSeedBytesBigEndian.length + addressParamBytes.length);
+  final addressSeedBytesBigEndian = toBigEndianBytes(addressSeed, 32);
+  if (iss == 'accounts.google.com') {
+    iss = 'https://accounts.google.com';
+  }
+  final addressParamBytes = utf8.encode(iss);
+  final tmp = Uint8List(
+      2 + addressSeedBytesBigEndian.length + addressParamBytes.length);
 
-	tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.ZkLogin]);
-	tmp.setAll(1, [addressParamBytes.length]);
-	tmp.setAll(2, addressParamBytes);
-	tmp.setAll(2 + addressParamBytes.length, addressSeedBytesBigEndian);
+  tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.ZkLogin]);
+  tmp.setAll(1, [addressParamBytes.length]);
+  tmp.setAll(2, addressParamBytes);
+  tmp.setAll(2 + addressParamBytes.length, addressSeedBytesBigEndian);
 
-	return normalizeSuiAddress(
-		Hex.encode(blake2b(tmp)).substring(0, SUI_ADDRESS_LENGTH * 2),
-	);
+  return normalizeSuiAddress(
+    Hex.encode(blake2b(tmp)).substring(0, SUI_ADDRESS_LENGTH * 2),
+  );
 }

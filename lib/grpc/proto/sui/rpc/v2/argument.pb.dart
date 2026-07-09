@@ -38,21 +38,32 @@ class Argument extends $pb.GeneratedMessage {
 
   Argument._();
 
-  factory Argument.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Argument.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Argument.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Argument.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Argument', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<Argument_ArgumentKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: Argument_ArgumentKind.ARGUMENT_KIND_UNKNOWN, valueOf: Argument_ArgumentKind.valueOf, enumValues: Argument_ArgumentKind.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Argument',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<Argument_ArgumentKind>(
+        1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: Argument_ArgumentKind.ARGUMENT_KIND_UNKNOWN,
+        valueOf: Argument_ArgumentKind.valueOf,
+        enumValues: Argument_ArgumentKind.values)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'input', $pb.PbFieldType.OU3)
     ..a<$core.int>(3, _omitFieldNames ? '' : 'result', $pb.PbFieldType.OU3)
     ..a<$core.int>(4, _omitFieldNames ? '' : 'subresult', $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Argument clone() => Argument()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Argument copyWith(void Function(Argument) updates) => super.copyWith((message) => updates(message as Argument)) as Argument;
+  Argument copyWith(void Function(Argument) updates) =>
+      super.copyWith((message) => updates(message as Argument)) as Argument;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -63,7 +74,8 @@ class Argument extends $pb.GeneratedMessage {
   Argument createEmptyInstance() => create();
   static $pb.PbList<Argument> createRepeated() => $pb.PbList<Argument>();
   @$core.pragma('dart2js:noInline')
-  static Argument getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Argument>(create);
+  static Argument getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Argument>(create);
   static Argument? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -106,6 +118,7 @@ class Argument extends $pb.GeneratedMessage {
   void clearSubresult() => $_clearField(4);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

@@ -32,20 +32,38 @@ class ProtocolConfig extends $pb.GeneratedMessage {
 
   ProtocolConfig._();
 
-  factory ProtocolConfig.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ProtocolConfig.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ProtocolConfig.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ProtocolConfig.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ProtocolConfig', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'protocolVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..m<$core.String, $core.bool>(2, _omitFieldNames ? '' : 'featureFlags', entryClassName: 'ProtocolConfig.FeatureFlagsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OB, packageName: const $pb.PackageName('sui.rpc.v2'))
-    ..m<$core.String, $core.String>(3, _omitFieldNames ? '' : 'attributes', entryClassName: 'ProtocolConfig.AttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('sui.rpc.v2'))
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ProtocolConfig',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'protocolVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..m<$core.String, $core.bool>(2, _omitFieldNames ? '' : 'featureFlags',
+        entryClassName: 'ProtocolConfig.FeatureFlagsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OB,
+        packageName: const $pb.PackageName('sui.rpc.v2'))
+    ..m<$core.String, $core.String>(3, _omitFieldNames ? '' : 'attributes',
+        entryClassName: 'ProtocolConfig.AttributesEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('sui.rpc.v2'))
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProtocolConfig clone() => ProtocolConfig()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ProtocolConfig copyWith(void Function(ProtocolConfig) updates) => super.copyWith((message) => updates(message as ProtocolConfig)) as ProtocolConfig;
+  ProtocolConfig copyWith(void Function(ProtocolConfig) updates) =>
+      super.copyWith((message) => updates(message as ProtocolConfig))
+          as ProtocolConfig;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -54,9 +72,11 @@ class ProtocolConfig extends $pb.GeneratedMessage {
   static ProtocolConfig create() => ProtocolConfig._();
   @$core.override
   ProtocolConfig createEmptyInstance() => create();
-  static $pb.PbList<ProtocolConfig> createRepeated() => $pb.PbList<ProtocolConfig>();
+  static $pb.PbList<ProtocolConfig> createRepeated() =>
+      $pb.PbList<ProtocolConfig>();
   @$core.pragma('dart2js:noInline')
-  static ProtocolConfig getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ProtocolConfig>(create);
+  static ProtocolConfig getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ProtocolConfig>(create);
   static ProtocolConfig? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -75,6 +95,7 @@ class ProtocolConfig extends $pb.GeneratedMessage {
   $pb.PbMap<$core.String, $core.String> get attributes => $_getMap(2);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

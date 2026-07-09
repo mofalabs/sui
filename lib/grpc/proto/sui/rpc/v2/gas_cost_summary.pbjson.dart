@@ -18,10 +18,42 @@ import 'dart:typed_data' as $typed_data;
 const GasCostSummary$json = {
   '1': 'GasCostSummary',
   '2': [
-    {'1': 'computation_cost', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'computationCost', '17': true},
-    {'1': 'storage_cost', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'storageCost', '17': true},
-    {'1': 'storage_rebate', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'storageRebate', '17': true},
-    {'1': 'non_refundable_storage_fee', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'nonRefundableStorageFee', '17': true},
+    {
+      '1': 'computation_cost',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'computationCost',
+      '17': true
+    },
+    {
+      '1': 'storage_cost',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'storageCost',
+      '17': true
+    },
+    {
+      '1': 'storage_rebate',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'storageRebate',
+      '17': true
+    },
+    {
+      '1': 'non_refundable_storage_fee',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'nonRefundableStorageFee',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_computation_cost'},
@@ -39,4 +71,3 @@ final $typed_data.Uint8List gasCostSummaryDescriptor = $convert.base64Decode(
     '9zdG9yYWdlX2ZlZRgEIAEoBEgDUhdub25SZWZ1bmRhYmxlU3RvcmFnZUZlZYgBAUITChFfY29t'
     'cHV0YXRpb25fY29zdEIPCg1fc3RvcmFnZV9jb3N0QhEKD19zdG9yYWdlX3JlYmF0ZUIdChtfbm'
     '9uX3JlZnVuZGFibGVfc3RvcmFnZV9mZWU=');
-

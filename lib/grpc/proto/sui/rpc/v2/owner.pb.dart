@@ -37,20 +37,31 @@ class Owner extends $pb.GeneratedMessage {
 
   Owner._();
 
-  factory Owner.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Owner.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Owner.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Owner.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Owner', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<Owner_OwnerKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: Owner_OwnerKind.OWNER_KIND_UNKNOWN, valueOf: Owner_OwnerKind.valueOf, enumValues: Owner_OwnerKind.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Owner',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<Owner_OwnerKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: Owner_OwnerKind.OWNER_KIND_UNKNOWN,
+        valueOf: Owner_OwnerKind.valueOf,
+        enumValues: Owner_OwnerKind.values)
     ..aOS(2, _omitFieldNames ? '' : 'address')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Owner clone() => Owner()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Owner copyWith(void Function(Owner) updates) => super.copyWith((message) => updates(message as Owner)) as Owner;
+  Owner copyWith(void Function(Owner) updates) =>
+      super.copyWith((message) => updates(message as Owner)) as Owner;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -61,7 +72,8 @@ class Owner extends $pb.GeneratedMessage {
   Owner createEmptyInstance() => create();
   static $pb.PbList<Owner> createRepeated() => $pb.PbList<Owner>();
   @$core.pragma('dart2js:noInline')
-  static Owner getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Owner>(create);
+  static Owner getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Owner>(create);
   static Owner? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -94,6 +106,7 @@ class Owner extends $pb.GeneratedMessage {
   void clearVersion() => $_clearField(3);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

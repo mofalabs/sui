@@ -1,16 +1,11 @@
-
 import 'package:sui/models/sui_event.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
-enum Ordering {
-  Ascending, Descending
-}
+enum Ordering { Ascending, Descending }
 
-enum ExecuteTransaction {
-  WaitForEffectsCert,
-  WaitForLocalExecution
-}
+enum ExecuteTransaction { WaitForEffectsCert, WaitForLocalExecution }
+
 enum TransactionKindName {
   TransferObject,
   Publish,
@@ -26,7 +21,7 @@ typedef SuiJsonValue = dynamic;
 
 typedef TransactionEvents = List<SuiEvent>;
 
-dynamic getTransactionKind(SuiTransactionBlockResponse data){
+dynamic getTransactionKind(SuiTransactionBlockResponse data) {
   return data.transaction?.data.transaction;
 }
 
@@ -172,11 +167,8 @@ class EffectsCert {
   EffectsCert(this.transactionEffectsDigest, this.effects, this.finalityInfo);
 
   factory EffectsCert.fromJson(dynamic data) {
-    return EffectsCert(
-      data['transactionEffectsDigest'],
-      TransactionEffects.fromJson(data['effects']),
-      data['finalityInfo']
-    );
+    return EffectsCert(data['transactionEffectsDigest'],
+        TransactionEffects.fromJson(data['effects']), data['finalityInfo']);
   }
 
   Map<String, dynamic> toJson() {
@@ -206,11 +198,8 @@ class AuthorityQuorumSignInfo {
       }
     }
 
-    return AuthorityQuorumSignInfo(
-      data['epoch'],
-      signatureList,
-      (data['signers_map'] as List).cast<int>()
-    );
+    return AuthorityQuorumSignInfo(data['epoch'], signatureList,
+        (data['signers_map'] as List).cast<int>());
   }
 
   Map<String, dynamic> toJson() {
@@ -230,9 +219,7 @@ class TransferObject {
 
   factory TransferObject.fromJson(dynamic data) {
     return TransferObject(
-      data['recipient'],
-      SuiObjectRef.fromJson(['objectRef'])
-    );
+        data['recipient'], SuiObjectRef.fromJson(['objectRef']));
   }
 
   Map<String, dynamic> toJson() {
@@ -250,10 +237,7 @@ class SuiTransferSui {
   SuiTransferSui(this.recipient, this.amount);
 
   factory SuiTransferSui.fromJson(dynamic data) {
-    return SuiTransferSui(
-      data['recipient'],
-      data['amount']
-    );
+    return SuiTransferSui(data['recipient'], data['amount']);
   }
 
   Map<String, dynamic> toJson() {
@@ -273,10 +257,7 @@ class SuiChangeEpoch {
 
   factory SuiChangeEpoch.fromJson(dynamic data) {
     return SuiChangeEpoch(
-      data['epoch'],
-      data['storage_charge'],
-      data['computation_charge']
-    );
+        data['epoch'], data['storage_charge'], data['computation_charge']);
   }
 
   Map<String, dynamic> toJson() {
@@ -296,14 +277,11 @@ class Pay {
   Pay(this.coins, this.recipients, this.amounts);
 
   factory Pay.fromJson(dynamic data) {
-    final coinsList = (data['coins'] as List).map((e) => SuiObjectRef.fromJson(e)).toList();
+    final coinsList =
+        (data['coins'] as List).map((e) => SuiObjectRef.fromJson(e)).toList();
     final recipientsList = data['recipients'].cast<String>();
     final amountsList = data['amounts'].cast<int>();
-    return Pay(
-      coinsList,
-      recipientsList,
-      amountsList
-    );
+    return Pay(coinsList, recipientsList, amountsList);
   }
 
   Map<String, dynamic> toJson() {
@@ -341,11 +319,7 @@ class PaySui {
       amountsList.add(amount);
     }
 
-    return PaySui(
-      coinsList,
-      recipientsList,
-      amountsList
-    );
+    return PaySui(coinsList, recipientsList, amountsList);
   }
 
   Map<String, dynamic> toJson() {
@@ -364,14 +338,10 @@ class PayAllSui {
   PayAllSui(this.coins, this.recipient);
 
   factory PayAllSui.fromJson(dynamic data) {
-    final coinsList = (data['coins'] as List)
-      .map((x) => SuiObjectRef.fromJson(x))
-      .toList();
+    final coinsList =
+        (data['coins'] as List).map((x) => SuiObjectRef.fromJson(x)).toList();
 
-    return PayAllSui(
-      coinsList,
-      data['recipient']
-    );
+    return PayAllSui(coinsList, data['recipient']);
   }
 
   Map<String, dynamic> toJson() {
@@ -389,13 +359,8 @@ class MoveCall {
   List<String>? typeArguments;
   List<SuiJsonValue>? arguments;
 
-  MoveCall(
-    this.package,
-    this.module,
-    this.function,
-    this.typeArguments,
-    this.arguments
-  );
+  MoveCall(this.package, this.module, this.function, this.typeArguments,
+      this.arguments);
 
   factory MoveCall.fromJson(dynamic data) {
     dynamic pkg;
@@ -404,13 +369,8 @@ class MoveCall {
     } else {
       pkg = SuiObjectRef.fromJson(data['package']);
     }
-    return MoveCall(
-      pkg,
-      data['module'],
-      data['function'],
-      data['typeArguments'],
-      data['arguments']
-    );
+    return MoveCall(pkg, data['module'], data['function'],
+        data['typeArguments'], data['arguments']);
   }
 }
 
@@ -425,27 +385,35 @@ class SuiTransactionKind {
   PayAllSui? payAllSui;
 
   SuiTransactionKind(
-    this.transferObject,
-    this.publish,
-    this.call,
-    this.transferSui,
-    this.changeEpoch,
-    this.pay,
-    this.paySui,
-    this.payAllSui
-  );
+      this.transferObject,
+      this.publish,
+      this.call,
+      this.transferSui,
+      this.changeEpoch,
+      this.pay,
+      this.paySui,
+      this.payAllSui);
 
   factory SuiTransactionKind.fromJson(dynamic data) {
     return SuiTransactionKind(
-      data['TransferObject'] != null ? TransferObject.fromJson(data['TransferObject']) : null,
-      data['Publish'] != null ? SuiMovePackage.fromJson(data['Publish']) : null,
-      data['Call'] != null ? MoveCall.fromJson(data['Call']) : null,
-      data['TransferSui'] != null ? SuiTransferSui.fromJson(data['TransferSui']) : null,
-      data['ChangeEpoch'] != null ? SuiChangeEpoch.fromJson(data['ChangeEpoch']) : null,
-      data['Pay'] != null ? Pay.fromJson(data['Pay']) : null,
-      data['PaySui'] != null ? PaySui.fromJson(data['PaySui']) : null,
-      data['PayAllSui'] != null ? PayAllSui.fromJson(data['PayAllSui']) : null
-    );
+        data['TransferObject'] != null
+            ? TransferObject.fromJson(data['TransferObject'])
+            : null,
+        data['Publish'] != null
+            ? SuiMovePackage.fromJson(data['Publish'])
+            : null,
+        data['Call'] != null ? MoveCall.fromJson(data['Call']) : null,
+        data['TransferSui'] != null
+            ? SuiTransferSui.fromJson(data['TransferSui'])
+            : null,
+        data['ChangeEpoch'] != null
+            ? SuiChangeEpoch.fromJson(data['ChangeEpoch'])
+            : null,
+        data['Pay'] != null ? Pay.fromJson(data['Pay']) : null,
+        data['PaySui'] != null ? PaySui.fromJson(data['PaySui']) : null,
+        data['PayAllSui'] != null
+            ? PayAllSui.fromJson(data['PayAllSui'])
+            : null);
   }
 }
 
@@ -458,10 +426,7 @@ class SuiGasData {
 
   factory SuiGasData.fromJson(dynamic data) {
     return SuiGasData(
-      SuiObjectRef.fromJson(data['payment']),
-      data['price'],
-      data['budget']
-    );
+        SuiObjectRef.fromJson(data['payment']), data['price'], data['budget']);
   }
 }
 
@@ -470,14 +435,9 @@ class SuiTransactionData {
   SuiAddress sender;
   SuiGasData gasData;
 
-  SuiTransactionData(
-    this.transactions,
-    this.sender,
-    this.gasData
-  );
+  SuiTransactionData(this.transactions, this.sender, this.gasData);
 
   factory SuiTransactionData.fromJson(dynamic data) {
-
     final txnsKind = <SuiTransactionKind>[];
     final txns = data['transactions'];
     for (var txn in txns) {
@@ -485,10 +445,7 @@ class SuiTransactionData {
     }
 
     return SuiTransactionData(
-      txnsKind,
-      data['sender'],
-      SuiGasData.fromJson(data['gasData'])
-    );
+        txnsKind, data['sender'], SuiGasData.fromJson(data['gasData']));
   }
 }
 
@@ -499,26 +456,18 @@ class CertifiedTransaction {
   AuthorityQuorumSignInfo authSignInfo;
 
   CertifiedTransaction(
-    this.transactionDigest,
-    this.data,
-    this.txSignatures,
-    this.authSignInfo
-  );
+      this.transactionDigest, this.data, this.txSignatures, this.authSignInfo);
 
   factory CertifiedTransaction.fromJson(dynamic data) {
     return CertifiedTransaction(
-      data['transactionDigest'],
-      SuiTransactionData.fromJson(data['data']),
-      List<String>.from(data['txSignatures']),
-      AuthorityQuorumSignInfo.fromJson(data['authSignInfo'])
-    );
+        data['transactionDigest'],
+        SuiTransactionData.fromJson(data['data']),
+        List<String>.from(data['txSignatures']),
+        AuthorityQuorumSignInfo.fromJson(data['authSignInfo']));
   }
-
 }
 
-enum ExecutionStatusType{
-  success, failure
-}
+enum ExecutionStatusType { success, failure }
 
 class GasCostSummary {
   int computationCost;
@@ -526,19 +475,15 @@ class GasCostSummary {
   int storageRebate;
   int nonRefundableStorageFee;
 
-  GasCostSummary(
-    this.computationCost,
-    this.storageCost,
-    this.storageRebate,
-    this.nonRefundableStorageFee
-  );
+  GasCostSummary(this.computationCost, this.storageCost, this.storageRebate,
+      this.nonRefundableStorageFee);
 
   factory GasCostSummary.fromJson(dynamic data) {
     return GasCostSummary(
-      int.parse(data['computationCost']??'0'),
-      int.parse(data['storageCost']??'0'),
-      int.parse(data['storageRebate']??'0'),
-      int.parse(data['nonRefundableStorageFee']??'0'),
+      int.parse(data['computationCost'] ?? '0'),
+      int.parse(data['storageCost'] ?? '0'),
+      int.parse(data['storageRebate'] ?? '0'),
+      int.parse(data['nonRefundableStorageFee'] ?? '0'),
     );
   }
 }
@@ -551,9 +496,7 @@ class ExecutionStatus {
 
   factory ExecutionStatus.fromJson(dynamic data) {
     return ExecutionStatus(
-      ExecutionStatusType.values.byName(data['status']),
-      data['error']
-    );
+        ExecutionStatusType.values.byName(data['status']), data['error']);
   }
 }
 
@@ -564,10 +507,8 @@ class OwnedObjectRef {
   OwnedObjectRef(this.owner, this.reference);
 
   factory OwnedObjectRef.fromJson(dynamic data) {
-    return OwnedObjectRef(
-      ObjectOwner.fromJson(data['owner']),
-      SuiObjectRef.fromJson(data['reference'])
-    );
+    return OwnedObjectRef(ObjectOwner.fromJson(data['owner']),
+        SuiObjectRef.fromJson(data['reference']));
   }
 }
 
@@ -575,27 +516,37 @@ class TransactionEffects {
   /// The status of the execution
   ExecutionStatus status;
   GasCostSummary gasUsed;
+
   /// The object references of the shared objects used in this transaction. Empty if no shared objects were used.
   List<SuiObjectRef>? sharedObjects;
+
   /// The transaction digest
   TransactionDigest transactionDigest;
+
   /// ObjectRef and owner of new objects created
   List<OwnedObjectRef>? created;
+
   /// ObjectRef and owner of mutated objects, including gas object
   List<OwnedObjectRef> mutated;
+
   /// ObjectRef and owner of objects that are unwrapped in this transaction.
   /// Unwrapped objects are objects that were wrapped into other objects in the past,
   /// and just got extracted out.
   List<OwnedObjectRef>? unwrapped;
+
   /// Object Refs of objects now deleted (the old refs)
   List<SuiObjectRef>? deleted;
+
   /// Object refs of objects now wrapped in other objects
   List<SuiObjectRef>? wrapped;
+
   /// The updated gas object reference. Have a dedicated field for convenient access.
   /// It's also included in mutated.
   OwnedObjectRef gasObject;
+
   /// The events emitted during execution. Note that only successful transactions emit events
   List<dynamic>? events;
+
   /// The set of transaction digests this transaction depends on
   List<TransactionDigest> dependencies;
 
@@ -714,11 +665,12 @@ class BalanceChange {
 
 class SuiTransactionBlockData {
   String messageVersion;
-  Map<String,dynamic> transaction;
+  Map<String, dynamic> transaction;
   SuiAddress sender;
-  Map<String,dynamic> gasData;
+  Map<String, dynamic> gasData;
 
-  SuiTransactionBlockData(this.messageVersion,this.transaction, this.sender,this.gasData);
+  SuiTransactionBlockData(
+      this.messageVersion, this.transaction, this.sender, this.gasData);
 
   factory SuiTransactionBlockData.fromJson(dynamic data) {
     return SuiTransactionBlockData(
@@ -795,10 +747,7 @@ class SuiParsedMergeCoinResponse {
   SuiParsedMergeCoinResponse(this.updatedCoin, this.updatedGas);
 
   factory SuiParsedMergeCoinResponse.fromJson(dynamic data) {
-    return SuiParsedMergeCoinResponse(
-      data['updatedCoin'],
-      data['updatedGas']
-    );
+    return SuiParsedMergeCoinResponse(data['updatedCoin'], data['updatedGas']);
   }
 }
 
@@ -807,18 +756,11 @@ class SuiParsedSplitCoinResponse {
   List<SuiObject> newCoins;
   SuiObject updatedGas;
 
-  SuiParsedSplitCoinResponse(
-    this.updatedCoin,
-    this.newCoins,
-    this.updatedGas
-  );
+  SuiParsedSplitCoinResponse(this.updatedCoin, this.newCoins, this.updatedGas);
 
   factory SuiParsedSplitCoinResponse.fromJson(dynamic data) {
-    return SuiParsedSplitCoinResponse(
-      SuiObject.fromJson(data['updatedCoin']),
-      data['newCoins'],
-      SuiObject.fromJson(data['updatedGas'])
-    );
+    return SuiParsedSplitCoinResponse(SuiObject.fromJson(data['updatedCoin']),
+        data['newCoins'], SuiObject.fromJson(data['updatedGas']));
   }
 }
 
@@ -827,18 +769,11 @@ class SuiParsedPublishResponse {
   SuiPackage package;
   SuiObject updatedGas;
 
-  SuiParsedPublishResponse(
-    this.createdObjects,
-    this.package,
-    this.updatedGas
-  );
+  SuiParsedPublishResponse(this.createdObjects, this.package, this.updatedGas);
 
   factory SuiParsedPublishResponse.fromJson(dynamic data) {
     return SuiParsedPublishResponse(
-      data['createdObjects'],
-      data['package'],
-      data['updatedGas']
-    );
+        data['createdObjects'], data['package'], data['updatedGas']);
   }
 }
 
@@ -850,11 +785,7 @@ class SuiPackage {
   SuiPackage(this.digest, this.objectId, this.version);
 
   factory SuiPackage.fromJson(dynamic data) {
-    return SuiPackage(
-      data['digest'],
-      data['objectId'],
-      data['version']
-    );
+    return SuiPackage(data['digest'], data['objectId'], data['version']);
   }
 }
 
@@ -863,18 +794,13 @@ class SuiParsedTransactionResponse {
   SuiParsedMergeCoinResponse mergeCoin;
   SuiParsedPublishResponse publish;
 
-  SuiParsedTransactionResponse(
-    this.splitCoin,
-    this.mergeCoin,
-    this.publish
-  );
+  SuiParsedTransactionResponse(this.splitCoin, this.mergeCoin, this.publish);
 
   factory SuiParsedTransactionResponse.fromJson(dynamic data) {
     return SuiParsedTransactionResponse(
-      SuiParsedSplitCoinResponse.fromJson(data['SplitCoin']),
-      SuiParsedMergeCoinResponse.fromJson(data['MergeCoin']),
-      SuiParsedPublishResponse.fromJson(data['Publish'])
-    );
+        SuiParsedSplitCoinResponse.fromJson(data['SplitCoin']),
+        SuiParsedMergeCoinResponse.fromJson(data['MergeCoin']),
+        SuiParsedPublishResponse.fromJson(data['Publish']));
   }
 }
 
@@ -884,23 +810,19 @@ class SuiTransactionResponse {
   int? timestampMillisecond;
   SuiParsedTransactionResponse? parsedData;
 
-  SuiTransactionResponse(
-    this.certificate,
-    this.effects,
-    this.timestampMillisecond,
-    this.parsedData
-  );
+  SuiTransactionResponse(this.certificate, this.effects,
+      this.timestampMillisecond, this.parsedData);
 
   factory SuiTransactionResponse.fromJson(dynamic data) {
     return SuiTransactionResponse(
-      CertifiedTransaction.fromJson(data['certificate']),
-      TransactionEffects.fromJson(data['effects']),
-      data['timestamp_ms'],
-      data['parsed_data'] != null ? SuiParsedTransactionResponse.fromJson(data['parsed_data']) : null
-    );
+        CertifiedTransaction.fromJson(data['certificate']),
+        TransactionEffects.fromJson(data['effects']),
+        data['timestamp_ms'],
+        data['parsed_data'] != null
+            ? SuiParsedTransactionResponse.fromJson(data['parsed_data'])
+            : null);
   }
 }
-
 
 class SuiTransactionBlockResponseOptions {
   /* Whether to show transaction input data. Default to be false. */
@@ -920,19 +842,19 @@ class SuiTransactionBlockResponseOptions {
 
   SuiTransactionBlockResponseOptions({
     this.showInput = false,
-    this.showEffects= false,
-    this.showEvents= false,
-    this.showObjectChanges= false,
-    this.showBalanceChanges= false,
+    this.showEffects = false,
+    this.showEvents = false,
+    this.showObjectChanges = false,
+    this.showBalanceChanges = false,
   });
 
   Map<String, bool> toJson() {
     return {
-      'showInput':showInput,
-      'showEffects':showEffects,
-      'showEvents':showEvents,
-      'showObjectChanges':showObjectChanges,
-      'showBalanceChanges':showBalanceChanges,
+      'showInput': showInput,
+      'showEffects': showEffects,
+      'showEvents': showEvents,
+      'showObjectChanges': showObjectChanges,
+      'showBalanceChanges': showBalanceChanges,
     };
   }
 }

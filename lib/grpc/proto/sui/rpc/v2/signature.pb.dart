@@ -21,13 +21,7 @@ import 'signature_scheme.pbenum.dart' as $2;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
-enum UserSignature_Signature {
-  simple, 
-  multisig, 
-  zklogin, 
-  passkey, 
-  notSet
-}
+enum UserSignature_Signature { simple, multisig, zklogin, passkey, notSet }
 
 /// A signature from a user.
 class UserSignature extends $pb.GeneratedMessage {
@@ -51,31 +45,48 @@ class UserSignature extends $pb.GeneratedMessage {
 
   UserSignature._();
 
-  factory UserSignature.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory UserSignature.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory UserSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UserSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static const $core.Map<$core.int, UserSignature_Signature> _UserSignature_SignatureByTag = {
-    3 : UserSignature_Signature.simple,
-    4 : UserSignature_Signature.multisig,
-    5 : UserSignature_Signature.zklogin,
-    6 : UserSignature_Signature.passkey,
-    0 : UserSignature_Signature.notSet
+  static const $core.Map<$core.int, UserSignature_Signature>
+      _UserSignature_SignatureByTag = {
+    3: UserSignature_Signature.simple,
+    4: UserSignature_Signature.multisig,
+    5: UserSignature_Signature.zklogin,
+    6: UserSignature_Signature.passkey,
+    0: UserSignature_Signature.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserSignature', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..oo(0, [3, 4, 5, 6])
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
-    ..e<$2.SignatureScheme>(2, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE, defaultOrMaker: $2.SignatureScheme.ED25519, valueOf: $2.SignatureScheme.valueOf, enumValues: $2.SignatureScheme.values)
-    ..aOM<SimpleSignature>(3, _omitFieldNames ? '' : 'simple', subBuilder: SimpleSignature.create)
-    ..aOM<MultisigAggregatedSignature>(4, _omitFieldNames ? '' : 'multisig', subBuilder: MultisigAggregatedSignature.create)
-    ..aOM<ZkLoginAuthenticator>(5, _omitFieldNames ? '' : 'zklogin', subBuilder: ZkLoginAuthenticator.create)
-    ..aOM<PasskeyAuthenticator>(6, _omitFieldNames ? '' : 'passkey', subBuilder: PasskeyAuthenticator.create)
-    ..hasRequiredFields = false
-  ;
+    ..e<$2.SignatureScheme>(
+        2, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE,
+        defaultOrMaker: $2.SignatureScheme.ED25519,
+        valueOf: $2.SignatureScheme.valueOf,
+        enumValues: $2.SignatureScheme.values)
+    ..aOM<SimpleSignature>(3, _omitFieldNames ? '' : 'simple',
+        subBuilder: SimpleSignature.create)
+    ..aOM<MultisigAggregatedSignature>(4, _omitFieldNames ? '' : 'multisig',
+        subBuilder: MultisigAggregatedSignature.create)
+    ..aOM<ZkLoginAuthenticator>(5, _omitFieldNames ? '' : 'zklogin',
+        subBuilder: ZkLoginAuthenticator.create)
+    ..aOM<PasskeyAuthenticator>(6, _omitFieldNames ? '' : 'passkey',
+        subBuilder: PasskeyAuthenticator.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserSignature clone() => UserSignature()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  UserSignature copyWith(void Function(UserSignature) updates) => super.copyWith((message) => updates(message as UserSignature)) as UserSignature;
+  UserSignature copyWith(void Function(UserSignature) updates) =>
+      super.copyWith((message) => updates(message as UserSignature))
+          as UserSignature;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -84,12 +95,15 @@ class UserSignature extends $pb.GeneratedMessage {
   static UserSignature create() => UserSignature._();
   @$core.override
   UserSignature createEmptyInstance() => create();
-  static $pb.PbList<UserSignature> createRepeated() => $pb.PbList<UserSignature>();
+  static $pb.PbList<UserSignature> createRepeated() =>
+      $pb.PbList<UserSignature>();
   @$core.pragma('dart2js:noInline')
-  static UserSignature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserSignature>(create);
+  static UserSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UserSignature>(create);
   static UserSignature? _defaultInstance;
 
-  UserSignature_Signature whichSignature() => _UserSignature_SignatureByTag[$_whichOneof(0)]!;
+  UserSignature_Signature whichSignature() =>
+      _UserSignature_SignatureByTag[$_whichOneof(0)]!;
   void clearSignature() => $_clearField($_whichOneof(0));
 
   /// This signature serialized as as BCS.
@@ -182,20 +196,34 @@ class SimpleSignature extends $pb.GeneratedMessage {
 
   SimpleSignature._();
 
-  factory SimpleSignature.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SimpleSignature.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SimpleSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SimpleSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SimpleSignature', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<$2.SignatureScheme>(1, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE, defaultOrMaker: $2.SignatureScheme.ED25519, valueOf: $2.SignatureScheme.valueOf, enumValues: $2.SignatureScheme.values)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'signature', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'publicKey', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SimpleSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<$2.SignatureScheme>(
+        1, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE,
+        defaultOrMaker: $2.SignatureScheme.ED25519,
+        valueOf: $2.SignatureScheme.valueOf,
+        enumValues: $2.SignatureScheme.values)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'signature', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(
+        3, _omitFieldNames ? '' : 'publicKey', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SimpleSignature clone() => SimpleSignature()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SimpleSignature copyWith(void Function(SimpleSignature) updates) => super.copyWith((message) => updates(message as SimpleSignature)) as SimpleSignature;
+  SimpleSignature copyWith(void Function(SimpleSignature) updates) =>
+      super.copyWith((message) => updates(message as SimpleSignature))
+          as SimpleSignature;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -204,9 +232,11 @@ class SimpleSignature extends $pb.GeneratedMessage {
   static SimpleSignature create() => SimpleSignature._();
   @$core.override
   SimpleSignature createEmptyInstance() => create();
-  static $pb.PbList<SimpleSignature> createRepeated() => $pb.PbList<SimpleSignature>();
+  static $pb.PbList<SimpleSignature> createRepeated() =>
+      $pb.PbList<SimpleSignature>();
   @$core.pragma('dart2js:noInline')
-  static SimpleSignature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SimpleSignature>(create);
+  static SimpleSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SimpleSignature>(create);
   static SimpleSignature? _defaultInstance;
 
   /// The signature scheme of this signature.
@@ -254,19 +284,29 @@ class ZkLoginPublicIdentifier extends $pb.GeneratedMessage {
 
   ZkLoginPublicIdentifier._();
 
-  factory ZkLoginPublicIdentifier.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ZkLoginPublicIdentifier.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ZkLoginPublicIdentifier.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ZkLoginPublicIdentifier.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ZkLoginPublicIdentifier', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ZkLoginPublicIdentifier',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'iss')
     ..aOS(2, _omitFieldNames ? '' : 'addressSeed')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginPublicIdentifier clone() => ZkLoginPublicIdentifier()..mergeFromMessage(this);
+  ZkLoginPublicIdentifier clone() =>
+      ZkLoginPublicIdentifier()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginPublicIdentifier copyWith(void Function(ZkLoginPublicIdentifier) updates) => super.copyWith((message) => updates(message as ZkLoginPublicIdentifier)) as ZkLoginPublicIdentifier;
+  ZkLoginPublicIdentifier copyWith(
+          void Function(ZkLoginPublicIdentifier) updates) =>
+      super.copyWith((message) => updates(message as ZkLoginPublicIdentifier))
+          as ZkLoginPublicIdentifier;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -275,9 +315,11 @@ class ZkLoginPublicIdentifier extends $pb.GeneratedMessage {
   static ZkLoginPublicIdentifier create() => ZkLoginPublicIdentifier._();
   @$core.override
   ZkLoginPublicIdentifier createEmptyInstance() => create();
-  static $pb.PbList<ZkLoginPublicIdentifier> createRepeated() => $pb.PbList<ZkLoginPublicIdentifier>();
+  static $pb.PbList<ZkLoginPublicIdentifier> createRepeated() =>
+      $pb.PbList<ZkLoginPublicIdentifier>();
   @$core.pragma('dart2js:noInline')
-  static ZkLoginPublicIdentifier getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZkLoginPublicIdentifier>(create);
+  static ZkLoginPublicIdentifier getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ZkLoginPublicIdentifier>(create);
   static ZkLoginPublicIdentifier? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -316,20 +358,36 @@ class MultisigMemberPublicKey extends $pb.GeneratedMessage {
 
   MultisigMemberPublicKey._();
 
-  factory MultisigMemberPublicKey.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MultisigMemberPublicKey.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MultisigMemberPublicKey.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MultisigMemberPublicKey.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MultisigMemberPublicKey', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<$2.SignatureScheme>(1, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE, defaultOrMaker: $2.SignatureScheme.ED25519, valueOf: $2.SignatureScheme.valueOf, enumValues: $2.SignatureScheme.values)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'publicKey', $pb.PbFieldType.OY)
-    ..aOM<ZkLoginPublicIdentifier>(3, _omitFieldNames ? '' : 'zklogin', subBuilder: ZkLoginPublicIdentifier.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MultisigMemberPublicKey',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<$2.SignatureScheme>(
+        1, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE,
+        defaultOrMaker: $2.SignatureScheme.ED25519,
+        valueOf: $2.SignatureScheme.valueOf,
+        enumValues: $2.SignatureScheme.values)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'publicKey', $pb.PbFieldType.OY)
+    ..aOM<ZkLoginPublicIdentifier>(3, _omitFieldNames ? '' : 'zklogin',
+        subBuilder: ZkLoginPublicIdentifier.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigMemberPublicKey clone() => MultisigMemberPublicKey()..mergeFromMessage(this);
+  MultisigMemberPublicKey clone() =>
+      MultisigMemberPublicKey()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigMemberPublicKey copyWith(void Function(MultisigMemberPublicKey) updates) => super.copyWith((message) => updates(message as MultisigMemberPublicKey)) as MultisigMemberPublicKey;
+  MultisigMemberPublicKey copyWith(
+          void Function(MultisigMemberPublicKey) updates) =>
+      super.copyWith((message) => updates(message as MultisigMemberPublicKey))
+          as MultisigMemberPublicKey;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -338,9 +396,11 @@ class MultisigMemberPublicKey extends $pb.GeneratedMessage {
   static MultisigMemberPublicKey create() => MultisigMemberPublicKey._();
   @$core.override
   MultisigMemberPublicKey createEmptyInstance() => create();
-  static $pb.PbList<MultisigMemberPublicKey> createRepeated() => $pb.PbList<MultisigMemberPublicKey>();
+  static $pb.PbList<MultisigMemberPublicKey> createRepeated() =>
+      $pb.PbList<MultisigMemberPublicKey>();
   @$core.pragma('dart2js:noInline')
-  static MultisigMemberPublicKey getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MultisigMemberPublicKey>(create);
+  static MultisigMemberPublicKey getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MultisigMemberPublicKey>(create);
   static MultisigMemberPublicKey? _defaultInstance;
 
   /// The signature scheme of this public key.
@@ -390,19 +450,28 @@ class MultisigMember extends $pb.GeneratedMessage {
 
   MultisigMember._();
 
-  factory MultisigMember.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MultisigMember.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MultisigMember.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MultisigMember.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MultisigMember', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<MultisigMemberPublicKey>(1, _omitFieldNames ? '' : 'publicKey', subBuilder: MultisigMemberPublicKey.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MultisigMember',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<MultisigMemberPublicKey>(1, _omitFieldNames ? '' : 'publicKey',
+        subBuilder: MultisigMemberPublicKey.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'weight', $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MultisigMember clone() => MultisigMember()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigMember copyWith(void Function(MultisigMember) updates) => super.copyWith((message) => updates(message as MultisigMember)) as MultisigMember;
+  MultisigMember copyWith(void Function(MultisigMember) updates) =>
+      super.copyWith((message) => updates(message as MultisigMember))
+          as MultisigMember;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -411,9 +480,11 @@ class MultisigMember extends $pb.GeneratedMessage {
   static MultisigMember create() => MultisigMember._();
   @$core.override
   MultisigMember createEmptyInstance() => create();
-  static $pb.PbList<MultisigMember> createRepeated() => $pb.PbList<MultisigMember>();
+  static $pb.PbList<MultisigMember> createRepeated() =>
+      $pb.PbList<MultisigMember>();
   @$core.pragma('dart2js:noInline')
-  static MultisigMember getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MultisigMember>(create);
+  static MultisigMember getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MultisigMember>(create);
   static MultisigMember? _defaultInstance;
 
   /// The public key of the committee member.
@@ -453,19 +524,29 @@ class MultisigCommittee extends $pb.GeneratedMessage {
 
   MultisigCommittee._();
 
-  factory MultisigCommittee.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MultisigCommittee.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MultisigCommittee.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MultisigCommittee.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MultisigCommittee', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<MultisigMember>(1, _omitFieldNames ? '' : 'members', $pb.PbFieldType.PM, subBuilder: MultisigMember.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MultisigCommittee',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<MultisigMember>(
+        1, _omitFieldNames ? '' : 'members', $pb.PbFieldType.PM,
+        subBuilder: MultisigMember.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'threshold', $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MultisigCommittee clone() => MultisigCommittee()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigCommittee copyWith(void Function(MultisigCommittee) updates) => super.copyWith((message) => updates(message as MultisigCommittee)) as MultisigCommittee;
+  MultisigCommittee copyWith(void Function(MultisigCommittee) updates) =>
+      super.copyWith((message) => updates(message as MultisigCommittee))
+          as MultisigCommittee;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -474,9 +555,11 @@ class MultisigCommittee extends $pb.GeneratedMessage {
   static MultisigCommittee create() => MultisigCommittee._();
   @$core.override
   MultisigCommittee createEmptyInstance() => create();
-  static $pb.PbList<MultisigCommittee> createRepeated() => $pb.PbList<MultisigCommittee>();
+  static $pb.PbList<MultisigCommittee> createRepeated() =>
+      $pb.PbList<MultisigCommittee>();
   @$core.pragma('dart2js:noInline')
-  static MultisigCommittee getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MultisigCommittee>(create);
+  static MultisigCommittee getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MultisigCommittee>(create);
   static MultisigCommittee? _defaultInstance;
 
   /// A list of committee members and their corresponding weight.
@@ -513,32 +596,50 @@ class MultisigAggregatedSignature extends $pb.GeneratedMessage {
 
   MultisigAggregatedSignature._();
 
-  factory MultisigAggregatedSignature.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MultisigAggregatedSignature.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MultisigAggregatedSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MultisigAggregatedSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MultisigAggregatedSignature', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<MultisigMemberSignature>(1, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM, subBuilder: MultisigMemberSignature.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MultisigAggregatedSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<MultisigMemberSignature>(
+        1, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM,
+        subBuilder: MultisigMemberSignature.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'bitmap', $pb.PbFieldType.OU3)
-    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'legacyBitmap', $pb.PbFieldType.OY)
-    ..aOM<MultisigCommittee>(4, _omitFieldNames ? '' : 'committee', subBuilder: MultisigCommittee.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.List<$core.int>>(
+        3, _omitFieldNames ? '' : 'legacyBitmap', $pb.PbFieldType.OY)
+    ..aOM<MultisigCommittee>(4, _omitFieldNames ? '' : 'committee',
+        subBuilder: MultisigCommittee.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigAggregatedSignature clone() => MultisigAggregatedSignature()..mergeFromMessage(this);
+  MultisigAggregatedSignature clone() =>
+      MultisigAggregatedSignature()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigAggregatedSignature copyWith(void Function(MultisigAggregatedSignature) updates) => super.copyWith((message) => updates(message as MultisigAggregatedSignature)) as MultisigAggregatedSignature;
+  MultisigAggregatedSignature copyWith(
+          void Function(MultisigAggregatedSignature) updates) =>
+      super.copyWith(
+              (message) => updates(message as MultisigAggregatedSignature))
+          as MultisigAggregatedSignature;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static MultisigAggregatedSignature create() => MultisigAggregatedSignature._();
+  static MultisigAggregatedSignature create() =>
+      MultisigAggregatedSignature._();
   @$core.override
   MultisigAggregatedSignature createEmptyInstance() => create();
-  static $pb.PbList<MultisigAggregatedSignature> createRepeated() => $pb.PbList<MultisigAggregatedSignature>();
+  static $pb.PbList<MultisigAggregatedSignature> createRepeated() =>
+      $pb.PbList<MultisigAggregatedSignature>();
   @$core.pragma('dart2js:noInline')
-  static MultisigAggregatedSignature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MultisigAggregatedSignature>(create);
+  static MultisigAggregatedSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MultisigAggregatedSignature>(create);
   static MultisigAggregatedSignature? _defaultInstance;
 
   /// The plain signatures encoded with signature scheme.
@@ -600,21 +701,38 @@ class MultisigMemberSignature extends $pb.GeneratedMessage {
 
   MultisigMemberSignature._();
 
-  factory MultisigMemberSignature.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory MultisigMemberSignature.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory MultisigMemberSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory MultisigMemberSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MultisigMemberSignature', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<$2.SignatureScheme>(1, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE, defaultOrMaker: $2.SignatureScheme.ED25519, valueOf: $2.SignatureScheme.valueOf, enumValues: $2.SignatureScheme.values)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'signature', $pb.PbFieldType.OY)
-    ..aOM<ZkLoginAuthenticator>(3, _omitFieldNames ? '' : 'zklogin', subBuilder: ZkLoginAuthenticator.create)
-    ..aOM<PasskeyAuthenticator>(4, _omitFieldNames ? '' : 'passkey', subBuilder: PasskeyAuthenticator.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'MultisigMemberSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<$2.SignatureScheme>(
+        1, _omitFieldNames ? '' : 'scheme', $pb.PbFieldType.OE,
+        defaultOrMaker: $2.SignatureScheme.ED25519,
+        valueOf: $2.SignatureScheme.valueOf,
+        enumValues: $2.SignatureScheme.values)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'signature', $pb.PbFieldType.OY)
+    ..aOM<ZkLoginAuthenticator>(3, _omitFieldNames ? '' : 'zklogin',
+        subBuilder: ZkLoginAuthenticator.create)
+    ..aOM<PasskeyAuthenticator>(4, _omitFieldNames ? '' : 'passkey',
+        subBuilder: PasskeyAuthenticator.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigMemberSignature clone() => MultisigMemberSignature()..mergeFromMessage(this);
+  MultisigMemberSignature clone() =>
+      MultisigMemberSignature()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  MultisigMemberSignature copyWith(void Function(MultisigMemberSignature) updates) => super.copyWith((message) => updates(message as MultisigMemberSignature)) as MultisigMemberSignature;
+  MultisigMemberSignature copyWith(
+          void Function(MultisigMemberSignature) updates) =>
+      super.copyWith((message) => updates(message as MultisigMemberSignature))
+          as MultisigMemberSignature;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -623,9 +741,11 @@ class MultisigMemberSignature extends $pb.GeneratedMessage {
   static MultisigMemberSignature create() => MultisigMemberSignature._();
   @$core.override
   MultisigMemberSignature createEmptyInstance() => create();
-  static $pb.PbList<MultisigMemberSignature> createRepeated() => $pb.PbList<MultisigMemberSignature>();
+  static $pb.PbList<MultisigMemberSignature> createRepeated() =>
+      $pb.PbList<MultisigMemberSignature>();
   @$core.pragma('dart2js:noInline')
-  static MultisigMemberSignature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MultisigMemberSignature>(create);
+  static MultisigMemberSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MultisigMemberSignature>(create);
   static MultisigMemberSignature? _defaultInstance;
 
   /// The signature scheme of this signature.
@@ -693,22 +813,37 @@ class ZkLoginAuthenticator extends $pb.GeneratedMessage {
 
   ZkLoginAuthenticator._();
 
-  factory ZkLoginAuthenticator.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ZkLoginAuthenticator.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ZkLoginAuthenticator.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ZkLoginAuthenticator.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ZkLoginAuthenticator', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<ZkLoginInputs>(1, _omitFieldNames ? '' : 'inputs', subBuilder: ZkLoginInputs.create)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'maxEpoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<SimpleSignature>(3, _omitFieldNames ? '' : 'signature', subBuilder: SimpleSignature.create)
-    ..aOM<ZkLoginPublicIdentifier>(4, _omitFieldNames ? '' : 'publicIdentifier', subBuilder: ZkLoginPublicIdentifier.create)
-    ..aOM<$1.JwkId>(5, _omitFieldNames ? '' : 'jwkId', subBuilder: $1.JwkId.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ZkLoginAuthenticator',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<ZkLoginInputs>(1, _omitFieldNames ? '' : 'inputs',
+        subBuilder: ZkLoginInputs.create)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'maxEpoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<SimpleSignature>(3, _omitFieldNames ? '' : 'signature',
+        subBuilder: SimpleSignature.create)
+    ..aOM<ZkLoginPublicIdentifier>(4, _omitFieldNames ? '' : 'publicIdentifier',
+        subBuilder: ZkLoginPublicIdentifier.create)
+    ..aOM<$1.JwkId>(5, _omitFieldNames ? '' : 'jwkId',
+        subBuilder: $1.JwkId.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginAuthenticator clone() => ZkLoginAuthenticator()..mergeFromMessage(this);
+  ZkLoginAuthenticator clone() =>
+      ZkLoginAuthenticator()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginAuthenticator copyWith(void Function(ZkLoginAuthenticator) updates) => super.copyWith((message) => updates(message as ZkLoginAuthenticator)) as ZkLoginAuthenticator;
+  ZkLoginAuthenticator copyWith(void Function(ZkLoginAuthenticator) updates) =>
+      super.copyWith((message) => updates(message as ZkLoginAuthenticator))
+          as ZkLoginAuthenticator;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -717,9 +852,11 @@ class ZkLoginAuthenticator extends $pb.GeneratedMessage {
   static ZkLoginAuthenticator create() => ZkLoginAuthenticator._();
   @$core.override
   ZkLoginAuthenticator createEmptyInstance() => create();
-  static $pb.PbList<ZkLoginAuthenticator> createRepeated() => $pb.PbList<ZkLoginAuthenticator>();
+  static $pb.PbList<ZkLoginAuthenticator> createRepeated() =>
+      $pb.PbList<ZkLoginAuthenticator>();
   @$core.pragma('dart2js:noInline')
-  static ZkLoginAuthenticator getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZkLoginAuthenticator>(create);
+  static ZkLoginAuthenticator getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ZkLoginAuthenticator>(create);
   static ZkLoginAuthenticator? _defaultInstance;
 
   /// Zklogin proof and inputs required to perform proof verification.
@@ -799,21 +936,31 @@ class ZkLoginInputs extends $pb.GeneratedMessage {
 
   ZkLoginInputs._();
 
-  factory ZkLoginInputs.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ZkLoginInputs.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ZkLoginInputs.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ZkLoginInputs.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ZkLoginInputs', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<ZkLoginProof>(1, _omitFieldNames ? '' : 'proofPoints', subBuilder: ZkLoginProof.create)
-    ..aOM<ZkLoginClaim>(2, _omitFieldNames ? '' : 'issBase64Details', subBuilder: ZkLoginClaim.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ZkLoginInputs',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<ZkLoginProof>(1, _omitFieldNames ? '' : 'proofPoints',
+        subBuilder: ZkLoginProof.create)
+    ..aOM<ZkLoginClaim>(2, _omitFieldNames ? '' : 'issBase64Details',
+        subBuilder: ZkLoginClaim.create)
     ..aOS(3, _omitFieldNames ? '' : 'headerBase64')
     ..aOS(4, _omitFieldNames ? '' : 'addressSeed')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ZkLoginInputs clone() => ZkLoginInputs()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginInputs copyWith(void Function(ZkLoginInputs) updates) => super.copyWith((message) => updates(message as ZkLoginInputs)) as ZkLoginInputs;
+  ZkLoginInputs copyWith(void Function(ZkLoginInputs) updates) =>
+      super.copyWith((message) => updates(message as ZkLoginInputs))
+          as ZkLoginInputs;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -822,9 +969,11 @@ class ZkLoginInputs extends $pb.GeneratedMessage {
   static ZkLoginInputs create() => ZkLoginInputs._();
   @$core.override
   ZkLoginInputs createEmptyInstance() => create();
-  static $pb.PbList<ZkLoginInputs> createRepeated() => $pb.PbList<ZkLoginInputs>();
+  static $pb.PbList<ZkLoginInputs> createRepeated() =>
+      $pb.PbList<ZkLoginInputs>();
   @$core.pragma('dart2js:noInline')
-  static ZkLoginInputs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZkLoginInputs>(create);
+  static ZkLoginInputs getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ZkLoginInputs>(create);
   static ZkLoginInputs? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -885,20 +1034,28 @@ class ZkLoginProof extends $pb.GeneratedMessage {
 
   ZkLoginProof._();
 
-  factory ZkLoginProof.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ZkLoginProof.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ZkLoginProof.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ZkLoginProof.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ZkLoginProof', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ZkLoginProof',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<CircomG1>(1, _omitFieldNames ? '' : 'a', subBuilder: CircomG1.create)
     ..aOM<CircomG2>(2, _omitFieldNames ? '' : 'b', subBuilder: CircomG2.create)
     ..aOM<CircomG1>(3, _omitFieldNames ? '' : 'c', subBuilder: CircomG1.create)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ZkLoginProof clone() => ZkLoginProof()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginProof copyWith(void Function(ZkLoginProof) updates) => super.copyWith((message) => updates(message as ZkLoginProof)) as ZkLoginProof;
+  ZkLoginProof copyWith(void Function(ZkLoginProof) updates) =>
+      super.copyWith((message) => updates(message as ZkLoginProof))
+          as ZkLoginProof;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -907,9 +1064,11 @@ class ZkLoginProof extends $pb.GeneratedMessage {
   static ZkLoginProof create() => ZkLoginProof._();
   @$core.override
   ZkLoginProof createEmptyInstance() => create();
-  static $pb.PbList<ZkLoginProof> createRepeated() => $pb.PbList<ZkLoginProof>();
+  static $pb.PbList<ZkLoginProof> createRepeated() =>
+      $pb.PbList<ZkLoginProof>();
   @$core.pragma('dart2js:noInline')
-  static ZkLoginProof getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZkLoginProof>(create);
+  static ZkLoginProof getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ZkLoginProof>(create);
   static ZkLoginProof? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -960,19 +1119,28 @@ class ZkLoginClaim extends $pb.GeneratedMessage {
 
   ZkLoginClaim._();
 
-  factory ZkLoginClaim.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ZkLoginClaim.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ZkLoginClaim.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ZkLoginClaim.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ZkLoginClaim', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ZkLoginClaim',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'value')
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'indexMod4', $pb.PbFieldType.OU3, protoName: 'index_mod_4')
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'indexMod4', $pb.PbFieldType.OU3,
+        protoName: 'index_mod_4')
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ZkLoginClaim clone() => ZkLoginClaim()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ZkLoginClaim copyWith(void Function(ZkLoginClaim) updates) => super.copyWith((message) => updates(message as ZkLoginClaim)) as ZkLoginClaim;
+  ZkLoginClaim copyWith(void Function(ZkLoginClaim) updates) =>
+      super.copyWith((message) => updates(message as ZkLoginClaim))
+          as ZkLoginClaim;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -981,9 +1149,11 @@ class ZkLoginClaim extends $pb.GeneratedMessage {
   static ZkLoginClaim create() => ZkLoginClaim._();
   @$core.override
   ZkLoginClaim createEmptyInstance() => create();
-  static $pb.PbList<ZkLoginClaim> createRepeated() => $pb.PbList<ZkLoginClaim>();
+  static $pb.PbList<ZkLoginClaim> createRepeated() =>
+      $pb.PbList<ZkLoginClaim>();
   @$core.pragma('dart2js:noInline')
-  static ZkLoginClaim getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ZkLoginClaim>(create);
+  static ZkLoginClaim getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ZkLoginClaim>(create);
   static ZkLoginClaim? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1021,20 +1191,27 @@ class CircomG1 extends $pb.GeneratedMessage {
 
   CircomG1._();
 
-  factory CircomG1.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CircomG1.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CircomG1.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CircomG1.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CircomG1', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CircomG1',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'e0')
     ..aOS(2, _omitFieldNames ? '' : 'e1')
     ..aOS(3, _omitFieldNames ? '' : 'e2')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CircomG1 clone() => CircomG1()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CircomG1 copyWith(void Function(CircomG1) updates) => super.copyWith((message) => updates(message as CircomG1)) as CircomG1;
+  CircomG1 copyWith(void Function(CircomG1) updates) =>
+      super.copyWith((message) => updates(message as CircomG1)) as CircomG1;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1045,7 +1222,8 @@ class CircomG1 extends $pb.GeneratedMessage {
   CircomG1 createEmptyInstance() => create();
   static $pb.PbList<CircomG1> createRepeated() => $pb.PbList<CircomG1>();
   @$core.pragma('dart2js:noInline')
-  static CircomG1 getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CircomG1>(create);
+  static CircomG1 getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CircomG1>(create);
   static CircomG1? _defaultInstance;
 
   /// base10 encoded Bn254FieldElement
@@ -1101,23 +1279,30 @@ class CircomG2 extends $pb.GeneratedMessage {
 
   CircomG2._();
 
-  factory CircomG2.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CircomG2.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CircomG2.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CircomG2.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CircomG2', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CircomG2',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'e00')
     ..aOS(2, _omitFieldNames ? '' : 'e01')
     ..aOS(3, _omitFieldNames ? '' : 'e10')
     ..aOS(4, _omitFieldNames ? '' : 'e11')
     ..aOS(5, _omitFieldNames ? '' : 'e20')
     ..aOS(6, _omitFieldNames ? '' : 'e21')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CircomG2 clone() => CircomG2()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CircomG2 copyWith(void Function(CircomG2) updates) => super.copyWith((message) => updates(message as CircomG2)) as CircomG2;
+  CircomG2 copyWith(void Function(CircomG2) updates) =>
+      super.copyWith((message) => updates(message as CircomG2)) as CircomG2;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1128,7 +1313,8 @@ class CircomG2 extends $pb.GeneratedMessage {
   CircomG2 createEmptyInstance() => create();
   static $pb.PbList<CircomG2> createRepeated() => $pb.PbList<CircomG2>();
   @$core.pragma('dart2js:noInline')
-  static CircomG2 getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CircomG2>(create);
+  static CircomG2 getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CircomG2>(create);
   static CircomG2? _defaultInstance;
 
   /// base10 encoded Bn254FieldElement
@@ -1213,20 +1399,31 @@ class PasskeyAuthenticator extends $pb.GeneratedMessage {
 
   PasskeyAuthenticator._();
 
-  factory PasskeyAuthenticator.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory PasskeyAuthenticator.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory PasskeyAuthenticator.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory PasskeyAuthenticator.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasskeyAuthenticator', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, _omitFieldNames ? '' : 'authenticatorData', $pb.PbFieldType.OY)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'PasskeyAuthenticator',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'authenticatorData', $pb.PbFieldType.OY)
     ..aOS(2, _omitFieldNames ? '' : 'clientDataJson')
-    ..aOM<SimpleSignature>(3, _omitFieldNames ? '' : 'signature', subBuilder: SimpleSignature.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<SimpleSignature>(3, _omitFieldNames ? '' : 'signature',
+        subBuilder: SimpleSignature.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PasskeyAuthenticator clone() => PasskeyAuthenticator()..mergeFromMessage(this);
+  PasskeyAuthenticator clone() =>
+      PasskeyAuthenticator()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  PasskeyAuthenticator copyWith(void Function(PasskeyAuthenticator) updates) => super.copyWith((message) => updates(message as PasskeyAuthenticator)) as PasskeyAuthenticator;
+  PasskeyAuthenticator copyWith(void Function(PasskeyAuthenticator) updates) =>
+      super.copyWith((message) => updates(message as PasskeyAuthenticator))
+          as PasskeyAuthenticator;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1235,9 +1432,11 @@ class PasskeyAuthenticator extends $pb.GeneratedMessage {
   static PasskeyAuthenticator create() => PasskeyAuthenticator._();
   @$core.override
   PasskeyAuthenticator createEmptyInstance() => create();
-  static $pb.PbList<PasskeyAuthenticator> createRepeated() => $pb.PbList<PasskeyAuthenticator>();
+  static $pb.PbList<PasskeyAuthenticator> createRepeated() =>
+      $pb.PbList<PasskeyAuthenticator>();
   @$core.pragma('dart2js:noInline')
-  static PasskeyAuthenticator getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasskeyAuthenticator>(create);
+  static PasskeyAuthenticator getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PasskeyAuthenticator>(create);
   static PasskeyAuthenticator? _defaultInstance;
 
   /// Opaque authenticator data for this passkey signature.
@@ -1293,19 +1492,30 @@ class ValidatorCommittee extends $pb.GeneratedMessage {
 
   ValidatorCommittee._();
 
-  factory ValidatorCommittee.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ValidatorCommittee.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ValidatorCommittee.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ValidatorCommittee.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ValidatorCommittee', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<ValidatorCommitteeMember>(2, _omitFieldNames ? '' : 'members', $pb.PbFieldType.PM, subBuilder: ValidatorCommitteeMember.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ValidatorCommittee',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<ValidatorCommitteeMember>(
+        2, _omitFieldNames ? '' : 'members', $pb.PbFieldType.PM,
+        subBuilder: ValidatorCommitteeMember.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ValidatorCommittee clone() => ValidatorCommittee()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorCommittee copyWith(void Function(ValidatorCommittee) updates) => super.copyWith((message) => updates(message as ValidatorCommittee)) as ValidatorCommittee;
+  ValidatorCommittee copyWith(void Function(ValidatorCommittee) updates) =>
+      super.copyWith((message) => updates(message as ValidatorCommittee))
+          as ValidatorCommittee;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1314,9 +1524,11 @@ class ValidatorCommittee extends $pb.GeneratedMessage {
   static ValidatorCommittee create() => ValidatorCommittee._();
   @$core.override
   ValidatorCommittee createEmptyInstance() => create();
-  static $pb.PbList<ValidatorCommittee> createRepeated() => $pb.PbList<ValidatorCommittee>();
+  static $pb.PbList<ValidatorCommittee> createRepeated() =>
+      $pb.PbList<ValidatorCommittee>();
   @$core.pragma('dart2js:noInline')
-  static ValidatorCommittee getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ValidatorCommittee>(create);
+  static ValidatorCommittee getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ValidatorCommittee>(create);
   static ValidatorCommittee? _defaultInstance;
 
   /// The epoch where this committee governs.
@@ -1348,19 +1560,31 @@ class ValidatorCommitteeMember extends $pb.GeneratedMessage {
 
   ValidatorCommitteeMember._();
 
-  factory ValidatorCommitteeMember.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ValidatorCommitteeMember.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ValidatorCommitteeMember.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ValidatorCommitteeMember.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ValidatorCommitteeMember', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, _omitFieldNames ? '' : 'publicKey', $pb.PbFieldType.OY)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'weight', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ValidatorCommitteeMember',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$core.List<$core.int>>(
+        1, _omitFieldNames ? '' : 'publicKey', $pb.PbFieldType.OY)
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'weight', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorCommitteeMember clone() => ValidatorCommitteeMember()..mergeFromMessage(this);
+  ValidatorCommitteeMember clone() =>
+      ValidatorCommitteeMember()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorCommitteeMember copyWith(void Function(ValidatorCommitteeMember) updates) => super.copyWith((message) => updates(message as ValidatorCommitteeMember)) as ValidatorCommitteeMember;
+  ValidatorCommitteeMember copyWith(
+          void Function(ValidatorCommitteeMember) updates) =>
+      super.copyWith((message) => updates(message as ValidatorCommitteeMember))
+          as ValidatorCommitteeMember;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -1369,9 +1593,11 @@ class ValidatorCommitteeMember extends $pb.GeneratedMessage {
   static ValidatorCommitteeMember create() => ValidatorCommitteeMember._();
   @$core.override
   ValidatorCommitteeMember createEmptyInstance() => create();
-  static $pb.PbList<ValidatorCommitteeMember> createRepeated() => $pb.PbList<ValidatorCommitteeMember>();
+  static $pb.PbList<ValidatorCommitteeMember> createRepeated() =>
+      $pb.PbList<ValidatorCommitteeMember>();
   @$core.pragma('dart2js:noInline')
-  static ValidatorCommitteeMember getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ValidatorCommitteeMember>(create);
+  static ValidatorCommitteeMember getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ValidatorCommitteeMember>(create);
   static ValidatorCommitteeMember? _defaultInstance;
 
   /// The 96-byte Bls12381 public key for this validator.
@@ -1411,31 +1637,48 @@ class ValidatorAggregatedSignature extends $pb.GeneratedMessage {
 
   ValidatorAggregatedSignature._();
 
-  factory ValidatorAggregatedSignature.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ValidatorAggregatedSignature.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ValidatorAggregatedSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ValidatorAggregatedSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ValidatorAggregatedSignature', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'signature', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'bitmap', $pb.PbFieldType.OY)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ValidatorAggregatedSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'signature', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(
+        3, _omitFieldNames ? '' : 'bitmap', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorAggregatedSignature clone() => ValidatorAggregatedSignature()..mergeFromMessage(this);
+  ValidatorAggregatedSignature clone() =>
+      ValidatorAggregatedSignature()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ValidatorAggregatedSignature copyWith(void Function(ValidatorAggregatedSignature) updates) => super.copyWith((message) => updates(message as ValidatorAggregatedSignature)) as ValidatorAggregatedSignature;
+  ValidatorAggregatedSignature copyWith(
+          void Function(ValidatorAggregatedSignature) updates) =>
+      super.copyWith(
+              (message) => updates(message as ValidatorAggregatedSignature))
+          as ValidatorAggregatedSignature;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ValidatorAggregatedSignature create() => ValidatorAggregatedSignature._();
+  static ValidatorAggregatedSignature create() =>
+      ValidatorAggregatedSignature._();
   @$core.override
   ValidatorAggregatedSignature createEmptyInstance() => create();
-  static $pb.PbList<ValidatorAggregatedSignature> createRepeated() => $pb.PbList<ValidatorAggregatedSignature>();
+  static $pb.PbList<ValidatorAggregatedSignature> createRepeated() =>
+      $pb.PbList<ValidatorAggregatedSignature>();
   @$core.pragma('dart2js:noInline')
-  static ValidatorAggregatedSignature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ValidatorAggregatedSignature>(create);
+  static ValidatorAggregatedSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ValidatorAggregatedSignature>(create);
   static ValidatorAggregatedSignature? _defaultInstance;
 
   /// The epoch when this signature was produced.
@@ -1473,6 +1716,7 @@ class ValidatorAggregatedSignature extends $pb.GeneratedMessage {
   void clearBitmap() => $_clearField(3);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

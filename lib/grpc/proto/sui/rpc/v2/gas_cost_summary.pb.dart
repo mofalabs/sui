@@ -29,27 +29,44 @@ class GasCostSummary extends $pb.GeneratedMessage {
     if (computationCost != null) result.computationCost = computationCost;
     if (storageCost != null) result.storageCost = storageCost;
     if (storageRebate != null) result.storageRebate = storageRebate;
-    if (nonRefundableStorageFee != null) result.nonRefundableStorageFee = nonRefundableStorageFee;
+    if (nonRefundableStorageFee != null)
+      result.nonRefundableStorageFee = nonRefundableStorageFee;
     return result;
   }
 
   GasCostSummary._();
 
-  factory GasCostSummary.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory GasCostSummary.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory GasCostSummary.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GasCostSummary.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GasCostSummary', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'computationCost', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'storageCost', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'storageRebate', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'nonRefundableStorageFee', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GasCostSummary',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'computationCost', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        2, _omitFieldNames ? '' : 'storageCost', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'storageRebate', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'nonRefundableStorageFee',
+        $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   GasCostSummary clone() => GasCostSummary()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  GasCostSummary copyWith(void Function(GasCostSummary) updates) => super.copyWith((message) => updates(message as GasCostSummary)) as GasCostSummary;
+  GasCostSummary copyWith(void Function(GasCostSummary) updates) =>
+      super.copyWith((message) => updates(message as GasCostSummary))
+          as GasCostSummary;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -58,9 +75,11 @@ class GasCostSummary extends $pb.GeneratedMessage {
   static GasCostSummary create() => GasCostSummary._();
   @$core.override
   GasCostSummary createEmptyInstance() => create();
-  static $pb.PbList<GasCostSummary> createRepeated() => $pb.PbList<GasCostSummary>();
+  static $pb.PbList<GasCostSummary> createRepeated() =>
+      $pb.PbList<GasCostSummary>();
   @$core.pragma('dart2js:noInline')
-  static GasCostSummary getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GasCostSummary>(create);
+  static GasCostSummary getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GasCostSummary>(create);
   static GasCostSummary? _defaultInstance;
 
   /// Cost of computation/execution.
@@ -105,6 +124,7 @@ class GasCostSummary extends $pb.GeneratedMessage {
   void clearNonRefundableStorageFee() => $_clearField(4);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

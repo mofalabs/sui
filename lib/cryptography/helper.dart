@@ -1,4 +1,3 @@
-
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
@@ -12,9 +11,11 @@ import 'package:sui/utils/bech32/bech32.dart';
 
 Uint8List encodeBigInt(BigInt? number) => utils.encodeBigInt(number);
 
-Uint8List encodeBigIntAsUnsigned(BigInt number) => utils.encodeBigIntAsUnsigned(number);
+Uint8List encodeBigIntAsUnsigned(BigInt number) =>
+    utils.encodeBigIntAsUnsigned(number);
 
-BigInt decodeBigIntToUnsigned(List<int> magnitude) => utils.decodeBigIntWithSign(1, magnitude);
+BigInt decodeBigIntToUnsigned(List<int> magnitude) =>
+    utils.decodeBigIntWithSign(1, magnitude);
 
 Uint8List padLeftUint8List(Uint8List data, [int len = 32]) {
   assert(data.length <= len);
@@ -42,25 +43,27 @@ const SUI_PRIVATE_KEY_PREFIX = 'suiprivkey';
 /// parse out the signature scheme and the private key in bytes.
 (SignatureScheme, Uint8List) decodeSuiPrivateKey(String value) {
   final result = bech32.decode(value);
-	if (result.hrp != SUI_PRIVATE_KEY_PREFIX) {
-		throw ArgumentError('Invalid private key prefix');
-	}
-	final extendedSecretKey = bech32.fromWords(result.data);
-	final signatureScheme = SIGNATURE_SCHEME_TO_FLAG.flagToScheme(extendedSecretKey[0]);
-	final secretKey = Uint8List.fromList(extendedSecretKey.sublist(1));
-	return (signatureScheme, secretKey);
+  if (result.hrp != SUI_PRIVATE_KEY_PREFIX) {
+    throw ArgumentError('Invalid private key prefix');
+  }
+  final extendedSecretKey = bech32.fromWords(result.data);
+  final signatureScheme =
+      SIGNATURE_SCHEME_TO_FLAG.flagToScheme(extendedSecretKey[0]);
+  final secretKey = Uint8List.fromList(extendedSecretKey.sublist(1));
+  return (signatureScheme, secretKey);
 }
 
 /// This returns a Bech32 encoded string starting with `suiprivkey`,
 /// encoding 33-byte `flag || bytes` for the given the 32-byte private
 /// key and its signature scheme.
 String encodeSuiPrivateKey(Uint8List bytes, SignatureScheme scheme) {
-	if (bytes.length != PRIVATE_KEY_SIZE) {
-		throw ArgumentError('Invalid bytes length');
-	}
-	final flag = SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(scheme);
-	final privKeyBytes = Uint8List(bytes.length + 1);
-	privKeyBytes.setAll(0, [flag]);
-	privKeyBytes.setAll(1, bytes);
-	return bech32.encode(Bech32(SUI_PRIVATE_KEY_PREFIX, bech32.toWords(privKeyBytes)));
+  if (bytes.length != PRIVATE_KEY_SIZE) {
+    throw ArgumentError('Invalid bytes length');
+  }
+  final flag = SIGNATURE_SCHEME_TO_FLAG.schemeToFlag(scheme);
+  final privKeyBytes = Uint8List(bytes.length + 1);
+  privKeyBytes.setAll(0, [flag]);
+  privKeyBytes.setAll(1, bytes);
+  return bech32
+      .encode(Bech32(SUI_PRIVATE_KEY_PREFIX, bech32.toWords(privKeyBytes)));
 }

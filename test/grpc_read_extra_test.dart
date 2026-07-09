@@ -16,7 +16,8 @@ void main() {
 
   test('getFunction 0x2::coin::value', () async {
     final fn = await client.getFunction('0x2', 'coin', 'value');
-    print('function=${fn.name} visibility=${fn.visibility} params=${fn.parameters.length}');
+    print(
+        'function=${fn.name} visibility=${fn.visibility} params=${fn.parameters.length}');
     expect(fn.name, equals('value'));
   });
 

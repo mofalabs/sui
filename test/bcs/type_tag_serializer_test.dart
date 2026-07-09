@@ -1,14 +1,11 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/bcs/type_tag_serializer.dart';
 
 void main() {
-
   group('parseFromStr', () {
-
     test('parses nested struct type from a string', () {
       const typeStr =
-        '0x2::balance::Supply<0x72de5feb63c0ab6ed1cda7e5b367f3d0a999add7::amm::LP<0x2::sui::SUI, 0xfee024a3c0c03ada5cdbda7d0e8b68802e6dec80::example_coin::EXAMPLE_COIN>>';
+          '0x2::balance::Supply<0x72de5feb63c0ab6ed1cda7e5b367f3d0a999add7::amm::LP<0x2::sui::SUI, 0xfee024a3c0c03ada5cdbda7d0e8b68802e6dec80::example_coin::EXAMPLE_COIN>>';
       final act = TypeTagSerializer.parseFromStr(typeStr);
       final exp = {
         "struct": {
@@ -60,7 +57,6 @@ void main() {
       };
       expect(act, exp);
     });
-    
   });
 
   group('tagToString', () {
@@ -101,9 +97,8 @@ void main() {
       };
       final act = TypeTagSerializer.tagToString(type);
       const exp =
-        '0x2::balance::Supply<0x72de5feb63c0ab6ed1cda7e5b367f3d0a999add7::amm::LP<0x2::sui::SUI, 0xfee024a3c0c03ada5cdbda7d0e8b68802e6dec80::example_coin::EXAMPLE_COIN>>';
+          '0x2::balance::Supply<0x72de5feb63c0ab6ed1cda7e5b367f3d0a999add7::amm::LP<0x2::sui::SUI, 0xfee024a3c0c03ada5cdbda7d0e8b68802e6dec80::example_coin::EXAMPLE_COIN>>';
       expect(act, exp);
     });
   });
-
 }

@@ -18,9 +18,25 @@ import 'dart:typed_data' as $typed_data;
 const TransactionEvents$json = {
   '1': 'TransactionEvents',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'bcs', '17': true},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'bcs',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
-    {'1': 'events', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.Event', '10': 'events'},
+    {
+      '1': 'events',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Event',
+      '10': 'events'
+    },
   ],
   '8': [
     {'1': '_bcs'},
@@ -38,12 +54,46 @@ final $typed_data.Uint8List transactionEventsDescriptor = $convert.base64Decode(
 const Event$json = {
   '1': 'Event',
   '2': [
-    {'1': 'package_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'packageId', '17': true},
+    {
+      '1': 'package_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'packageId',
+      '17': true
+    },
     {'1': 'module', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'module', '17': true},
     {'1': 'sender', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'sender', '17': true},
-    {'1': 'event_type', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'eventType', '17': true},
-    {'1': 'contents', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 4, '10': 'contents', '17': true},
-    {'1': 'json', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Value', '9': 5, '10': 'json', '17': true},
+    {
+      '1': 'event_type',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'eventType',
+      '17': true
+    },
+    {
+      '1': 'contents',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 4,
+      '10': 'contents',
+      '17': true
+    },
+    {
+      '1': 'json',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '9': 5,
+      '10': 'json',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package_id'},
@@ -63,4 +113,3 @@ final $typed_data.Uint8List eventDescriptor = $convert.base64Decode(
     'YyLkJjc0gEUghjb250ZW50c4gBARIvCgRqc29uGAYgASgLMhYuZ29vZ2xlLnByb3RvYnVmLlZh'
     'bHVlSAVSBGpzb26IAQFCDQoLX3BhY2thZ2VfaWRCCQoHX21vZHVsZUIJCgdfc2VuZGVyQg0KC1'
     '9ldmVudF90eXBlQgsKCV9jb250ZW50c0IHCgVfanNvbg==');
-

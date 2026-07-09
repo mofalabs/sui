@@ -30,19 +30,26 @@ class JwkId extends $pb.GeneratedMessage {
 
   JwkId._();
 
-  factory JwkId.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory JwkId.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory JwkId.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory JwkId.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'JwkId', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'JwkId',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'iss')
     ..aOS(2, _omitFieldNames ? '' : 'kid')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   JwkId clone() => JwkId()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  JwkId copyWith(void Function(JwkId) updates) => super.copyWith((message) => updates(message as JwkId)) as JwkId;
+  JwkId copyWith(void Function(JwkId) updates) =>
+      super.copyWith((message) => updates(message as JwkId)) as JwkId;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -53,7 +60,8 @@ class JwkId extends $pb.GeneratedMessage {
   JwkId createEmptyInstance() => create();
   static $pb.PbList<JwkId> createRepeated() => $pb.PbList<JwkId>();
   @$core.pragma('dart2js:noInline')
-  static JwkId getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JwkId>(create);
+  static JwkId getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<JwkId>(create);
   static JwkId? _defaultInstance;
 
   /// The issuer or identity of the OIDC provider.
@@ -99,21 +107,28 @@ class Jwk extends $pb.GeneratedMessage {
 
   Jwk._();
 
-  factory Jwk.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Jwk.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Jwk.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Jwk.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Jwk', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Jwk',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'kty')
     ..aOS(2, _omitFieldNames ? '' : 'e')
     ..aOS(3, _omitFieldNames ? '' : 'n')
     ..aOS(4, _omitFieldNames ? '' : 'alg')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Jwk clone() => Jwk()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Jwk copyWith(void Function(Jwk) updates) => super.copyWith((message) => updates(message as Jwk)) as Jwk;
+  Jwk copyWith(void Function(Jwk) updates) =>
+      super.copyWith((message) => updates(message as Jwk)) as Jwk;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -124,7 +139,8 @@ class Jwk extends $pb.GeneratedMessage {
   Jwk createEmptyInstance() => create();
   static $pb.PbList<Jwk> createRepeated() => $pb.PbList<Jwk>();
   @$core.pragma('dart2js:noInline')
-  static Jwk getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Jwk>(create);
+  static Jwk getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Jwk>(create);
   static Jwk? _defaultInstance;
 
   /// Key type parameter, https://datatracker.ietf.org/doc/html/rfc7517#section-4.1.
@@ -168,6 +184,7 @@ class Jwk extends $pb.GeneratedMessage {
   void clearAlg() => $_clearField(4);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

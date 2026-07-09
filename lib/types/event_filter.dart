@@ -1,14 +1,10 @@
-
 class MoveModule {
   final String package;
   final String module;
   MoveModule(this.package, this.module);
 
   Map<String, String> toJson() {
-    return {
-      "package": package,
-      "module": module
-    };
+    return {"package": package, "module": module};
   }
 }
 
@@ -19,7 +15,7 @@ class MoveEventModule extends MoveModule {
   @override
   Map<String, String> toJson() {
     final data = super.toJson();
-    data.addAll({ "event": event });
+    data.addAll({"event": event});
     return data;
   }
 }
@@ -30,10 +26,7 @@ class TimeRange {
   TimeRange(this.startTime, this.endTime);
 
   Map<String, int> toJson() {
-    return {
-      "start_time": startTime,
-      "end_time": endTime
-    };
+    return {"start_time": startTime, "end_time": endTime};
   }
 }
 
@@ -43,15 +36,11 @@ class MoveEventField {
   MoveEventField(this.path, this.value);
 
   Map<String, dynamic> toJson() {
-    return {
-      "path": path,
-      "value": value
-    };
+    return {"path": path, "value": value};
   }
 }
 
 class EventFilter {
-
   String? transaction;
   String? package;
   String? moveEventType;
@@ -75,31 +64,30 @@ class EventFilter {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     if (transaction != null) {
-      data.addAll({ "Transaction": transaction! });
+      data.addAll({"Transaction": transaction!});
     }
     if (package != null) {
-      data.addAll({ "Package": package! });
+      data.addAll({"Package": package!});
     }
     if (moveEventType != null) {
-      data.addAll({ "MoveEventType": moveEventType! });
+      data.addAll({"MoveEventType": moveEventType!});
     }
     if (sender != null) {
-      data.addAll({ "Sender": sender! });
+      data.addAll({"Sender": sender!});
     }
     if (moveModule != null) {
-      data.addAll({ "MoveModule": moveModule!.toJson() });
+      data.addAll({"MoveModule": moveModule!.toJson()});
     }
     if (moveEventModule != null) {
-      data.addAll({ "MoveModule": moveEventModule!.toJson() });
+      data.addAll({"MoveModule": moveEventModule!.toJson()});
     }
     if (moveEventField != null) {
-      data.addAll({ "MoveModule": moveEventField!.toJson() });
+      data.addAll({"MoveModule": moveEventField!.toJson()});
     }
     if (timeRange != null) {
-      data.addAll({ "TimeRange": timeRange!.toJson() });
+      data.addAll({"TimeRange": timeRange!.toJson()});
     }
 
     return data;
   }
-
 }

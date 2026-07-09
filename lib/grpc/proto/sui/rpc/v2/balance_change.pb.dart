@@ -32,20 +32,28 @@ class BalanceChange extends $pb.GeneratedMessage {
 
   BalanceChange._();
 
-  factory BalanceChange.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory BalanceChange.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory BalanceChange.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory BalanceChange.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BalanceChange', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'BalanceChange',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'address')
     ..aOS(2, _omitFieldNames ? '' : 'coinType')
     ..aOS(3, _omitFieldNames ? '' : 'amount')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BalanceChange clone() => BalanceChange()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  BalanceChange copyWith(void Function(BalanceChange) updates) => super.copyWith((message) => updates(message as BalanceChange)) as BalanceChange;
+  BalanceChange copyWith(void Function(BalanceChange) updates) =>
+      super.copyWith((message) => updates(message as BalanceChange))
+          as BalanceChange;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -54,9 +62,11 @@ class BalanceChange extends $pb.GeneratedMessage {
   static BalanceChange create() => BalanceChange._();
   @$core.override
   BalanceChange createEmptyInstance() => create();
-  static $pb.PbList<BalanceChange> createRepeated() => $pb.PbList<BalanceChange>();
+  static $pb.PbList<BalanceChange> createRepeated() =>
+      $pb.PbList<BalanceChange>();
   @$core.pragma('dart2js:noInline')
-  static BalanceChange getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BalanceChange>(create);
+  static BalanceChange getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<BalanceChange>(create);
   static BalanceChange? _defaultInstance;
 
   /// The account address that is affected by this balance change event.
@@ -90,6 +100,7 @@ class BalanceChange extends $pb.GeneratedMessage {
   void clearAmount() => $_clearField(3);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

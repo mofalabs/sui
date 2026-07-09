@@ -63,7 +63,11 @@ class SuiGrpcCompat {
     dynamic options,
     dynamic requestType,
   }) async {
-    final serialized = <int>[pubkey.flag(), ...signature, ...pubkey.toRawBytes()];
+    final serialized = <int>[
+      pubkey.flag(),
+      ...signature,
+      ...pubkey.toRawBytes()
+    ];
     final executed = await grpc
         .executeTransaction(txnBytes, [Uint8List.fromList(serialized)]);
     return SuiExecuteTransactionResponse.fromJson({
@@ -83,7 +87,8 @@ class SuiGrpcCompat {
   Future<CoinBalance> getBalance(String owner,
       {String coinType = '0x2::sui::SUI'}) async {
     final b = await grpc.getBalance(owner, coinType: coinType);
-    return CoinBalance(b.coinType, 0, BigInt.from(b.balance.toInt()), BigInt.zero);
+    return CoinBalance(
+        b.coinType, 0, BigInt.from(b.balance.toInt()), BigInt.zero);
   }
 
   Future<List<CoinBalance>> getAllBalance(String owner) async {
@@ -260,7 +265,8 @@ class SuiGrpcCompat {
       hasNext = resp.nextPageToken.isNotEmpty;
       nextCursor = hasNext ? base64Encode(resp.nextPageToken) : '';
       token = hasNext ? Uint8List.fromList(resp.nextPageToken) : null;
-    } while (filter != null && hasNext && matched.length < target && guard < 20);
+    } while (
+        filter != null && hasNext && matched.length < target && guard < 20);
     return PaginatedObjectsResponse(matched, nextCursor, hasNext);
   }
 
@@ -435,7 +441,9 @@ class SuiGrpcCompat {
     final vals = await graphql.getActiveValidators(first: 200);
     return ValidatorsApy.fromJson({
       'epoch': '0',
-      'apys': [for (final v in vals) {'address': v.suiAddress, 'apy': 0.0}],
+      'apys': [
+        for (final v in vals) {'address': v.suiAddress, 'apy': 0.0}
+      ],
     });
   }
 
@@ -454,8 +462,10 @@ class SuiGrpcCompat {
                 for (final s in e.value)
                   {
                     'stakedSuiId': s.stakedSuiId,
-                    'stakeRequestEpoch': (s.stakeActivationEpoch ?? 0).toString(),
-                    'stakeActiveEpoch': (s.stakeActivationEpoch ?? 0).toString(),
+                    'stakeRequestEpoch':
+                        (s.stakeActivationEpoch ?? 0).toString(),
+                    'stakeActiveEpoch':
+                        (s.stakeActivationEpoch ?? 0).toString(),
                     'principal': s.principal.toString(),
                     'status': 'Active',
                   }
@@ -487,7 +497,8 @@ class SuiGrpcCompat {
       String sender, Transaction tx) async {
     final data = await tx.build(BuildOptions(limits: <String, dynamic>{}));
     final sim = await grpc.simulateTransaction(Uint8List.fromList(data));
-    return DevInspectResults.fromJson({'effects': _effectsJson(sim.transaction)});
+    return DevInspectResults.fromJson(
+        {'effects': _effectsJson(sim.transaction)});
   }
 
   Future<DryRunTransactionBlockResponse> dryRunTransactionBlock(

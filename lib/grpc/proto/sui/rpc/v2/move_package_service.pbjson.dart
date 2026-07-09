@@ -20,7 +20,15 @@ import 'move_package.pbjson.dart' as $0;
 const GetPackageRequest$json = {
   '1': 'GetPackageRequest',
   '2': [
-    {'1': 'package_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'packageId', '17': true},
+    {
+      '1': 'package_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'packageId',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package_id'},
@@ -36,7 +44,16 @@ final $typed_data.Uint8List getPackageRequestDescriptor = $convert.base64Decode(
 const GetPackageResponse$json = {
   '1': 'GetPackageResponse',
   '2': [
-    {'1': 'package', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Package', '9': 0, '10': 'package', '17': true},
+    {
+      '1': 'package',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Package',
+      '9': 0,
+      '10': 'package',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package'},
@@ -52,8 +69,24 @@ final $typed_data.Uint8List getPackageResponseDescriptor = $convert.base64Decode
 const GetDatatypeRequest$json = {
   '1': 'GetDatatypeRequest',
   '2': [
-    {'1': 'package_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'packageId', '17': true},
-    {'1': 'module_name', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'moduleName', '17': true},
+    {
+      '1': 'package_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'packageId',
+      '17': true
+    },
+    {
+      '1': 'module_name',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'moduleName',
+      '17': true
+    },
     {'1': 'name', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'name', '17': true},
   ],
   '8': [
@@ -73,7 +106,16 @@ final $typed_data.Uint8List getDatatypeRequestDescriptor = $convert.base64Decode
 const GetDatatypeResponse$json = {
   '1': 'GetDatatypeResponse',
   '2': [
-    {'1': 'datatype', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.DatatypeDescriptor', '9': 0, '10': 'datatype', '17': true},
+    {
+      '1': 'datatype',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.DatatypeDescriptor',
+      '9': 0,
+      '10': 'datatype',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_datatype'},
@@ -89,8 +131,24 @@ final $typed_data.Uint8List getDatatypeResponseDescriptor = $convert.base64Decod
 const GetFunctionRequest$json = {
   '1': 'GetFunctionRequest',
   '2': [
-    {'1': 'package_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'packageId', '17': true},
-    {'1': 'module_name', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'moduleName', '17': true},
+    {
+      '1': 'package_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'packageId',
+      '17': true
+    },
+    {
+      '1': 'module_name',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'moduleName',
+      '17': true
+    },
     {'1': 'name', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'name', '17': true},
   ],
   '8': [
@@ -110,7 +168,16 @@ final $typed_data.Uint8List getFunctionRequestDescriptor = $convert.base64Decode
 const GetFunctionResponse$json = {
   '1': 'GetFunctionResponse',
   '2': [
-    {'1': 'function', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.FunctionDescriptor', '9': 0, '10': 'function', '17': true},
+    {
+      '1': 'function',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.FunctionDescriptor',
+      '9': 0,
+      '10': 'function',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_function'},
@@ -126,9 +193,33 @@ final $typed_data.Uint8List getFunctionResponseDescriptor = $convert.base64Decod
 const ListPackageVersionsRequest$json = {
   '1': 'ListPackageVersionsRequest',
   '2': [
-    {'1': 'package_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'packageId', '17': true},
-    {'1': 'page_size', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'pageSize', '17': true},
-    {'1': 'page_token', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'pageToken', '17': true},
+    {
+      '1': 'package_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'packageId',
+      '17': true
+    },
+    {
+      '1': 'page_size',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'pageSize',
+      '17': true
+    },
+    {
+      '1': 'page_token',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'pageToken',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package_id'},
@@ -148,8 +239,23 @@ final $typed_data.Uint8List listPackageVersionsRequestDescriptor = $convert.base
 const ListPackageVersionsResponse$json = {
   '1': 'ListPackageVersionsResponse',
   '2': [
-    {'1': 'versions', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.PackageVersion', '10': 'versions'},
-    {'1': 'next_page_token', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'nextPageToken', '17': true},
+    {
+      '1': 'versions',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.PackageVersion',
+      '10': 'versions'
+    },
+    {
+      '1': 'next_page_token',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'nextPageToken',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_next_page_token'},
@@ -157,17 +263,34 @@ const ListPackageVersionsResponse$json = {
 };
 
 /// Descriptor for `ListPackageVersionsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listPackageVersionsResponseDescriptor = $convert.base64Decode(
-    'ChtMaXN0UGFja2FnZVZlcnNpb25zUmVzcG9uc2USNgoIdmVyc2lvbnMYASADKAsyGi5zdWkucn'
-    'BjLnYyLlBhY2thZ2VWZXJzaW9uUgh2ZXJzaW9ucxIrCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAxI'
-    'AFINbmV4dFBhZ2VUb2tlbogBAUISChBfbmV4dF9wYWdlX3Rva2Vu');
+final $typed_data.Uint8List listPackageVersionsResponseDescriptor =
+    $convert.base64Decode(
+        'ChtMaXN0UGFja2FnZVZlcnNpb25zUmVzcG9uc2USNgoIdmVyc2lvbnMYASADKAsyGi5zdWkucn'
+        'BjLnYyLlBhY2thZ2VWZXJzaW9uUgh2ZXJzaW9ucxIrCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAxI'
+        'AFINbmV4dFBhZ2VUb2tlbogBAUISChBfbmV4dF9wYWdlX3Rva2Vu');
 
 @$core.Deprecated('Use packageVersionDescriptor instead')
 const PackageVersion$json = {
   '1': 'PackageVersion',
   '2': [
-    {'1': 'package_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'packageId', '17': true},
-    {'1': 'version', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'version', '17': true},
+    {
+      '1': 'package_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'packageId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'version',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_package_id'},
@@ -183,15 +306,32 @@ final $typed_data.Uint8List packageVersionDescriptor = $convert.base64Decode(
 const $core.Map<$core.String, $core.dynamic> MovePackageServiceBase$json = {
   '1': 'MovePackageService',
   '2': [
-    {'1': 'GetPackage', '2': '.sui.rpc.v2.GetPackageRequest', '3': '.sui.rpc.v2.GetPackageResponse'},
-    {'1': 'GetDatatype', '2': '.sui.rpc.v2.GetDatatypeRequest', '3': '.sui.rpc.v2.GetDatatypeResponse'},
-    {'1': 'GetFunction', '2': '.sui.rpc.v2.GetFunctionRequest', '3': '.sui.rpc.v2.GetFunctionResponse'},
-    {'1': 'ListPackageVersions', '2': '.sui.rpc.v2.ListPackageVersionsRequest', '3': '.sui.rpc.v2.ListPackageVersionsResponse'},
+    {
+      '1': 'GetPackage',
+      '2': '.sui.rpc.v2.GetPackageRequest',
+      '3': '.sui.rpc.v2.GetPackageResponse'
+    },
+    {
+      '1': 'GetDatatype',
+      '2': '.sui.rpc.v2.GetDatatypeRequest',
+      '3': '.sui.rpc.v2.GetDatatypeResponse'
+    },
+    {
+      '1': 'GetFunction',
+      '2': '.sui.rpc.v2.GetFunctionRequest',
+      '3': '.sui.rpc.v2.GetFunctionResponse'
+    },
+    {
+      '1': 'ListPackageVersions',
+      '2': '.sui.rpc.v2.ListPackageVersionsRequest',
+      '3': '.sui.rpc.v2.ListPackageVersionsResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use movePackageServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> MovePackageServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    MovePackageServiceBase$messageJson = {
   '.sui.rpc.v2.GetPackageRequest': GetPackageRequest$json,
   '.sui.rpc.v2.GetPackageResponse': GetPackageResponse$json,
   '.sui.rpc.v2.Package': $0.Package$json,
@@ -223,4 +363,3 @@ final $typed_data.Uint8List movePackageServiceDescriptor = $convert.base64Decode
     'c3QaHy5zdWkucnBjLnYyLkdldEZ1bmN0aW9uUmVzcG9uc2USZgoTTGlzdFBhY2thZ2VWZXJzaW'
     '9ucxImLnN1aS5ycGMudjIuTGlzdFBhY2thZ2VWZXJzaW9uc1JlcXVlc3QaJy5zdWkucnBjLnYy'
     'Lkxpc3RQYWNrYWdlVmVyc2lvbnNSZXNwb25zZQ==');
-

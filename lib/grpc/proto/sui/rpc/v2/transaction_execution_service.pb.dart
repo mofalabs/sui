@@ -44,20 +44,34 @@ class ExecuteTransactionRequest extends $pb.GeneratedMessage {
 
   ExecuteTransactionRequest._();
 
-  factory ExecuteTransactionRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecuteTransactionRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecuteTransactionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecuteTransactionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecuteTransactionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.Transaction>(1, _omitFieldNames ? '' : 'transaction', subBuilder: $0.Transaction.create)
-    ..pc<$1.UserSignature>(2, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM, subBuilder: $1.UserSignature.create)
-    ..aOM<$2.FieldMask>(3, _omitFieldNames ? '' : 'readMask', subBuilder: $2.FieldMask.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecuteTransactionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.Transaction>(1, _omitFieldNames ? '' : 'transaction',
+        subBuilder: $0.Transaction.create)
+    ..pc<$1.UserSignature>(
+        2, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM,
+        subBuilder: $1.UserSignature.create)
+    ..aOM<$2.FieldMask>(3, _omitFieldNames ? '' : 'readMask',
+        subBuilder: $2.FieldMask.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecuteTransactionRequest clone() => ExecuteTransactionRequest()..mergeFromMessage(this);
+  ExecuteTransactionRequest clone() =>
+      ExecuteTransactionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecuteTransactionRequest copyWith(void Function(ExecuteTransactionRequest) updates) => super.copyWith((message) => updates(message as ExecuteTransactionRequest)) as ExecuteTransactionRequest;
+  ExecuteTransactionRequest copyWith(
+          void Function(ExecuteTransactionRequest) updates) =>
+      super.copyWith((message) => updates(message as ExecuteTransactionRequest))
+          as ExecuteTransactionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -66,9 +80,11 @@ class ExecuteTransactionRequest extends $pb.GeneratedMessage {
   static ExecuteTransactionRequest create() => ExecuteTransactionRequest._();
   @$core.override
   ExecuteTransactionRequest createEmptyInstance() => create();
-  static $pb.PbList<ExecuteTransactionRequest> createRepeated() => $pb.PbList<ExecuteTransactionRequest>();
+  static $pb.PbList<ExecuteTransactionRequest> createRepeated() =>
+      $pb.PbList<ExecuteTransactionRequest>();
   @$core.pragma('dart2js:noInline')
-  static ExecuteTransactionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecuteTransactionRequest>(create);
+  static ExecuteTransactionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecuteTransactionRequest>(create);
   static ExecuteTransactionRequest? _defaultInstance;
 
   /// The transaction to execute.
@@ -114,18 +130,30 @@ class ExecuteTransactionResponse extends $pb.GeneratedMessage {
 
   ExecuteTransactionResponse._();
 
-  factory ExecuteTransactionResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecuteTransactionResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecuteTransactionResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecuteTransactionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecuteTransactionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$3.ExecutedTransaction>(1, _omitFieldNames ? '' : 'transaction', subBuilder: $3.ExecutedTransaction.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecuteTransactionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$3.ExecutedTransaction>(1, _omitFieldNames ? '' : 'transaction',
+        subBuilder: $3.ExecutedTransaction.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecuteTransactionResponse clone() => ExecuteTransactionResponse()..mergeFromMessage(this);
+  ExecuteTransactionResponse clone() =>
+      ExecuteTransactionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecuteTransactionResponse copyWith(void Function(ExecuteTransactionResponse) updates) => super.copyWith((message) => updates(message as ExecuteTransactionResponse)) as ExecuteTransactionResponse;
+  ExecuteTransactionResponse copyWith(
+          void Function(ExecuteTransactionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ExecuteTransactionResponse))
+          as ExecuteTransactionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -134,9 +162,11 @@ class ExecuteTransactionResponse extends $pb.GeneratedMessage {
   static ExecuteTransactionResponse create() => ExecuteTransactionResponse._();
   @$core.override
   ExecuteTransactionResponse createEmptyInstance() => create();
-  static $pb.PbList<ExecuteTransactionResponse> createRepeated() => $pb.PbList<ExecuteTransactionResponse>();
+  static $pb.PbList<ExecuteTransactionResponse> createRepeated() =>
+      $pb.PbList<ExecuteTransactionResponse>();
   @$core.pragma('dart2js:noInline')
-  static ExecuteTransactionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecuteTransactionResponse>(create);
+  static ExecuteTransactionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecuteTransactionResponse>(create);
   static ExecuteTransactionResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -168,21 +198,38 @@ class SimulateTransactionRequest extends $pb.GeneratedMessage {
 
   SimulateTransactionRequest._();
 
-  factory SimulateTransactionRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SimulateTransactionRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SimulateTransactionRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SimulateTransactionRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SimulateTransactionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.Transaction>(1, _omitFieldNames ? '' : 'transaction', subBuilder: $0.Transaction.create)
-    ..aOM<$2.FieldMask>(2, _omitFieldNames ? '' : 'readMask', subBuilder: $2.FieldMask.create)
-    ..e<SimulateTransactionRequest_TransactionChecks>(3, _omitFieldNames ? '' : 'checks', $pb.PbFieldType.OE, defaultOrMaker: SimulateTransactionRequest_TransactionChecks.ENABLED, valueOf: SimulateTransactionRequest_TransactionChecks.valueOf, enumValues: SimulateTransactionRequest_TransactionChecks.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SimulateTransactionRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.Transaction>(1, _omitFieldNames ? '' : 'transaction',
+        subBuilder: $0.Transaction.create)
+    ..aOM<$2.FieldMask>(2, _omitFieldNames ? '' : 'readMask',
+        subBuilder: $2.FieldMask.create)
+    ..e<SimulateTransactionRequest_TransactionChecks>(
+        3, _omitFieldNames ? '' : 'checks', $pb.PbFieldType.OE,
+        defaultOrMaker: SimulateTransactionRequest_TransactionChecks.ENABLED,
+        valueOf: SimulateTransactionRequest_TransactionChecks.valueOf,
+        enumValues: SimulateTransactionRequest_TransactionChecks.values)
     ..aOB(4, _omitFieldNames ? '' : 'doGasSelection')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SimulateTransactionRequest clone() => SimulateTransactionRequest()..mergeFromMessage(this);
+  SimulateTransactionRequest clone() =>
+      SimulateTransactionRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SimulateTransactionRequest copyWith(void Function(SimulateTransactionRequest) updates) => super.copyWith((message) => updates(message as SimulateTransactionRequest)) as SimulateTransactionRequest;
+  SimulateTransactionRequest copyWith(
+          void Function(SimulateTransactionRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as SimulateTransactionRequest))
+          as SimulateTransactionRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -191,9 +238,11 @@ class SimulateTransactionRequest extends $pb.GeneratedMessage {
   static SimulateTransactionRequest create() => SimulateTransactionRequest._();
   @$core.override
   SimulateTransactionRequest createEmptyInstance() => create();
-  static $pb.PbList<SimulateTransactionRequest> createRepeated() => $pb.PbList<SimulateTransactionRequest>();
+  static $pb.PbList<SimulateTransactionRequest> createRepeated() =>
+      $pb.PbList<SimulateTransactionRequest>();
   @$core.pragma('dart2js:noInline')
-  static SimulateTransactionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SimulateTransactionRequest>(create);
+  static SimulateTransactionRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SimulateTransactionRequest>(create);
   static SimulateTransactionRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -223,7 +272,8 @@ class SimulateTransactionRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   SimulateTransactionRequest_TransactionChecks get checks => $_getN(2);
   @$pb.TagNumber(3)
-  set checks(SimulateTransactionRequest_TransactionChecks value) => $_setField(3, value);
+  set checks(SimulateTransactionRequest_TransactionChecks value) =>
+      $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasChecks() => $_has(2);
   @$pb.TagNumber(3)
@@ -258,31 +308,50 @@ class SimulateTransactionResponse extends $pb.GeneratedMessage {
 
   SimulateTransactionResponse._();
 
-  factory SimulateTransactionResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SimulateTransactionResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SimulateTransactionResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SimulateTransactionResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SimulateTransactionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$3.ExecutedTransaction>(1, _omitFieldNames ? '' : 'transaction', subBuilder: $3.ExecutedTransaction.create)
-    ..pc<CommandResult>(2, _omitFieldNames ? '' : 'commandOutputs', $pb.PbFieldType.PM, subBuilder: CommandResult.create)
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'suggestedGasPrice', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SimulateTransactionResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$3.ExecutedTransaction>(1, _omitFieldNames ? '' : 'transaction',
+        subBuilder: $3.ExecutedTransaction.create)
+    ..pc<CommandResult>(
+        2, _omitFieldNames ? '' : 'commandOutputs', $pb.PbFieldType.PM,
+        subBuilder: CommandResult.create)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'suggestedGasPrice', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SimulateTransactionResponse clone() => SimulateTransactionResponse()..mergeFromMessage(this);
+  SimulateTransactionResponse clone() =>
+      SimulateTransactionResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SimulateTransactionResponse copyWith(void Function(SimulateTransactionResponse) updates) => super.copyWith((message) => updates(message as SimulateTransactionResponse)) as SimulateTransactionResponse;
+  SimulateTransactionResponse copyWith(
+          void Function(SimulateTransactionResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as SimulateTransactionResponse))
+          as SimulateTransactionResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static SimulateTransactionResponse create() => SimulateTransactionResponse._();
+  static SimulateTransactionResponse create() =>
+      SimulateTransactionResponse._();
   @$core.override
   SimulateTransactionResponse createEmptyInstance() => create();
-  static $pb.PbList<SimulateTransactionResponse> createRepeated() => $pb.PbList<SimulateTransactionResponse>();
+  static $pb.PbList<SimulateTransactionResponse> createRepeated() =>
+      $pb.PbList<SimulateTransactionResponse>();
   @$core.pragma('dart2js:noInline')
-  static SimulateTransactionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SimulateTransactionResponse>(create);
+  static SimulateTransactionResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SimulateTransactionResponse>(create);
   static SimulateTransactionResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -326,19 +395,31 @@ class CommandResult extends $pb.GeneratedMessage {
 
   CommandResult._();
 
-  factory CommandResult.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CommandResult.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CommandResult.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CommandResult.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CommandResult', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<CommandOutput>(1, _omitFieldNames ? '' : 'returnValues', $pb.PbFieldType.PM, subBuilder: CommandOutput.create)
-    ..pc<CommandOutput>(2, _omitFieldNames ? '' : 'mutatedByRef', $pb.PbFieldType.PM, subBuilder: CommandOutput.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CommandResult',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<CommandOutput>(
+        1, _omitFieldNames ? '' : 'returnValues', $pb.PbFieldType.PM,
+        subBuilder: CommandOutput.create)
+    ..pc<CommandOutput>(
+        2, _omitFieldNames ? '' : 'mutatedByRef', $pb.PbFieldType.PM,
+        subBuilder: CommandOutput.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CommandResult clone() => CommandResult()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CommandResult copyWith(void Function(CommandResult) updates) => super.copyWith((message) => updates(message as CommandResult)) as CommandResult;
+  CommandResult copyWith(void Function(CommandResult) updates) =>
+      super.copyWith((message) => updates(message as CommandResult))
+          as CommandResult;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -347,9 +428,11 @@ class CommandResult extends $pb.GeneratedMessage {
   static CommandResult create() => CommandResult._();
   @$core.override
   CommandResult createEmptyInstance() => create();
-  static $pb.PbList<CommandResult> createRepeated() => $pb.PbList<CommandResult>();
+  static $pb.PbList<CommandResult> createRepeated() =>
+      $pb.PbList<CommandResult>();
   @$core.pragma('dart2js:noInline')
-  static CommandResult getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandResult>(create);
+  static CommandResult getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CommandResult>(create);
   static CommandResult? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -374,20 +457,30 @@ class CommandOutput extends $pb.GeneratedMessage {
 
   CommandOutput._();
 
-  factory CommandOutput.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CommandOutput.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CommandOutput.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CommandOutput.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CommandOutput', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$4.Argument>(1, _omitFieldNames ? '' : 'argument', subBuilder: $4.Argument.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CommandOutput',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$4.Argument>(1, _omitFieldNames ? '' : 'argument',
+        subBuilder: $4.Argument.create)
     ..aOM<$5.Bcs>(2, _omitFieldNames ? '' : 'value', subBuilder: $5.Bcs.create)
-    ..aOM<$6.Value>(3, _omitFieldNames ? '' : 'json', subBuilder: $6.Value.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<$6.Value>(3, _omitFieldNames ? '' : 'json',
+        subBuilder: $6.Value.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CommandOutput clone() => CommandOutput()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CommandOutput copyWith(void Function(CommandOutput) updates) => super.copyWith((message) => updates(message as CommandOutput)) as CommandOutput;
+  CommandOutput copyWith(void Function(CommandOutput) updates) =>
+      super.copyWith((message) => updates(message as CommandOutput))
+          as CommandOutput;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -396,9 +489,11 @@ class CommandOutput extends $pb.GeneratedMessage {
   static CommandOutput create() => CommandOutput._();
   @$core.override
   CommandOutput createEmptyInstance() => create();
-  static $pb.PbList<CommandOutput> createRepeated() => $pb.PbList<CommandOutput>();
+  static $pb.PbList<CommandOutput> createRepeated() =>
+      $pb.PbList<CommandOutput>();
   @$core.pragma('dart2js:noInline')
-  static CommandOutput getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommandOutput>(create);
+  static CommandOutput getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CommandOutput>(create);
   static CommandOutput? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -441,14 +536,25 @@ class TransactionExecutionServiceApi {
 
   TransactionExecutionServiceApi(this._client);
 
-  $async.Future<ExecuteTransactionResponse> executeTransaction($pb.ClientContext? ctx, ExecuteTransactionRequest request) =>
-    _client.invoke<ExecuteTransactionResponse>(ctx, 'TransactionExecutionService', 'ExecuteTransaction', request, ExecuteTransactionResponse())
-  ;
-  $async.Future<SimulateTransactionResponse> simulateTransaction($pb.ClientContext? ctx, SimulateTransactionRequest request) =>
-    _client.invoke<SimulateTransactionResponse>(ctx, 'TransactionExecutionService', 'SimulateTransaction', request, SimulateTransactionResponse())
-  ;
+  $async.Future<ExecuteTransactionResponse> executeTransaction(
+          $pb.ClientContext? ctx, ExecuteTransactionRequest request) =>
+      _client.invoke<ExecuteTransactionResponse>(
+          ctx,
+          'TransactionExecutionService',
+          'ExecuteTransaction',
+          request,
+          ExecuteTransactionResponse());
+  $async.Future<SimulateTransactionResponse> simulateTransaction(
+          $pb.ClientContext? ctx, SimulateTransactionRequest request) =>
+      _client.invoke<SimulateTransactionResponse>(
+          ctx,
+          'TransactionExecutionService',
+          'SimulateTransaction',
+          request,
+          SimulateTransactionResponse());
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

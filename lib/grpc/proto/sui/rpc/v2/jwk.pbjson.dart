@@ -54,4 +54,3 @@ final $typed_data.Uint8List jwkDescriptor = $convert.base64Decode(
     'CgNKd2sSFQoDa3R5GAEgASgJSABSA2t0eYgBARIRCgFlGAIgASgJSAFSAWWIAQESEQoBbhgDIA'
     'EoCUgCUgFuiAEBEhUKA2FsZxgEIAEoCUgDUgNhbGeIAQFCBgoEX2t0eUIECgJfZUIECgJfbkIG'
     'CgRfYWxn');
-

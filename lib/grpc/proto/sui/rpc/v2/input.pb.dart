@@ -50,26 +50,44 @@ class Input extends $pb.GeneratedMessage {
 
   Input._();
 
-  factory Input.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Input.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Input.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Input.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Input', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<Input_InputKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: Input_InputKind.INPUT_KIND_UNKNOWN, valueOf: Input_InputKind.valueOf, enumValues: Input_InputKind.values)
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'pure', $pb.PbFieldType.OY)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Input',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<Input_InputKind>(1, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: Input_InputKind.INPUT_KIND_UNKNOWN,
+        valueOf: Input_InputKind.valueOf,
+        enumValues: Input_InputKind.values)
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'pure', $pb.PbFieldType.OY)
     ..aOS(3, _omitFieldNames ? '' : 'objectId')
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(5, _omitFieldNames ? '' : 'digest')
     ..aOB(6, _omitFieldNames ? '' : 'mutable')
-    ..e<Input_Mutability>(7, _omitFieldNames ? '' : 'mutability', $pb.PbFieldType.OE, defaultOrMaker: Input_Mutability.MUTABILITY_UNKNOWN, valueOf: Input_Mutability.valueOf, enumValues: Input_Mutability.values)
-    ..aOM<FundsWithdrawal>(8, _omitFieldNames ? '' : 'fundsWithdrawal', subBuilder: FundsWithdrawal.create)
-    ..aOM<$0.Value>(1000, _omitFieldNames ? '' : 'literal', subBuilder: $0.Value.create)
-    ..hasRequiredFields = false
-  ;
+    ..e<Input_Mutability>(
+        7, _omitFieldNames ? '' : 'mutability', $pb.PbFieldType.OE,
+        defaultOrMaker: Input_Mutability.MUTABILITY_UNKNOWN,
+        valueOf: Input_Mutability.valueOf,
+        enumValues: Input_Mutability.values)
+    ..aOM<FundsWithdrawal>(8, _omitFieldNames ? '' : 'fundsWithdrawal',
+        subBuilder: FundsWithdrawal.create)
+    ..aOM<$0.Value>(1000, _omitFieldNames ? '' : 'literal',
+        subBuilder: $0.Value.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Input clone() => Input()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Input copyWith(void Function(Input) updates) => super.copyWith((message) => updates(message as Input)) as Input;
+  Input copyWith(void Function(Input) updates) =>
+      super.copyWith((message) => updates(message as Input)) as Input;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -80,7 +98,8 @@ class Input extends $pb.GeneratedMessage {
   Input createEmptyInstance() => create();
   static $pb.PbList<Input> createRepeated() => $pb.PbList<Input>();
   @$core.pragma('dart2js:noInline')
-  static Input getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Input>(create);
+  static Input getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Input>(create);
   static Input? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -203,20 +222,33 @@ class FundsWithdrawal extends $pb.GeneratedMessage {
 
   FundsWithdrawal._();
 
-  factory FundsWithdrawal.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory FundsWithdrawal.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory FundsWithdrawal.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FundsWithdrawal.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FundsWithdrawal', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FundsWithdrawal',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'amount', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(2, _omitFieldNames ? '' : 'coinType')
-    ..e<FundsWithdrawal_Source>(3, _omitFieldNames ? '' : 'source', $pb.PbFieldType.OE, defaultOrMaker: FundsWithdrawal_Source.SOURCE_UNKNOWN, valueOf: FundsWithdrawal_Source.valueOf, enumValues: FundsWithdrawal_Source.values)
-    ..hasRequiredFields = false
-  ;
+    ..e<FundsWithdrawal_Source>(
+        3, _omitFieldNames ? '' : 'source', $pb.PbFieldType.OE,
+        defaultOrMaker: FundsWithdrawal_Source.SOURCE_UNKNOWN,
+        valueOf: FundsWithdrawal_Source.valueOf,
+        enumValues: FundsWithdrawal_Source.values)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FundsWithdrawal clone() => FundsWithdrawal()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FundsWithdrawal copyWith(void Function(FundsWithdrawal) updates) => super.copyWith((message) => updates(message as FundsWithdrawal)) as FundsWithdrawal;
+  FundsWithdrawal copyWith(void Function(FundsWithdrawal) updates) =>
+      super.copyWith((message) => updates(message as FundsWithdrawal))
+          as FundsWithdrawal;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -225,9 +257,11 @@ class FundsWithdrawal extends $pb.GeneratedMessage {
   static FundsWithdrawal create() => FundsWithdrawal._();
   @$core.override
   FundsWithdrawal createEmptyInstance() => create();
-  static $pb.PbList<FundsWithdrawal> createRepeated() => $pb.PbList<FundsWithdrawal>();
+  static $pb.PbList<FundsWithdrawal> createRepeated() =>
+      $pb.PbList<FundsWithdrawal>();
   @$core.pragma('dart2js:noInline')
-  static FundsWithdrawal getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FundsWithdrawal>(create);
+  static FundsWithdrawal getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FundsWithdrawal>(create);
   static FundsWithdrawal? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -258,6 +292,7 @@ class FundsWithdrawal extends $pb.GeneratedMessage {
   void clearSource() => $_clearField(3);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

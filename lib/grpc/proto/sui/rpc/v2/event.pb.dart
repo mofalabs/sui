@@ -35,20 +35,29 @@ class TransactionEvents extends $pb.GeneratedMessage {
 
   TransactionEvents._();
 
-  factory TransactionEvents.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TransactionEvents.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TransactionEvents.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TransactionEvents.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TransactionEvents', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TransactionEvents',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
-    ..pc<Event>(3, _omitFieldNames ? '' : 'events', $pb.PbFieldType.PM, subBuilder: Event.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<Event>(3, _omitFieldNames ? '' : 'events', $pb.PbFieldType.PM,
+        subBuilder: Event.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TransactionEvents clone() => TransactionEvents()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TransactionEvents copyWith(void Function(TransactionEvents) updates) => super.copyWith((message) => updates(message as TransactionEvents)) as TransactionEvents;
+  TransactionEvents copyWith(void Function(TransactionEvents) updates) =>
+      super.copyWith((message) => updates(message as TransactionEvents))
+          as TransactionEvents;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -57,9 +66,11 @@ class TransactionEvents extends $pb.GeneratedMessage {
   static TransactionEvents create() => TransactionEvents._();
   @$core.override
   TransactionEvents createEmptyInstance() => create();
-  static $pb.PbList<TransactionEvents> createRepeated() => $pb.PbList<TransactionEvents>();
+  static $pb.PbList<TransactionEvents> createRepeated() =>
+      $pb.PbList<TransactionEvents>();
   @$core.pragma('dart2js:noInline')
-  static TransactionEvents getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransactionEvents>(create);
+  static TransactionEvents getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TransactionEvents>(create);
   static TransactionEvents? _defaultInstance;
 
   /// This TransactionEvents serialized as BCS.
@@ -111,23 +122,32 @@ class Event extends $pb.GeneratedMessage {
 
   Event._();
 
-  factory Event.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Event.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Event.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Event.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Event', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Event',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
     ..aOS(2, _omitFieldNames ? '' : 'module')
     ..aOS(3, _omitFieldNames ? '' : 'sender')
     ..aOS(4, _omitFieldNames ? '' : 'eventType')
-    ..aOM<$0.Bcs>(5, _omitFieldNames ? '' : 'contents', subBuilder: $0.Bcs.create)
-    ..aOM<$1.Value>(6, _omitFieldNames ? '' : 'json', subBuilder: $1.Value.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<$0.Bcs>(5, _omitFieldNames ? '' : 'contents',
+        subBuilder: $0.Bcs.create)
+    ..aOM<$1.Value>(6, _omitFieldNames ? '' : 'json',
+        subBuilder: $1.Value.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Event clone() => Event()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Event copyWith(void Function(Event) updates) => super.copyWith((message) => updates(message as Event)) as Event;
+  Event copyWith(void Function(Event) updates) =>
+      super.copyWith((message) => updates(message as Event)) as Event;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -138,7 +158,8 @@ class Event extends $pb.GeneratedMessage {
   Event createEmptyInstance() => create();
   static $pb.PbList<Event> createRepeated() => $pb.PbList<Event>();
   @$core.pragma('dart2js:noInline')
-  static Event getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Event>(create);
+  static Event getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Event>(create);
   static Event? _defaultInstance;
 
   /// Package ID of the top-level function invoked by a `MoveCall` command that triggered this
@@ -208,6 +229,7 @@ class Event extends $pb.GeneratedMessage {
   $1.Value ensureJson() => $_ensure(5);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

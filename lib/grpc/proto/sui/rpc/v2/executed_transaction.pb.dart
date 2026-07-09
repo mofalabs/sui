@@ -52,26 +52,45 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
 
   ExecutedTransaction._();
 
-  factory ExecutedTransaction.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ExecutedTransaction.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ExecutedTransaction.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ExecutedTransaction.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExecutedTransaction', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ExecutedTransaction',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'digest')
-    ..aOM<$0.Transaction>(2, _omitFieldNames ? '' : 'transaction', subBuilder: $0.Transaction.create)
-    ..pc<$1.UserSignature>(3, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM, subBuilder: $1.UserSignature.create)
-    ..aOM<$2.TransactionEffects>(4, _omitFieldNames ? '' : 'effects', subBuilder: $2.TransactionEffects.create)
-    ..aOM<$3.TransactionEvents>(5, _omitFieldNames ? '' : 'events', subBuilder: $3.TransactionEvents.create)
-    ..a<$fixnum.Int64>(6, _omitFieldNames ? '' : 'checkpoint', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$4.Timestamp>(7, _omitFieldNames ? '' : 'timestamp', subBuilder: $4.Timestamp.create)
-    ..pc<$5.BalanceChange>(8, _omitFieldNames ? '' : 'balanceChanges', $pb.PbFieldType.PM, subBuilder: $5.BalanceChange.create)
-    ..aOM<$6.ObjectSet>(9, _omitFieldNames ? '' : 'objects', subBuilder: $6.ObjectSet.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<$0.Transaction>(2, _omitFieldNames ? '' : 'transaction',
+        subBuilder: $0.Transaction.create)
+    ..pc<$1.UserSignature>(
+        3, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM,
+        subBuilder: $1.UserSignature.create)
+    ..aOM<$2.TransactionEffects>(4, _omitFieldNames ? '' : 'effects',
+        subBuilder: $2.TransactionEffects.create)
+    ..aOM<$3.TransactionEvents>(5, _omitFieldNames ? '' : 'events',
+        subBuilder: $3.TransactionEvents.create)
+    ..a<$fixnum.Int64>(
+        6, _omitFieldNames ? '' : 'checkpoint', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$4.Timestamp>(7, _omitFieldNames ? '' : 'timestamp',
+        subBuilder: $4.Timestamp.create)
+    ..pc<$5.BalanceChange>(
+        8, _omitFieldNames ? '' : 'balanceChanges', $pb.PbFieldType.PM,
+        subBuilder: $5.BalanceChange.create)
+    ..aOM<$6.ObjectSet>(9, _omitFieldNames ? '' : 'objects',
+        subBuilder: $6.ObjectSet.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ExecutedTransaction clone() => ExecutedTransaction()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ExecutedTransaction copyWith(void Function(ExecutedTransaction) updates) => super.copyWith((message) => updates(message as ExecutedTransaction)) as ExecutedTransaction;
+  ExecutedTransaction copyWith(void Function(ExecutedTransaction) updates) =>
+      super.copyWith((message) => updates(message as ExecutedTransaction))
+          as ExecutedTransaction;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -80,9 +99,11 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
   static ExecutedTransaction create() => ExecutedTransaction._();
   @$core.override
   ExecutedTransaction createEmptyInstance() => create();
-  static $pb.PbList<ExecutedTransaction> createRepeated() => $pb.PbList<ExecutedTransaction>();
+  static $pb.PbList<ExecutedTransaction> createRepeated() =>
+      $pb.PbList<ExecutedTransaction>();
   @$core.pragma('dart2js:noInline')
-  static ExecutedTransaction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExecutedTransaction>(create);
+  static ExecutedTransaction getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ExecutedTransaction>(create);
   static ExecutedTransaction? _defaultInstance;
 
   /// The digest of this Transaction.
@@ -180,6 +201,7 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
   $6.ObjectSet ensureObjects() => $_ensure(8);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

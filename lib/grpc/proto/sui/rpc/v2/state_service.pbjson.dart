@@ -25,7 +25,15 @@ import 'owner.pbjson.dart' as $3;
 const GetCoinInfoRequest$json = {
   '1': 'GetCoinInfoRequest',
   '2': [
-    {'1': 'coin_type', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'coinType', '17': true},
+    {
+      '1': 'coin_type',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'coinType',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_coin_type'},
@@ -41,10 +49,45 @@ final $typed_data.Uint8List getCoinInfoRequestDescriptor = $convert.base64Decode
 const GetCoinInfoResponse$json = {
   '1': 'GetCoinInfoResponse',
   '2': [
-    {'1': 'coin_type', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'coinType', '17': true},
-    {'1': 'metadata', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.CoinMetadata', '9': 1, '10': 'metadata', '17': true},
-    {'1': 'treasury', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.CoinTreasury', '9': 2, '10': 'treasury', '17': true},
-    {'1': 'regulated_metadata', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.RegulatedCoinMetadata', '9': 3, '10': 'regulatedMetadata', '17': true},
+    {
+      '1': 'coin_type',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'coinType',
+      '17': true
+    },
+    {
+      '1': 'metadata',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CoinMetadata',
+      '9': 1,
+      '10': 'metadata',
+      '17': true
+    },
+    {
+      '1': 'treasury',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CoinTreasury',
+      '9': 2,
+      '10': 'treasury',
+      '17': true
+    },
+    {
+      '1': 'regulated_metadata',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.RegulatedCoinMetadata',
+      '9': 3,
+      '10': 'regulatedMetadata',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_coin_type'},
@@ -68,13 +111,54 @@ const CoinMetadata$json = {
   '1': 'CoinMetadata',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'id', '17': true},
-    {'1': 'decimals', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'decimals', '17': true},
+    {
+      '1': 'decimals',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'decimals',
+      '17': true
+    },
     {'1': 'name', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'name', '17': true},
     {'1': 'symbol', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'symbol', '17': true},
-    {'1': 'description', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'description', '17': true},
-    {'1': 'icon_url', '3': 6, '4': 1, '5': 9, '9': 5, '10': 'iconUrl', '17': true},
-    {'1': 'metadata_cap_id', '3': 7, '4': 1, '5': 9, '9': 6, '10': 'metadataCapId', '17': true},
-    {'1': 'metadata_cap_state', '3': 8, '4': 1, '5': 14, '6': '.sui.rpc.v2.CoinMetadata.MetadataCapState', '9': 7, '10': 'metadataCapState', '17': true},
+    {
+      '1': 'description',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'description',
+      '17': true
+    },
+    {
+      '1': 'icon_url',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 5,
+      '10': 'iconUrl',
+      '17': true
+    },
+    {
+      '1': 'metadata_cap_id',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'metadataCapId',
+      '17': true
+    },
+    {
+      '1': 'metadata_cap_state',
+      '3': 8,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.CoinMetadata.MetadataCapState',
+      '9': 7,
+      '10': 'metadataCapState',
+      '17': true
+    },
   ],
   '4': [CoinMetadata_MetadataCapState$json],
   '8': [
@@ -118,8 +202,25 @@ const CoinTreasury$json = {
   '1': 'CoinTreasury',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'id', '17': true},
-    {'1': 'total_supply', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'totalSupply', '17': true},
-    {'1': 'supply_state', '3': 3, '4': 1, '5': 14, '6': '.sui.rpc.v2.CoinTreasury.SupplyState', '9': 2, '10': 'supplyState', '17': true},
+    {
+      '1': 'total_supply',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'totalSupply',
+      '17': true
+    },
+    {
+      '1': 'supply_state',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.CoinTreasury.SupplyState',
+      '9': 2,
+      '10': 'supplyState',
+      '17': true
+    },
   ],
   '4': [CoinTreasury_SupplyState$json],
   '8': [
@@ -152,11 +253,52 @@ const RegulatedCoinMetadata$json = {
   '1': 'RegulatedCoinMetadata',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'id', '17': true},
-    {'1': 'coin_metadata_object', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'coinMetadataObject', '17': true},
-    {'1': 'deny_cap_object', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'denyCapObject', '17': true},
-    {'1': 'allow_global_pause', '3': 4, '4': 1, '5': 8, '9': 3, '10': 'allowGlobalPause', '17': true},
-    {'1': 'variant', '3': 5, '4': 1, '5': 13, '9': 4, '10': 'variant', '17': true},
-    {'1': 'coin_regulated_state', '3': 6, '4': 1, '5': 14, '6': '.sui.rpc.v2.RegulatedCoinMetadata.CoinRegulatedState', '9': 5, '10': 'coinRegulatedState', '17': true},
+    {
+      '1': 'coin_metadata_object',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'coinMetadataObject',
+      '17': true
+    },
+    {
+      '1': 'deny_cap_object',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'denyCapObject',
+      '17': true
+    },
+    {
+      '1': 'allow_global_pause',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '9': 3,
+      '10': 'allowGlobalPause',
+      '17': true
+    },
+    {
+      '1': 'variant',
+      '3': 5,
+      '4': 1,
+      '5': 13,
+      '9': 4,
+      '10': 'variant',
+      '17': true
+    },
+    {
+      '1': 'coin_regulated_state',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.RegulatedCoinMetadata.CoinRegulatedState',
+      '9': 5,
+      '10': 'coinRegulatedState',
+      '17': true
+    },
   ],
   '4': [RegulatedCoinMetadata_CoinRegulatedState$json],
   '8': [
@@ -197,7 +339,15 @@ const GetBalanceRequest$json = {
   '1': 'GetBalanceRequest',
   '2': [
     {'1': 'owner', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'owner', '17': true},
-    {'1': 'coin_type', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'coinType', '17': true},
+    {
+      '1': 'coin_type',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'coinType',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_owner'},
@@ -214,7 +364,16 @@ final $typed_data.Uint8List getBalanceRequestDescriptor = $convert.base64Decode(
 const GetBalanceResponse$json = {
   '1': 'GetBalanceResponse',
   '2': [
-    {'1': 'balance', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Balance', '9': 0, '10': 'balance', '17': true},
+    {
+      '1': 'balance',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Balance',
+      '9': 0,
+      '10': 'balance',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_balance'},
@@ -231,8 +390,24 @@ const ListBalancesRequest$json = {
   '1': 'ListBalancesRequest',
   '2': [
     {'1': 'owner', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'owner', '17': true},
-    {'1': 'page_size', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'pageSize', '17': true},
-    {'1': 'page_token', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'pageToken', '17': true},
+    {
+      '1': 'page_size',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'pageSize',
+      '17': true
+    },
+    {
+      '1': 'page_token',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'pageToken',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_owner'},
@@ -251,8 +426,23 @@ final $typed_data.Uint8List listBalancesRequestDescriptor = $convert.base64Decod
 const ListBalancesResponse$json = {
   '1': 'ListBalancesResponse',
   '2': [
-    {'1': 'balances', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.Balance', '10': 'balances'},
-    {'1': 'next_page_token', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'nextPageToken', '17': true},
+    {
+      '1': 'balances',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Balance',
+      '10': 'balances'
+    },
+    {
+      '1': 'next_page_token',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'nextPageToken',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_next_page_token'},
@@ -269,10 +459,42 @@ final $typed_data.Uint8List listBalancesResponseDescriptor = $convert.base64Deco
 const Balance$json = {
   '1': 'Balance',
   '2': [
-    {'1': 'coin_type', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'coinType', '17': true},
-    {'1': 'balance', '3': 3, '4': 1, '5': 4, '9': 1, '10': 'balance', '17': true},
-    {'1': 'address_balance', '3': 4, '4': 1, '5': 4, '9': 2, '10': 'addressBalance', '17': true},
-    {'1': 'coin_balance', '3': 5, '4': 1, '5': 4, '9': 3, '10': 'coinBalance', '17': true},
+    {
+      '1': 'coin_type',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'coinType',
+      '17': true
+    },
+    {
+      '1': 'balance',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'balance',
+      '17': true
+    },
+    {
+      '1': 'address_balance',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'addressBalance',
+      '17': true
+    },
+    {
+      '1': 'coin_balance',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'coinBalance',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_coin_type'},
@@ -295,9 +517,34 @@ const ListDynamicFieldsRequest$json = {
   '1': 'ListDynamicFieldsRequest',
   '2': [
     {'1': 'parent', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'parent', '17': true},
-    {'1': 'page_size', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'pageSize', '17': true},
-    {'1': 'page_token', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'pageToken', '17': true},
-    {'1': 'read_mask', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 3, '10': 'readMask', '17': true},
+    {
+      '1': 'page_size',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'pageSize',
+      '17': true
+    },
+    {
+      '1': 'page_token',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'pageToken',
+      '17': true
+    },
+    {
+      '1': 'read_mask',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 3,
+      '10': 'readMask',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_parent'},
@@ -319,8 +566,23 @@ final $typed_data.Uint8List listDynamicFieldsRequestDescriptor = $convert.base64
 const ListDynamicFieldsResponse$json = {
   '1': 'ListDynamicFieldsResponse',
   '2': [
-    {'1': 'dynamic_fields', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.DynamicField', '10': 'dynamicFields'},
-    {'1': 'next_page_token', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'nextPageToken', '17': true},
+    {
+      '1': 'dynamic_fields',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.DynamicField',
+      '10': 'dynamicFields'
+    },
+    {
+      '1': 'next_page_token',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'nextPageToken',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_next_page_token'},
@@ -337,15 +599,84 @@ final $typed_data.Uint8List listDynamicFieldsResponseDescriptor = $convert.base6
 const DynamicField$json = {
   '1': 'DynamicField',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.DynamicField.DynamicFieldKind', '9': 0, '10': 'kind', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.DynamicField.DynamicFieldKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
     {'1': 'parent', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'parent', '17': true},
-    {'1': 'field_id', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'fieldId', '17': true},
-    {'1': 'field_object', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.Object', '9': 3, '10': 'fieldObject', '17': true},
-    {'1': 'name', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 4, '10': 'name', '17': true},
-    {'1': 'value', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 5, '10': 'value', '17': true},
-    {'1': 'value_type', '3': 7, '4': 1, '5': 9, '9': 6, '10': 'valueType', '17': true},
-    {'1': 'child_id', '3': 8, '4': 1, '5': 9, '9': 7, '10': 'childId', '17': true},
-    {'1': 'child_object', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.Object', '9': 8, '10': 'childObject', '17': true},
+    {
+      '1': 'field_id',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'fieldId',
+      '17': true
+    },
+    {
+      '1': 'field_object',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '9': 3,
+      '10': 'fieldObject',
+      '17': true
+    },
+    {
+      '1': 'name',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 4,
+      '10': 'name',
+      '17': true
+    },
+    {
+      '1': 'value',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 5,
+      '10': 'value',
+      '17': true
+    },
+    {
+      '1': 'value_type',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'valueType',
+      '17': true
+    },
+    {
+      '1': 'child_id',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'childId',
+      '17': true
+    },
+    {
+      '1': 'child_object',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '9': 8,
+      '10': 'childObject',
+      '17': true
+    },
   ],
   '4': [DynamicField_DynamicFieldKind$json],
   '8': [
@@ -390,10 +721,43 @@ const ListOwnedObjectsRequest$json = {
   '1': 'ListOwnedObjectsRequest',
   '2': [
     {'1': 'owner', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'owner', '17': true},
-    {'1': 'page_size', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'pageSize', '17': true},
-    {'1': 'page_token', '3': 3, '4': 1, '5': 12, '9': 2, '10': 'pageToken', '17': true},
-    {'1': 'read_mask', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.FieldMask', '9': 3, '10': 'readMask', '17': true},
-    {'1': 'object_type', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'objectType', '17': true},
+    {
+      '1': 'page_size',
+      '3': 2,
+      '4': 1,
+      '5': 13,
+      '9': 1,
+      '10': 'pageSize',
+      '17': true
+    },
+    {
+      '1': 'page_token',
+      '3': 3,
+      '4': 1,
+      '5': 12,
+      '9': 2,
+      '10': 'pageToken',
+      '17': true
+    },
+    {
+      '1': 'read_mask',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.FieldMask',
+      '9': 3,
+      '10': 'readMask',
+      '17': true
+    },
+    {
+      '1': 'object_type',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'objectType',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_owner'},
@@ -417,8 +781,23 @@ final $typed_data.Uint8List listOwnedObjectsRequestDescriptor = $convert.base64D
 const ListOwnedObjectsResponse$json = {
   '1': 'ListOwnedObjectsResponse',
   '2': [
-    {'1': 'objects', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.Object', '10': 'objects'},
-    {'1': 'next_page_token', '3': 2, '4': 1, '5': 12, '9': 0, '10': 'nextPageToken', '17': true},
+    {
+      '1': 'objects',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '10': 'objects'
+    },
+    {
+      '1': 'next_page_token',
+      '3': 2,
+      '4': 1,
+      '5': 12,
+      '9': 0,
+      '10': 'nextPageToken',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_next_page_token'},
@@ -434,16 +813,37 @@ final $typed_data.Uint8List listOwnedObjectsResponseDescriptor = $convert.base64
 const $core.Map<$core.String, $core.dynamic> StateServiceBase$json = {
   '1': 'StateService',
   '2': [
-    {'1': 'ListDynamicFields', '2': '.sui.rpc.v2.ListDynamicFieldsRequest', '3': '.sui.rpc.v2.ListDynamicFieldsResponse'},
-    {'1': 'ListOwnedObjects', '2': '.sui.rpc.v2.ListOwnedObjectsRequest', '3': '.sui.rpc.v2.ListOwnedObjectsResponse'},
-    {'1': 'GetCoinInfo', '2': '.sui.rpc.v2.GetCoinInfoRequest', '3': '.sui.rpc.v2.GetCoinInfoResponse'},
-    {'1': 'GetBalance', '2': '.sui.rpc.v2.GetBalanceRequest', '3': '.sui.rpc.v2.GetBalanceResponse'},
-    {'1': 'ListBalances', '2': '.sui.rpc.v2.ListBalancesRequest', '3': '.sui.rpc.v2.ListBalancesResponse'},
+    {
+      '1': 'ListDynamicFields',
+      '2': '.sui.rpc.v2.ListDynamicFieldsRequest',
+      '3': '.sui.rpc.v2.ListDynamicFieldsResponse'
+    },
+    {
+      '1': 'ListOwnedObjects',
+      '2': '.sui.rpc.v2.ListOwnedObjectsRequest',
+      '3': '.sui.rpc.v2.ListOwnedObjectsResponse'
+    },
+    {
+      '1': 'GetCoinInfo',
+      '2': '.sui.rpc.v2.GetCoinInfoRequest',
+      '3': '.sui.rpc.v2.GetCoinInfoResponse'
+    },
+    {
+      '1': 'GetBalance',
+      '2': '.sui.rpc.v2.GetBalanceRequest',
+      '3': '.sui.rpc.v2.GetBalanceResponse'
+    },
+    {
+      '1': 'ListBalances',
+      '2': '.sui.rpc.v2.ListBalancesRequest',
+      '3': '.sui.rpc.v2.ListBalancesResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use stateServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> StateServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    StateServiceBase$messageJson = {
   '.sui.rpc.v2.ListDynamicFieldsRequest': ListDynamicFieldsRequest$json,
   '.google.protobuf.FieldMask': $0.FieldMask$json,
   '.sui.rpc.v2.ListDynamicFieldsResponse': ListDynamicFieldsResponse$json,
@@ -492,4 +892,3 @@ final $typed_data.Uint8List stateServiceDescriptor = $convert.base64Decode(
     'Hi5zdWkucnBjLnYyLkdldEJhbGFuY2VSZXNwb25zZRJRCgxMaXN0QmFsYW5jZXMSHy5zdWkucn'
     'BjLnYyLkxpc3RCYWxhbmNlc1JlcXVlc3QaIC5zdWkucnBjLnYyLkxpc3RCYWxhbmNlc1Jlc3Bv'
     'bnNl');
-

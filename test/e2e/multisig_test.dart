@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
@@ -9,27 +8,88 @@ import 'package:sui/sui.dart';
 import 'utils/setup.dart';
 
 void main() {
-  
   group('MultiSig with zklogin signature', () {
-    test('Execute tx with multisig with 1 sig and 1 zkLogin sig combined', () async {
+    test('Execute tx with multisig with 1 sig and 1 zkLogin sig combined',
+        () async {
       // set up default zklogin public identifier consistent with default zklogin proof.
       final pkZklogin = toZkLoginPublicIdentifier(
-        BigInt.parse('20794788559620669596206457022966176986688727876128223628113916380927502737911'),
+        BigInt.parse(
+            '20794788559620669596206457022966176986688727876128223628113916380927502737911'),
         'https://id.twitch.tv/oauth2',
       );
       // set up ephemeral keypair, consistent with default zklogin proof.
       final ephemeralKeypair = Ed25519Keypair.fromSecretKey(
         Uint8List.fromList([
-          155, 244, 154, 106, 7, 85, 249, 83, 129, 31, 206, 18, 95, 38, 131, 213, 4, 41, 195, 187, 73,
-          224, 116, 20, 126, 0, 137, 165, 46, 174, 21, 95,
+          155,
+          244,
+          154,
+          106,
+          7,
+          85,
+          249,
+          83,
+          129,
+          31,
+          206,
+          18,
+          95,
+          38,
+          131,
+          213,
+          4,
+          41,
+          195,
+          187,
+          73,
+          224,
+          116,
+          20,
+          126,
+          0,
+          137,
+          165,
+          46,
+          174,
+          21,
+          95,
         ]),
       );
 
       // set up default single keypair.
       final kp = Ed25519Keypair.fromSecretKey(
         Uint8List.fromList([
-          126, 57, 195, 235, 248, 196, 105, 68, 115, 164, 8, 221, 100, 250, 137, 160, 245, 43, 220,
-          168, 250, 73, 119, 95, 19, 242, 100, 105, 81, 114, 86, 105,
+          126,
+          57,
+          195,
+          235,
+          248,
+          196,
+          105,
+          68,
+          115,
+          164,
+          8,
+          221,
+          100,
+          250,
+          137,
+          160,
+          245,
+          43,
+          220,
+          168,
+          250,
+          73,
+          119,
+          95,
+          19,
+          242,
+          100,
+          105,
+          81,
+          114,
+          86,
+          105,
         ]),
       );
       final pkSingle = kp.getPublicKey();
@@ -57,7 +117,8 @@ void main() {
 
       // construct default zklogin inputs defined in rust: https://github.com/MystenLabs/sui/blob/577537c76281b95ab8036b21e8ca5a25fde5d4b5/crates/sui-types/src/zk_login_util.rs
       final zkLoginInputs = {
-        "addressSeed": '20794788559620669596206457022966176986688727876128223628113916380927502737911',
+        "addressSeed":
+            '20794788559620669596206457022966176986688727876128223628113916380927502737911',
         "headerBase64": 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjEifQ',
         "issBase64Details": {
           "indexMod4": 2,
@@ -87,15 +148,18 @@ void main() {
           ],
         },
       };
-      final ephemeralSig = ephemeralKeypair.signTransactionBlock(bytes).signature;
-      
+      final ephemeralSig =
+          ephemeralKeypair.signTransactionBlock(bytes).signature;
+
       // create zklogin signature based on default zk proof.
-      final zkLoginSig = getZkLoginSignature(
-        ZkLoginSignature(inputs: ZkLoginSignatureInputs.fromJson(zkLoginInputs), maxEpoch: 10, userSignature: fromB64(ephemeralSig))
-      );
+      final zkLoginSig = getZkLoginSignature(ZkLoginSignature(
+          inputs: ZkLoginSignatureInputs.fromJson(zkLoginInputs),
+          maxEpoch: 10,
+          userSignature: fromB64(ephemeralSig)));
 
       // combine to multisig and execute the transaction.
-      final signature = multiSigPublicKey.combinePartialSignatures([singleSig, zkLoginSig]);
+      final signature =
+          multiSigPublicKey.combinePartialSignatures([singleSig, zkLoginSig]);
       final result = await client.executeTransactionBlock(
         toB64(bytes),
         [signature],
@@ -108,5 +172,4 @@ void main() {
       expect(result.effects?.status.status, ExecutionStatusType.success);
     });
   });
-
 }

@@ -28,8 +28,7 @@ mixin _$ValidatorsApys {
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 class _ValidatorsApys implements ValidatorsApys {
   const _ValidatorsApys(
       {required final List<ValidatorApy> apys, required this.epoch})
@@ -76,8 +75,7 @@ mixin _$ValidatorApy {
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 class _ValidatorApy implements ValidatorApy {
   const _ValidatorApy({required this.address, required this.apy});
   factory _ValidatorApy.fromJson(Map<String, dynamic> json) =>

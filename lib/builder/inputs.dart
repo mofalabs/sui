@@ -6,13 +6,14 @@ import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
 class Inputs {
-
   static Map<String, dynamic> pure(dynamic data, [String? type]) {
     return {
-		  "\$kind": 'Pure',
-		  "Pure": {
-  			"bytes": data is Uint8List ? toB64(data) : (data as SerializedBcs).toBase64(),
-		  },
+      "\$kind": 'Pure',
+      "Pure": {
+        "bytes": data is Uint8List
+            ? toB64(data)
+            : (data as SerializedBcs).toBase64(),
+      },
     };
   }
 
@@ -56,19 +57,19 @@ class Inputs {
     };
   }
 
-	static Map<String, dynamic> receivingRef(SuiObjectRef data) {
-		return {
+  static Map<String, dynamic> receivingRef(SuiObjectRef data) {
+    return {
       "\$kind": 'Object',
-			"Object": {
+      "Object": {
         "\$kind": 'Receiving',
-				"Receiving": {
-					"digest": data.digest,
-					"version": data.version,
-					"objectId": normalizeSuiAddress(data.objectId),
-				},
-			},
-		};
-	}
+        "Receiving": {
+          "digest": data.digest,
+          "version": data.version,
+          "objectId": normalizeSuiAddress(data.objectId),
+        },
+      },
+    };
+  }
 }
 
 dynamic getIdFromCallArg(dynamic arg) {
@@ -78,15 +79,15 @@ dynamic getIdFromCallArg(dynamic arg) {
 
   if (arg["Object"] != null) {
     if (arg["Object"]["ImmOrOwnedObject"] != null) {
-      return normalizeSuiAddress(arg["Object"]["ImmOrOwnedObject"]["objectId"]);  
-    } 
+      return normalizeSuiAddress(arg["Object"]["ImmOrOwnedObject"]["objectId"]);
+    }
     if (arg["Object"]["Receiving"] != null) {
       return normalizeSuiAddress(arg["Object"]["Receiving"]["objectId"]);
     }
     if (arg["Object"]["SharedObject"] != null) {
       return normalizeSuiAddress(arg["Object"]["SharedObject"]["objectId"]);
     }
-  } 
+  }
 
   if (arg["UnresolvedObject"] != null) {
     return arg["UnresolvedObject"]["objectId"];

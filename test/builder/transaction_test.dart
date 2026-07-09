@@ -1,4 +1,3 @@
-
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -50,11 +49,13 @@ void main() {
 
   test('allows transfer with the result of split Commands', () {
     final tx = Transaction();
-    final coin = tx.add(Commands.splitCoins(tx.gas, [tx.pure.u64(BigInt.from(100))]));
+    final coin =
+        tx.add(Commands.splitCoins(tx.gas, [tx.pure.u64(BigInt.from(100))]));
     tx.add(Commands.transferObjects([coin], tx.object('0x2')));
   });
 
-  test('supports nested results through either array index or destructuring', () {
+  test('supports nested results through either array index or destructuring',
+      () {
     final tx = Transaction();
     final registerResult = tx.add(
       Commands.moveCall({
@@ -70,7 +71,8 @@ void main() {
   });
 
   group('offline build', () {
-    test('builds an empty transaction offline when provided sufficient data', () async {
+    test('builds an empty transaction offline when provided sufficient data',
+        () async {
       final tx = setup();
       await tx.build();
     });
@@ -118,12 +120,17 @@ void main() {
     test('builds a more complex interaction', () async {
       final tx = setup();
       final coin = tx.splitCoins(tx.gas, [tx.pure.u64(BigInt.from(100))]);
-      tx.add(Commands.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
+      tx.add(Commands.mergeCoins(
+          tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
         Commands.moveCall({
           "target": '0x2::devnet_nft::mint',
           "typeArguments": [],
-          "arguments": [tx.pure.string('foo'), tx.pure.string('bar'), tx.pure.string('baz')],
+          "arguments": [
+            tx.pure.string('foo'),
+            tx.pure.string('bar'),
+            tx.pure.string('baz')
+          ],
         }),
       );
       await tx.build();
@@ -133,12 +140,16 @@ void main() {
       final tx = setup();
       tx.object(Inputs.objectRef(ref()));
       final coin = tx.splitCoins(tx.gas, [tx.pure.u64(BigInt.from(100))]);
-      tx.add(Commands.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
+      tx.add(Commands.mergeCoins(
+          tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
         Commands.moveCall({
           "target": '0x2::devnet_nft::mint',
           "typeArguments": [],
-          "arguments": [tx.object(Inputs.objectRef(ref())), tx.object(Inputs.receivingRef(ref()))],
+          "arguments": [
+            tx.object(Inputs.objectRef(ref())),
+            tx.object(Inputs.receivingRef(ref()))
+          ],
         }),
       );
 
@@ -149,15 +160,21 @@ void main() {
       expect(bytes, equals(bytes2));
     });
 
-    test('builds a more complex interaction and verifies consistency', () async {
+    test('builds a more complex interaction and verifies consistency',
+        () async {
       final tx = setup();
       final coin = tx.splitCoins(tx.gas, [tx.pure.u64(BigInt.from(100))]);
-      tx.add(Commands.mergeCoins(tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
+      tx.add(Commands.mergeCoins(
+          tx.gas, [coin, tx.object(Inputs.objectRef(ref()))]));
       tx.add(
         Commands.moveCall({
           "target": '0x2::devnet_nft::mint',
           "typeArguments": [],
-          "arguments": [tx.pure.string('foo'), tx.pure.string('bar'), tx.pure.string('baz')],
+          "arguments": [
+            tx.pure.string('foo'),
+            tx.pure.string('bar'),
+            tx.pure.string('baz')
+          ],
         }),
       );
 
@@ -172,18 +189,51 @@ void main() {
 
 SuiObjectRef ref() {
   final random = Random();
-	return SuiObjectRef(
-    toB58(Uint8List.fromList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2,])),
-    normalizeSuiAddress(random.nextInt(100000).toString().padRight(64, '0')), 
+  return SuiObjectRef(
+    toB58(Uint8List.fromList([
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      1,
+      2,
+    ])),
+    normalizeSuiAddress(random.nextInt(100000).toString().padRight(64, '0')),
     random.nextInt(100000),
   );
 }
 
 Transaction setup() {
-	final tx = Transaction();
-	tx.setSender('0x2');
-	tx.setGasPrice(BigInt.from(5));
-	tx.setGasBudget(BigInt.from(100));
-	tx.setGasPayment([ref()]);
-	return tx;
+  final tx = Transaction();
+  tx.setSender('0x2');
+  tx.setGasPrice(BigInt.from(5));
+  tx.setGasBudget(BigInt.from(100));
+  tx.setGasPayment([ref()]);
+  return tx;
 }

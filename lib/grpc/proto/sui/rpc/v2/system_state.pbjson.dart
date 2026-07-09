@@ -18,22 +18,146 @@ import 'dart:typed_data' as $typed_data;
 const SystemState$json = {
   '1': 'SystemState',
   '2': [
-    {'1': 'version', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'version', '17': true},
+    {
+      '1': 'version',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'version',
+      '17': true
+    },
     {'1': 'epoch', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'epoch', '17': true},
-    {'1': 'protocol_version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'protocolVersion', '17': true},
-    {'1': 'validators', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.ValidatorSet', '9': 3, '10': 'validators', '17': true},
-    {'1': 'storage_fund', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.StorageFund', '9': 4, '10': 'storageFund', '17': true},
-    {'1': 'parameters', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.SystemParameters', '9': 5, '10': 'parameters', '17': true},
-    {'1': 'reference_gas_price', '3': 7, '4': 1, '5': 4, '9': 6, '10': 'referenceGasPrice', '17': true},
-    {'1': 'validator_report_records', '3': 8, '4': 3, '5': 11, '6': '.sui.rpc.v2.ValidatorReportRecord', '10': 'validatorReportRecords'},
-    {'1': 'stake_subsidy', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.StakeSubsidy', '9': 7, '10': 'stakeSubsidy', '17': true},
-    {'1': 'safe_mode', '3': 10, '4': 1, '5': 8, '9': 8, '10': 'safeMode', '17': true},
-    {'1': 'safe_mode_storage_rewards', '3': 11, '4': 1, '5': 4, '9': 9, '10': 'safeModeStorageRewards', '17': true},
-    {'1': 'safe_mode_computation_rewards', '3': 12, '4': 1, '5': 4, '9': 10, '10': 'safeModeComputationRewards', '17': true},
-    {'1': 'safe_mode_storage_rebates', '3': 13, '4': 1, '5': 4, '9': 11, '10': 'safeModeStorageRebates', '17': true},
-    {'1': 'safe_mode_non_refundable_storage_fee', '3': 14, '4': 1, '5': 4, '9': 12, '10': 'safeModeNonRefundableStorageFee', '17': true},
-    {'1': 'epoch_start_timestamp_ms', '3': 15, '4': 1, '5': 4, '9': 13, '10': 'epochStartTimestampMs', '17': true},
-    {'1': 'extra_fields', '3': 16, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 14, '10': 'extraFields', '17': true},
+    {
+      '1': 'protocol_version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'protocolVersion',
+      '17': true
+    },
+    {
+      '1': 'validators',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorSet',
+      '9': 3,
+      '10': 'validators',
+      '17': true
+    },
+    {
+      '1': 'storage_fund',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.StorageFund',
+      '9': 4,
+      '10': 'storageFund',
+      '17': true
+    },
+    {
+      '1': 'parameters',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SystemParameters',
+      '9': 5,
+      '10': 'parameters',
+      '17': true
+    },
+    {
+      '1': 'reference_gas_price',
+      '3': 7,
+      '4': 1,
+      '5': 4,
+      '9': 6,
+      '10': 'referenceGasPrice',
+      '17': true
+    },
+    {
+      '1': 'validator_report_records',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorReportRecord',
+      '10': 'validatorReportRecords'
+    },
+    {
+      '1': 'stake_subsidy',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.StakeSubsidy',
+      '9': 7,
+      '10': 'stakeSubsidy',
+      '17': true
+    },
+    {
+      '1': 'safe_mode',
+      '3': 10,
+      '4': 1,
+      '5': 8,
+      '9': 8,
+      '10': 'safeMode',
+      '17': true
+    },
+    {
+      '1': 'safe_mode_storage_rewards',
+      '3': 11,
+      '4': 1,
+      '5': 4,
+      '9': 9,
+      '10': 'safeModeStorageRewards',
+      '17': true
+    },
+    {
+      '1': 'safe_mode_computation_rewards',
+      '3': 12,
+      '4': 1,
+      '5': 4,
+      '9': 10,
+      '10': 'safeModeComputationRewards',
+      '17': true
+    },
+    {
+      '1': 'safe_mode_storage_rebates',
+      '3': 13,
+      '4': 1,
+      '5': 4,
+      '9': 11,
+      '10': 'safeModeStorageRebates',
+      '17': true
+    },
+    {
+      '1': 'safe_mode_non_refundable_storage_fee',
+      '3': 14,
+      '4': 1,
+      '5': 4,
+      '9': 12,
+      '10': 'safeModeNonRefundableStorageFee',
+      '17': true
+    },
+    {
+      '1': 'epoch_start_timestamp_ms',
+      '3': 15,
+      '4': 1,
+      '5': 4,
+      '9': 13,
+      '10': 'epochStartTimestampMs',
+      '17': true
+    },
+    {
+      '1': 'extra_fields',
+      '3': 16,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 14,
+      '10': 'extraFields',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_version'},
@@ -85,7 +209,15 @@ final $typed_data.Uint8List systemStateDescriptor = $convert.base64Decode(
 const ValidatorReportRecord$json = {
   '1': 'ValidatorReportRecord',
   '2': [
-    {'1': 'reported', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'reported', '17': true},
+    {
+      '1': 'reported',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'reported',
+      '17': true
+    },
     {'1': 'reporters', '3': 2, '4': 3, '5': 9, '10': 'reporters'},
   ],
   '8': [
@@ -102,15 +234,88 @@ final $typed_data.Uint8List validatorReportRecordDescriptor = $convert.base64Dec
 const SystemParameters$json = {
   '1': 'SystemParameters',
   '2': [
-    {'1': 'epoch_duration_ms', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epochDurationMs', '17': true},
-    {'1': 'stake_subsidy_start_epoch', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'stakeSubsidyStartEpoch', '17': true},
-    {'1': 'min_validator_count', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'minValidatorCount', '17': true},
-    {'1': 'max_validator_count', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'maxValidatorCount', '17': true},
-    {'1': 'min_validator_joining_stake', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'minValidatorJoiningStake', '17': true},
-    {'1': 'validator_low_stake_threshold', '3': 6, '4': 1, '5': 4, '9': 5, '10': 'validatorLowStakeThreshold', '17': true},
-    {'1': 'validator_very_low_stake_threshold', '3': 7, '4': 1, '5': 4, '9': 6, '10': 'validatorVeryLowStakeThreshold', '17': true},
-    {'1': 'validator_low_stake_grace_period', '3': 8, '4': 1, '5': 4, '9': 7, '10': 'validatorLowStakeGracePeriod', '17': true},
-    {'1': 'extra_fields', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 8, '10': 'extraFields', '17': true},
+    {
+      '1': 'epoch_duration_ms',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'epochDurationMs',
+      '17': true
+    },
+    {
+      '1': 'stake_subsidy_start_epoch',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'stakeSubsidyStartEpoch',
+      '17': true
+    },
+    {
+      '1': 'min_validator_count',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'minValidatorCount',
+      '17': true
+    },
+    {
+      '1': 'max_validator_count',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'maxValidatorCount',
+      '17': true
+    },
+    {
+      '1': 'min_validator_joining_stake',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'minValidatorJoiningStake',
+      '17': true
+    },
+    {
+      '1': 'validator_low_stake_threshold',
+      '3': 6,
+      '4': 1,
+      '5': 4,
+      '9': 5,
+      '10': 'validatorLowStakeThreshold',
+      '17': true
+    },
+    {
+      '1': 'validator_very_low_stake_threshold',
+      '3': 7,
+      '4': 1,
+      '5': 4,
+      '9': 6,
+      '10': 'validatorVeryLowStakeThreshold',
+      '17': true
+    },
+    {
+      '1': 'validator_low_stake_grace_period',
+      '3': 8,
+      '4': 1,
+      '5': 4,
+      '9': 7,
+      '10': 'validatorLowStakeGracePeriod',
+      '17': true
+    },
+    {
+      '1': 'extra_fields',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 8,
+      '10': 'extraFields',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch_duration_ms'},
@@ -166,12 +371,61 @@ final $typed_data.Uint8List moveTableDescriptor = $convert.base64Decode(
 const StakeSubsidy$json = {
   '1': 'StakeSubsidy',
   '2': [
-    {'1': 'balance', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'balance', '17': true},
-    {'1': 'distribution_counter', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'distributionCounter', '17': true},
-    {'1': 'current_distribution_amount', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'currentDistributionAmount', '17': true},
-    {'1': 'stake_subsidy_period_length', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'stakeSubsidyPeriodLength', '17': true},
-    {'1': 'stake_subsidy_decrease_rate', '3': 5, '4': 1, '5': 13, '9': 4, '10': 'stakeSubsidyDecreaseRate', '17': true},
-    {'1': 'extra_fields', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 5, '10': 'extraFields', '17': true},
+    {
+      '1': 'balance',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'balance',
+      '17': true
+    },
+    {
+      '1': 'distribution_counter',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'distributionCounter',
+      '17': true
+    },
+    {
+      '1': 'current_distribution_amount',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'currentDistributionAmount',
+      '17': true
+    },
+    {
+      '1': 'stake_subsidy_period_length',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'stakeSubsidyPeriodLength',
+      '17': true
+    },
+    {
+      '1': 'stake_subsidy_decrease_rate',
+      '3': 5,
+      '4': 1,
+      '5': 13,
+      '9': 4,
+      '10': 'stakeSubsidyDecreaseRate',
+      '17': true
+    },
+    {
+      '1': 'extra_fields',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 5,
+      '10': 'extraFields',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_balance'},
@@ -200,8 +454,24 @@ final $typed_data.Uint8List stakeSubsidyDescriptor = $convert.base64Decode(
 const StorageFund$json = {
   '1': 'StorageFund',
   '2': [
-    {'1': 'total_object_storage_rebates', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'totalObjectStorageRebates', '17': true},
-    {'1': 'non_refundable_balance', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'nonRefundableBalance', '17': true},
+    {
+      '1': 'total_object_storage_rebates',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'totalObjectStorageRebates',
+      '17': true
+    },
+    {
+      '1': 'non_refundable_balance',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'nonRefundableBalance',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_total_object_storage_rebates'},
@@ -220,15 +490,82 @@ final $typed_data.Uint8List storageFundDescriptor = $convert.base64Decode(
 const ValidatorSet$json = {
   '1': 'ValidatorSet',
   '2': [
-    {'1': 'total_stake', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'totalStake', '17': true},
-    {'1': 'active_validators', '3': 2, '4': 3, '5': 11, '6': '.sui.rpc.v2.Validator', '10': 'activeValidators'},
-    {'1': 'pending_active_validators', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 1, '10': 'pendingActiveValidators', '17': true},
+    {
+      '1': 'total_stake',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'totalStake',
+      '17': true
+    },
+    {
+      '1': 'active_validators',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Validator',
+      '10': 'activeValidators'
+    },
+    {
+      '1': 'pending_active_validators',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 1,
+      '10': 'pendingActiveValidators',
+      '17': true
+    },
     {'1': 'pending_removals', '3': 4, '4': 3, '5': 4, '10': 'pendingRemovals'},
-    {'1': 'staking_pool_mappings', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 2, '10': 'stakingPoolMappings', '17': true},
-    {'1': 'inactive_validators', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 3, '10': 'inactiveValidators', '17': true},
-    {'1': 'validator_candidates', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 4, '10': 'validatorCandidates', '17': true},
-    {'1': 'at_risk_validators', '3': 8, '4': 3, '5': 11, '6': '.sui.rpc.v2.ValidatorSet.AtRiskValidatorsEntry', '10': 'atRiskValidators'},
-    {'1': 'extra_fields', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 5, '10': 'extraFields', '17': true},
+    {
+      '1': 'staking_pool_mappings',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 2,
+      '10': 'stakingPoolMappings',
+      '17': true
+    },
+    {
+      '1': 'inactive_validators',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 3,
+      '10': 'inactiveValidators',
+      '17': true
+    },
+    {
+      '1': 'validator_candidates',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 4,
+      '10': 'validatorCandidates',
+      '17': true
+    },
+    {
+      '1': 'at_risk_validators',
+      '3': 8,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorSet.AtRiskValidatorsEntry',
+      '10': 'atRiskValidators'
+    },
+    {
+      '1': 'extra_fields',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 5,
+      '10': 'extraFields',
+      '17': true
+    },
   ],
   '3': [ValidatorSet_AtRiskValidatorsEntry$json],
   '8': [
@@ -275,36 +612,279 @@ const Validator$json = {
   '1': 'Validator',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'name', '17': true},
-    {'1': 'address', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'address', '17': true},
-    {'1': 'description', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'description', '17': true},
-    {'1': 'image_url', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'imageUrl', '17': true},
-    {'1': 'project_url', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'projectUrl', '17': true},
-    {'1': 'protocol_public_key', '3': 7, '4': 1, '5': 12, '9': 5, '10': 'protocolPublicKey', '17': true},
-    {'1': 'proof_of_possession', '3': 8, '4': 1, '5': 12, '9': 6, '10': 'proofOfPossession', '17': true},
-    {'1': 'network_public_key', '3': 10, '4': 1, '5': 12, '9': 7, '10': 'networkPublicKey', '17': true},
-    {'1': 'worker_public_key', '3': 12, '4': 1, '5': 12, '9': 8, '10': 'workerPublicKey', '17': true},
-    {'1': 'network_address', '3': 13, '4': 1, '5': 9, '9': 9, '10': 'networkAddress', '17': true},
-    {'1': 'p2p_address', '3': 14, '4': 1, '5': 9, '9': 10, '10': 'p2pAddress', '17': true},
-    {'1': 'primary_address', '3': 15, '4': 1, '5': 9, '9': 11, '10': 'primaryAddress', '17': true},
-    {'1': 'worker_address', '3': 16, '4': 1, '5': 9, '9': 12, '10': 'workerAddress', '17': true},
-    {'1': 'next_epoch_protocol_public_key', '3': 18, '4': 1, '5': 12, '9': 13, '10': 'nextEpochProtocolPublicKey', '17': true},
-    {'1': 'next_epoch_proof_of_possession', '3': 19, '4': 1, '5': 12, '9': 14, '10': 'nextEpochProofOfPossession', '17': true},
-    {'1': 'next_epoch_network_public_key', '3': 21, '4': 1, '5': 12, '9': 15, '10': 'nextEpochNetworkPublicKey', '17': true},
-    {'1': 'next_epoch_worker_public_key', '3': 23, '4': 1, '5': 12, '9': 16, '10': 'nextEpochWorkerPublicKey', '17': true},
-    {'1': 'next_epoch_network_address', '3': 24, '4': 1, '5': 9, '9': 17, '10': 'nextEpochNetworkAddress', '17': true},
-    {'1': 'next_epoch_p2p_address', '3': 25, '4': 1, '5': 9, '9': 18, '10': 'nextEpochP2pAddress', '17': true},
-    {'1': 'next_epoch_primary_address', '3': 26, '4': 1, '5': 9, '9': 19, '10': 'nextEpochPrimaryAddress', '17': true},
-    {'1': 'next_epoch_worker_address', '3': 27, '4': 1, '5': 9, '9': 20, '10': 'nextEpochWorkerAddress', '17': true},
-    {'1': 'metadata_extra_fields', '3': 28, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 21, '10': 'metadataExtraFields', '17': true},
-    {'1': 'voting_power', '3': 29, '4': 1, '5': 4, '9': 22, '10': 'votingPower', '17': true},
-    {'1': 'operation_cap_id', '3': 30, '4': 1, '5': 9, '9': 23, '10': 'operationCapId', '17': true},
-    {'1': 'gas_price', '3': 31, '4': 1, '5': 4, '9': 24, '10': 'gasPrice', '17': true},
-    {'1': 'staking_pool', '3': 32, '4': 1, '5': 11, '6': '.sui.rpc.v2.StakingPool', '9': 25, '10': 'stakingPool', '17': true},
-    {'1': 'commission_rate', '3': 33, '4': 1, '5': 4, '9': 26, '10': 'commissionRate', '17': true},
-    {'1': 'next_epoch_stake', '3': 34, '4': 1, '5': 4, '9': 27, '10': 'nextEpochStake', '17': true},
-    {'1': 'next_epoch_gas_price', '3': 35, '4': 1, '5': 4, '9': 28, '10': 'nextEpochGasPrice', '17': true},
-    {'1': 'next_epoch_commission_rate', '3': 36, '4': 1, '5': 4, '9': 29, '10': 'nextEpochCommissionRate', '17': true},
-    {'1': 'extra_fields', '3': 37, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 30, '10': 'extraFields', '17': true},
+    {
+      '1': 'address',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'address',
+      '17': true
+    },
+    {
+      '1': 'description',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'description',
+      '17': true
+    },
+    {
+      '1': 'image_url',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'imageUrl',
+      '17': true
+    },
+    {
+      '1': 'project_url',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'projectUrl',
+      '17': true
+    },
+    {
+      '1': 'protocol_public_key',
+      '3': 7,
+      '4': 1,
+      '5': 12,
+      '9': 5,
+      '10': 'protocolPublicKey',
+      '17': true
+    },
+    {
+      '1': 'proof_of_possession',
+      '3': 8,
+      '4': 1,
+      '5': 12,
+      '9': 6,
+      '10': 'proofOfPossession',
+      '17': true
+    },
+    {
+      '1': 'network_public_key',
+      '3': 10,
+      '4': 1,
+      '5': 12,
+      '9': 7,
+      '10': 'networkPublicKey',
+      '17': true
+    },
+    {
+      '1': 'worker_public_key',
+      '3': 12,
+      '4': 1,
+      '5': 12,
+      '9': 8,
+      '10': 'workerPublicKey',
+      '17': true
+    },
+    {
+      '1': 'network_address',
+      '3': 13,
+      '4': 1,
+      '5': 9,
+      '9': 9,
+      '10': 'networkAddress',
+      '17': true
+    },
+    {
+      '1': 'p2p_address',
+      '3': 14,
+      '4': 1,
+      '5': 9,
+      '9': 10,
+      '10': 'p2pAddress',
+      '17': true
+    },
+    {
+      '1': 'primary_address',
+      '3': 15,
+      '4': 1,
+      '5': 9,
+      '9': 11,
+      '10': 'primaryAddress',
+      '17': true
+    },
+    {
+      '1': 'worker_address',
+      '3': 16,
+      '4': 1,
+      '5': 9,
+      '9': 12,
+      '10': 'workerAddress',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_protocol_public_key',
+      '3': 18,
+      '4': 1,
+      '5': 12,
+      '9': 13,
+      '10': 'nextEpochProtocolPublicKey',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_proof_of_possession',
+      '3': 19,
+      '4': 1,
+      '5': 12,
+      '9': 14,
+      '10': 'nextEpochProofOfPossession',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_network_public_key',
+      '3': 21,
+      '4': 1,
+      '5': 12,
+      '9': 15,
+      '10': 'nextEpochNetworkPublicKey',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_worker_public_key',
+      '3': 23,
+      '4': 1,
+      '5': 12,
+      '9': 16,
+      '10': 'nextEpochWorkerPublicKey',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_network_address',
+      '3': 24,
+      '4': 1,
+      '5': 9,
+      '9': 17,
+      '10': 'nextEpochNetworkAddress',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_p2p_address',
+      '3': 25,
+      '4': 1,
+      '5': 9,
+      '9': 18,
+      '10': 'nextEpochP2pAddress',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_primary_address',
+      '3': 26,
+      '4': 1,
+      '5': 9,
+      '9': 19,
+      '10': 'nextEpochPrimaryAddress',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_worker_address',
+      '3': 27,
+      '4': 1,
+      '5': 9,
+      '9': 20,
+      '10': 'nextEpochWorkerAddress',
+      '17': true
+    },
+    {
+      '1': 'metadata_extra_fields',
+      '3': 28,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 21,
+      '10': 'metadataExtraFields',
+      '17': true
+    },
+    {
+      '1': 'voting_power',
+      '3': 29,
+      '4': 1,
+      '5': 4,
+      '9': 22,
+      '10': 'votingPower',
+      '17': true
+    },
+    {
+      '1': 'operation_cap_id',
+      '3': 30,
+      '4': 1,
+      '5': 9,
+      '9': 23,
+      '10': 'operationCapId',
+      '17': true
+    },
+    {
+      '1': 'gas_price',
+      '3': 31,
+      '4': 1,
+      '5': 4,
+      '9': 24,
+      '10': 'gasPrice',
+      '17': true
+    },
+    {
+      '1': 'staking_pool',
+      '3': 32,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.StakingPool',
+      '9': 25,
+      '10': 'stakingPool',
+      '17': true
+    },
+    {
+      '1': 'commission_rate',
+      '3': 33,
+      '4': 1,
+      '5': 4,
+      '9': 26,
+      '10': 'commissionRate',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_stake',
+      '3': 34,
+      '4': 1,
+      '5': 4,
+      '9': 27,
+      '10': 'nextEpochStake',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_gas_price',
+      '3': 35,
+      '4': 1,
+      '5': 4,
+      '9': 28,
+      '10': 'nextEpochGasPrice',
+      '17': true
+    },
+    {
+      '1': 'next_epoch_commission_rate',
+      '3': 36,
+      '4': 1,
+      '5': 4,
+      '9': 29,
+      '10': 'nextEpochCommissionRate',
+      '17': true
+    },
+    {
+      '1': 'extra_fields',
+      '3': 37,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 30,
+      '10': 'extraFields',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_name'},
@@ -400,16 +980,98 @@ const StakingPool$json = {
   '1': 'StakingPool',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'id', '17': true},
-    {'1': 'activation_epoch', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'activationEpoch', '17': true},
-    {'1': 'deactivation_epoch', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'deactivationEpoch', '17': true},
-    {'1': 'sui_balance', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'suiBalance', '17': true},
-    {'1': 'rewards_pool', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'rewardsPool', '17': true},
-    {'1': 'pool_token_balance', '3': 6, '4': 1, '5': 4, '9': 5, '10': 'poolTokenBalance', '17': true},
-    {'1': 'exchange_rates', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 6, '10': 'exchangeRates', '17': true},
-    {'1': 'pending_stake', '3': 8, '4': 1, '5': 4, '9': 7, '10': 'pendingStake', '17': true},
-    {'1': 'pending_total_sui_withdraw', '3': 9, '4': 1, '5': 4, '9': 8, '10': 'pendingTotalSuiWithdraw', '17': true},
-    {'1': 'pending_pool_token_withdraw', '3': 10, '4': 1, '5': 4, '9': 9, '10': 'pendingPoolTokenWithdraw', '17': true},
-    {'1': 'extra_fields', '3': 11, '4': 1, '5': 11, '6': '.sui.rpc.v2.MoveTable', '9': 10, '10': 'extraFields', '17': true},
+    {
+      '1': 'activation_epoch',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'activationEpoch',
+      '17': true
+    },
+    {
+      '1': 'deactivation_epoch',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'deactivationEpoch',
+      '17': true
+    },
+    {
+      '1': 'sui_balance',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'suiBalance',
+      '17': true
+    },
+    {
+      '1': 'rewards_pool',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'rewardsPool',
+      '17': true
+    },
+    {
+      '1': 'pool_token_balance',
+      '3': 6,
+      '4': 1,
+      '5': 4,
+      '9': 5,
+      '10': 'poolTokenBalance',
+      '17': true
+    },
+    {
+      '1': 'exchange_rates',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 6,
+      '10': 'exchangeRates',
+      '17': true
+    },
+    {
+      '1': 'pending_stake',
+      '3': 8,
+      '4': 1,
+      '5': 4,
+      '9': 7,
+      '10': 'pendingStake',
+      '17': true
+    },
+    {
+      '1': 'pending_total_sui_withdraw',
+      '3': 9,
+      '4': 1,
+      '5': 4,
+      '9': 8,
+      '10': 'pendingTotalSuiWithdraw',
+      '17': true
+    },
+    {
+      '1': 'pending_pool_token_withdraw',
+      '3': 10,
+      '4': 1,
+      '5': 4,
+      '9': 9,
+      '10': 'pendingPoolTokenWithdraw',
+      '17': true
+    },
+    {
+      '1': 'extra_fields',
+      '3': 11,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.MoveTable',
+      '9': 10,
+      '10': 'extraFields',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_id'},
@@ -443,4 +1105,3 @@ final $typed_data.Uint8List stakingPoolDescriptor = $convert.base64Decode(
     'ZW5fYmFsYW5jZUIRCg9fZXhjaGFuZ2VfcmF0ZXNCEAoOX3BlbmRpbmdfc3Rha2VCHQobX3Blbm'
     'RpbmdfdG90YWxfc3VpX3dpdGhkcmF3Qh4KHF9wZW5kaW5nX3Bvb2xfdG9rZW5fd2l0aGRyYXdC'
     'DwoNX2V4dHJhX2ZpZWxkcw==');
-

@@ -4,6 +4,12 @@ include: package:flutter_lints/flutter.yaml
 # https://dart.dev/guides/language/analysis-options
 
 analyzer:
+  # Generated code (freezed / json_serializable / protobuf) is not hand-written
+  # and carries its own `ignore_for_file` headers; keep it out of analysis.
+  exclude:
+    - "lib/**.freezed.dart"
+    - "lib/**.g.dart"
+    - "lib/grpc/proto/**"
   errors:
     invalid_annotation_target: ignore
 

@@ -15,7 +15,7 @@ class CoinStruct extends SuiObjectRef {
     TransactionDigest digest,
     this.balance,
     this.previousTransaction,
-  ): super(digest, coinObjectId, version);
+  ) : super(digest, coinObjectId, version);
 
   factory CoinStruct.fromJson(dynamic data) {
     return CoinStruct(

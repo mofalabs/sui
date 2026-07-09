@@ -50,7 +50,8 @@ class Object extends $pb.GeneratedMessage {
     if (hasPublicTransfer != null) result.hasPublicTransfer = hasPublicTransfer;
     if (contents != null) result.contents = contents;
     if (package != null) result.package = package;
-    if (previousTransaction != null) result.previousTransaction = previousTransaction;
+    if (previousTransaction != null)
+      result.previousTransaction = previousTransaction;
     if (storageRebate != null) result.storageRebate = storageRebate;
     if (json != null) result.json = json;
     if (balance != null) result.balance = balance;
@@ -60,31 +61,48 @@ class Object extends $pb.GeneratedMessage {
 
   Object._();
 
-  factory Object.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Object.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Object.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Object.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Object', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Object',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
     ..aOS(2, _omitFieldNames ? '' : 'objectId')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(4, _omitFieldNames ? '' : 'digest')
-    ..aOM<$1.Owner>(5, _omitFieldNames ? '' : 'owner', subBuilder: $1.Owner.create)
+    ..aOM<$1.Owner>(5, _omitFieldNames ? '' : 'owner',
+        subBuilder: $1.Owner.create)
     ..aOS(6, _omitFieldNames ? '' : 'objectType')
     ..aOB(7, _omitFieldNames ? '' : 'hasPublicTransfer')
-    ..aOM<$0.Bcs>(8, _omitFieldNames ? '' : 'contents', subBuilder: $0.Bcs.create)
-    ..aOM<$2.Package>(9, _omitFieldNames ? '' : 'package', subBuilder: $2.Package.create)
+    ..aOM<$0.Bcs>(8, _omitFieldNames ? '' : 'contents',
+        subBuilder: $0.Bcs.create)
+    ..aOM<$2.Package>(9, _omitFieldNames ? '' : 'package',
+        subBuilder: $2.Package.create)
     ..aOS(10, _omitFieldNames ? '' : 'previousTransaction')
-    ..a<$fixnum.Int64>(11, _omitFieldNames ? '' : 'storageRebate', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$3.Value>(100, _omitFieldNames ? '' : 'json', subBuilder: $3.Value.create)
-    ..a<$fixnum.Int64>(101, _omitFieldNames ? '' : 'balance', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<Display>(102, _omitFieldNames ? '' : 'display', subBuilder: Display.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(
+        11, _omitFieldNames ? '' : 'storageRebate', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$3.Value>(100, _omitFieldNames ? '' : 'json',
+        subBuilder: $3.Value.create)
+    ..a<$fixnum.Int64>(
+        101, _omitFieldNames ? '' : 'balance', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<Display>(102, _omitFieldNames ? '' : 'display',
+        subBuilder: Display.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Object clone() => Object()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Object copyWith(void Function(Object) updates) => super.copyWith((message) => updates(message as Object)) as Object;
+  Object copyWith(void Function(Object) updates) =>
+      super.copyWith((message) => updates(message as Object)) as Object;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -95,7 +113,8 @@ class Object extends $pb.GeneratedMessage {
   Object createEmptyInstance() => create();
   static $pb.PbList<Object> createRepeated() => $pb.PbList<Object>();
   @$core.pragma('dart2js:noInline')
-  static Object getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Object>(create);
+  static Object getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Object>(create);
   static Object? _defaultInstance;
 
   /// This Object serialized as BCS.
@@ -273,18 +292,26 @@ class ObjectSet extends $pb.GeneratedMessage {
 
   ObjectSet._();
 
-  factory ObjectSet.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ObjectSet.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ObjectSet.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ObjectSet.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ObjectSet', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<Object>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM, subBuilder: Object.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ObjectSet',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<Object>(1, _omitFieldNames ? '' : 'objects', $pb.PbFieldType.PM,
+        subBuilder: Object.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ObjectSet clone() => ObjectSet()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ObjectSet copyWith(void Function(ObjectSet) updates) => super.copyWith((message) => updates(message as ObjectSet)) as ObjectSet;
+  ObjectSet copyWith(void Function(ObjectSet) updates) =>
+      super.copyWith((message) => updates(message as ObjectSet)) as ObjectSet;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -295,7 +322,8 @@ class ObjectSet extends $pb.GeneratedMessage {
   ObjectSet createEmptyInstance() => create();
   static $pb.PbList<ObjectSet> createRepeated() => $pb.PbList<ObjectSet>();
   @$core.pragma('dart2js:noInline')
-  static ObjectSet getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ObjectSet>(create);
+  static ObjectSet getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ObjectSet>(create);
   static ObjectSet? _defaultInstance;
 
   /// Objects are sorted by the key `(object_id, version)`.
@@ -317,19 +345,28 @@ class Display extends $pb.GeneratedMessage {
 
   Display._();
 
-  factory Display.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Display.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Display.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Display.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Display', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$3.Value>(1, _omitFieldNames ? '' : 'output', subBuilder: $3.Value.create)
-    ..aOM<$3.Value>(2, _omitFieldNames ? '' : 'errors', subBuilder: $3.Value.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Display',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$3.Value>(1, _omitFieldNames ? '' : 'output',
+        subBuilder: $3.Value.create)
+    ..aOM<$3.Value>(2, _omitFieldNames ? '' : 'errors',
+        subBuilder: $3.Value.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Display clone() => Display()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Display copyWith(void Function(Display) updates) => super.copyWith((message) => updates(message as Display)) as Display;
+  Display copyWith(void Function(Display) updates) =>
+      super.copyWith((message) => updates(message as Display)) as Display;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -340,7 +377,8 @@ class Display extends $pb.GeneratedMessage {
   Display createEmptyInstance() => create();
   static $pb.PbList<Display> createRepeated() => $pb.PbList<Display>();
   @$core.pragma('dart2js:noInline')
-  static Display getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Display>(create);
+  static Display getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Display>(create);
   static Display? _defaultInstance;
 
   /// Output for all successfully substituted display fields. Unsuccessful
@@ -372,6 +410,7 @@ class Display extends $pb.GeneratedMessage {
   $3.Value ensureErrors() => $_ensure(1);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

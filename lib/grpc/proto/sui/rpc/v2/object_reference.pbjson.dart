@@ -18,8 +18,24 @@ import 'dart:typed_data' as $typed_data;
 const ObjectReference$json = {
   '1': 'ObjectReference',
   '2': [
-    {'1': 'object_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'objectId', '17': true},
-    {'1': 'version', '3': 2, '4': 1, '5': 4, '9': 1, '10': 'version', '17': true},
+    {
+      '1': 'object_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 1,
+      '10': 'version',
+      '17': true
+    },
     {'1': 'digest', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'digest', '17': true},
   ],
   '8': [
@@ -34,4 +50,3 @@ final $typed_data.Uint8List objectReferenceDescriptor = $convert.base64Decode(
     'Cg9PYmplY3RSZWZlcmVuY2USIAoJb2JqZWN0X2lkGAEgASgJSABSCG9iamVjdElkiAEBEh0KB3'
     'ZlcnNpb24YAiABKARIAVIHdmVyc2lvbogBARIbCgZkaWdlc3QYAyABKAlIAlIGZGlnZXN0iAEB'
     'QgwKCl9vYmplY3RfaWRCCgoIX3ZlcnNpb25CCQoHX2RpZ2VzdA==');
-

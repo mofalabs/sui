@@ -30,18 +30,26 @@ class LookupNameRequest extends $pb.GeneratedMessage {
 
   LookupNameRequest._();
 
-  factory LookupNameRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory LookupNameRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory LookupNameRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory LookupNameRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LookupNameRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'LookupNameRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   LookupNameRequest clone() => LookupNameRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  LookupNameRequest copyWith(void Function(LookupNameRequest) updates) => super.copyWith((message) => updates(message as LookupNameRequest)) as LookupNameRequest;
+  LookupNameRequest copyWith(void Function(LookupNameRequest) updates) =>
+      super.copyWith((message) => updates(message as LookupNameRequest))
+          as LookupNameRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -50,9 +58,11 @@ class LookupNameRequest extends $pb.GeneratedMessage {
   static LookupNameRequest create() => LookupNameRequest._();
   @$core.override
   LookupNameRequest createEmptyInstance() => create();
-  static $pb.PbList<LookupNameRequest> createRepeated() => $pb.PbList<LookupNameRequest>();
+  static $pb.PbList<LookupNameRequest> createRepeated() =>
+      $pb.PbList<LookupNameRequest>();
   @$core.pragma('dart2js:noInline')
-  static LookupNameRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LookupNameRequest>(create);
+  static LookupNameRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<LookupNameRequest>(create);
   static LookupNameRequest? _defaultInstance;
 
   /// Required. The SuiNS name to lookup.
@@ -79,18 +89,27 @@ class LookupNameResponse extends $pb.GeneratedMessage {
 
   LookupNameResponse._();
 
-  factory LookupNameResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory LookupNameResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory LookupNameResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory LookupNameResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LookupNameResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<NameRecord>(1, _omitFieldNames ? '' : 'record', subBuilder: NameRecord.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'LookupNameResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<NameRecord>(1, _omitFieldNames ? '' : 'record',
+        subBuilder: NameRecord.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   LookupNameResponse clone() => LookupNameResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  LookupNameResponse copyWith(void Function(LookupNameResponse) updates) => super.copyWith((message) => updates(message as LookupNameResponse)) as LookupNameResponse;
+  LookupNameResponse copyWith(void Function(LookupNameResponse) updates) =>
+      super.copyWith((message) => updates(message as LookupNameResponse))
+          as LookupNameResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -99,9 +118,11 @@ class LookupNameResponse extends $pb.GeneratedMessage {
   static LookupNameResponse create() => LookupNameResponse._();
   @$core.override
   LookupNameResponse createEmptyInstance() => create();
-  static $pb.PbList<LookupNameResponse> createRepeated() => $pb.PbList<LookupNameResponse>();
+  static $pb.PbList<LookupNameResponse> createRepeated() =>
+      $pb.PbList<LookupNameResponse>();
   @$core.pragma('dart2js:noInline')
-  static LookupNameResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LookupNameResponse>(create);
+  static LookupNameResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<LookupNameResponse>(create);
   static LookupNameResponse? _defaultInstance;
 
   /// The record for the requested name
@@ -128,18 +149,28 @@ class ReverseLookupNameRequest extends $pb.GeneratedMessage {
 
   ReverseLookupNameRequest._();
 
-  factory ReverseLookupNameRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ReverseLookupNameRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ReverseLookupNameRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ReverseLookupNameRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReverseLookupNameRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ReverseLookupNameRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'address')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReverseLookupNameRequest clone() => ReverseLookupNameRequest()..mergeFromMessage(this);
+  ReverseLookupNameRequest clone() =>
+      ReverseLookupNameRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReverseLookupNameRequest copyWith(void Function(ReverseLookupNameRequest) updates) => super.copyWith((message) => updates(message as ReverseLookupNameRequest)) as ReverseLookupNameRequest;
+  ReverseLookupNameRequest copyWith(
+          void Function(ReverseLookupNameRequest) updates) =>
+      super.copyWith((message) => updates(message as ReverseLookupNameRequest))
+          as ReverseLookupNameRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -148,9 +179,11 @@ class ReverseLookupNameRequest extends $pb.GeneratedMessage {
   static ReverseLookupNameRequest create() => ReverseLookupNameRequest._();
   @$core.override
   ReverseLookupNameRequest createEmptyInstance() => create();
-  static $pb.PbList<ReverseLookupNameRequest> createRepeated() => $pb.PbList<ReverseLookupNameRequest>();
+  static $pb.PbList<ReverseLookupNameRequest> createRepeated() =>
+      $pb.PbList<ReverseLookupNameRequest>();
   @$core.pragma('dart2js:noInline')
-  static ReverseLookupNameRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReverseLookupNameRequest>(create);
+  static ReverseLookupNameRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ReverseLookupNameRequest>(create);
   static ReverseLookupNameRequest? _defaultInstance;
 
   /// Required. The address to perform a reverse lookup for.
@@ -175,18 +208,29 @@ class ReverseLookupNameResponse extends $pb.GeneratedMessage {
 
   ReverseLookupNameResponse._();
 
-  factory ReverseLookupNameResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory ReverseLookupNameResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory ReverseLookupNameResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ReverseLookupNameResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReverseLookupNameResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<NameRecord>(1, _omitFieldNames ? '' : 'record', subBuilder: NameRecord.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ReverseLookupNameResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<NameRecord>(1, _omitFieldNames ? '' : 'record',
+        subBuilder: NameRecord.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReverseLookupNameResponse clone() => ReverseLookupNameResponse()..mergeFromMessage(this);
+  ReverseLookupNameResponse clone() =>
+      ReverseLookupNameResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ReverseLookupNameResponse copyWith(void Function(ReverseLookupNameResponse) updates) => super.copyWith((message) => updates(message as ReverseLookupNameResponse)) as ReverseLookupNameResponse;
+  ReverseLookupNameResponse copyWith(
+          void Function(ReverseLookupNameResponse) updates) =>
+      super.copyWith((message) => updates(message as ReverseLookupNameResponse))
+          as ReverseLookupNameResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -195,9 +239,11 @@ class ReverseLookupNameResponse extends $pb.GeneratedMessage {
   static ReverseLookupNameResponse create() => ReverseLookupNameResponse._();
   @$core.override
   ReverseLookupNameResponse createEmptyInstance() => create();
-  static $pb.PbList<ReverseLookupNameResponse> createRepeated() => $pb.PbList<ReverseLookupNameResponse>();
+  static $pb.PbList<ReverseLookupNameResponse> createRepeated() =>
+      $pb.PbList<ReverseLookupNameResponse>();
   @$core.pragma('dart2js:noInline')
-  static ReverseLookupNameResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReverseLookupNameResponse>(create);
+  static ReverseLookupNameResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ReverseLookupNameResponse>(create);
   static ReverseLookupNameResponse? _defaultInstance;
 
   /// The record for the SuiNS name linked to the requested address
@@ -226,7 +272,8 @@ class NameRecord extends $pb.GeneratedMessage {
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (registrationNftId != null) result.registrationNftId = registrationNftId;
-    if (expirationTimestamp != null) result.expirationTimestamp = expirationTimestamp;
+    if (expirationTimestamp != null)
+      result.expirationTimestamp = expirationTimestamp;
     if (targetAddress != null) result.targetAddress = targetAddress;
     if (data != null) result.data.addEntries(data);
     return result;
@@ -234,23 +281,35 @@ class NameRecord extends $pb.GeneratedMessage {
 
   NameRecord._();
 
-  factory NameRecord.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory NameRecord.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory NameRecord.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory NameRecord.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'NameRecord', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'NameRecord',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'registrationNftId')
-    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'expirationTimestamp', subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'expirationTimestamp',
+        subBuilder: $0.Timestamp.create)
     ..aOS(5, _omitFieldNames ? '' : 'targetAddress')
-    ..m<$core.String, $core.String>(6, _omitFieldNames ? '' : 'data', entryClassName: 'NameRecord.DataEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('sui.rpc.v2'))
-    ..hasRequiredFields = false
-  ;
+    ..m<$core.String, $core.String>(6, _omitFieldNames ? '' : 'data',
+        entryClassName: 'NameRecord.DataEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('sui.rpc.v2'))
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   NameRecord clone() => NameRecord()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  NameRecord copyWith(void Function(NameRecord) updates) => super.copyWith((message) => updates(message as NameRecord)) as NameRecord;
+  NameRecord copyWith(void Function(NameRecord) updates) =>
+      super.copyWith((message) => updates(message as NameRecord)) as NameRecord;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -261,7 +320,8 @@ class NameRecord extends $pb.GeneratedMessage {
   NameRecord createEmptyInstance() => create();
   static $pb.PbList<NameRecord> createRepeated() => $pb.PbList<NameRecord>();
   @$core.pragma('dart2js:noInline')
-  static NameRecord getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<NameRecord>(create);
+  static NameRecord getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<NameRecord>(create);
   static NameRecord? _defaultInstance;
 
   /// Id of this record.
@@ -338,14 +398,17 @@ class NameServiceApi {
 
   NameServiceApi(this._client);
 
-  $async.Future<LookupNameResponse> lookupName($pb.ClientContext? ctx, LookupNameRequest request) =>
-    _client.invoke<LookupNameResponse>(ctx, 'NameService', 'LookupName', request, LookupNameResponse())
-  ;
-  $async.Future<ReverseLookupNameResponse> reverseLookupName($pb.ClientContext? ctx, ReverseLookupNameRequest request) =>
-    _client.invoke<ReverseLookupNameResponse>(ctx, 'NameService', 'ReverseLookupName', request, ReverseLookupNameResponse())
-  ;
+  $async.Future<LookupNameResponse> lookupName(
+          $pb.ClientContext? ctx, LookupNameRequest request) =>
+      _client.invoke<LookupNameResponse>(
+          ctx, 'NameService', 'LookupName', request, LookupNameResponse());
+  $async.Future<ReverseLookupNameResponse> reverseLookupName(
+          $pb.ClientContext? ctx, ReverseLookupNameRequest request) =>
+      _client.invoke<ReverseLookupNameResponse>(ctx, 'NameService',
+          'ReverseLookupName', request, ReverseLookupNameResponse());
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

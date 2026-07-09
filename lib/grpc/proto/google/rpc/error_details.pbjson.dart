@@ -20,7 +20,14 @@ const ErrorInfo$json = {
   '2': [
     {'1': 'reason', '3': 1, '4': 1, '5': 9, '10': 'reason'},
     {'1': 'domain', '3': 2, '4': 1, '5': 9, '10': 'domain'},
-    {'1': 'metadata', '3': 3, '4': 3, '5': 11, '6': '.google.rpc.ErrorInfo.MetadataEntry', '10': 'metadata'},
+    {
+      '1': 'metadata',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.google.rpc.ErrorInfo.MetadataEntry',
+      '10': 'metadata'
+    },
   ],
   '3': [ErrorInfo_MetadataEntry$json],
 };
@@ -46,7 +53,14 @@ final $typed_data.Uint8List errorInfoDescriptor = $convert.base64Decode(
 const RetryInfo$json = {
   '1': 'RetryInfo',
   '2': [
-    {'1': 'retry_delay', '3': 1, '4': 1, '5': 11, '6': '.google.protobuf.Duration', '10': 'retryDelay'},
+    {
+      '1': 'retry_delay',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Duration',
+      '10': 'retryDelay'
+    },
   ],
 };
 
@@ -73,7 +87,14 @@ final $typed_data.Uint8List debugInfoDescriptor = $convert.base64Decode(
 const QuotaFailure$json = {
   '1': 'QuotaFailure',
   '2': [
-    {'1': 'violations', '3': 1, '4': 3, '5': 11, '6': '.google.rpc.QuotaFailure.Violation', '10': 'violations'},
+    {
+      '1': 'violations',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.google.rpc.QuotaFailure.Violation',
+      '10': 'violations'
+    },
   ],
   '3': [QuotaFailure_Violation$json],
 };
@@ -97,7 +118,14 @@ final $typed_data.Uint8List quotaFailureDescriptor = $convert.base64Decode(
 const PreconditionFailure$json = {
   '1': 'PreconditionFailure',
   '2': [
-    {'1': 'violations', '3': 1, '4': 3, '5': 11, '6': '.google.rpc.PreconditionFailure.Violation', '10': 'violations'},
+    {
+      '1': 'violations',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.google.rpc.PreconditionFailure.Violation',
+      '10': 'violations'
+    },
   ],
   '3': [PreconditionFailure_Violation$json],
 };
@@ -123,7 +151,14 @@ final $typed_data.Uint8List preconditionFailureDescriptor = $convert.base64Decod
 const BadRequest$json = {
   '1': 'BadRequest',
   '2': [
-    {'1': 'field_violations', '3': 1, '4': 3, '5': 11, '6': '.google.rpc.BadRequest.FieldViolation', '10': 'fieldViolations'},
+    {
+      '1': 'field_violations',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.google.rpc.BadRequest.FieldViolation',
+      '10': 'fieldViolations'
+    },
   ],
   '3': [BadRequest_FieldViolation$json],
 };
@@ -135,7 +170,14 @@ const BadRequest_FieldViolation$json = {
     {'1': 'field', '3': 1, '4': 1, '5': 9, '10': 'field'},
     {'1': 'description', '3': 2, '4': 1, '5': 9, '10': 'description'},
     {'1': 'reason', '3': 3, '4': 1, '5': 9, '10': 'reason'},
-    {'1': 'localized_message', '3': 4, '4': 1, '5': 11, '6': '.google.rpc.LocalizedMessage', '10': 'localizedMessage'},
+    {
+      '1': 'localized_message',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.rpc.LocalizedMessage',
+      '10': 'localizedMessage'
+    },
   ],
 };
 
@@ -182,7 +224,14 @@ final $typed_data.Uint8List resourceInfoDescriptor = $convert.base64Decode(
 const Help$json = {
   '1': 'Help',
   '2': [
-    {'1': 'links', '3': 1, '4': 3, '5': 11, '6': '.google.rpc.Help.Link', '10': 'links'},
+    {
+      '1': 'links',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.google.rpc.Help.Link',
+      '10': 'links'
+    },
   ],
   '3': [Help_Link$json],
 };
@@ -214,4 +263,3 @@ const LocalizedMessage$json = {
 final $typed_data.Uint8List localizedMessageDescriptor = $convert.base64Decode(
     'ChBMb2NhbGl6ZWRNZXNzYWdlEhYKBmxvY2FsZRgBIAEoCVIGbG9jYWxlEhgKB21lc3NhZ2UYAi'
     'ABKAlSB21lc3NhZ2U=');
-

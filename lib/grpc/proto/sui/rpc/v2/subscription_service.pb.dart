@@ -33,29 +33,44 @@ class SubscribeCheckpointsRequest extends $pb.GeneratedMessage {
 
   SubscribeCheckpointsRequest._();
 
-  factory SubscribeCheckpointsRequest.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SubscribeCheckpointsRequest.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SubscribeCheckpointsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SubscribeCheckpointsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SubscribeCheckpointsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..aOM<$0.FieldMask>(1, _omitFieldNames ? '' : 'readMask', subBuilder: $0.FieldMask.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SubscribeCheckpointsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..aOM<$0.FieldMask>(1, _omitFieldNames ? '' : 'readMask',
+        subBuilder: $0.FieldMask.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SubscribeCheckpointsRequest clone() => SubscribeCheckpointsRequest()..mergeFromMessage(this);
+  SubscribeCheckpointsRequest clone() =>
+      SubscribeCheckpointsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SubscribeCheckpointsRequest copyWith(void Function(SubscribeCheckpointsRequest) updates) => super.copyWith((message) => updates(message as SubscribeCheckpointsRequest)) as SubscribeCheckpointsRequest;
+  SubscribeCheckpointsRequest copyWith(
+          void Function(SubscribeCheckpointsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as SubscribeCheckpointsRequest))
+          as SubscribeCheckpointsRequest;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static SubscribeCheckpointsRequest create() => SubscribeCheckpointsRequest._();
+  static SubscribeCheckpointsRequest create() =>
+      SubscribeCheckpointsRequest._();
   @$core.override
   SubscribeCheckpointsRequest createEmptyInstance() => create();
-  static $pb.PbList<SubscribeCheckpointsRequest> createRepeated() => $pb.PbList<SubscribeCheckpointsRequest>();
+  static $pb.PbList<SubscribeCheckpointsRequest> createRepeated() =>
+      $pb.PbList<SubscribeCheckpointsRequest>();
   @$core.pragma('dart2js:noInline')
-  static SubscribeCheckpointsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubscribeCheckpointsRequest>(create);
+  static SubscribeCheckpointsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SubscribeCheckpointsRequest>(create);
   static SubscribeCheckpointsRequest? _defaultInstance;
 
   /// Optional. Mask for specifying which parts of the
@@ -86,30 +101,46 @@ class SubscribeCheckpointsResponse extends $pb.GeneratedMessage {
 
   SubscribeCheckpointsResponse._();
 
-  factory SubscribeCheckpointsResponse.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory SubscribeCheckpointsResponse.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory SubscribeCheckpointsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SubscribeCheckpointsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SubscribeCheckpointsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'cursor', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$1.Checkpoint>(2, _omitFieldNames ? '' : 'checkpoint', subBuilder: $1.Checkpoint.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SubscribeCheckpointsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'cursor', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$1.Checkpoint>(2, _omitFieldNames ? '' : 'checkpoint',
+        subBuilder: $1.Checkpoint.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SubscribeCheckpointsResponse clone() => SubscribeCheckpointsResponse()..mergeFromMessage(this);
+  SubscribeCheckpointsResponse clone() =>
+      SubscribeCheckpointsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  SubscribeCheckpointsResponse copyWith(void Function(SubscribeCheckpointsResponse) updates) => super.copyWith((message) => updates(message as SubscribeCheckpointsResponse)) as SubscribeCheckpointsResponse;
+  SubscribeCheckpointsResponse copyWith(
+          void Function(SubscribeCheckpointsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as SubscribeCheckpointsResponse))
+          as SubscribeCheckpointsResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static SubscribeCheckpointsResponse create() => SubscribeCheckpointsResponse._();
+  static SubscribeCheckpointsResponse create() =>
+      SubscribeCheckpointsResponse._();
   @$core.override
   SubscribeCheckpointsResponse createEmptyInstance() => create();
-  static $pb.PbList<SubscribeCheckpointsResponse> createRepeated() => $pb.PbList<SubscribeCheckpointsResponse>();
+  static $pb.PbList<SubscribeCheckpointsResponse> createRepeated() =>
+      $pb.PbList<SubscribeCheckpointsResponse>();
   @$core.pragma('dart2js:noInline')
-  static SubscribeCheckpointsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SubscribeCheckpointsResponse>(create);
+  static SubscribeCheckpointsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SubscribeCheckpointsResponse>(create);
   static SubscribeCheckpointsResponse? _defaultInstance;
 
   /// Required. The checkpoint sequence number and value of the current cursor
@@ -152,11 +183,13 @@ class SubscriptionServiceApi {
   /// connection breaking), clients will be able to reinitialize a subscription
   /// and then leverage other APIs in order to request data for the checkpoints
   /// they missed.
-  $async.Future<SubscribeCheckpointsResponse> subscribeCheckpoints($pb.ClientContext? ctx, SubscribeCheckpointsRequest request) =>
-    _client.invoke<SubscribeCheckpointsResponse>(ctx, 'SubscriptionService', 'SubscribeCheckpoints', request, SubscribeCheckpointsResponse())
-  ;
+  $async.Future<SubscribeCheckpointsResponse> subscribeCheckpoints(
+          $pb.ClientContext? ctx, SubscribeCheckpointsRequest request) =>
+      _client.invoke<SubscribeCheckpointsResponse>(ctx, 'SubscriptionService',
+          'SubscribeCheckpoints', request, SubscribeCheckpointsResponse());
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

@@ -18,18 +18,101 @@ import 'dart:typed_data' as $typed_data;
 const CheckpointSummary$json = {
   '1': 'CheckpointSummary',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'bcs', '17': true},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'bcs',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
     {'1': 'epoch', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'epoch', '17': true},
-    {'1': 'sequence_number', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'sequenceNumber', '17': true},
-    {'1': 'total_network_transactions', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'totalNetworkTransactions', '17': true},
-    {'1': 'content_digest', '3': 6, '4': 1, '5': 9, '9': 5, '10': 'contentDigest', '17': true},
-    {'1': 'previous_digest', '3': 7, '4': 1, '5': 9, '9': 6, '10': 'previousDigest', '17': true},
-    {'1': 'epoch_rolling_gas_cost_summary', '3': 8, '4': 1, '5': 11, '6': '.sui.rpc.v2.GasCostSummary', '9': 7, '10': 'epochRollingGasCostSummary', '17': true},
-    {'1': 'timestamp', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 8, '10': 'timestamp', '17': true},
-    {'1': 'commitments', '3': 10, '4': 3, '5': 11, '6': '.sui.rpc.v2.CheckpointCommitment', '10': 'commitments'},
-    {'1': 'end_of_epoch_data', '3': 11, '4': 1, '5': 11, '6': '.sui.rpc.v2.EndOfEpochData', '9': 9, '10': 'endOfEpochData', '17': true},
-    {'1': 'version_specific_data', '3': 12, '4': 1, '5': 12, '9': 10, '10': 'versionSpecificData', '17': true},
+    {
+      '1': 'sequence_number',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'sequenceNumber',
+      '17': true
+    },
+    {
+      '1': 'total_network_transactions',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'totalNetworkTransactions',
+      '17': true
+    },
+    {
+      '1': 'content_digest',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 5,
+      '10': 'contentDigest',
+      '17': true
+    },
+    {
+      '1': 'previous_digest',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'previousDigest',
+      '17': true
+    },
+    {
+      '1': 'epoch_rolling_gas_cost_summary',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.GasCostSummary',
+      '9': 7,
+      '10': 'epochRollingGasCostSummary',
+      '17': true
+    },
+    {
+      '1': 'timestamp',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 8,
+      '10': 'timestamp',
+      '17': true
+    },
+    {
+      '1': 'commitments',
+      '3': 10,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CheckpointCommitment',
+      '10': 'commitments'
+    },
+    {
+      '1': 'end_of_epoch_data',
+      '3': 11,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.EndOfEpochData',
+      '9': 9,
+      '10': 'endOfEpochData',
+      '17': true
+    },
+    {
+      '1': 'version_specific_data',
+      '3': 12,
+      '4': 1,
+      '5': 12,
+      '9': 10,
+      '10': 'versionSpecificData',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_bcs'},
@@ -70,9 +153,31 @@ final $typed_data.Uint8List checkpointSummaryDescriptor = $convert.base64Decode(
 const EndOfEpochData$json = {
   '1': 'EndOfEpochData',
   '2': [
-    {'1': 'next_epoch_committee', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.ValidatorCommitteeMember', '10': 'nextEpochCommittee'},
-    {'1': 'next_epoch_protocol_version', '3': 2, '4': 1, '5': 4, '9': 0, '10': 'nextEpochProtocolVersion', '17': true},
-    {'1': 'epoch_commitments', '3': 3, '4': 3, '5': 11, '6': '.sui.rpc.v2.CheckpointCommitment', '10': 'epochCommitments'},
+    {
+      '1': 'next_epoch_committee',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorCommitteeMember',
+      '10': 'nextEpochCommittee'
+    },
+    {
+      '1': 'next_epoch_protocol_version',
+      '3': 2,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'nextEpochProtocolVersion',
+      '17': true
+    },
+    {
+      '1': 'epoch_commitments',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.CheckpointCommitment',
+      '10': 'epochCommitments'
+    },
   ],
   '8': [
     {'1': '_next_epoch_protocol_version'},
@@ -92,7 +197,16 @@ final $typed_data.Uint8List endOfEpochDataDescriptor = $convert.base64Decode(
 const CheckpointCommitment$json = {
   '1': 'CheckpointCommitment',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.CheckpointCommitment.CheckpointCommitmentKind', '9': 0, '10': 'kind', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.CheckpointCommitment.CheckpointCommitmentKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
   ],
   '4': [CheckpointCommitment_CheckpointCommitmentKind$json],
@@ -119,4 +233,3 @@ final $typed_data.Uint8List checkpointCommitmentDescriptor = $convert.base64Deco
     'aWdlc3QYAiABKAlIAVIGZGlnZXN0iAEBInYKGENoZWNrcG9pbnRDb21taXRtZW50S2luZBImCi'
     'JDSEVDS1BPSU5UX0NPTU1JVE1FTlRfS0lORF9VTktOT1dOEAASGAoURUNNSF9MSVZFX09CSkVD'
     'VF9TRVQQARIYChRDSEVDS1BPSU5UX0FSVElGQUNUUxACQgcKBV9raW5kQgkKB19kaWdlc3Q=');
-

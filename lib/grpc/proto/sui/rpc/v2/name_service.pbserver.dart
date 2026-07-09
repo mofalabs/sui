@@ -21,26 +21,35 @@ import 'name_service.pbjson.dart';
 export 'name_service.pb.dart';
 
 abstract class NameServiceBase extends $pb.GeneratedService {
-  $async.Future<$1.LookupNameResponse> lookupName($pb.ServerContext ctx, $1.LookupNameRequest request);
-  $async.Future<$1.ReverseLookupNameResponse> reverseLookupName($pb.ServerContext ctx, $1.ReverseLookupNameRequest request);
+  $async.Future<$1.LookupNameResponse> lookupName(
+      $pb.ServerContext ctx, $1.LookupNameRequest request);
+  $async.Future<$1.ReverseLookupNameResponse> reverseLookupName(
+      $pb.ServerContext ctx, $1.ReverseLookupNameRequest request);
 
   $pb.GeneratedMessage createRequest($core.String methodName) {
     switch (methodName) {
-      case 'LookupName': return $1.LookupNameRequest();
-      case 'ReverseLookupName': return $1.ReverseLookupNameRequest();
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'LookupName':
+        return $1.LookupNameRequest();
+      case 'ReverseLookupName':
+        return $1.ReverseLookupNameRequest();
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String methodName, $pb.GeneratedMessage request) {
+  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx,
+      $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
-      case 'LookupName': return lookupName(ctx, request as $1.LookupNameRequest);
-      case 'ReverseLookupName': return reverseLookupName(ctx, request as $1.ReverseLookupNameRequest);
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'LookupName':
+        return lookupName(ctx, request as $1.LookupNameRequest);
+      case 'ReverseLookupName':
+        return reverseLookupName(ctx, request as $1.ReverseLookupNameRequest);
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
   $core.Map<$core.String, $core.dynamic> get $json => NameServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => NameServiceBase$messageJson;
+  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+      get $messageJson => NameServiceBase$messageJson;
 }
-

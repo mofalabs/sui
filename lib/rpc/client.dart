@@ -9,7 +9,11 @@ class RequestOptions {
   Duration? connectTimeout;
   Duration? sendTimeout;
   Duration? receiveTimeout;
-  RequestOptions({this.headers, this.connectTimeout, this.sendTimeout, this.receiveTimeout});
+  RequestOptions(
+      {this.headers,
+      this.connectTimeout,
+      this.sendTimeout,
+      this.receiveTimeout});
 }
 
 class JsonRpcClient {
@@ -61,18 +65,19 @@ class JsonRpcClient {
     }
 
     final dioOptions = Options(
-      sendTimeout: options?.sendTimeout,
-      receiveTimeout: options?.receiveTimeout,
-      headers: options?.headers
-    );
+        sendTimeout: options?.sendTimeout,
+        receiveTimeout: options?.receiveTimeout,
+        headers: options?.headers);
 
-    http.options.connectTimeout = options?.connectTimeout ?? const Duration(seconds: 60);
+    http.options.connectTimeout =
+        options?.connectTimeout ?? const Duration(seconds: 60);
 
     var data = (await http.post(
       url,
       data: message,
       options: dioOptions,
-    )).data;
+    ))
+        .data;
 
     if (data is String) {
       if (data.isEmpty) return data;

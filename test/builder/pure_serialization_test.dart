@@ -1,11 +1,9 @@
-
 import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/builder/transaction.dart';
 
 void main() {
-
   group('tx.pure serialization', () {
     test('serialized pure values', () {
       final tx = Transaction();
@@ -24,7 +22,8 @@ void main() {
       tx.pure(Bcs.option(SuiBcs.U8).serialize(1));
       tx.pure(Bcs.option(SuiBcs.U8).serialize(null));
       tx.pure(
-        Bcs.option(SuiBcs.VECTOR(SuiBcs.VECTOR(Bcs.option(SuiBcs.U8)))).serialize([
+        Bcs.option(SuiBcs.VECTOR(SuiBcs.VECTOR(Bcs.option(SuiBcs.U8))))
+            .serialize([
           [1, null, 3],
           [4, null, 6],
         ]),
@@ -52,97 +51,92 @@ void main() {
 
       expect(tx.getData().inputs, tx2.getData().inputs);
 
-      expect(tx.getData().inputs, 
-        [
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQ==",
-            },
+      expect(tx.getData().inputs, [
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQ==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQA=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQA=",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQAAAA==",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQAAAA==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQAAAAAAAAA=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQAAAAAAAAA=",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQAAAAAAAAAAAAAAAAAAAA==",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQAAAAAAAAAAAAAAAAAAAA==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQ==",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQ==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "A2Zvbw==",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "A2Zvbw==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AwECAw==",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AwECAw==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQE=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQE=",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AA==",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AA==",
           },
-          {
-            "\$kind": "Pure",
-            "Pure": {
-              "bytes": "AQIDAQEAAQMDAQQAAQY=",
-            },
+        },
+        {
+          "\$kind": "Pure",
+          "Pure": {
+            "bytes": "AQIDAQEAAQMDAQQAAQY=",
           },
-        ]
-      );
-
+        },
+      ]);
     });
-
   });
-
 }

@@ -4,26 +4,27 @@ part 'sui_event.freezed.dart';
 part 'sui_event.g.dart';
 
 @freezed
-abstract class SuiEvent with _$SuiEvent{
-  const factory SuiEvent({
-    required EventId id,
-    required String packageId,
-    required String transactionModule,
-    required String sender,
-    required String type,
-    required Map<String, dynamic>? parsedJson,
-    required String? bcs
-  }) = _SuiEvent;
+abstract class SuiEvent with _$SuiEvent {
+  const factory SuiEvent(
+      {required EventId id,
+      required String packageId,
+      required String transactionModule,
+      required String sender,
+      required String type,
+      required Map<String, dynamic>? parsedJson,
+      required String? bcs}) = _SuiEvent;
 
-  factory SuiEvent.fromJson(Map<String, dynamic> json) => _$SuiEventFromJson(json);
+  factory SuiEvent.fromJson(Map<String, dynamic> json) =>
+      _$SuiEventFromJson(json);
 }
 
 @freezed
-abstract class EventId with _$EventId{
+abstract class EventId with _$EventId {
   const factory EventId({
     required String txDigest,
     required String eventSeq,
   }) = _EventId;
 
-  factory EventId.fromJson(Map<String, dynamic> json) => _$EventIdFromJson(json);
+  factory EventId.fromJson(Map<String, dynamic> json) =>
+      _$EventIdFromJson(json);
 }

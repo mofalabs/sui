@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -16,7 +15,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
   'SuiGrpcClient.subscribeCheckpoints; event subscriptions move to GraphQL.',
 )
 class WebsocketClient {
-
   WebSocketChannel? _webSocketChannel;
 
   final Map<int, StreamController> streams = <int, StreamController>{};
@@ -52,7 +50,7 @@ class WebsocketClient {
       debugPrint(e);
     }, onDone: () {
       // for (var key in streams.keys) {
-        // streams[key]?.sink.close();
+      // streams[key]?.sink.close();
       // }
     });
 
@@ -62,16 +60,14 @@ class WebsocketClient {
 
   Stream<dynamic> send(dynamic data) {
     final client = setupClient();
-    final controller = StreamController(
-      onCancel: () {
-        final cancel = {
-          "jsonrpc": "2.0",
-          "method": "suix_unsubscribeEvent",
-          "params": [requestIdToSubscriptionId[data["id"]]]
-        };
-        client.sink.add(cancel);
-      }
-    );
+    final controller = StreamController(onCancel: () {
+      final cancel = {
+        "jsonrpc": "2.0",
+        "method": "suix_unsubscribeEvent",
+        "params": [requestIdToSubscriptionId[data["id"]]]
+      };
+      client.sink.add(cancel);
+    });
     streams[data['id']] = controller;
     final sendData = jsonEncode(data);
     client.sink.add(sendData);
@@ -118,5 +114,4 @@ class WebsocketClient {
     };
     return send(data);
   }
-
 }

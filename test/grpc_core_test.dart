@@ -42,13 +42,15 @@ void main() {
 
   test('getCoinInfo for SUI', () async {
     final info = await client.getCoinInfo('0x2::sui::SUI');
-    print('metadata symbol=${info.metadata.symbol} decimals=${info.metadata.decimals}');
+    print(
+        'metadata symbol=${info.metadata.symbol} decimals=${info.metadata.decimals}');
     expect(info.metadata.symbol, equalsIgnoringCase('SUI'));
   });
 
   test('listOwnedObjects', () async {
     final resp = await client.listOwnedObjects(framework, pageSize: 5);
-    print('ownedObjects=${resp.objects.length} nextPage=${resp.nextPageToken.isNotEmpty}');
+    print(
+        'ownedObjects=${resp.objects.length} nextPage=${resp.nextPageToken.isNotEmpty}');
     // framework address may own 0 objects; call must still succeed.
     expect(resp.objects.length, greaterThanOrEqualTo(0));
   });

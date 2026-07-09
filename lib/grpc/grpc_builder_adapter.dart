@@ -61,9 +61,9 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
   dynamic _ownerJson(Owner? owner) {
     if (owner == null) return null;
     return switch (owner.kind) {
-      Owner_OwnerKind.ADDRESS ||
-      Owner_OwnerKind.CONSENSUS_ADDRESS =>
-        {'AddressOwner': owner.address},
+      Owner_OwnerKind.ADDRESS || Owner_OwnerKind.CONSENSUS_ADDRESS => {
+          'AddressOwner': owner.address
+        },
       Owner_OwnerKind.OBJECT => {'ObjectOwner': owner.address},
       Owner_OwnerKind.SHARED => {
           'Shared': {'initial_shared_version': owner.version.toInt()}
@@ -80,8 +80,7 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
     String functionName,
   ) async {
     final fn = await core.getFunction(package, moduleName, functionName);
-    final parameters =
-        fn.parameters.map<dynamic>(_mapOpenSignature).toList();
+    final parameters = fn.parameters.map<dynamic>(_mapOpenSignature).toList();
     final returns = fn.returns.map<dynamic>(_mapOpenSignature).toList();
     return SuiMoveNormalizedFunction(
       switch (fn.visibility) {

@@ -3,15 +3,19 @@ import 'package:hex/hex.dart';
 // ignore: implementation_imports
 import 'package:pointycastle/src/utils.dart';
 import "package:pointycastle/ecc/curves/secp256k1.dart";
-import "package:pointycastle/api.dart" show PrivateKeyParameter, PublicKeyParameter;
-import 'package:pointycastle/ecc/api.dart' show ECPrivateKey, ECPublicKey, ECSignature, ECPoint;
+import "package:pointycastle/api.dart"
+    show PrivateKeyParameter, PublicKeyParameter;
+import 'package:pointycastle/ecc/api.dart'
+    show ECPrivateKey, ECPublicKey, ECSignature, ECPoint;
 import "package:pointycastle/signers/ecdsa_signer.dart";
 import 'package:pointycastle/macs/hmac.dart';
 import "package:pointycastle/digests/sha256.dart";
 
 final ZERO32 = Uint8List.fromList(List.generate(32, (index) => 0));
-final EC_GROUP_ORDER = HEX.decode("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
-final EC_P = HEX.decode("fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f");
+final EC_GROUP_ORDER = HEX
+    .decode("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141");
+final EC_P = HEX
+    .decode("fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f");
 final secp256k1 = ECCurve_secp256k1();
 final n = secp256k1.n;
 final G = secp256k1.G;
@@ -75,7 +79,9 @@ bool isSignature(Uint8List value) {
   Uint8List r = value.sublist(0, 32);
   Uint8List s = value.sublist(32, 64);
 
-  return value.length == 64 && _compare(r, EC_GROUP_ORDER as Uint8List) < 0 && _compare(s, EC_GROUP_ORDER as Uint8List) < 0;
+  return value.length == 64 &&
+      _compare(r, EC_GROUP_ORDER as Uint8List) < 0 &&
+      _compare(s, EC_GROUP_ORDER as Uint8List) < 0;
 }
 
 bool _isPointCompressed(Uint8List p) {
@@ -203,7 +209,8 @@ Uint8List _encodeBigInt(BigInt number) {
 
   if (number > BigInt.zero) {
     rawSize = (number.bitLength + 7) >> 3;
-    needsPaddingByte = ((number >> (rawSize - 1) * 8) & negativeFlag) == negativeFlag ? 1 : 0;
+    needsPaddingByte =
+        ((number >> (rawSize - 1) * 8) & negativeFlag) == negativeFlag ? 1 : 0;
 
     if (rawSize < 32) {
       needsPaddingByte = 1;

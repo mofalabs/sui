@@ -18,20 +18,130 @@ import 'dart:typed_data' as $typed_data;
 const Object$json = {
   '1': 'Object',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'bcs', '17': true},
-    {'1': 'object_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'objectId', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'version', '17': true},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'bcs',
+      '17': true
+    },
+    {
+      '1': 'object_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
     {'1': 'digest', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'digest', '17': true},
-    {'1': 'owner', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.Owner', '9': 4, '10': 'owner', '17': true},
-    {'1': 'object_type', '3': 6, '4': 1, '5': 9, '9': 5, '10': 'objectType', '17': true},
-    {'1': 'has_public_transfer', '3': 7, '4': 1, '5': 8, '9': 6, '10': 'hasPublicTransfer', '17': true},
-    {'1': 'contents', '3': 8, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 7, '10': 'contents', '17': true},
-    {'1': 'package', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.Package', '9': 8, '10': 'package', '17': true},
-    {'1': 'previous_transaction', '3': 10, '4': 1, '5': 9, '9': 9, '10': 'previousTransaction', '17': true},
-    {'1': 'storage_rebate', '3': 11, '4': 1, '5': 4, '9': 10, '10': 'storageRebate', '17': true},
-    {'1': 'json', '3': 100, '4': 1, '5': 11, '6': '.google.protobuf.Value', '9': 11, '10': 'json', '17': true},
-    {'1': 'balance', '3': 101, '4': 1, '5': 4, '9': 12, '10': 'balance', '17': true},
-    {'1': 'display', '3': 102, '4': 1, '5': 11, '6': '.sui.rpc.v2.Display', '9': 13, '10': 'display', '17': true},
+    {
+      '1': 'owner',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Owner',
+      '9': 4,
+      '10': 'owner',
+      '17': true
+    },
+    {
+      '1': 'object_type',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 5,
+      '10': 'objectType',
+      '17': true
+    },
+    {
+      '1': 'has_public_transfer',
+      '3': 7,
+      '4': 1,
+      '5': 8,
+      '9': 6,
+      '10': 'hasPublicTransfer',
+      '17': true
+    },
+    {
+      '1': 'contents',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 7,
+      '10': 'contents',
+      '17': true
+    },
+    {
+      '1': 'package',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Package',
+      '9': 8,
+      '10': 'package',
+      '17': true
+    },
+    {
+      '1': 'previous_transaction',
+      '3': 10,
+      '4': 1,
+      '5': 9,
+      '9': 9,
+      '10': 'previousTransaction',
+      '17': true
+    },
+    {
+      '1': 'storage_rebate',
+      '3': 11,
+      '4': 1,
+      '5': 4,
+      '9': 10,
+      '10': 'storageRebate',
+      '17': true
+    },
+    {
+      '1': 'json',
+      '3': 100,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '9': 11,
+      '10': 'json',
+      '17': true
+    },
+    {
+      '1': 'balance',
+      '3': 101,
+      '4': 1,
+      '5': 4,
+      '9': 12,
+      '10': 'balance',
+      '17': true
+    },
+    {
+      '1': 'display',
+      '3': 102,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Display',
+      '9': 13,
+      '10': 'display',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_bcs'},
@@ -73,7 +183,14 @@ final $typed_data.Uint8List objectDescriptor = $convert.base64Decode(
 const ObjectSet$json = {
   '1': 'ObjectSet',
   '2': [
-    {'1': 'objects', '3': 1, '4': 3, '5': 11, '6': '.sui.rpc.v2.Object', '10': 'objects'},
+    {
+      '1': 'objects',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.Object',
+      '10': 'objects'
+    },
   ],
 };
 
@@ -86,8 +203,26 @@ final $typed_data.Uint8List objectSetDescriptor = $convert.base64Decode(
 const Display$json = {
   '1': 'Display',
   '2': [
-    {'1': 'output', '3': 1, '4': 1, '5': 11, '6': '.google.protobuf.Value', '9': 0, '10': 'output', '17': true},
-    {'1': 'errors', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Value', '9': 1, '10': 'errors', '17': true},
+    {
+      '1': 'output',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '9': 0,
+      '10': 'output',
+      '17': true
+    },
+    {
+      '1': 'errors',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '9': 1,
+      '10': 'errors',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_output'},
@@ -100,4 +235,3 @@ final $typed_data.Uint8List displayDescriptor = $convert.base64Decode(
     'CgdEaXNwbGF5EjMKBm91dHB1dBgBIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5WYWx1ZUgAUgZvdX'
     'RwdXSIAQESMwoGZXJyb3JzGAIgASgLMhYuZ29vZ2xlLnByb3RvYnVmLlZhbHVlSAFSBmVycm9y'
     'c4gBAUIJCgdfb3V0cHV0QgkKB19lcnJvcnM=');
-

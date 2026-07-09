@@ -1,4 +1,3 @@
-
 import 'package:sui/types/common.dart';
 import 'package:sui/types/sui_bcs.dart';
 
@@ -7,18 +6,18 @@ final STRUCT_REGEX = RegExp(r"^([^:]+)::([^:]+)::([^<]+)(<(.+)>)?");
 
 class TypeTagSerializer {
   static TypeTag parseFromStr(String str, [bool normalizeAddress = false]) {
-    if (str == "address" || 
-        str == "bool" || 
-        str == "u8" || 
-        str == "u16" || 
-        str == "u32" || 
-        str == "u64" || 
-        str == "u128" || 
-        str == "u256" || 
+    if (str == "address" ||
+        str == "bool" ||
+        str == "u8" ||
+        str == "u16" ||
+        str == "u32" ||
+        str == "u64" ||
+        str == "u128" ||
+        str == "u256" ||
         str == "signer") {
-      return { str: null };
+      return {str: null};
     }
-    
+
     final vectorMatch = VECTOR_REGEX.firstMatch(str);
     if (vectorMatch != null) {
       return {
@@ -32,15 +31,14 @@ class TypeTagSerializer {
     final structMatch = STRUCT_REGEX.firstMatch(str);
     if (structMatch != null) {
       final address = normalizeAddress
-        ? normalizeSuiAddress(structMatch.group(1)!)
-        : structMatch.group(1);
+          ? normalizeSuiAddress(structMatch.group(1)!)
+          : structMatch.group(1);
       return {
         "struct": {
           "address": address,
           "module": structMatch.group(2),
           "name": structMatch.group(3),
-          "typeParams":
-            structMatch.group(5) == null
+          "typeParams": structMatch.group(5) == null
               ? []
               : TypeTagSerializer.parseStructTypeArgs(
                   structMatch.group(5)!,
@@ -55,7 +53,8 @@ class TypeTagSerializer {
     );
   }
 
-  static List<TypeTag> parseStructTypeArgs(String str, [bool normalizeAddress = false]) {
+  static List<TypeTag> parseStructTypeArgs(String str,
+      [bool normalizeAddress = false]) {
     // split `str` by all `,` outside angle brackets
     List<String> tok = [];
     var word = '';
@@ -78,9 +77,11 @@ class TypeTagSerializer {
 
     tok.add(word.trim());
 
-    return tok.map((tok) =>
-      TypeTagSerializer.parseFromStr(tok, normalizeAddress),
-    ).toList();
+    return tok
+        .map(
+          (tok) => TypeTagSerializer.parseFromStr(tok, normalizeAddress),
+        )
+        .toList();
   }
 
   static String tagToString(TypeTag tag) {
@@ -117,12 +118,9 @@ class TypeTagSerializer {
     }
     if (data.containsKey('struct')) {
       final struct = tag["struct"];
-      final typeParams = struct["typeParams"]
-        .map(TypeTagSerializer.tagToString)
-        .join(', ');
-      return "${struct["address"]}::${struct["module"]}::${struct["name"]}${
-        typeParams != null && typeParams.toString().isNotEmpty ? "<$typeParams>" : ''
-      }";
+      final typeParams =
+          struct["typeParams"].map(TypeTagSerializer.tagToString).join(', ');
+      return "${struct["address"]}::${struct["module"]}::${struct["name"]}${typeParams != null && typeParams.toString().isNotEmpty ? "<$typeParams>" : ''}";
     }
     throw ArgumentError('Invalid TypeTag');
   }

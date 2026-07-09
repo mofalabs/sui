@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/models/object_read.dart';
 import 'package:sui/sui.dart';
@@ -14,7 +13,8 @@ void main() {
     });
 
     test('Get Owned Objects', () async {
-      final gasObjects = await toolbox.client.getOwnedObjects(toolbox.address());
+      final gasObjects =
+          await toolbox.client.getOwnedObjects(toolbox.address());
       expect(gasObjects.data.isNotEmpty, true);
     });
 
@@ -23,10 +23,8 @@ void main() {
       expect(gasObjects.isNotEmpty, true);
       final objectInfos = await Future.wait(
         gasObjects.map((gasObject) {
-          return toolbox.client.getObject(
-            gasObject.objectId,
-            options: SuiObjectDataOptions(showType: true)
-          );
+          return toolbox.client.getObject(gasObject.objectId,
+              options: SuiObjectDataOptions(showType: true));
         }),
       );
       for (var objectInfo in objectInfos) {
@@ -37,11 +35,10 @@ void main() {
     test('Get Objects', () async {
       final gasObjects = await toolbox.getGasObjectsOwnedByAddress();
       expect(gasObjects.isNotEmpty, true);
-      final gasObjectIds = gasObjects.map((gasObject) => gasObject.objectId).toList();
-      final objectInfos = await toolbox.client.multiGetObjects(
-        gasObjectIds,
-        options: SuiObjectDataOptions(showType: true)
-      );
+      final gasObjectIds =
+          gasObjects.map((gasObject) => gasObject.objectId).toList();
+      final objectInfos = await toolbox.client.multiGetObjects(gasObjectIds,
+          options: SuiObjectDataOptions(showType: true));
 
       expect(gasObjects.length, objectInfos.length);
 
@@ -73,7 +70,8 @@ void main() {
       expect(res.status, ObjectReadStatus.VersionFound);
     });
 
-    test('handles trying to get a newer version than the latest version', () async {
+    test('handles trying to get a newer version than the latest version',
+        () async {
       final data = await toolbox.client.getCoins(
         toolbox.address(),
         coinType: SUI_TYPE_ARG,

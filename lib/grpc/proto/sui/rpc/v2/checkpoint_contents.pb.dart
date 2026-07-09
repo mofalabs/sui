@@ -38,21 +38,31 @@ class CheckpointContents extends $pb.GeneratedMessage {
 
   CheckpointContents._();
 
-  factory CheckpointContents.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CheckpointContents.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CheckpointContents.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CheckpointContents.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CheckpointContents', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CheckpointContents',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOM<$0.Bcs>(1, _omitFieldNames ? '' : 'bcs', subBuilder: $0.Bcs.create)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.O3)
-    ..pc<CheckpointedTransactionInfo>(4, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM, subBuilder: CheckpointedTransactionInfo.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<CheckpointedTransactionInfo>(
+        4, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
+        subBuilder: CheckpointedTransactionInfo.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CheckpointContents clone() => CheckpointContents()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckpointContents copyWith(void Function(CheckpointContents) updates) => super.copyWith((message) => updates(message as CheckpointContents)) as CheckpointContents;
+  CheckpointContents copyWith(void Function(CheckpointContents) updates) =>
+      super.copyWith((message) => updates(message as CheckpointContents))
+          as CheckpointContents;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -61,9 +71,11 @@ class CheckpointContents extends $pb.GeneratedMessage {
   static CheckpointContents create() => CheckpointContents._();
   @$core.override
   CheckpointContents createEmptyInstance() => create();
-  static $pb.PbList<CheckpointContents> createRepeated() => $pb.PbList<CheckpointContents>();
+  static $pb.PbList<CheckpointContents> createRepeated() =>
+      $pb.PbList<CheckpointContents>();
   @$core.pragma('dart2js:noInline')
-  static CheckpointContents getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CheckpointContents>(create);
+  static CheckpointContents getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckpointContents>(create);
   static CheckpointContents? _defaultInstance;
 
   /// This CheckpointContents serialized as BCS.
@@ -115,38 +127,57 @@ class CheckpointedTransactionInfo extends $pb.GeneratedMessage {
     if (transaction != null) result.transaction = transaction;
     if (effects != null) result.effects = effects;
     if (signatures != null) result.signatures.addAll(signatures);
-    if (addressAliasesVersions != null) result.addressAliasesVersions.addAll(addressAliasesVersions);
+    if (addressAliasesVersions != null)
+      result.addressAliasesVersions.addAll(addressAliasesVersions);
     return result;
   }
 
   CheckpointedTransactionInfo._();
 
-  factory CheckpointedTransactionInfo.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory CheckpointedTransactionInfo.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory CheckpointedTransactionInfo.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CheckpointedTransactionInfo.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CheckpointedTransactionInfo', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CheckpointedTransactionInfo',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'transaction')
     ..aOS(2, _omitFieldNames ? '' : 'effects')
-    ..pc<$1.UserSignature>(3, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM, subBuilder: $1.UserSignature.create)
-    ..pc<AddressAliasesVersion>(4, _omitFieldNames ? '' : 'addressAliasesVersions', $pb.PbFieldType.PM, subBuilder: AddressAliasesVersion.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<$1.UserSignature>(
+        3, _omitFieldNames ? '' : 'signatures', $pb.PbFieldType.PM,
+        subBuilder: $1.UserSignature.create)
+    ..pc<AddressAliasesVersion>(
+        4, _omitFieldNames ? '' : 'addressAliasesVersions', $pb.PbFieldType.PM,
+        subBuilder: AddressAliasesVersion.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckpointedTransactionInfo clone() => CheckpointedTransactionInfo()..mergeFromMessage(this);
+  CheckpointedTransactionInfo clone() =>
+      CheckpointedTransactionInfo()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CheckpointedTransactionInfo copyWith(void Function(CheckpointedTransactionInfo) updates) => super.copyWith((message) => updates(message as CheckpointedTransactionInfo)) as CheckpointedTransactionInfo;
+  CheckpointedTransactionInfo copyWith(
+          void Function(CheckpointedTransactionInfo) updates) =>
+      super.copyWith(
+              (message) => updates(message as CheckpointedTransactionInfo))
+          as CheckpointedTransactionInfo;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CheckpointedTransactionInfo create() => CheckpointedTransactionInfo._();
+  static CheckpointedTransactionInfo create() =>
+      CheckpointedTransactionInfo._();
   @$core.override
   CheckpointedTransactionInfo createEmptyInstance() => create();
-  static $pb.PbList<CheckpointedTransactionInfo> createRepeated() => $pb.PbList<CheckpointedTransactionInfo>();
+  static $pb.PbList<CheckpointedTransactionInfo> createRepeated() =>
+      $pb.PbList<CheckpointedTransactionInfo>();
   @$core.pragma('dart2js:noInline')
-  static CheckpointedTransactionInfo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CheckpointedTransactionInfo>(create);
+  static CheckpointedTransactionInfo getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckpointedTransactionInfo>(create);
   static CheckpointedTransactionInfo? _defaultInstance;
 
   /// Digest of the transaction.
@@ -192,18 +223,29 @@ class AddressAliasesVersion extends $pb.GeneratedMessage {
 
   AddressAliasesVersion._();
 
-  factory AddressAliasesVersion.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory AddressAliasesVersion.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory AddressAliasesVersion.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AddressAliasesVersion.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AddressAliasesVersion', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AddressAliasesVersion',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AddressAliasesVersion clone() => AddressAliasesVersion()..mergeFromMessage(this);
+  AddressAliasesVersion clone() =>
+      AddressAliasesVersion()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  AddressAliasesVersion copyWith(void Function(AddressAliasesVersion) updates) => super.copyWith((message) => updates(message as AddressAliasesVersion)) as AddressAliasesVersion;
+  AddressAliasesVersion copyWith(
+          void Function(AddressAliasesVersion) updates) =>
+      super.copyWith((message) => updates(message as AddressAliasesVersion))
+          as AddressAliasesVersion;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -212,9 +254,11 @@ class AddressAliasesVersion extends $pb.GeneratedMessage {
   static AddressAliasesVersion create() => AddressAliasesVersion._();
   @$core.override
   AddressAliasesVersion createEmptyInstance() => create();
-  static $pb.PbList<AddressAliasesVersion> createRepeated() => $pb.PbList<AddressAliasesVersion>();
+  static $pb.PbList<AddressAliasesVersion> createRepeated() =>
+      $pb.PbList<AddressAliasesVersion>();
   @$core.pragma('dart2js:noInline')
-  static AddressAliasesVersion getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddressAliasesVersion>(create);
+  static AddressAliasesVersion getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AddressAliasesVersion>(create);
   static AddressAliasesVersion? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -227,6 +271,7 @@ class AddressAliasesVersion extends $pb.GeneratedMessage {
   void clearVersion() => $_clearField(1);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

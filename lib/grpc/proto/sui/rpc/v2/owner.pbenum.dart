@@ -15,14 +15,20 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Owner_OwnerKind extends $pb.ProtobufEnum {
-  static const Owner_OwnerKind OWNER_KIND_UNKNOWN = Owner_OwnerKind._(0, _omitEnumNames ? '' : 'OWNER_KIND_UNKNOWN');
-  static const Owner_OwnerKind ADDRESS = Owner_OwnerKind._(1, _omitEnumNames ? '' : 'ADDRESS');
-  static const Owner_OwnerKind OBJECT = Owner_OwnerKind._(2, _omitEnumNames ? '' : 'OBJECT');
-  static const Owner_OwnerKind SHARED = Owner_OwnerKind._(3, _omitEnumNames ? '' : 'SHARED');
-  static const Owner_OwnerKind IMMUTABLE = Owner_OwnerKind._(4, _omitEnumNames ? '' : 'IMMUTABLE');
-  static const Owner_OwnerKind CONSENSUS_ADDRESS = Owner_OwnerKind._(5, _omitEnumNames ? '' : 'CONSENSUS_ADDRESS');
+  static const Owner_OwnerKind OWNER_KIND_UNKNOWN =
+      Owner_OwnerKind._(0, _omitEnumNames ? '' : 'OWNER_KIND_UNKNOWN');
+  static const Owner_OwnerKind ADDRESS =
+      Owner_OwnerKind._(1, _omitEnumNames ? '' : 'ADDRESS');
+  static const Owner_OwnerKind OBJECT =
+      Owner_OwnerKind._(2, _omitEnumNames ? '' : 'OBJECT');
+  static const Owner_OwnerKind SHARED =
+      Owner_OwnerKind._(3, _omitEnumNames ? '' : 'SHARED');
+  static const Owner_OwnerKind IMMUTABLE =
+      Owner_OwnerKind._(4, _omitEnumNames ? '' : 'IMMUTABLE');
+  static const Owner_OwnerKind CONSENSUS_ADDRESS =
+      Owner_OwnerKind._(5, _omitEnumNames ? '' : 'CONSENSUS_ADDRESS');
 
-  static const $core.List<Owner_OwnerKind> values = <Owner_OwnerKind> [
+  static const $core.List<Owner_OwnerKind> values = <Owner_OwnerKind>[
     OWNER_KIND_UNKNOWN,
     ADDRESS,
     OBJECT,
@@ -31,11 +37,13 @@ class Owner_OwnerKind extends $pb.ProtobufEnum {
     CONSENSUS_ADDRESS,
   ];
 
-  static final $core.List<Owner_OwnerKind?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 5);
-  static Owner_OwnerKind? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<Owner_OwnerKind?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 5);
+  static Owner_OwnerKind? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
   const Owner_OwnerKind._(super.value, super.name);
 }
 
-
-const $core.bool _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');

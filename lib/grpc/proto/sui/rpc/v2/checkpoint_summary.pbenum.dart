@@ -15,24 +15,38 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class CheckpointCommitment_CheckpointCommitmentKind extends $pb.ProtobufEnum {
-  static const CheckpointCommitment_CheckpointCommitmentKind CHECKPOINT_COMMITMENT_KIND_UNKNOWN = CheckpointCommitment_CheckpointCommitmentKind._(0, _omitEnumNames ? '' : 'CHECKPOINT_COMMITMENT_KIND_UNKNOWN');
+  static const CheckpointCommitment_CheckpointCommitmentKind
+      CHECKPOINT_COMMITMENT_KIND_UNKNOWN =
+      CheckpointCommitment_CheckpointCommitmentKind._(
+          0, _omitEnumNames ? '' : 'CHECKPOINT_COMMITMENT_KIND_UNKNOWN');
+
   /// An elliptic curve multiset hash attesting to the set of objects that
   /// comprise the live state of the Sui blockchain.
-  static const CheckpointCommitment_CheckpointCommitmentKind ECMH_LIVE_OBJECT_SET = CheckpointCommitment_CheckpointCommitmentKind._(1, _omitEnumNames ? '' : 'ECMH_LIVE_OBJECT_SET');
-  /// Digest of the checkpoint artifacts.
-  static const CheckpointCommitment_CheckpointCommitmentKind CHECKPOINT_ARTIFACTS = CheckpointCommitment_CheckpointCommitmentKind._(2, _omitEnumNames ? '' : 'CHECKPOINT_ARTIFACTS');
+  static const CheckpointCommitment_CheckpointCommitmentKind
+      ECMH_LIVE_OBJECT_SET = CheckpointCommitment_CheckpointCommitmentKind._(
+          1, _omitEnumNames ? '' : 'ECMH_LIVE_OBJECT_SET');
 
-  static const $core.List<CheckpointCommitment_CheckpointCommitmentKind> values = <CheckpointCommitment_CheckpointCommitmentKind> [
+  /// Digest of the checkpoint artifacts.
+  static const CheckpointCommitment_CheckpointCommitmentKind
+      CHECKPOINT_ARTIFACTS = CheckpointCommitment_CheckpointCommitmentKind._(
+          2, _omitEnumNames ? '' : 'CHECKPOINT_ARTIFACTS');
+
+  static const $core.List<CheckpointCommitment_CheckpointCommitmentKind>
+      values = <CheckpointCommitment_CheckpointCommitmentKind>[
     CHECKPOINT_COMMITMENT_KIND_UNKNOWN,
     ECMH_LIVE_OBJECT_SET,
     CHECKPOINT_ARTIFACTS,
   ];
 
-  static final $core.List<CheckpointCommitment_CheckpointCommitmentKind?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 2);
-  static CheckpointCommitment_CheckpointCommitmentKind? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<CheckpointCommitment_CheckpointCommitmentKind?>
+      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 2);
+  static CheckpointCommitment_CheckpointCommitmentKind? valueOf(
+          $core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const CheckpointCommitment_CheckpointCommitmentKind._(super.value, super.name);
+  const CheckpointCommitment_CheckpointCommitmentKind._(
+      super.value, super.name);
 }
 
-
-const $core.bool _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');

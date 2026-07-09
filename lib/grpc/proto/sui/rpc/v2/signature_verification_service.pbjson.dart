@@ -23,10 +23,43 @@ import 'transaction.pbjson.dart' as $2;
 const VerifySignatureRequest$json = {
   '1': 'VerifySignatureRequest',
   '2': [
-    {'1': 'message', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'message', '17': true},
-    {'1': 'signature', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.UserSignature', '9': 1, '10': 'signature', '17': true},
-    {'1': 'address', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'address', '17': true},
-    {'1': 'jwks', '3': 4, '4': 3, '5': 11, '6': '.sui.rpc.v2.ActiveJwk', '10': 'jwks'},
+    {
+      '1': 'message',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'message',
+      '17': true
+    },
+    {
+      '1': 'signature',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.UserSignature',
+      '9': 1,
+      '10': 'signature',
+      '17': true
+    },
+    {
+      '1': 'address',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'address',
+      '17': true
+    },
+    {
+      '1': 'jwks',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ActiveJwk',
+      '10': 'jwks'
+    },
   ],
   '8': [
     {'1': '_message'},
@@ -47,7 +80,15 @@ final $typed_data.Uint8List verifySignatureRequestDescriptor = $convert.base64De
 const VerifySignatureResponse$json = {
   '1': 'VerifySignatureResponse',
   '2': [
-    {'1': 'is_valid', '3': 1, '4': 1, '5': 8, '9': 0, '10': 'isValid', '17': true},
+    {
+      '1': 'is_valid',
+      '3': 1,
+      '4': 1,
+      '5': 8,
+      '9': 0,
+      '10': 'isValid',
+      '17': true
+    },
     {'1': 'reason', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'reason', '17': true},
   ],
   '8': [
@@ -61,20 +102,27 @@ final $typed_data.Uint8List verifySignatureResponseDescriptor = $convert.base64D
     'ChdWZXJpZnlTaWduYXR1cmVSZXNwb25zZRIeCghpc192YWxpZBgBIAEoCEgAUgdpc1ZhbGlkiA'
     'EBEhsKBnJlYXNvbhgCIAEoCUgBUgZyZWFzb26IAQFCCwoJX2lzX3ZhbGlkQgkKB19yZWFzb24=');
 
-const $core.Map<$core.String, $core.dynamic> SignatureVerificationServiceBase$json = {
+const $core.Map<$core.String, $core.dynamic>
+    SignatureVerificationServiceBase$json = {
   '1': 'SignatureVerificationService',
   '2': [
-    {'1': 'VerifySignature', '2': '.sui.rpc.v2.VerifySignatureRequest', '3': '.sui.rpc.v2.VerifySignatureResponse'},
+    {
+      '1': 'VerifySignature',
+      '2': '.sui.rpc.v2.VerifySignatureRequest',
+      '3': '.sui.rpc.v2.VerifySignatureResponse'
+    },
   ],
 };
 
 @$core.Deprecated('Use signatureVerificationServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> SignatureVerificationServiceBase$messageJson = {
+const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+    SignatureVerificationServiceBase$messageJson = {
   '.sui.rpc.v2.VerifySignatureRequest': VerifySignatureRequest$json,
   '.sui.rpc.v2.Bcs': $0.Bcs$json,
   '.sui.rpc.v2.UserSignature': $1.UserSignature$json,
   '.sui.rpc.v2.SimpleSignature': $1.SimpleSignature$json,
-  '.sui.rpc.v2.MultisigAggregatedSignature': $1.MultisigAggregatedSignature$json,
+  '.sui.rpc.v2.MultisigAggregatedSignature':
+      $1.MultisigAggregatedSignature$json,
   '.sui.rpc.v2.MultisigMemberSignature': $1.MultisigMemberSignature$json,
   '.sui.rpc.v2.ZkLoginAuthenticator': $1.ZkLoginAuthenticator$json,
   '.sui.rpc.v2.ZkLoginInputs': $1.ZkLoginInputs$json,
@@ -94,8 +142,8 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> SignatureV
 };
 
 /// Descriptor for `SignatureVerificationService`. Decode as a `google.protobuf.ServiceDescriptorProto`.
-final $typed_data.Uint8List signatureVerificationServiceDescriptor = $convert.base64Decode(
-    'ChxTaWduYXR1cmVWZXJpZmljYXRpb25TZXJ2aWNlEloKD1ZlcmlmeVNpZ25hdHVyZRIiLnN1aS'
-    '5ycGMudjIuVmVyaWZ5U2lnbmF0dXJlUmVxdWVzdBojLnN1aS5ycGMudjIuVmVyaWZ5U2lnbmF0'
-    'dXJlUmVzcG9uc2U=');
-
+final $typed_data.Uint8List signatureVerificationServiceDescriptor =
+    $convert.base64Decode(
+        'ChxTaWduYXR1cmVWZXJpZmljYXRpb25TZXJ2aWNlEloKD1ZlcmlmeVNpZ25hdHVyZRIiLnN1aS'
+        '5ycGMudjIuVmVyaWZ5U2lnbmF0dXJlUmVxdWVzdBojLnN1aS5ycGMudjIuVmVyaWZ5U2lnbmF0'
+        'dXJlUmVzcG9uc2U=');

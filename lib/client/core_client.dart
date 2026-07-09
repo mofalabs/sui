@@ -96,7 +96,8 @@ abstract class CoreClient {
     String functionName,
   );
 
-  Future<Checkpoint> getCheckpoint({int? sequenceNumber, String? digest, List<String>? readMask});
+  Future<Checkpoint> getCheckpoint(
+      {int? sequenceNumber, String? digest, List<String>? readMask});
 
   /// List `Coin<coinType>` objects owned by [owner] (with per-coin balance).
   Future<SuiCoinPage> listCoins(
@@ -154,8 +155,7 @@ abstract class CoreClient {
   }
 
   /// Chain identifier = digest of the genesis checkpoint.
-  Future<String> getChainIdentifier() async =>
-      (await getServiceInfo()).chainId;
+  Future<String> getChainIdentifier() async => (await getServiceInfo()).chainId;
 
   /// Current reference gas price (from the current epoch).
   Future<Int64> getReferenceGasPrice() async =>
@@ -205,8 +205,7 @@ abstract class CoreClient {
     List<String>? readMask,
   }) async {
     final resolvedType = await resolveType(nameType);
-    final wrapperType =
-        '0x2::dynamic_object_field::Wrapper<$resolvedType>';
+    final wrapperType = '0x2::dynamic_object_field::Wrapper<$resolvedType>';
     final wrapperId = deriveDynamicFieldID(parentId, wrapperType, nameBcs);
     final field = await getObject(wrapperId, readMask: const [
       'object_id',

@@ -43,23 +43,35 @@ class Package extends $pb.GeneratedMessage {
 
   Package._();
 
-  factory Package.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Package.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Package.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Package.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Package', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Package',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'storageId')
     ..aOS(2, _omitFieldNames ? '' : 'originalId')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..pc<Module>(4, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PM, subBuilder: Module.create)
-    ..pc<TypeOrigin>(5, _omitFieldNames ? '' : 'typeOrigins', $pb.PbFieldType.PM, subBuilder: TypeOrigin.create)
-    ..pc<Linkage>(6, _omitFieldNames ? '' : 'linkage', $pb.PbFieldType.PM, subBuilder: Linkage.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..pc<Module>(4, _omitFieldNames ? '' : 'modules', $pb.PbFieldType.PM,
+        subBuilder: Module.create)
+    ..pc<TypeOrigin>(
+        5, _omitFieldNames ? '' : 'typeOrigins', $pb.PbFieldType.PM,
+        subBuilder: TypeOrigin.create)
+    ..pc<Linkage>(6, _omitFieldNames ? '' : 'linkage', $pb.PbFieldType.PM,
+        subBuilder: Linkage.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Package clone() => Package()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Package copyWith(void Function(Package) updates) => super.copyWith((message) => updates(message as Package)) as Package;
+  Package copyWith(void Function(Package) updates) =>
+      super.copyWith((message) => updates(message as Package)) as Package;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -70,7 +82,8 @@ class Package extends $pb.GeneratedMessage {
   Package createEmptyInstance() => create();
   static $pb.PbList<Package> createRepeated() => $pb.PbList<Package>();
   @$core.pragma('dart2js:noInline')
-  static Package getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Package>(create);
+  static Package getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Package>(create);
   static Package? _defaultInstance;
 
   /// The PackageId of this package
@@ -146,21 +159,33 @@ class Module extends $pb.GeneratedMessage {
 
   Module._();
 
-  factory Module.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Module.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Module.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Module.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Module', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Module',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'contents', $pb.PbFieldType.OY)
-    ..pc<DatatypeDescriptor>(3, _omitFieldNames ? '' : 'datatypes', $pb.PbFieldType.PM, subBuilder: DatatypeDescriptor.create)
-    ..pc<FunctionDescriptor>(4, _omitFieldNames ? '' : 'functions', $pb.PbFieldType.PM, subBuilder: FunctionDescriptor.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.List<$core.int>>(
+        2, _omitFieldNames ? '' : 'contents', $pb.PbFieldType.OY)
+    ..pc<DatatypeDescriptor>(
+        3, _omitFieldNames ? '' : 'datatypes', $pb.PbFieldType.PM,
+        subBuilder: DatatypeDescriptor.create)
+    ..pc<FunctionDescriptor>(
+        4, _omitFieldNames ? '' : 'functions', $pb.PbFieldType.PM,
+        subBuilder: FunctionDescriptor.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Module clone() => Module()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Module copyWith(void Function(Module) updates) => super.copyWith((message) => updates(message as Module)) as Module;
+  Module copyWith(void Function(Module) updates) =>
+      super.copyWith((message) => updates(message as Module)) as Module;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -171,7 +196,8 @@ class Module extends $pb.GeneratedMessage {
   Module createEmptyInstance() => create();
   static $pb.PbList<Module> createRepeated() => $pb.PbList<Module>();
   @$core.pragma('dart2js:noInline')
-  static Module getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Module>(create);
+  static Module getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Module>(create);
   static Module? _defaultInstance;
 
   /// Name of this module.
@@ -231,26 +257,47 @@ class DatatypeDescriptor extends $pb.GeneratedMessage {
 
   DatatypeDescriptor._();
 
-  factory DatatypeDescriptor.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory DatatypeDescriptor.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory DatatypeDescriptor.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DatatypeDescriptor.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DatatypeDescriptor', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DatatypeDescriptor',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'typeName')
     ..aOS(2, _omitFieldNames ? '' : 'definingId')
     ..aOS(3, _omitFieldNames ? '' : 'module')
     ..aOS(4, _omitFieldNames ? '' : 'name')
-    ..pc<Ability>(5, _omitFieldNames ? '' : 'abilities', $pb.PbFieldType.KE, valueOf: Ability.valueOf, enumValues: Ability.values, defaultEnumValue: Ability.ABILITY_UNKNOWN)
-    ..pc<TypeParameter>(6, _omitFieldNames ? '' : 'typeParameters', $pb.PbFieldType.PM, subBuilder: TypeParameter.create)
-    ..e<DatatypeDescriptor_DatatypeKind>(7, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: DatatypeDescriptor_DatatypeKind.DATATYPE_KIND_UNKNOWN, valueOf: DatatypeDescriptor_DatatypeKind.valueOf, enumValues: DatatypeDescriptor_DatatypeKind.values)
-    ..pc<FieldDescriptor>(8, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: FieldDescriptor.create)
-    ..pc<VariantDescriptor>(9, _omitFieldNames ? '' : 'variants', $pb.PbFieldType.PM, subBuilder: VariantDescriptor.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<Ability>(5, _omitFieldNames ? '' : 'abilities', $pb.PbFieldType.KE,
+        valueOf: Ability.valueOf,
+        enumValues: Ability.values,
+        defaultEnumValue: Ability.ABILITY_UNKNOWN)
+    ..pc<TypeParameter>(
+        6, _omitFieldNames ? '' : 'typeParameters', $pb.PbFieldType.PM,
+        subBuilder: TypeParameter.create)
+    ..e<DatatypeDescriptor_DatatypeKind>(
+        7, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE,
+        defaultOrMaker: DatatypeDescriptor_DatatypeKind.DATATYPE_KIND_UNKNOWN,
+        valueOf: DatatypeDescriptor_DatatypeKind.valueOf,
+        enumValues: DatatypeDescriptor_DatatypeKind.values)
+    ..pc<FieldDescriptor>(
+        8, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM,
+        subBuilder: FieldDescriptor.create)
+    ..pc<VariantDescriptor>(
+        9, _omitFieldNames ? '' : 'variants', $pb.PbFieldType.PM,
+        subBuilder: VariantDescriptor.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DatatypeDescriptor clone() => DatatypeDescriptor()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  DatatypeDescriptor copyWith(void Function(DatatypeDescriptor) updates) => super.copyWith((message) => updates(message as DatatypeDescriptor)) as DatatypeDescriptor;
+  DatatypeDescriptor copyWith(void Function(DatatypeDescriptor) updates) =>
+      super.copyWith((message) => updates(message as DatatypeDescriptor))
+          as DatatypeDescriptor;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -259,9 +306,11 @@ class DatatypeDescriptor extends $pb.GeneratedMessage {
   static DatatypeDescriptor create() => DatatypeDescriptor._();
   @$core.override
   DatatypeDescriptor createEmptyInstance() => create();
-  static $pb.PbList<DatatypeDescriptor> createRepeated() => $pb.PbList<DatatypeDescriptor>();
+  static $pb.PbList<DatatypeDescriptor> createRepeated() =>
+      $pb.PbList<DatatypeDescriptor>();
   @$core.pragma('dart2js:noInline')
-  static DatatypeDescriptor getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DatatypeDescriptor>(create);
+  static DatatypeDescriptor getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DatatypeDescriptor>(create);
   static DatatypeDescriptor? _defaultInstance;
 
   /// Fully qualified name of this Datatype.
@@ -353,19 +402,30 @@ class TypeParameter extends $pb.GeneratedMessage {
 
   TypeParameter._();
 
-  factory TypeParameter.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TypeParameter.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TypeParameter.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TypeParameter.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TypeParameter', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..pc<Ability>(1, _omitFieldNames ? '' : 'constraints', $pb.PbFieldType.KE, valueOf: Ability.valueOf, enumValues: Ability.values, defaultEnumValue: Ability.ABILITY_UNKNOWN)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TypeParameter',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..pc<Ability>(1, _omitFieldNames ? '' : 'constraints', $pb.PbFieldType.KE,
+        valueOf: Ability.valueOf,
+        enumValues: Ability.values,
+        defaultEnumValue: Ability.ABILITY_UNKNOWN)
     ..aOB(2, _omitFieldNames ? '' : 'isPhantom')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TypeParameter clone() => TypeParameter()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TypeParameter copyWith(void Function(TypeParameter) updates) => super.copyWith((message) => updates(message as TypeParameter)) as TypeParameter;
+  TypeParameter copyWith(void Function(TypeParameter) updates) =>
+      super.copyWith((message) => updates(message as TypeParameter))
+          as TypeParameter;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -374,9 +434,11 @@ class TypeParameter extends $pb.GeneratedMessage {
   static TypeParameter create() => TypeParameter._();
   @$core.override
   TypeParameter createEmptyInstance() => create();
-  static $pb.PbList<TypeParameter> createRepeated() => $pb.PbList<TypeParameter>();
+  static $pb.PbList<TypeParameter> createRepeated() =>
+      $pb.PbList<TypeParameter>();
   @$core.pragma('dart2js:noInline')
-  static TypeParameter getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TypeParameter>(create);
+  static TypeParameter getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TypeParameter>(create);
   static TypeParameter? _defaultInstance;
 
   /// The type parameter constraints
@@ -410,20 +472,29 @@ class FieldDescriptor extends $pb.GeneratedMessage {
 
   FieldDescriptor._();
 
-  factory FieldDescriptor.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory FieldDescriptor.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory FieldDescriptor.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FieldDescriptor.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FieldDescriptor', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FieldDescriptor',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'position', $pb.PbFieldType.OU3)
-    ..aOM<OpenSignatureBody>(3, _omitFieldNames ? '' : 'type', subBuilder: OpenSignatureBody.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<OpenSignatureBody>(3, _omitFieldNames ? '' : 'type',
+        subBuilder: OpenSignatureBody.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FieldDescriptor clone() => FieldDescriptor()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FieldDescriptor copyWith(void Function(FieldDescriptor) updates) => super.copyWith((message) => updates(message as FieldDescriptor)) as FieldDescriptor;
+  FieldDescriptor copyWith(void Function(FieldDescriptor) updates) =>
+      super.copyWith((message) => updates(message as FieldDescriptor))
+          as FieldDescriptor;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -432,9 +503,11 @@ class FieldDescriptor extends $pb.GeneratedMessage {
   static FieldDescriptor create() => FieldDescriptor._();
   @$core.override
   FieldDescriptor createEmptyInstance() => create();
-  static $pb.PbList<FieldDescriptor> createRepeated() => $pb.PbList<FieldDescriptor>();
+  static $pb.PbList<FieldDescriptor> createRepeated() =>
+      $pb.PbList<FieldDescriptor>();
   @$core.pragma('dart2js:noInline')
-  static FieldDescriptor getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FieldDescriptor>(create);
+  static FieldDescriptor getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FieldDescriptor>(create);
   static FieldDescriptor? _defaultInstance;
 
   /// Name of the field
@@ -486,20 +559,30 @@ class VariantDescriptor extends $pb.GeneratedMessage {
 
   VariantDescriptor._();
 
-  factory VariantDescriptor.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory VariantDescriptor.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory VariantDescriptor.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory VariantDescriptor.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'VariantDescriptor', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'VariantDescriptor',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'position', $pb.PbFieldType.OU3)
-    ..pc<FieldDescriptor>(3, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: FieldDescriptor.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<FieldDescriptor>(
+        3, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM,
+        subBuilder: FieldDescriptor.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   VariantDescriptor clone() => VariantDescriptor()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  VariantDescriptor copyWith(void Function(VariantDescriptor) updates) => super.copyWith((message) => updates(message as VariantDescriptor)) as VariantDescriptor;
+  VariantDescriptor copyWith(void Function(VariantDescriptor) updates) =>
+      super.copyWith((message) => updates(message as VariantDescriptor))
+          as VariantDescriptor;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -508,9 +591,11 @@ class VariantDescriptor extends $pb.GeneratedMessage {
   static VariantDescriptor create() => VariantDescriptor._();
   @$core.override
   VariantDescriptor createEmptyInstance() => create();
-  static $pb.PbList<VariantDescriptor> createRepeated() => $pb.PbList<VariantDescriptor>();
+  static $pb.PbList<VariantDescriptor> createRepeated() =>
+      $pb.PbList<VariantDescriptor>();
   @$core.pragma('dart2js:noInline')
-  static VariantDescriptor getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<VariantDescriptor>(create);
+  static VariantDescriptor getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<VariantDescriptor>(create);
   static VariantDescriptor? _defaultInstance;
 
   /// Name of the variant
@@ -549,28 +634,44 @@ class OpenSignatureBody extends $pb.GeneratedMessage {
     final result = create();
     if (type != null) result.type = type;
     if (typeName != null) result.typeName = typeName;
-    if (typeParameterInstantiation != null) result.typeParameterInstantiation.addAll(typeParameterInstantiation);
+    if (typeParameterInstantiation != null)
+      result.typeParameterInstantiation.addAll(typeParameterInstantiation);
     if (typeParameter != null) result.typeParameter = typeParameter;
     return result;
   }
 
   OpenSignatureBody._();
 
-  factory OpenSignatureBody.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory OpenSignatureBody.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory OpenSignatureBody.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory OpenSignatureBody.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'OpenSignatureBody', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<OpenSignatureBody_Type>(1, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: OpenSignatureBody_Type.TYPE_UNKNOWN, valueOf: OpenSignatureBody_Type.valueOf, enumValues: OpenSignatureBody_Type.values)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'OpenSignatureBody',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<OpenSignatureBody_Type>(
+        1, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE,
+        defaultOrMaker: OpenSignatureBody_Type.TYPE_UNKNOWN,
+        valueOf: OpenSignatureBody_Type.valueOf,
+        enumValues: OpenSignatureBody_Type.values)
     ..aOS(2, _omitFieldNames ? '' : 'typeName')
-    ..pc<OpenSignatureBody>(3, _omitFieldNames ? '' : 'typeParameterInstantiation', $pb.PbFieldType.PM, subBuilder: OpenSignatureBody.create)
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'typeParameter', $pb.PbFieldType.OU3)
-    ..hasRequiredFields = false
-  ;
+    ..pc<OpenSignatureBody>(3,
+        _omitFieldNames ? '' : 'typeParameterInstantiation', $pb.PbFieldType.PM,
+        subBuilder: OpenSignatureBody.create)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'typeParameter', $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OpenSignatureBody clone() => OpenSignatureBody()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OpenSignatureBody copyWith(void Function(OpenSignatureBody) updates) => super.copyWith((message) => updates(message as OpenSignatureBody)) as OpenSignatureBody;
+  OpenSignatureBody copyWith(void Function(OpenSignatureBody) updates) =>
+      super.copyWith((message) => updates(message as OpenSignatureBody))
+          as OpenSignatureBody;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -579,9 +680,11 @@ class OpenSignatureBody extends $pb.GeneratedMessage {
   static OpenSignatureBody create() => OpenSignatureBody._();
   @$core.override
   OpenSignatureBody createEmptyInstance() => create();
-  static $pb.PbList<OpenSignatureBody> createRepeated() => $pb.PbList<OpenSignatureBody>();
+  static $pb.PbList<OpenSignatureBody> createRepeated() =>
+      $pb.PbList<OpenSignatureBody>();
   @$core.pragma('dart2js:noInline')
-  static OpenSignatureBody getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OpenSignatureBody>(create);
+  static OpenSignatureBody getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<OpenSignatureBody>(create);
   static OpenSignatureBody? _defaultInstance;
 
   /// Type of this signature
@@ -641,23 +744,40 @@ class FunctionDescriptor extends $pb.GeneratedMessage {
 
   FunctionDescriptor._();
 
-  factory FunctionDescriptor.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory FunctionDescriptor.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory FunctionDescriptor.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FunctionDescriptor.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FunctionDescriptor', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FunctionDescriptor',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..e<FunctionDescriptor_Visibility>(5, _omitFieldNames ? '' : 'visibility', $pb.PbFieldType.OE, defaultOrMaker: FunctionDescriptor_Visibility.VISIBILITY_UNKNOWN, valueOf: FunctionDescriptor_Visibility.valueOf, enumValues: FunctionDescriptor_Visibility.values)
+    ..e<FunctionDescriptor_Visibility>(
+        5, _omitFieldNames ? '' : 'visibility', $pb.PbFieldType.OE,
+        defaultOrMaker: FunctionDescriptor_Visibility.VISIBILITY_UNKNOWN,
+        valueOf: FunctionDescriptor_Visibility.valueOf,
+        enumValues: FunctionDescriptor_Visibility.values)
     ..aOB(6, _omitFieldNames ? '' : 'isEntry')
-    ..pc<TypeParameter>(7, _omitFieldNames ? '' : 'typeParameters', $pb.PbFieldType.PM, subBuilder: TypeParameter.create)
-    ..pc<OpenSignature>(8, _omitFieldNames ? '' : 'parameters', $pb.PbFieldType.PM, subBuilder: OpenSignature.create)
-    ..pc<OpenSignature>(9, _omitFieldNames ? '' : 'returns', $pb.PbFieldType.PM, subBuilder: OpenSignature.create)
-    ..hasRequiredFields = false
-  ;
+    ..pc<TypeParameter>(
+        7, _omitFieldNames ? '' : 'typeParameters', $pb.PbFieldType.PM,
+        subBuilder: TypeParameter.create)
+    ..pc<OpenSignature>(
+        8, _omitFieldNames ? '' : 'parameters', $pb.PbFieldType.PM,
+        subBuilder: OpenSignature.create)
+    ..pc<OpenSignature>(9, _omitFieldNames ? '' : 'returns', $pb.PbFieldType.PM,
+        subBuilder: OpenSignature.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FunctionDescriptor clone() => FunctionDescriptor()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  FunctionDescriptor copyWith(void Function(FunctionDescriptor) updates) => super.copyWith((message) => updates(message as FunctionDescriptor)) as FunctionDescriptor;
+  FunctionDescriptor copyWith(void Function(FunctionDescriptor) updates) =>
+      super.copyWith((message) => updates(message as FunctionDescriptor))
+          as FunctionDescriptor;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -666,9 +786,11 @@ class FunctionDescriptor extends $pb.GeneratedMessage {
   static FunctionDescriptor create() => FunctionDescriptor._();
   @$core.override
   FunctionDescriptor createEmptyInstance() => create();
-  static $pb.PbList<FunctionDescriptor> createRepeated() => $pb.PbList<FunctionDescriptor>();
+  static $pb.PbList<FunctionDescriptor> createRepeated() =>
+      $pb.PbList<FunctionDescriptor>();
   @$core.pragma('dart2js:noInline')
-  static FunctionDescriptor getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FunctionDescriptor>(create);
+  static FunctionDescriptor getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FunctionDescriptor>(create);
   static FunctionDescriptor? _defaultInstance;
 
   /// Name of the function
@@ -728,19 +850,32 @@ class OpenSignature extends $pb.GeneratedMessage {
 
   OpenSignature._();
 
-  factory OpenSignature.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory OpenSignature.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory OpenSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory OpenSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'OpenSignature', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..e<OpenSignature_Reference>(1, _omitFieldNames ? '' : 'reference', $pb.PbFieldType.OE, defaultOrMaker: OpenSignature_Reference.REFERENCE_UNKNOWN, valueOf: OpenSignature_Reference.valueOf, enumValues: OpenSignature_Reference.values)
-    ..aOM<OpenSignatureBody>(2, _omitFieldNames ? '' : 'body', subBuilder: OpenSignatureBody.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'OpenSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..e<OpenSignature_Reference>(
+        1, _omitFieldNames ? '' : 'reference', $pb.PbFieldType.OE,
+        defaultOrMaker: OpenSignature_Reference.REFERENCE_UNKNOWN,
+        valueOf: OpenSignature_Reference.valueOf,
+        enumValues: OpenSignature_Reference.values)
+    ..aOM<OpenSignatureBody>(2, _omitFieldNames ? '' : 'body',
+        subBuilder: OpenSignatureBody.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OpenSignature clone() => OpenSignature()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OpenSignature copyWith(void Function(OpenSignature) updates) => super.copyWith((message) => updates(message as OpenSignature)) as OpenSignature;
+  OpenSignature copyWith(void Function(OpenSignature) updates) =>
+      super.copyWith((message) => updates(message as OpenSignature))
+          as OpenSignature;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -749,9 +884,11 @@ class OpenSignature extends $pb.GeneratedMessage {
   static OpenSignature create() => OpenSignature._();
   @$core.override
   OpenSignature createEmptyInstance() => create();
-  static $pb.PbList<OpenSignature> createRepeated() => $pb.PbList<OpenSignature>();
+  static $pb.PbList<OpenSignature> createRepeated() =>
+      $pb.PbList<OpenSignature>();
   @$core.pragma('dart2js:noInline')
-  static OpenSignature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OpenSignature>(create);
+  static OpenSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<OpenSignature>(create);
   static OpenSignature? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -791,20 +928,27 @@ class TypeOrigin extends $pb.GeneratedMessage {
 
   TypeOrigin._();
 
-  factory TypeOrigin.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory TypeOrigin.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory TypeOrigin.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory TypeOrigin.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TypeOrigin', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'TypeOrigin',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'moduleName')
     ..aOS(2, _omitFieldNames ? '' : 'datatypeName')
     ..aOS(3, _omitFieldNames ? '' : 'packageId')
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TypeOrigin clone() => TypeOrigin()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  TypeOrigin copyWith(void Function(TypeOrigin) updates) => super.copyWith((message) => updates(message as TypeOrigin)) as TypeOrigin;
+  TypeOrigin copyWith(void Function(TypeOrigin) updates) =>
+      super.copyWith((message) => updates(message as TypeOrigin)) as TypeOrigin;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -815,7 +959,8 @@ class TypeOrigin extends $pb.GeneratedMessage {
   TypeOrigin createEmptyInstance() => create();
   static $pb.PbList<TypeOrigin> createRepeated() => $pb.PbList<TypeOrigin>();
   @$core.pragma('dart2js:noInline')
-  static TypeOrigin getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TypeOrigin>(create);
+  static TypeOrigin getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<TypeOrigin>(create);
   static TypeOrigin? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -862,20 +1007,29 @@ class Linkage extends $pb.GeneratedMessage {
 
   Linkage._();
 
-  factory Linkage.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Linkage.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Linkage.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Linkage.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Linkage', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Linkage',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'originalId')
     ..aOS(2, _omitFieldNames ? '' : 'upgradedId')
-    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'upgradedVersion', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..hasRequiredFields = false
-  ;
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'upgradedVersion', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Linkage clone() => Linkage()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Linkage copyWith(void Function(Linkage) updates) => super.copyWith((message) => updates(message as Linkage)) as Linkage;
+  Linkage copyWith(void Function(Linkage) updates) =>
+      super.copyWith((message) => updates(message as Linkage)) as Linkage;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -886,7 +1040,8 @@ class Linkage extends $pb.GeneratedMessage {
   Linkage createEmptyInstance() => create();
   static $pb.PbList<Linkage> createRepeated() => $pb.PbList<Linkage>();
   @$core.pragma('dart2js:noInline')
-  static Linkage getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Linkage>(create);
+  static Linkage getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Linkage>(create);
   static Linkage? _defaultInstance;
 
   /// Id of the original package.
@@ -920,6 +1075,7 @@ class Linkage extends $pb.GeneratedMessage {
   void clearUpgradedVersion() => $_clearField(3);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

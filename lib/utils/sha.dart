@@ -19,8 +19,7 @@ Uint8List sha256FromString(String str) {
 }
 
 Uint8List hmacSha256Sync(Uint8List hmacKey, Uint8List data) {
-  final hmac = HMac(SHA256Digest(), 64) 
-    ..init(KeyParameter(hmacKey));
+  final hmac = HMac(SHA256Digest(), 64)..init(KeyParameter(hmacKey));
 
   return hmac.process(data);
 }

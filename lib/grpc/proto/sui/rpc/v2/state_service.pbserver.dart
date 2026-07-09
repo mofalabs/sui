@@ -21,35 +21,53 @@ import 'state_service.pbjson.dart';
 export 'state_service.pb.dart';
 
 abstract class StateServiceBase extends $pb.GeneratedService {
-  $async.Future<$6.ListDynamicFieldsResponse> listDynamicFields($pb.ServerContext ctx, $6.ListDynamicFieldsRequest request);
-  $async.Future<$6.ListOwnedObjectsResponse> listOwnedObjects($pb.ServerContext ctx, $6.ListOwnedObjectsRequest request);
-  $async.Future<$6.GetCoinInfoResponse> getCoinInfo($pb.ServerContext ctx, $6.GetCoinInfoRequest request);
-  $async.Future<$6.GetBalanceResponse> getBalance($pb.ServerContext ctx, $6.GetBalanceRequest request);
-  $async.Future<$6.ListBalancesResponse> listBalances($pb.ServerContext ctx, $6.ListBalancesRequest request);
+  $async.Future<$6.ListDynamicFieldsResponse> listDynamicFields(
+      $pb.ServerContext ctx, $6.ListDynamicFieldsRequest request);
+  $async.Future<$6.ListOwnedObjectsResponse> listOwnedObjects(
+      $pb.ServerContext ctx, $6.ListOwnedObjectsRequest request);
+  $async.Future<$6.GetCoinInfoResponse> getCoinInfo(
+      $pb.ServerContext ctx, $6.GetCoinInfoRequest request);
+  $async.Future<$6.GetBalanceResponse> getBalance(
+      $pb.ServerContext ctx, $6.GetBalanceRequest request);
+  $async.Future<$6.ListBalancesResponse> listBalances(
+      $pb.ServerContext ctx, $6.ListBalancesRequest request);
 
   $pb.GeneratedMessage createRequest($core.String methodName) {
     switch (methodName) {
-      case 'ListDynamicFields': return $6.ListDynamicFieldsRequest();
-      case 'ListOwnedObjects': return $6.ListOwnedObjectsRequest();
-      case 'GetCoinInfo': return $6.GetCoinInfoRequest();
-      case 'GetBalance': return $6.GetBalanceRequest();
-      case 'ListBalances': return $6.ListBalancesRequest();
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'ListDynamicFields':
+        return $6.ListDynamicFieldsRequest();
+      case 'ListOwnedObjects':
+        return $6.ListOwnedObjectsRequest();
+      case 'GetCoinInfo':
+        return $6.GetCoinInfoRequest();
+      case 'GetBalance':
+        return $6.GetBalanceRequest();
+      case 'ListBalances':
+        return $6.ListBalancesRequest();
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String methodName, $pb.GeneratedMessage request) {
+  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx,
+      $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
-      case 'ListDynamicFields': return listDynamicFields(ctx, request as $6.ListDynamicFieldsRequest);
-      case 'ListOwnedObjects': return listOwnedObjects(ctx, request as $6.ListOwnedObjectsRequest);
-      case 'GetCoinInfo': return getCoinInfo(ctx, request as $6.GetCoinInfoRequest);
-      case 'GetBalance': return getBalance(ctx, request as $6.GetBalanceRequest);
-      case 'ListBalances': return listBalances(ctx, request as $6.ListBalancesRequest);
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'ListDynamicFields':
+        return listDynamicFields(ctx, request as $6.ListDynamicFieldsRequest);
+      case 'ListOwnedObjects':
+        return listOwnedObjects(ctx, request as $6.ListOwnedObjectsRequest);
+      case 'GetCoinInfo':
+        return getCoinInfo(ctx, request as $6.GetCoinInfoRequest);
+      case 'GetBalance':
+        return getBalance(ctx, request as $6.GetBalanceRequest);
+      case 'ListBalances':
+        return listBalances(ctx, request as $6.ListBalancesRequest);
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
   $core.Map<$core.String, $core.dynamic> get $json => StateServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => StateServiceBase$messageJson;
+  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+      get $messageJson => StateServiceBase$messageJson;
 }
-

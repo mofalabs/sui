@@ -21,32 +21,49 @@ import 'move_package_service.pbjson.dart';
 export 'move_package_service.pb.dart';
 
 abstract class MovePackageServiceBase extends $pb.GeneratedService {
-  $async.Future<$1.GetPackageResponse> getPackage($pb.ServerContext ctx, $1.GetPackageRequest request);
-  $async.Future<$1.GetDatatypeResponse> getDatatype($pb.ServerContext ctx, $1.GetDatatypeRequest request);
-  $async.Future<$1.GetFunctionResponse> getFunction($pb.ServerContext ctx, $1.GetFunctionRequest request);
-  $async.Future<$1.ListPackageVersionsResponse> listPackageVersions($pb.ServerContext ctx, $1.ListPackageVersionsRequest request);
+  $async.Future<$1.GetPackageResponse> getPackage(
+      $pb.ServerContext ctx, $1.GetPackageRequest request);
+  $async.Future<$1.GetDatatypeResponse> getDatatype(
+      $pb.ServerContext ctx, $1.GetDatatypeRequest request);
+  $async.Future<$1.GetFunctionResponse> getFunction(
+      $pb.ServerContext ctx, $1.GetFunctionRequest request);
+  $async.Future<$1.ListPackageVersionsResponse> listPackageVersions(
+      $pb.ServerContext ctx, $1.ListPackageVersionsRequest request);
 
   $pb.GeneratedMessage createRequest($core.String methodName) {
     switch (methodName) {
-      case 'GetPackage': return $1.GetPackageRequest();
-      case 'GetDatatype': return $1.GetDatatypeRequest();
-      case 'GetFunction': return $1.GetFunctionRequest();
-      case 'ListPackageVersions': return $1.ListPackageVersionsRequest();
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'GetPackage':
+        return $1.GetPackageRequest();
+      case 'GetDatatype':
+        return $1.GetDatatypeRequest();
+      case 'GetFunction':
+        return $1.GetFunctionRequest();
+      case 'ListPackageVersions':
+        return $1.ListPackageVersionsRequest();
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String methodName, $pb.GeneratedMessage request) {
+  $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx,
+      $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
-      case 'GetPackage': return getPackage(ctx, request as $1.GetPackageRequest);
-      case 'GetDatatype': return getDatatype(ctx, request as $1.GetDatatypeRequest);
-      case 'GetFunction': return getFunction(ctx, request as $1.GetFunctionRequest);
-      case 'ListPackageVersions': return listPackageVersions(ctx, request as $1.ListPackageVersionsRequest);
-      default: throw $core.ArgumentError('Unknown method: $methodName');
+      case 'GetPackage':
+        return getPackage(ctx, request as $1.GetPackageRequest);
+      case 'GetDatatype':
+        return getDatatype(ctx, request as $1.GetDatatypeRequest);
+      case 'GetFunction':
+        return getFunction(ctx, request as $1.GetFunctionRequest);
+      case 'ListPackageVersions':
+        return listPackageVersions(
+            ctx, request as $1.ListPackageVersionsRequest);
+      default:
+        throw $core.ArgumentError('Unknown method: $methodName');
     }
   }
 
-  $core.Map<$core.String, $core.dynamic> get $json => MovePackageServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => MovePackageServiceBase$messageJson;
+  $core.Map<$core.String, $core.dynamic> get $json =>
+      MovePackageServiceBase$json;
+  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
+      get $messageJson => MovePackageServiceBase$messageJson;
 }
-

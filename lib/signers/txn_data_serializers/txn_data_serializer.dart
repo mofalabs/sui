@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:sui/types/common.dart';
@@ -10,7 +9,8 @@ class TransferObjectTransaction {
   int gasBudget;
   SuiAddress recipient;
 
-  TransferObjectTransaction(this.objectId, this.gasPayment, this.gasBudget, this.recipient);
+  TransferObjectTransaction(
+      this.objectId, this.gasPayment, this.gasBudget, this.recipient);
 }
 
 class TransferSuiTransaction {
@@ -19,7 +19,8 @@ class TransferSuiTransaction {
   SuiAddress recipient;
   int? amount;
 
-  TransferSuiTransaction(this.suiObjectId, this.gasBudget, this.recipient, this.amount);
+  TransferSuiTransaction(
+      this.suiObjectId, this.gasBudget, this.recipient, this.amount);
 }
 
 /// Send `Coin<T>` to a list of addresses, where `T` can be any coin type, following a list of amounts,
@@ -33,7 +34,8 @@ class PayTransaction {
   int gasBudget;
   ObjectId? gasPayment;
 
-  PayTransaction(this.inputCoins, this.recipients, this.amounts, this.gasBudget, [this.gasPayment]);
+  PayTransaction(this.inputCoins, this.recipients, this.amounts, this.gasBudget,
+      [this.gasPayment]);
 }
 
 /// Send SUI coins to a list of addresses, following a list of amounts.
@@ -51,7 +53,8 @@ class PaySuiTransaction {
   List<int> amounts;
   int gasBudget;
 
-  PaySuiTransaction(this.inputCoins, this.recipients, this.amounts, this.gasBudget);
+  PaySuiTransaction(
+      this.inputCoins, this.recipients, this.amounts, this.gasBudget);
 
   List<String> get amountsStr => amounts.map((e) => e.toString()).toList();
 }
@@ -80,30 +83,24 @@ class MoveCallTransaction {
   int gasBudget;
   ObjectId? gasPayment;
 
-  MoveCallTransaction(
-    this.packageObjectId,
-    this.module,
-    this.function,
-    this.typeArguments,
-    this.arguments,
-    this.gasBudget,
-    [this.gasPayment]
-  );
+  MoveCallTransaction(this.packageObjectId, this.module, this.function,
+      this.typeArguments, this.arguments, this.gasBudget,
+      [this.gasPayment]);
 }
 
 enum UnserializedSignableTransaction {
-  moveCall,  // MoveCallTransaction
-  transferSui,  // TransferSuiTransaction
-  transferObject,  // TransferObjectTransaction
-  pay,  // PayTransaction
-  paySui,  // PaySuiTransaction
-  payAllSui,  // PayAllSuiTransaction
-  publish,  // PublishTransaction
-  addStake,  // AddStakeTransaction
-  withdrawStake,  // WithdrawStakeTransaction
-  splitCoin,  // SplitCoinTransaction
-  splitCoinEqual,  // SplitCoinEqualTransaction
-  bytes  // Uint8Array
+  moveCall, // MoveCallTransaction
+  transferSui, // TransferSuiTransaction
+  transferObject, // TransferObjectTransaction
+  pay, // PayTransaction
+  paySui, // PaySuiTransaction
+  payAllSui, // PayAllSuiTransaction
+  publish, // PublishTransaction
+  addStake, // AddStakeTransaction
+  withdrawStake, // WithdrawStakeTransaction
+  splitCoin, // SplitCoinTransaction
+  splitCoinEqual, // SplitCoinEqualTransaction
+  bytes // Uint8Array
 }
 
 class SignableTransaction {
@@ -119,7 +116,8 @@ class PublishTransaction {
   int gasBudget;
   ObjectId? gasPayment;
 
-  PublishTransaction(this.compiledModules, this.dependencies, this.gasBudget, [this.gasPayment]);
+  PublishTransaction(this.compiledModules, this.dependencies, this.gasBudget,
+      [this.gasPayment]);
 }
 
 class AddStakeTransaction {
@@ -140,7 +138,6 @@ class WithdrawStakeTransaction {
 
   WithdrawStakeTransaction(this.stakeSui, this.gasBudget, [this.gasPayment]);
 }
-
 
 class SplitCoinTransaction {
   ObjectId coinObjectId;
@@ -164,39 +161,23 @@ class SplitCoinEqualTransaction {
 
 mixin TxnDataSerializer {
   Future<Uint8List> newTransferObject(
-    SuiAddress signerAddress,
-    TransferObjectTransaction txn
-  );
+      SuiAddress signerAddress, TransferObjectTransaction txn);
 
   Future<Uint8List> newTransferSui(
-    SuiAddress signerAddress,
-    TransferSuiTransaction txn
-  );
+      SuiAddress signerAddress, TransferSuiTransaction txn);
 
-  Future<Uint8List> newPay(
-    SuiAddress signerAddress,
-    PayTransaction txn
-  );
+  Future<Uint8List> newPay(SuiAddress signerAddress, PayTransaction txn);
 
-  Future<Uint8List> newPaySui(
-    SuiAddress signerAddress,
-    PaySuiTransaction txn
-  );
+  Future<Uint8List> newPaySui(SuiAddress signerAddress, PaySuiTransaction txn);
 
   Future<Uint8List> newPayAllSui(
-    SuiAddress signerAddress,
-    PayAllSuiTransaction txn
-  );
+      SuiAddress signerAddress, PayAllSuiTransaction txn);
 
   Future<Uint8List> newMoveCall(
-    SuiAddress signerAddress,
-    MoveCallTransaction txn
-  );
+      SuiAddress signerAddress, MoveCallTransaction txn);
 
   Future<Uint8List> newPublish(
-    SuiAddress signerAddress,
-    PublishTransaction txn
-  );
+      SuiAddress signerAddress, PublishTransaction txn);
 
   Future<Uint8List> newAddStake(
     SuiAddress signerAddress,

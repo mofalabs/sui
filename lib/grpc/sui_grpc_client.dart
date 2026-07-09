@@ -143,9 +143,7 @@ class SuiGrpcClient {
       core.resolveNameServiceAddress(name);
 
   Future<SuiCoinPage> listCoins(String owner,
-          {String coinType = '0x2::sui::SUI',
-          Uint8List? cursor,
-          int? limit}) =>
+          {String coinType = '0x2::sui::SUI', Uint8List? cursor, int? limit}) =>
       core.listCoins(owner, coinType: coinType, cursor: cursor, limit: limit);
 
   Future<SystemState> getCurrentSystemState() => core.getCurrentSystemState();

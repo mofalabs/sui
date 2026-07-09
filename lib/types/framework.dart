@@ -15,14 +15,14 @@ const OBJECT_MODULE_NAME = 'object';
 const UID_STRUCT_NAME = 'UID';
 const ID_STRUCT_NAME = 'ID';
 const SUI_TYPE_ARG = "$SUI_FRAMEWORK_ADDRESS::sui::SUI";
-final NORMALIZE_SUI_TYPE_ARG = "${normalizeSuiObjectId(SUI_FRAMEWORK_ADDRESS)}::sui::SUI";
+final NORMALIZE_SUI_TYPE_ARG =
+    "${normalizeSuiObjectId(SUI_FRAMEWORK_ADDRESS)}::sui::SUI";
 const COIN_TYPE = "$SUI_FRAMEWORK_ADDRESS::coin::Coin";
 
 const PAY_MODULE_NAME = 'pay';
 const PAY_SPLIT_COIN_VEC_FUNC_NAME = 'split_vec';
 const PAY_JOIN_COIN_FUNC_NAME = 'join';
 final COIN_TYPE_ARG_REGEX = RegExp(r'^0x2::coin::Coin<(.+)>$');
-
 
 typedef ObjectData = dynamic;
 
@@ -54,14 +54,10 @@ class Coin {
     return coinTypeArg.substring(coinTypeArg.lastIndexOf(':') + 1);
   }
 
-	static StructTag getCoinStructTag(String coinTypeArg) {
-    return StructTag(
-      normalizeSuiObjectId(coinTypeArg.split('::')[0]),
-      coinTypeArg.split('::')[1],
-      coinTypeArg.split('::')[2],
-      []
-    );
-	}
+  static StructTag getCoinStructTag(String coinTypeArg) {
+    return StructTag(normalizeSuiObjectId(coinTypeArg.split('::')[0]),
+        coinTypeArg.split('::')[1], coinTypeArg.split('::')[2], []);
+  }
 
   static String? getType(ObjectData data) {
     if (data is SuiObject) {

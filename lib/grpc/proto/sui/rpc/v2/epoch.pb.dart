@@ -49,26 +49,45 @@ class Epoch extends $pb.GeneratedMessage {
 
   Epoch._();
 
-  factory Epoch.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Epoch.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Epoch.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Epoch.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Epoch', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$0.ValidatorCommittee>(2, _omitFieldNames ? '' : 'committee', subBuilder: $0.ValidatorCommittee.create)
-    ..aOM<$1.SystemState>(3, _omitFieldNames ? '' : 'systemState', subBuilder: $1.SystemState.create)
-    ..a<$fixnum.Int64>(4, _omitFieldNames ? '' : 'firstCheckpoint', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..a<$fixnum.Int64>(5, _omitFieldNames ? '' : 'lastCheckpoint', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$2.Timestamp>(6, _omitFieldNames ? '' : 'start', subBuilder: $2.Timestamp.create)
-    ..aOM<$2.Timestamp>(7, _omitFieldNames ? '' : 'end', subBuilder: $2.Timestamp.create)
-    ..a<$fixnum.Int64>(8, _omitFieldNames ? '' : 'referenceGasPrice', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
-    ..aOM<$3.ProtocolConfig>(9, _omitFieldNames ? '' : 'protocolConfig', subBuilder: $3.ProtocolConfig.create)
-    ..hasRequiredFields = false
-  ;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Epoch',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$0.ValidatorCommittee>(2, _omitFieldNames ? '' : 'committee',
+        subBuilder: $0.ValidatorCommittee.create)
+    ..aOM<$1.SystemState>(3, _omitFieldNames ? '' : 'systemState',
+        subBuilder: $1.SystemState.create)
+    ..a<$fixnum.Int64>(
+        4, _omitFieldNames ? '' : 'firstCheckpoint', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        5, _omitFieldNames ? '' : 'lastCheckpoint', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$2.Timestamp>(6, _omitFieldNames ? '' : 'start',
+        subBuilder: $2.Timestamp.create)
+    ..aOM<$2.Timestamp>(7, _omitFieldNames ? '' : 'end',
+        subBuilder: $2.Timestamp.create)
+    ..a<$fixnum.Int64>(
+        8, _omitFieldNames ? '' : 'referenceGasPrice', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOM<$3.ProtocolConfig>(9, _omitFieldNames ? '' : 'protocolConfig',
+        subBuilder: $3.ProtocolConfig.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Epoch clone() => Epoch()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Epoch copyWith(void Function(Epoch) updates) => super.copyWith((message) => updates(message as Epoch)) as Epoch;
+  Epoch copyWith(void Function(Epoch) updates) =>
+      super.copyWith((message) => updates(message as Epoch)) as Epoch;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -79,7 +98,8 @@ class Epoch extends $pb.GeneratedMessage {
   Epoch createEmptyInstance() => create();
   static $pb.PbList<Epoch> createRepeated() => $pb.PbList<Epoch>();
   @$core.pragma('dart2js:noInline')
-  static Epoch getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Epoch>(create);
+  static Epoch getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Epoch>(create);
   static Epoch? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -179,6 +199,7 @@ class Epoch extends $pb.GeneratedMessage {
   $3.ProtocolConfig ensureProtocolConfig() => $_ensure(8);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

@@ -30,7 +30,8 @@ void main() {
 
     // Only the MVR-named entries are sent to the resolvers.
     expect(requestedPackages, ['@org/app']);
-    expect(requestedTypes, ['@org/app::counter::Counter']); // 0x2::sui::SUI skipped
+    expect(requestedTypes,
+        ['@org/app::counter::Counter']); // 0x2::sui::SUI skipped
 
     final mc = tx
         .getData()

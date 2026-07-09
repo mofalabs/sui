@@ -19,14 +19,83 @@ const Epoch$json = {
   '1': 'Epoch',
   '2': [
     {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
-    {'1': 'committee', '3': 2, '4': 1, '5': 11, '6': '.sui.rpc.v2.ValidatorCommittee', '9': 1, '10': 'committee', '17': true},
-    {'1': 'system_state', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.SystemState', '9': 2, '10': 'systemState', '17': true},
-    {'1': 'first_checkpoint', '3': 4, '4': 1, '5': 4, '9': 3, '10': 'firstCheckpoint', '17': true},
-    {'1': 'last_checkpoint', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'lastCheckpoint', '17': true},
-    {'1': 'start', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 5, '10': 'start', '17': true},
-    {'1': 'end', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '9': 6, '10': 'end', '17': true},
-    {'1': 'reference_gas_price', '3': 8, '4': 1, '5': 4, '9': 7, '10': 'referenceGasPrice', '17': true},
-    {'1': 'protocol_config', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.ProtocolConfig', '9': 8, '10': 'protocolConfig', '17': true},
+    {
+      '1': 'committee',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorCommittee',
+      '9': 1,
+      '10': 'committee',
+      '17': true
+    },
+    {
+      '1': 'system_state',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.SystemState',
+      '9': 2,
+      '10': 'systemState',
+      '17': true
+    },
+    {
+      '1': 'first_checkpoint',
+      '3': 4,
+      '4': 1,
+      '5': 4,
+      '9': 3,
+      '10': 'firstCheckpoint',
+      '17': true
+    },
+    {
+      '1': 'last_checkpoint',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'lastCheckpoint',
+      '17': true
+    },
+    {
+      '1': 'start',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 5,
+      '10': 'start',
+      '17': true
+    },
+    {
+      '1': 'end',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '9': 6,
+      '10': 'end',
+      '17': true
+    },
+    {
+      '1': 'reference_gas_price',
+      '3': 8,
+      '4': 1,
+      '5': 4,
+      '9': 7,
+      '10': 'referenceGasPrice',
+      '17': true
+    },
+    {
+      '1': 'protocol_config',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ProtocolConfig',
+      '9': 8,
+      '10': 'protocolConfig',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_epoch'},
@@ -55,4 +124,3 @@ final $typed_data.Uint8List epochDescriptor = $convert.base64Decode(
     'BvY2hCDAoKX2NvbW1pdHRlZUIPCg1fc3lzdGVtX3N0YXRlQhMKEV9maXJzdF9jaGVja3BvaW50'
     'QhIKEF9sYXN0X2NoZWNrcG9pbnRCCAoGX3N0YXJ0QgYKBF9lbmRCFgoUX3JlZmVyZW5jZV9nYX'
     'NfcHJpY2VCEgoQX3Byb3RvY29sX2NvbmZpZw==');
-

@@ -9,18 +9,13 @@ class ProofPoints {
 
   factory ProofPoints.fromJson(Map<String, dynamic> data) {
     return ProofPoints(
-      a: List<String>.from(data["a"]), 
-      b: ((data["b"]) as List).map((e) => List<String>.from(e)).toList(), 
-      c: List<String>.from(data["c"])
-    );
+        a: List<String>.from(data["a"]),
+        b: ((data["b"]) as List).map((e) => List<String>.from(e)).toList(),
+        c: List<String>.from(data["c"]));
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "a": a,
-      "b": b,
-      "c": c
-    };
+    return {"a": a, "b": b, "c": c};
   }
 }
 
@@ -38,10 +33,7 @@ class Claim {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "value": value,
-      "indexMod4": indexMod4
-    };
+    return {"value": value, "indexMod4": indexMod4};
   }
 }
 
@@ -60,11 +52,10 @@ class ZkLoginSignatureInputs {
 
   factory ZkLoginSignatureInputs.fromJson(Map<String, dynamic> data) {
     return ZkLoginSignatureInputs(
-      proofPoints: ProofPoints.fromJson(data["proofPoints"]),
-      issBase64Details: Claim.fromJson(data["issBase64Details"]),
-      headerBase64: data["headerBase64"],
-      addressSeed: data["addressSeed"]
-    );
+        proofPoints: ProofPoints.fromJson(data["proofPoints"]),
+        issBase64Details: Claim.fromJson(data["issBase64Details"]),
+        headerBase64: data["headerBase64"],
+        addressSeed: data["addressSeed"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -98,9 +89,8 @@ class ZkLoginDeserializedSignature extends ZkLoginSignature {
 
   factory ZkLoginDeserializedSignature.fromJson(Map<String, dynamic> data) {
     return ZkLoginDeserializedSignature(
-      Uint8List.fromList(List<int>.from(data["userSignature"])),
-      ZkLoginSignatureInputs.fromJson(data["inputs"]),
-      int.parse(data["maxEpoch"].toString())
-    );
+        Uint8List.fromList(List<int>.from(data["userSignature"])),
+        ZkLoginSignatureInputs.fromJson(data["inputs"]),
+        int.parse(data["maxEpoch"].toString()));
   }
 }

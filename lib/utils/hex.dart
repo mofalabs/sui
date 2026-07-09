@@ -1,9 +1,6 @@
-
 import 'dart:typed_data';
 
-
 class Hex {
-
   static String encode(List<int> bytes) {
     var buffer = StringBuffer();
     for (int byte in bytes) {
@@ -39,5 +36,4 @@ class Hex {
     if (hex.startsWith(RegExp('^0[xX]'))) return hex;
     return "0x$hex";
   }
-
 }

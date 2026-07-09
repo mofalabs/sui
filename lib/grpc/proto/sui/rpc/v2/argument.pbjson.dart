@@ -18,10 +18,35 @@ import 'dart:typed_data' as $typed_data;
 const Argument$json = {
   '1': 'Argument',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.Argument.ArgumentKind', '9': 0, '10': 'kind', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.Argument.ArgumentKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
     {'1': 'input', '3': 2, '4': 1, '5': 13, '9': 1, '10': 'input', '17': true},
-    {'1': 'result', '3': 3, '4': 1, '5': 13, '9': 2, '10': 'result', '17': true},
-    {'1': 'subresult', '3': 4, '4': 1, '5': 13, '9': 3, '10': 'subresult', '17': true},
+    {
+      '1': 'result',
+      '3': 3,
+      '4': 1,
+      '5': 13,
+      '9': 2,
+      '10': 'result',
+      '17': true
+    },
+    {
+      '1': 'subresult',
+      '3': 4,
+      '4': 1,
+      '5': 13,
+      '9': 3,
+      '10': 'subresult',
+      '17': true
+    },
   ],
   '4': [Argument_ArgumentKind$json],
   '8': [
@@ -51,4 +76,3 @@ final $typed_data.Uint8List argumentDescriptor = $convert.base64Decode(
     'JndW1lbnRLaW5kEhkKFUFSR1VNRU5UX0tJTkRfVU5LTk9XThAAEgcKA0dBUxABEgkKBUlOUFVU'
     'EAISCgoGUkVTVUxUEANCBwoFX2tpbmRCCAoGX2lucHV0QgkKB19yZXN1bHRCDAoKX3N1YnJlc3'
     'VsdA==');
-

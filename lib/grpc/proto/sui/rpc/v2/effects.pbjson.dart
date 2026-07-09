@@ -18,21 +18,118 @@ import 'dart:typed_data' as $typed_data;
 const TransactionEffects$json = {
   '1': 'TransactionEffects',
   '2': [
-    {'1': 'bcs', '3': 1, '4': 1, '5': 11, '6': '.sui.rpc.v2.Bcs', '9': 0, '10': 'bcs', '17': true},
+    {
+      '1': 'bcs',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Bcs',
+      '9': 0,
+      '10': 'bcs',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 5, '9': 2, '10': 'version', '17': true},
-    {'1': 'status', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.ExecutionStatus', '9': 3, '10': 'status', '17': true},
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
+    {
+      '1': 'status',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutionStatus',
+      '9': 3,
+      '10': 'status',
+      '17': true
+    },
     {'1': 'epoch', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'epoch', '17': true},
-    {'1': 'gas_used', '3': 6, '4': 1, '5': 11, '6': '.sui.rpc.v2.GasCostSummary', '9': 5, '10': 'gasUsed', '17': true},
-    {'1': 'transaction_digest', '3': 7, '4': 1, '5': 9, '9': 6, '10': 'transactionDigest', '17': true},
-    {'1': 'gas_object', '3': 8, '4': 1, '5': 11, '6': '.sui.rpc.v2.ChangedObject', '9': 7, '10': 'gasObject', '17': true},
-    {'1': 'events_digest', '3': 9, '4': 1, '5': 9, '9': 8, '10': 'eventsDigest', '17': true},
+    {
+      '1': 'gas_used',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.GasCostSummary',
+      '9': 5,
+      '10': 'gasUsed',
+      '17': true
+    },
+    {
+      '1': 'transaction_digest',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'transactionDigest',
+      '17': true
+    },
+    {
+      '1': 'gas_object',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ChangedObject',
+      '9': 7,
+      '10': 'gasObject',
+      '17': true
+    },
+    {
+      '1': 'events_digest',
+      '3': 9,
+      '4': 1,
+      '5': 9,
+      '9': 8,
+      '10': 'eventsDigest',
+      '17': true
+    },
     {'1': 'dependencies', '3': 10, '4': 3, '5': 9, '10': 'dependencies'},
-    {'1': 'lamport_version', '3': 11, '4': 1, '5': 4, '9': 9, '10': 'lamportVersion', '17': true},
-    {'1': 'changed_objects', '3': 12, '4': 3, '5': 11, '6': '.sui.rpc.v2.ChangedObject', '10': 'changedObjects'},
-    {'1': 'unchanged_consensus_objects', '3': 13, '4': 3, '5': 11, '6': '.sui.rpc.v2.UnchangedConsensusObject', '10': 'unchangedConsensusObjects'},
-    {'1': 'auxiliary_data_digest', '3': 14, '4': 1, '5': 9, '9': 10, '10': 'auxiliaryDataDigest', '17': true},
-    {'1': 'unchanged_loaded_runtime_objects', '3': 15, '4': 3, '5': 11, '6': '.sui.rpc.v2.ObjectReference', '10': 'unchangedLoadedRuntimeObjects'},
+    {
+      '1': 'lamport_version',
+      '3': 11,
+      '4': 1,
+      '5': 4,
+      '9': 9,
+      '10': 'lamportVersion',
+      '17': true
+    },
+    {
+      '1': 'changed_objects',
+      '3': 12,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ChangedObject',
+      '10': 'changedObjects'
+    },
+    {
+      '1': 'unchanged_consensus_objects',
+      '3': 13,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.UnchangedConsensusObject',
+      '10': 'unchangedConsensusObjects'
+    },
+    {
+      '1': 'auxiliary_data_digest',
+      '3': 14,
+      '4': 1,
+      '5': 9,
+      '9': 10,
+      '10': 'auxiliaryDataDigest',
+      '17': true
+    },
+    {
+      '1': 'unchanged_loaded_runtime_objects',
+      '3': 15,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ObjectReference',
+      '10': 'unchangedLoadedRuntimeObjects'
+    },
   ],
   '8': [
     {'1': '_bcs'},
@@ -75,20 +172,126 @@ final $typed_data.Uint8List transactionEffectsDescriptor = $convert.base64Decode
 const ChangedObject$json = {
   '1': 'ChangedObject',
   '2': [
-    {'1': 'object_id', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'objectId', '17': true},
-    {'1': 'input_state', '3': 2, '4': 1, '5': 14, '6': '.sui.rpc.v2.ChangedObject.InputObjectState', '9': 1, '10': 'inputState', '17': true},
-    {'1': 'input_version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'inputVersion', '17': true},
-    {'1': 'input_digest', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'inputDigest', '17': true},
-    {'1': 'input_owner', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.Owner', '9': 4, '10': 'inputOwner', '17': true},
-    {'1': 'output_state', '3': 6, '4': 1, '5': 14, '6': '.sui.rpc.v2.ChangedObject.OutputObjectState', '9': 5, '10': 'outputState', '17': true},
-    {'1': 'output_version', '3': 7, '4': 1, '5': 4, '9': 6, '10': 'outputVersion', '17': true},
-    {'1': 'output_digest', '3': 8, '4': 1, '5': 9, '9': 7, '10': 'outputDigest', '17': true},
-    {'1': 'output_owner', '3': 9, '4': 1, '5': 11, '6': '.sui.rpc.v2.Owner', '9': 8, '10': 'outputOwner', '17': true},
-    {'1': 'accumulator_write', '3': 12, '4': 1, '5': 11, '6': '.sui.rpc.v2.AccumulatorWrite', '9': 9, '10': 'accumulatorWrite', '17': true},
-    {'1': 'id_operation', '3': 10, '4': 1, '5': 14, '6': '.sui.rpc.v2.ChangedObject.IdOperation', '9': 10, '10': 'idOperation', '17': true},
-    {'1': 'object_type', '3': 11, '4': 1, '5': 9, '9': 11, '10': 'objectType', '17': true},
+    {
+      '1': 'object_id',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'input_state',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.ChangedObject.InputObjectState',
+      '9': 1,
+      '10': 'inputState',
+      '17': true
+    },
+    {
+      '1': 'input_version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'inputVersion',
+      '17': true
+    },
+    {
+      '1': 'input_digest',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'inputDigest',
+      '17': true
+    },
+    {
+      '1': 'input_owner',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Owner',
+      '9': 4,
+      '10': 'inputOwner',
+      '17': true
+    },
+    {
+      '1': 'output_state',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.ChangedObject.OutputObjectState',
+      '9': 5,
+      '10': 'outputState',
+      '17': true
+    },
+    {
+      '1': 'output_version',
+      '3': 7,
+      '4': 1,
+      '5': 4,
+      '9': 6,
+      '10': 'outputVersion',
+      '17': true
+    },
+    {
+      '1': 'output_digest',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'outputDigest',
+      '17': true
+    },
+    {
+      '1': 'output_owner',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.Owner',
+      '9': 8,
+      '10': 'outputOwner',
+      '17': true
+    },
+    {
+      '1': 'accumulator_write',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.AccumulatorWrite',
+      '9': 9,
+      '10': 'accumulatorWrite',
+      '17': true
+    },
+    {
+      '1': 'id_operation',
+      '3': 10,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.ChangedObject.IdOperation',
+      '9': 10,
+      '10': 'idOperation',
+      '17': true
+    },
+    {
+      '1': 'object_type',
+      '3': 11,
+      '4': 1,
+      '5': 9,
+      '9': 11,
+      '10': 'objectType',
+      '17': true
+    },
   ],
-  '4': [ChangedObject_InputObjectState$json, ChangedObject_OutputObjectState$json, ChangedObject_IdOperation$json],
+  '4': [
+    ChangedObject_InputObjectState$json,
+    ChangedObject_OutputObjectState$json,
+    ChangedObject_IdOperation$json
+  ],
   '8': [
     {'1': '_object_id'},
     {'1': '_input_state'},
@@ -169,7 +372,15 @@ final $typed_data.Uint8List changedObjectDescriptor = $convert.base64Decode(
 const EventDigestEntry$json = {
   '1': 'EventDigestEntry',
   '2': [
-    {'1': 'event_index', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'eventIndex', '17': true},
+    {
+      '1': 'event_index',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'eventIndex',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
   ],
   '8': [
@@ -188,15 +399,67 @@ final $typed_data.Uint8List eventDigestEntryDescriptor = $convert.base64Decode(
 const AccumulatorWrite$json = {
   '1': 'AccumulatorWrite',
   '2': [
-    {'1': 'address', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'address', '17': true},
-    {'1': 'accumulator_type', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'accumulatorType', '17': true},
-    {'1': 'operation', '3': 3, '4': 1, '5': 14, '6': '.sui.rpc.v2.AccumulatorWrite.AccumulatorOperation', '9': 2, '10': 'operation', '17': true},
-    {'1': 'value_kind', '3': 4, '4': 1, '5': 14, '6': '.sui.rpc.v2.AccumulatorWrite.AccumulatorValue', '9': 3, '10': 'valueKind', '17': true},
-    {'1': 'integer_value', '3': 5, '4': 1, '5': 4, '9': 4, '10': 'integerValue', '17': true},
+    {
+      '1': 'address',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'address',
+      '17': true
+    },
+    {
+      '1': 'accumulator_type',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'accumulatorType',
+      '17': true
+    },
+    {
+      '1': 'operation',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.AccumulatorWrite.AccumulatorOperation',
+      '9': 2,
+      '10': 'operation',
+      '17': true
+    },
+    {
+      '1': 'value_kind',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.AccumulatorWrite.AccumulatorValue',
+      '9': 3,
+      '10': 'valueKind',
+      '17': true
+    },
+    {
+      '1': 'integer_value',
+      '3': 5,
+      '4': 1,
+      '5': 4,
+      '9': 4,
+      '10': 'integerValue',
+      '17': true
+    },
     {'1': 'integer_tuple', '3': 6, '4': 3, '5': 4, '10': 'integerTuple'},
-    {'1': 'event_digest_value', '3': 7, '4': 3, '5': 11, '6': '.sui.rpc.v2.EventDigestEntry', '10': 'eventDigestValue'},
+    {
+      '1': 'event_digest_value',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.EventDigestEntry',
+      '10': 'eventDigestValue'
+    },
   ],
-  '4': [AccumulatorWrite_AccumulatorOperation$json, AccumulatorWrite_AccumulatorValue$json],
+  '4': [
+    AccumulatorWrite_AccumulatorOperation$json,
+    AccumulatorWrite_AccumulatorValue$json
+  ],
   '8': [
     {'1': '_address'},
     {'1': '_accumulator_type'},
@@ -247,11 +510,44 @@ final $typed_data.Uint8List accumulatorWriteDescriptor = $convert.base64Decode(
 const UnchangedConsensusObject$json = {
   '1': 'UnchangedConsensusObject',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.UnchangedConsensusObject.UnchangedConsensusObjectKind', '9': 0, '10': 'kind', '17': true},
-    {'1': 'object_id', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'objectId', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'version', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.UnchangedConsensusObject.UnchangedConsensusObjectKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'object_id',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'objectId',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
     {'1': 'digest', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'digest', '17': true},
-    {'1': 'object_type', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'objectType', '17': true},
+    {
+      '1': 'object_type',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'objectType',
+      '17': true
+    },
   ],
   '4': [UnchangedConsensusObject_UnchangedConsensusObjectKind$json],
   '8': [
@@ -288,4 +584,3 @@ final $typed_data.Uint8List unchangedConsensusObjectDescriptor = $convert.base64
     'VBRF9DT05TRU5TVVNfU1RSRUFNX0VOREVEEAMSDAoIQ0FOQ0VMRUQQBBIUChBQRVJfRVBPQ0hf'
     'Q09ORklHEAVCBwoFX2tpbmRCDAoKX29iamVjdF9pZEIKCghfdmVyc2lvbkIJCgdfZGlnZXN0Qg'
     '4KDF9vYmplY3RfdHlwZQ==');
-

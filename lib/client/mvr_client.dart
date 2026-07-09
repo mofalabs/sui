@@ -47,7 +47,8 @@ class MvrClient {
         _mvrTypeRef.allMatches(type).map((m) => m.group(0)!).toSet().toList();
     if (names.isEmpty) return type;
 
-    final resolution = await _bulk('/v1/struct-definition/bulk', 'types', names);
+    final resolution =
+        await _bulk('/v1/struct-definition/bulk', 'types', names);
     // Replace longest names first so a name that is a prefix of another
     // (e.g. `@a/b::m::T` vs `@a/b::m::T2`) doesn't corrupt the longer one.
     names.sort((a, b) => b.length.compareTo(a.length));

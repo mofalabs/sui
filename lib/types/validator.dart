@@ -383,8 +383,7 @@ class SuiSystemStateSummary {
     data['validatorCandidatesSize'] = validatorCandidatesSize;
     data['atRiskValidators'] = atRiskValidators;
     data['validatorReportRecords'] = validatorReportRecords;
-    data['activeValidators'] =
-        activeValidators.map((e) => e.toJson()).toList();
+    data['activeValidators'] = activeValidators.map((e) => e.toJson()).toList();
     return data;
   }
 }

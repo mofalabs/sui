@@ -59,8 +59,7 @@ Future<TestToolbox> setup([int faucetCount = 1]) async {
 }
 
 Future<TestToolbox> setupWithFundedAddress(
-    Ed25519Keypair keypair,
-    String address,
+    Ed25519Keypair keypair, String address,
     [int faucetCount = 1]) async {
   final client = SuiClient(DEFAULT_FULLNODE_URL);
   final faucetClient = FaucetClient(DEFAULT_FAUCET_URL);

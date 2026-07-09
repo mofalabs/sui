@@ -13,8 +13,7 @@ Uint8List hash160(Uint8List buffer) {
   return RIPEMD160Digest().process(tmp);
 }
 
-Uint8List hmacSHA512(Uint8List key,Uint8List data) {
+Uint8List hmacSHA512(Uint8List key, Uint8List data) {
   final tmp = HMac(SHA512Digest(), 128)..init(KeyParameter(key));
   return tmp.process(data);
 }
-

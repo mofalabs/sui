@@ -5,7 +5,7 @@ class Http extends DioForBrowser {
   static Http? instance;
 
   factory Http() {
-      instance ??= Http._().._init();
+    instance ??= Http._().._init();
     return instance!;
   }
 

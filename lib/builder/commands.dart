@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
@@ -42,7 +41,8 @@ class Commands {
     };
   }
 
-  static Map<String, dynamic> transferObjects(List<dynamic> objects, dynamic address) {
+  static Map<String, dynamic> transferObjects(
+      List<dynamic> objects, dynamic address) {
     return {
       '\$kind': 'TransferObjects',
       'TransferObjects': {
@@ -62,7 +62,8 @@ class Commands {
     };
   }
 
-  static Map<String, dynamic> mergeCoins(dynamic destination, List<dynamic> sources) {
+  static Map<String, dynamic> mergeCoins(
+      dynamic destination, List<dynamic> sources) {
     return {
       '\$kind': 'MergeCoins',
       'MergeCoins': {
@@ -79,10 +80,12 @@ class Commands {
     return {
       '\$kind': 'Publish',
       'Publish': {
-        'modules': modules.map((module) =>
-          module is String ? module : toB64(Uint8List.fromList(module))
-        ).toList(),
-        'dependencies': dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
+        'modules': modules
+            .map((module) =>
+                module is String ? module : toB64(Uint8List.fromList(module)))
+            .toList(),
+        'dependencies':
+            dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
       },
     };
   }
@@ -96,10 +99,12 @@ class Commands {
     return {
       '\$kind': 'Upgrade',
       'Upgrade': {
-        'modules': modules.map((module) =>
-          module is String ? module : toB64(Uint8List.fromList(module))
-        ).toList(),
-        'dependencies': dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
+        'modules': modules
+            .map((module) =>
+                module is String ? module : toB64(Uint8List.fromList(module)))
+            .toList(),
+        'dependencies':
+            dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
         'package': package,
         'ticket': ticket,
       },
@@ -128,10 +133,7 @@ class Commands {
       '\$kind': '\$Intent',
       '\$Intent': {
         'name': name,
-        'inputs': inputs?.map((key, value) => MapEntry(
-          key,
-          value
-        )) ?? {},
+        'inputs': inputs?.map((key, value) => MapEntry(key, value)) ?? {},
         'data': data ?? {},
       },
     };

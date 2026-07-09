@@ -18,13 +18,64 @@ import 'dart:typed_data' as $typed_data;
 const Checkpoint$json = {
   '1': 'Checkpoint',
   '2': [
-    {'1': 'sequence_number', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'sequenceNumber', '17': true},
+    {
+      '1': 'sequence_number',
+      '3': 1,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'sequenceNumber',
+      '17': true
+    },
     {'1': 'digest', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'digest', '17': true},
-    {'1': 'summary', '3': 3, '4': 1, '5': 11, '6': '.sui.rpc.v2.CheckpointSummary', '9': 2, '10': 'summary', '17': true},
-    {'1': 'signature', '3': 4, '4': 1, '5': 11, '6': '.sui.rpc.v2.ValidatorAggregatedSignature', '9': 3, '10': 'signature', '17': true},
-    {'1': 'contents', '3': 5, '4': 1, '5': 11, '6': '.sui.rpc.v2.CheckpointContents', '9': 4, '10': 'contents', '17': true},
-    {'1': 'transactions', '3': 6, '4': 3, '5': 11, '6': '.sui.rpc.v2.ExecutedTransaction', '10': 'transactions'},
-    {'1': 'objects', '3': 7, '4': 1, '5': 11, '6': '.sui.rpc.v2.ObjectSet', '9': 5, '10': 'objects', '17': true},
+    {
+      '1': 'summary',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CheckpointSummary',
+      '9': 2,
+      '10': 'summary',
+      '17': true
+    },
+    {
+      '1': 'signature',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ValidatorAggregatedSignature',
+      '9': 3,
+      '10': 'signature',
+      '17': true
+    },
+    {
+      '1': 'contents',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.CheckpointContents',
+      '9': 4,
+      '10': 'contents',
+      '17': true
+    },
+    {
+      '1': 'transactions',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ExecutedTransaction',
+      '10': 'transactions'
+    },
+    {
+      '1': 'objects',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.ObjectSet',
+      '9': 5,
+      '10': 'objects',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_sequence_number'},
@@ -47,4 +98,3 @@ final $typed_data.Uint8List checkpointDescriptor = $convert.base64Decode(
     'ZWRUcmFuc2FjdGlvblIMdHJhbnNhY3Rpb25zEjQKB29iamVjdHMYByABKAsyFS5zdWkucnBjLn'
     'YyLk9iamVjdFNldEgFUgdvYmplY3RziAEBQhIKEF9zZXF1ZW5jZV9udW1iZXJCCQoHX2RpZ2Vz'
     'dEIKCghfc3VtbWFyeUIMCgpfc2lnbmF0dXJlQgsKCV9jb250ZW50c0IKCghfb2JqZWN0cw==');
-

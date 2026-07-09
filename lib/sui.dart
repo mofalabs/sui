@@ -1,3 +1,31 @@
+/// A cross-platform Dart SDK for the [Sui](https://sui.io) blockchain — mobile,
+/// web and desktop.
+///
+/// ## Transports
+///
+/// Sui is decommissioning JSON-RPC (fully off on 2026-07-31). This SDK provides
+/// the replacement transports and keeps the legacy one for the transition:
+///
+/// - [SuiGrpcClient] — gRPC-web (protobuf) over HTTP, the primary read/write
+///   client against full nodes.
+/// - [SuiGraphQLClient] — GraphQL for indexer-backed queries (transaction
+///   history, events, staking, validators).
+/// - [MvrClient] — Move Registry (`@org/app`) name resolution.
+/// - [SuiClient] — the legacy JSON-RPC client. Deprecated; prefer the gRPC /
+///   GraphQL clients above.
+///
+/// ## Quick start
+///
+/// ```dart
+/// final client = SuiGrpcClient(network: SuiNetwork.mainnet);
+/// final account = SuiAccount.ed25519Account();
+///
+/// final tx = Transaction();
+/// final coin = tx.splitCoins(tx.gas, [tx.pureInt(1000000)]);
+/// tx.transferObjects([coin], tx.pureAddress(recipient));
+///
+/// final result = await client.signAndExecuteTransaction(account, tx);
+/// ```
 library;
 
 // New gRPC-web / GraphQL transports (JSON-RPC migration).

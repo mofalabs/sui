@@ -46,24 +46,40 @@ class Checkpoint extends $pb.GeneratedMessage {
 
   Checkpoint._();
 
-  factory Checkpoint.fromBuffer($core.List<$core.int> data, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(data, registry);
-  factory Checkpoint.fromJson($core.String json, [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(json, registry);
+  factory Checkpoint.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Checkpoint.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Checkpoint', package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'), createEmptyInstance: create)
-    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'sequenceNumber', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Checkpoint',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(
+        1, _omitFieldNames ? '' : 'sequenceNumber', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(2, _omitFieldNames ? '' : 'digest')
-    ..aOM<$0.CheckpointSummary>(3, _omitFieldNames ? '' : 'summary', subBuilder: $0.CheckpointSummary.create)
-    ..aOM<$1.ValidatorAggregatedSignature>(4, _omitFieldNames ? '' : 'signature', subBuilder: $1.ValidatorAggregatedSignature.create)
-    ..aOM<$2.CheckpointContents>(5, _omitFieldNames ? '' : 'contents', subBuilder: $2.CheckpointContents.create)
-    ..pc<$3.ExecutedTransaction>(6, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM, subBuilder: $3.ExecutedTransaction.create)
-    ..aOM<$4.ObjectSet>(7, _omitFieldNames ? '' : 'objects', subBuilder: $4.ObjectSet.create)
-    ..hasRequiredFields = false
-  ;
+    ..aOM<$0.CheckpointSummary>(3, _omitFieldNames ? '' : 'summary',
+        subBuilder: $0.CheckpointSummary.create)
+    ..aOM<$1.ValidatorAggregatedSignature>(
+        4, _omitFieldNames ? '' : 'signature',
+        subBuilder: $1.ValidatorAggregatedSignature.create)
+    ..aOM<$2.CheckpointContents>(5, _omitFieldNames ? '' : 'contents',
+        subBuilder: $2.CheckpointContents.create)
+    ..pc<$3.ExecutedTransaction>(
+        6, _omitFieldNames ? '' : 'transactions', $pb.PbFieldType.PM,
+        subBuilder: $3.ExecutedTransaction.create)
+    ..aOM<$4.ObjectSet>(7, _omitFieldNames ? '' : 'objects',
+        subBuilder: $4.ObjectSet.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Checkpoint clone() => Checkpoint()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Checkpoint copyWith(void Function(Checkpoint) updates) => super.copyWith((message) => updates(message as Checkpoint)) as Checkpoint;
+  Checkpoint copyWith(void Function(Checkpoint) updates) =>
+      super.copyWith((message) => updates(message as Checkpoint)) as Checkpoint;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
@@ -74,7 +90,8 @@ class Checkpoint extends $pb.GeneratedMessage {
   Checkpoint createEmptyInstance() => create();
   static $pb.PbList<Checkpoint> createRepeated() => $pb.PbList<Checkpoint>();
   @$core.pragma('dart2js:noInline')
-  static Checkpoint getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Checkpoint>(create);
+  static Checkpoint getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Checkpoint>(create);
   static Checkpoint? _defaultInstance;
 
   /// The height of this checkpoint.
@@ -157,6 +174,7 @@ class Checkpoint extends $pb.GeneratedMessage {
   $4.ObjectSet ensureObjects() => $_ensure(6);
 }
 
-
-const $core.bool _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const $core.bool _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

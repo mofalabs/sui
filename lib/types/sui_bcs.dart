@@ -1,4 +1,3 @@
-
 import 'package:sui/types/objects.dart';
 
 /// A reference to a shared object.

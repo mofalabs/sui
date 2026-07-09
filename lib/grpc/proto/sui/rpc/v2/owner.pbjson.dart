@@ -18,9 +18,34 @@ import 'dart:typed_data' as $typed_data;
 const Owner$json = {
   '1': 'Owner',
   '2': [
-    {'1': 'kind', '3': 1, '4': 1, '5': 14, '6': '.sui.rpc.v2.Owner.OwnerKind', '9': 0, '10': 'kind', '17': true},
-    {'1': 'address', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'address', '17': true},
-    {'1': 'version', '3': 3, '4': 1, '5': 4, '9': 2, '10': 'version', '17': true},
+    {
+      '1': 'kind',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.sui.rpc.v2.Owner.OwnerKind',
+      '9': 0,
+      '10': 'kind',
+      '17': true
+    },
+    {
+      '1': 'address',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'address',
+      '17': true
+    },
+    {
+      '1': 'version',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 2,
+      '10': 'version',
+      '17': true
+    },
   ],
   '4': [Owner_OwnerKind$json],
   '8': [
@@ -50,4 +75,3 @@ final $typed_data.Uint8List ownerDescriptor = $convert.base64Decode(
     'Ugd2ZXJzaW9uiAEBIm4KCU93bmVyS2luZBIWChJPV05FUl9LSU5EX1VOS05PV04QABILCgdBRE'
     'RSRVNTEAESCgoGT0JKRUNUEAISCgoGU0hBUkVEEAMSDQoJSU1NVVRBQkxFEAQSFQoRQ09OU0VO'
     'U1VTX0FERFJFU1MQBUIHCgVfa2luZEIKCghfYWRkcmVzc0IKCghfdmVyc2lvbg==');
-
