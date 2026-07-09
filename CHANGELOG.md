@@ -117,4 +117,9 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   and `deriveDynamicFieldID`.
 * Deprecate the JSON-RPC stack (`JsonRpcProvider`, `SuiClient` JSON-RPC methods, `WebsocketClient`).
   Kept for compatibility; will stop working when Sui removes JSON-RPC.
-* Deps: add `protobuf` and `fixnum`; bump `bcs` and `dio`.
+* Add `SuiGrpcCompat` — a drop-in-ish bridge exposing the legacy `SuiClient` API
+  over gRPC-web/GraphQL, so apps migrate by swapping the client construction only.
+* Vendor `bip32` / `bip39` (into `lib/cryptography`) to drop the git dependencies
+  and make the package publishable; add hosted `crypto` and `bs58check`.
+* Deps: add `protobuf` and `fixnum`; bump `bcs`, `dio`, `pointycastle` (4.0),
+  `freezed`/`freezed_annotation` (3.0), `web_socket_channel` (3.0).
