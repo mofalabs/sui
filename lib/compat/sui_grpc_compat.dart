@@ -552,10 +552,49 @@ class SuiGrpcCompat {
   }) async {
     final page = await graphql.queryTransactionsBySender(address,
         first: limit ?? 20, after: filterFromCursor);
-    final txs = page.digests
-        .map((d) => SuiTransactionBlockResponse.fromJson({'digest': d}))
+    final txs = page.transactions
+        .map((t) => SuiTransactionBlockResponse.fromJson({
+              'digest': t.digest,
+              'timestampMs': t.timestampMs?.toString(),
+              'effects': _historyEffectsJson(t.digest, t.success),
+              'balanceChanges': [
+                for (final b in t.balanceChanges)
+                  {
+                    'owner': {'AddressOwner': b.ownerAddress},
+                    'coinType': b.coinType,
+                    'amount': b.amount,
+                  }
+              ],
+            }))
         .toList();
     return (txs, page.endCursor, null);
+  }
+
+  /// Minimal, parseable effects for a history row: the app reads only the
+  /// status, but `TransactionEffects.fromJson` requires gasUsed / gasObject, so
+  /// supply zeroed placeholders to avoid a parse crash.
+  Map<String, dynamic> _historyEffectsJson(String digest, bool success) {
+    const zero =
+        '0x0000000000000000000000000000000000000000000000000000000000000000';
+    return {
+      'messageVersion': 'v1',
+      'status': {'status': success ? 'success' : 'failure'},
+      'gasUsed': {
+        'computationCost': '0',
+        'storageCost': '0',
+        'storageRebate': '0',
+        'nonRefundableStorageFee': '0',
+      },
+      'transactionDigest': digest,
+      'gasObject': {
+        'owner': {'AddressOwner': zero},
+        'reference': {
+          'objectId': zero,
+          'version': 0,
+          'digest': '11111111111111111111111111111111',
+        }
+      },
+    };
   }
 
   // --- Simulate / inspect / execute (write) ---

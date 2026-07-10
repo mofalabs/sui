@@ -28,11 +28,13 @@ class SuiGraphQLClient {
   ///
   /// Returns the page of digests and the end cursor. Full result hydration is
   /// left to callers via the gRPC `getTransaction` once digests are known.
-  Future<TransactionDigestPage> queryTransactionsBySender(
+  Future<SenderTransactionPage> queryTransactionsBySender(
     String sender, {
     int first = 20,
     String? after,
   }) async {
+    // Fetch enough per transaction to render a wallet activity row: timestamp,
+    // status, and the balance deltas (amount / coin / owner).
     const q = r'''
       query ($sender: SuiAddress!, $first: Int!, $after: String) {
         transactions(
@@ -41,7 +43,16 @@ class SuiGraphQLClient {
           filter: { sentAddress: $sender }
         ) {
           pageInfo { hasNextPage endCursor }
-          nodes { digest }
+          nodes {
+            digest
+            effects {
+              timestamp
+              status
+              balanceChanges {
+                nodes { amount coinType { repr } owner { address } }
+              }
+            }
+          }
         }
       }
     ''';
@@ -51,12 +62,12 @@ class SuiGraphQLClient {
       if (after != null) 'after': after,
     });
     final tx = data['transactions'] as Map<String, dynamic>;
-    final nodes = (tx['nodes'] as List)
-        .map((n) => (n as Map<String, dynamic>)['digest'] as String)
+    final txs = (tx['nodes'] as List)
+        .map((n) => SenderTransaction._fromNode(n as Map<String, dynamic>))
         .toList();
     final pageInfo = tx['pageInfo'] as Map<String, dynamic>;
-    return TransactionDigestPage(
-      digests: nodes,
+    return SenderTransactionPage(
+      transactions: txs,
       hasNextPage: pageInfo['hasNextPage'] as bool,
       endCursor: pageInfo['endCursor'] as String?,
     );
@@ -247,6 +258,68 @@ class TransactionDigestPage {
   final List<String> digests;
   final bool hasNextPage;
   final String? endCursor;
+}
+
+/// A page of a sender's transactions with the fields wallets show per row.
+class SenderTransactionPage {
+  SenderTransactionPage({
+    required this.transactions,
+    required this.hasNextPage,
+    this.endCursor,
+  });
+
+  final List<SenderTransaction> transactions;
+  final bool hasNextPage;
+  final String? endCursor;
+}
+
+class SenderTransaction {
+  SenderTransaction({
+    required this.digest,
+    required this.timestampMs,
+    required this.success,
+    required this.balanceChanges,
+  });
+
+  final String digest;
+
+  /// Execution timestamp in epoch milliseconds (null if unavailable).
+  final int? timestampMs;
+  final bool success;
+  final List<TxBalanceChange> balanceChanges;
+
+  factory SenderTransaction._fromNode(Map<String, dynamic> n) {
+    final ef = n['effects'] as Map<String, dynamic>?;
+    final ts = ef?['timestamp'] as String?;
+    final bcNodes =
+        ((ef?['balanceChanges'] as Map?)?['nodes'] as List?) ?? const [];
+    return SenderTransaction(
+      digest: n['digest'] as String,
+      timestampMs:
+          ts != null ? DateTime.parse(ts).millisecondsSinceEpoch : null,
+      success: (ef?['status'] as String?) == 'SUCCESS',
+      balanceChanges: [
+        for (final b in bcNodes)
+          TxBalanceChange(
+            ownerAddress: ((b as Map)['owner'] as Map?)?['address'] as String?,
+            amount: b['amount']?.toString() ?? '0',
+            coinType: ((b['coinType'] as Map?)?['repr'] as String?) ?? '',
+          )
+      ],
+    );
+  }
+}
+
+class TxBalanceChange {
+  TxBalanceChange({
+    required this.ownerAddress,
+    required this.amount,
+    required this.coinType,
+  });
+
+  final String? ownerAddress;
+  final String amount;
+  final String coinType;
 }
 
 class ValidatorInfo {
