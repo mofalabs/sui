@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import '../builder/transaction_builder_client.dart';
 import '../types/coins.dart';
 import '../types/normalized.dart';
@@ -155,22 +158,64 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
     String? coinType,
     String? cursor,
     int? limit,
-  }) {
-    throw UnsupportedError(
-      'GrpcBuilderAdapter.getCoins is not implemented; set gas payment '
-      'explicitly or use GrpcTransactionExecutor.signAndExecuteTransaction.',
+  }) async {
+    // Used by the offline build path to pick gas payment coins (e.g. dApp
+    // transactions that don't set gas explicitly).
+    final page = await core.listCoins(
+      owner,
+      coinType: coinType ?? '0x2::sui::SUI',
+      cursor: cursor == null ? null : base64Decode(cursor),
+      limit: limit,
     );
+    final coins = page.coins
+        .map((c) => CoinStruct(
+              c.coinType,
+              c.coinObjectId,
+              c.version.toInt(),
+              c.digest,
+              c.balance.toString(),
+              '',
+            ))
+        .toList();
+    return PaginatedCoins(coins, page.cursor, page.hasNextPage);
   }
 
   @override
   Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(
     T tx, {
     String? signerAddress,
-  }) {
-    throw UnsupportedError(
-      'GrpcBuilderAdapter.dryRunTransaction is not implemented; set a gas '
-      'budget explicitly or use GrpcTransactionExecutor.signAndExecuteTransaction '
-      '(which estimates the budget via simulateTransaction).',
-    );
+  }) async {
+    // The builder passes already-built TransactionData bytes here to estimate a
+    // gas budget; simulate them and surface the gas cost + status.
+    final sim = await core.simulateTransaction(tx as Uint8List);
+    final effects = sim.transaction.effects;
+    final st = effects.status;
+    final g = effects.gasUsed;
+    const zero =
+        '0x0000000000000000000000000000000000000000000000000000000000000000';
+    return DryRunTransactionBlockResponse.fromJson({
+      'effects': {
+        'messageVersion': 'v1',
+        'status': {
+          'status': st.success ? 'success' : 'failure',
+          if (!st.success) 'error': st.error.description,
+        },
+        'gasUsed': {
+          'computationCost': g.computationCost.toInt().toString(),
+          'storageCost': g.storageCost.toInt().toString(),
+          'storageRebate': g.storageRebate.toInt().toString(),
+          'nonRefundableStorageFee': '0',
+        },
+        'transactionDigest': '',
+        'gasObject': {
+          'owner': {'AddressOwner': zero},
+          'reference': {
+            'objectId': zero,
+            'version': 0,
+            'digest': '11111111111111111111111111111111',
+          }
+        },
+      },
+    });
   }
 }
