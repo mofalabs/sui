@@ -610,8 +610,86 @@ class SuiGrpcCompat {
   Future<DryRunTransactionBlockResponse> dryRunTransactionBlock(
       String txBytes) async {
     final sim = await grpc.simulateTransaction(base64Decode(txBytes));
-    return DryRunTransactionBlockResponse.fromJson(
-        {'effects': _effectsJson(sim.transaction)});
+    final executed = sim.transaction;
+    // dApp sign previews read balance changes, object changes and the effects'
+    // created/mutated sets — supply all of them so the approval screen shows
+    // what the transaction does (and doesn't crash iterating a null list).
+    return DryRunTransactionBlockResponse.fromJson({
+      'effects': _effectsWithChangedObjects(executed),
+      'balanceChanges': _balanceChangesJson(executed),
+      'objectChanges': _objectChangesJson(executed),
+    });
+  }
+
+  /// [_effectsJson] plus created / mutated / deleted object refs derived from
+  /// the gRPC `changed_objects` (idOperation: 1=none/mutated, 2=created,
+  /// 3=deleted).
+  Map<String, dynamic> _effectsWithChangedObjects(dynamic executed) {
+    const digest = '11111111111111111111111111111111';
+    final effects = _effectsJson(executed);
+    final created = <Map<String, dynamic>>[];
+    final mutated = <Map<String, dynamic>>[];
+    final deleted = <Map<String, dynamic>>[];
+    for (final co in executed.effects.changedObjects) {
+      final ref = {
+        'owner': _protoOwnerJson(co.hasOutputOwner() ? co.outputOwner : null),
+        'reference': {'objectId': co.objectId, 'version': 0, 'digest': digest},
+      };
+      switch (co.idOperation.value) {
+        case 2:
+          created.add(ref);
+          break;
+        case 3:
+          deleted
+              .add({'objectId': co.objectId, 'version': 0, 'digest': digest});
+          break;
+        default:
+          mutated.add(ref);
+      }
+    }
+    effects['created'] = created;
+    effects['mutated'] = mutated;
+    effects['deleted'] = deleted;
+    return effects;
+  }
+
+  List<Map<String, dynamic>> _balanceChangesJson(dynamic executed) => [
+        for (final b in executed.balanceChanges)
+          {
+            'owner': {'AddressOwner': b.address},
+            'coinType': b.coinType,
+            'amount': b.amount,
+          }
+      ];
+
+  List<Map<String, dynamic>> _objectChangesJson(dynamic executed) => [
+        for (final co in executed.effects.changedObjects)
+          {
+            'objectId': co.objectId,
+            'objectType': co.hasObjectType() ? co.objectType : '',
+            'type': co.idOperation.value == 2
+                ? 'created'
+                : (co.idOperation.value == 3 ? 'deleted' : 'mutated'),
+          }
+      ];
+
+  dynamic _protoOwnerJson(dynamic ownerProto) {
+    const zero =
+        '0x0000000000000000000000000000000000000000000000000000000000000000';
+    if (ownerProto == null) return {'AddressOwner': zero};
+    final owner = SuiOwner.fromProto(ownerProto);
+    switch (owner.kind) {
+      case SuiOwnerKind.object:
+        return {'ObjectOwner': owner.address};
+      case SuiOwnerKind.shared:
+        return {
+          'Shared': {'initial_shared_version': owner.initialSharedVersion}
+        };
+      case SuiOwnerKind.immutable:
+        return 'Immutable';
+      default:
+        return {'AddressOwner': owner.address ?? zero};
+    }
   }
 
   /// Sign and execute already-built transaction [data] bytes.

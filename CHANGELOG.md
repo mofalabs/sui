@@ -119,10 +119,18 @@
   were previously dropped for having an empty address — and estimates
   `estimatedReward` from the validator APY and stake age (the legacy RPC
   returned it directly).
+* `SuiGrpcCompat.dryRunTransactionBlock` now returns balance changes, object
+  changes and the effects' created/mutated/deleted sets from the simulated
+  transaction — dApp sign previews were blank and could crash iterating a null
+  objectChanges list.
 * `SuiGrpcCompat.getTransactions` now returns each transaction's timestamp,
   execution status and balance changes (amount / coin / owner), not just the
   digest — wallet activity lists were showing rows with no date, amount or
   direction.
+* `SuiGrpcCompat.dryRunTransactionBlock` now returns balance changes, object
+  changes and the effects' created/mutated/deleted sets from the simulated
+  transaction — dApp sign previews were blank and could crash iterating a null
+  objectChanges list.
 * `SuiGrpcCompat.getValidatorsApy` now estimates real APY from each pool's
   token exchange rate instead of returning 0 (unreliable young-pool estimates
   are filtered). `ValidatorInfo` exposes `stakingPoolId` and `activationEpoch`.
