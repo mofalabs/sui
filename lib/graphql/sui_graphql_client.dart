@@ -258,6 +258,8 @@ class ValidatorInfo {
     required this.nextEpochStake,
     required this.stakingPoolSuiBalance,
     required this.poolTokenBalance,
+    required this.stakingPoolId,
+    required this.activationEpoch,
   });
 
   final String? name;
@@ -267,6 +269,13 @@ class ValidatorInfo {
   final BigInt nextEpochStake;
   final BigInt stakingPoolSuiBalance;
   final BigInt poolTokenBalance;
+
+  /// Staking pool object id — the value `StakedSui.pool_id` references, used to
+  /// link a stake back to its validator.
+  final String? stakingPoolId;
+
+  /// Epoch the staking pool was activated; the basis for APY estimation.
+  final int activationEpoch;
 
   static BigInt _big(dynamic v) =>
       v == null ? BigInt.zero : BigInt.parse(v.toString());
@@ -282,6 +291,8 @@ class ValidatorInfo {
       nextEpochStake: _big(j['next_epoch_stake']),
       stakingPoolSuiBalance: _big(sp['sui_balance']),
       poolTokenBalance: _big(sp['pool_token_balance']),
+      stakingPoolId: sp['id']?.toString(),
+      activationEpoch: int.tryParse('${sp['activation_epoch']}') ?? 0,
     );
   }
 }

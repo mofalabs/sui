@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import '../builder/transaction.dart';
@@ -454,16 +455,62 @@ class SuiGrpcCompat {
   /// them; ordering falls back to stake.
   Future<ValidatorsApy> getValidatorsApy() async {
     final vals = await graphql.getActiveValidators(first: 200);
+    final epoch = (await graphql.getEpochSummary()).epochId;
     return ValidatorsApy.fromJson({
-      'epoch': '0',
+      'epoch': epoch.toString(),
       'apys': [
-        for (final v in vals) {'address': v.suiAddress, 'apy': 0.0}
+        for (final v in vals)
+          {'address': v.suiAddress, 'apy': _estimateApy(v, epoch)}
       ],
     });
   }
 
+  /// Estimate a validator's APY from its pool token exchange rate. At pool
+  /// activation 1 pool token == 1 SUI; the current rate `sui / pool_token`
+  /// reflects cumulative rewards, so the geometric per-epoch growth annualized
+  /// over ~365 epochs/year approximates the APY without querying rate history.
+  double _estimateApy(dynamic v, int currentEpoch) {
+    final tokens = v.poolTokenBalance as BigInt;
+    if (tokens == BigInt.zero) return 0.0;
+    final epochs = currentEpoch - (v.activationEpoch as int);
+    if (epochs <= 0) return 0.0;
+    final rate = (v.stakingPoolSuiBalance as BigInt).toDouble() / tokens.toDouble();
+    if (rate <= 0) return 0.0;
+    final apy = math.pow(rate, 365.0 / epochs) - 1.0;
+    // Real Sui staking APY stays well under 10%; anything higher is a noisy
+    // estimate from a very young pool (few epochs amplify the annualization),
+    // so treat it as unreliable rather than surface a misleading figure.
+    if (!apy.isFinite || apy <= 0 || apy > 0.1) return 0.0;
+    return apy.toDouble();
+  }
+
+  /// Estimate accrued staking rewards (in MIST) from the validator's APY and how
+  /// long the stake has been active. The legacy JSON-RPC returned this directly;
+  /// computing it exactly needs the pool exchange rate at the activation epoch,
+  /// so this is an approximation over ~365 epochs/year.
+  BigInt _estimateReward(BigInt principal, double apy, int epochsStaked) {
+    if (apy <= 0 || epochsStaked <= 0) return BigInt.zero;
+    final factor = math.pow(1.0 + apy, epochsStaked / 365.0) - 1.0;
+    if (!factor.isFinite || factor <= 0) return BigInt.zero;
+    return BigInt.from(principal.toDouble() * factor);
+  }
+
   Future<List<DelegatedStake>> getStakes(String address) async {
     final stakes = await graphql.getStakes(address);
+    if (stakes.isEmpty) return const [];
+    // Resolve each stake's pool back to its validator (legacy getStakes exposed
+    // validatorAddress, which wallets match against the validator list) and its
+    // APY (to estimate accrued rewards, which the legacy RPC returned directly).
+    final vals = await graphql.getActiveValidators(first: 200);
+    final currentEpoch = (await graphql.getEpochSummary()).epochId;
+    final poolToValidator = <String, String>{};
+    final poolToApy = <String, double>{};
+    for (final v in vals) {
+      final id = v.stakingPoolId;
+      if (id == null) continue;
+      poolToValidator[id] = v.suiAddress ?? '';
+      poolToApy[id] = _estimateApy(v, currentEpoch);
+    }
     // Group by pool into the legacy DelegatedStake shape.
     final byPool = <String, List<StakedSuiInfo>>{};
     for (final s in stakes) {
@@ -472,7 +519,7 @@ class SuiGrpcCompat {
     return byPool.entries
         .map((e) => DelegatedStake.fromJson({
               'stakingPool': e.key,
-              'validatorAddress': '',
+              'validatorAddress': poolToValidator[e.key] ?? '',
               'stakes': [
                 for (final s in e.value)
                   {
@@ -482,6 +529,11 @@ class SuiGrpcCompat {
                     'stakeActiveEpoch':
                         (s.stakeActivationEpoch ?? 0).toString(),
                     'principal': s.principal.toString(),
+                    'estimatedReward': _estimateReward(
+                      s.principal,
+                      poolToApy[e.key] ?? 0.0,
+                      currentEpoch - (s.stakeActivationEpoch ?? currentEpoch),
+                    ).toString(),
                     'status': 'Active',
                   }
               ],

@@ -114,6 +114,14 @@
   the wrapped child object id (matching JSON-RPC), not the `Field<…>` wrapper —
   a `multiGetObjects` on it previously returned a display-less wrapper, leaving
   kiosk-held NFTs blank in wallet lists.
+* `SuiGrpcCompat.getStakes` now resolves each stake's `validatorAddress` (via
+  its staking pool id), which wallets match against the validator list — stakes
+  were previously dropped for having an empty address — and estimates
+  `estimatedReward` from the validator APY and stake age (the legacy RPC
+  returned it directly).
+* `SuiGrpcCompat.getValidatorsApy` now estimates real APY from each pool's
+  token exchange rate instead of returning 0 (unreliable young-pool estimates
+  are filtered). `ValidatorInfo` exposes `stakingPoolId` and `activationEpoch`.
 
 ## 0.4.0
 
