@@ -95,6 +95,26 @@
 
 * Config request options
 
+## 0.4.1
+
+* Support a custom gRPC-web endpoint: `SuiGrpcClient`, `GrpcCoreClient` and
+  `SuiGrpcCompat` accept an optional `endpoint` to point reads/writes at a
+  self-hosted or third-party full node. `network` still selects the GraphQL /
+  MVR endpoints and chain semantics. Backward compatible (defaults to the
+  public endpoint for the network).
+* `SuiGrpcCompat` object reads now map the object's Display output and parsed
+  Move fields into the legacy `display.data` / `content.fields` shapes (fixes
+  empty NFT lists in wallets that classify objects by their Display).
+* Fix `SuiGrpcCompat.getOwnedObjects` client-side filters (`StructType` /
+  `Package` / `MoveModule`) comparing short-form addresses against gRPC's
+  fully-normalized types — `MatchNone` coin exclusion silently failed, so pages
+  filled with coins and NFT lists came back empty. Addresses are now normalized
+  on both sides (`normalizeTypeAddresses`).
+* Fix `SuiGrpcCompat.getDynamicFields`: for a dynamic **object** field, report
+  the wrapped child object id (matching JSON-RPC), not the `Field<…>` wrapper —
+  a `multiGetObjects` on it previously returned a display-less wrapper, leaving
+  kiosk-held NFTs blank in wallet lists.
+
 ## 0.4.0
 
 Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-07-31).

@@ -31,8 +31,12 @@ import '../types/validator.dart';
 /// This is the migration bridge: it keeps existing wallet business logic intact
 /// while moving the wire protocol off the deprecated JSON-RPC endpoints.
 class SuiGrpcCompat {
-  SuiGrpcCompat(this.network, {this.account})
-      : grpc = SuiGrpcClient(network: network),
+  /// [endpoint] overrides the gRPC-web base URL (a custom / self-hosted full
+  /// node) for reads/writes; when null the public endpoint for [network] is
+  /// used. GraphQL (indexer-backed queries) and MVR still use [network]'s
+  /// standard endpoints, since a custom full node does not serve them.
+  SuiGrpcCompat(this.network, {this.account, String? endpoint})
+      : grpc = SuiGrpcClient(network: network, endpoint: endpoint),
         graphql = SuiGraphQLClient.forNetwork(network);
 
   final SuiNetwork network;
@@ -286,19 +290,26 @@ class SuiGrpcCompat {
     if (filter.containsKey('MatchAll')) {
       return (filter['MatchAll'] as List).every((f) => _matchesFilter(type, f));
     }
+    // gRPC returns fully-normalized addresses (`0x0000…0002::coin::Coin`) while
+    // callers often pass short forms (`0x2::coin::Coin`). Normalize both sides
+    // so comparisons match regardless of leading-zero form.
+    final t = _normalizeTypeAddrs(type);
     if (filter.containsKey('StructType')) {
-      final t = filter['StructType'] as String;
-      return type == t || type.startsWith('$t<') || type.startsWith('$t ');
+      final s = _normalizeTypeAddrs(filter['StructType'] as String);
+      return t == s || t.startsWith('$s<') || t.startsWith('$s ');
     }
     if (filter.containsKey('Package')) {
-      return type.startsWith('${filter['Package']}::');
+      return t.startsWith('${_normalizeTypeAddrs('${filter['Package']}')}::');
     }
     if (filter.containsKey('MoveModule')) {
       final m = filter['MoveModule'] as Map;
-      return type.startsWith('${m['package']}::${m['module']}::');
+      return t.startsWith(
+          '${_normalizeTypeAddrs('${m['package']}')}::${m['module']}::');
     }
     return true;
   }
+
+  String _normalizeTypeAddrs(String type) => normalizeTypeAddresses(type);
 
   // --- Dynamic fields ---
 
@@ -321,7 +332,11 @@ class SuiGrpcCompat {
         'bcsName': f.hasName() ? base64Encode(f.name.value) : '',
         'type': isObject ? 'DynamicObject' : 'DynamicField',
         'objectType': f.valueType,
-        'objectId': f.fieldId,
+        // Match JSON-RPC: for a dynamic OBJECT field, `objectId` is the wrapped
+        // child object (the NFT), not the `Field<…>` wrapper — otherwise a
+        // multiGetObjects on it returns a display-less wrapper (empty kiosk
+        // NFTs). Plain dynamic fields keep the field object id.
+        'objectId': isObject && f.hasChildId() ? f.childId : f.fieldId,
         'version': 0,
         'digest': '',
       });
@@ -557,12 +572,14 @@ class SuiGrpcCompat {
   List<String> _objectMask(SuiObjectDataOptions? o) {
     final paths = <String>['object_id', 'version', 'digest'];
     if (o == null) {
-      paths.addAll(['object_type', 'owner', 'contents']);
+      paths.addAll(['object_type', 'owner', 'json']);
       return paths;
     }
     if (o.showType) paths.add('object_type');
     if (o.showOwner) paths.add('owner');
-    if (o.showContent || o.showBcs) paths.add('contents');
+    // `json` yields the parsed Move fields (legacy `content`); `contents` is BCS.
+    if (o.showContent) paths.add('json');
+    if (o.showBcs) paths.add('contents');
     if (o.showPreviousTransaction) paths.add('previous_transaction');
     if (o.showDisplay) paths.add('display');
     return paths;
@@ -574,7 +591,52 @@ class SuiGrpcCompat {
         'version': o.version.toString(),
         'type': o.hasObjectType() ? o.objectType : null,
         'owner': _ownerJson(o),
+        // Display template output (NFT image_url/name/…) and parsed Move fields,
+        // mapped to the legacy `display` / `content` shapes the wallet expects.
+        if (o.hasDisplay()) 'display': _displayJson(o.display),
+        if (o.hasJson()) 'content': _contentJson(o),
       };
+
+  Map<String, dynamic> _displayJson(dynamic display) {
+    final data = display.hasOutput() ? _protoValueToDart(display.output) : null;
+    return {
+      'data': data is Map ? data : null,
+      'error': display.hasErrors() ? _protoValueToDart(display.errors) : null,
+    };
+  }
+
+  Map<String, dynamic> _contentJson(dynamic o) {
+    final fields = _protoValueToDart(o.json);
+    return {
+      'dataType': 'moveObject',
+      'type': o.hasObjectType() ? o.objectType : null,
+      'hasPublicTransfer': null,
+      'fields': fields is Map ? fields : null,
+    };
+  }
+
+  /// Convert a `google.protobuf.Value` (proto Struct/list/scalar) to a plain
+  /// Dart value (Map/List/String/num/bool/null).
+  dynamic _protoValueToDart(dynamic v) {
+    if (v == null || v.hasNullValue()) return null;
+    if (v.hasStringValue()) return v.stringValue;
+    if (v.hasNumberValue()) return v.numberValue;
+    if (v.hasBoolValue()) return v.boolValue;
+    if (v.hasStructValue()) {
+      // Build an explicit Map<String, dynamic>: `v` is dynamic, so `e.key` would
+      // otherwise be dynamic and the literal a Map<dynamic, dynamic>, which the
+      // legacy models (DisplayFieldsResponse.data) reject at runtime.
+      final map = <String, dynamic>{};
+      for (final e in v.structValue.fields.entries) {
+        map[e.key as String] = _protoValueToDart(e.value);
+      }
+      return map;
+    }
+    if (v.hasListValue()) {
+      return [for (final e in v.listValue.values) _protoValueToDart(e)];
+    }
+    return null;
+  }
 
   dynamic _ownerJson(dynamic o) {
     if (!o.hasOwner()) return null;
@@ -603,3 +665,15 @@ class SuiNamePage {
   SuiNamePage(this.data);
   final List<String> data;
 }
+
+/// Pads every `0x`-prefixed hex address inside a Move type string to the full
+/// 32-byte (64 hex) form, so short and long address forms compare equal.
+///
+/// gRPC returns fully-normalized addresses (`0x0000…0002::coin::Coin`) while
+/// callers commonly pass short forms (`0x2::coin::Coin`); normalizing both sides
+/// before comparison keeps object filters (e.g. `MatchNone` coin exclusion) and
+/// type checks working regardless of leading-zero form.
+String normalizeTypeAddresses(String type) => type.replaceAllMapped(
+      RegExp(r'0x([0-9a-fA-F]+)'),
+      (m) => '0x${m[1]!.padLeft(64, '0')}',
+    );

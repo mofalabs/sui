@@ -30,8 +30,11 @@ import 'proto/sui/rpc/v2/transaction_execution_service.pb.dart';
 /// ([GrpcCoreClient]); mirrors the official TS SDK's `SuiGrpcClient` where
 /// most methods forward to `this.core`.
 class SuiGrpcClient {
-  SuiGrpcClient({required this.network, Dio? dio})
-      : core = GrpcCoreClient(network: network, dio: dio),
+  /// [endpoint] overrides the gRPC-web base URL (a custom / self-hosted full
+  /// node); when null the public endpoint for [network] is used. [network]
+  /// still selects the MVR endpoint.
+  SuiGrpcClient({required this.network, Dio? dio, String? endpoint})
+      : core = GrpcCoreClient(network: network, dio: dio, endpoint: endpoint),
         mvr = MvrClient.forNetwork(network, dio: dio);
 
   final SuiNetwork network;

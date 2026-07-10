@@ -30,8 +30,11 @@ import 'transport/grpc_web_transport.dart';
 
 /// gRPC-web implementation of [CoreClient] over `sui.rpc.v2`.
 class GrpcCoreClient extends CoreClient {
-  GrpcCoreClient({required super.network, Dio? dio})
-      : _t = GrpcWebTransport(grpcWebEndpoint(network), dio: dio),
+  /// [endpoint] overrides the gRPC-web base URL (e.g. a self-hosted or
+  /// third-party full node); when null the public endpoint for [network] is
+  /// used. [network] still selects the MVR endpoint regardless.
+  GrpcCoreClient({required super.network, Dio? dio, String? endpoint})
+      : _t = GrpcWebTransport(endpoint ?? grpcWebEndpoint(network), dio: dio),
         _mvr = MvrClient.forNetwork(network, dio: dio);
 
   final GrpcWebTransport _t;
