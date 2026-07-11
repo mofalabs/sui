@@ -125,7 +125,8 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
                       command["MakeMoveVec"]["type"])
                 },
           "objects": command["MakeMoveVec"]["elements"]
-              .map((arg) => convertTransactionArgument(arg, inputs)),
+              .map((arg) => convertTransactionArgument(arg, inputs))
+              .toList(),
         };
       } else if (command["MergeCoins"] != null) {
         return {
@@ -133,7 +134,8 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
           "destination": convertTransactionArgument(
               command["MergeCoins"]["destination"], inputs),
           "sources": command["MergeCoins"]["sources"]
-              .map((arg) => convertTransactionArgument(arg, inputs)),
+              .map((arg) => convertTransactionArgument(arg, inputs))
+              .toList(),
         };
       } else if (command["MoveCall"] != null) {
         return {
@@ -141,14 +143,16 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
           "target":
               "${command["MoveCall"]["package"]}::${command["MoveCall"]["module"]}::${command["MoveCall"]["function"]}",
           "typeArguments": command["MoveCall"]["typeArguments"],
-          "arguments": command["MoveCall"]["arguments"].map(
-            (arg) => convertTransactionArgument(arg, inputs),
-          ),
+          "arguments": command["MoveCall"]["arguments"]
+              .map((arg) => convertTransactionArgument(arg, inputs))
+              .toList(),
         };
       } else if (command["Publish"] != null) {
         return {
           "kind": 'Publish',
-          "modules": command["Publish"]["modules"].map((mod) => fromB64(mod)),
+          "modules": command["Publish"]["modules"]
+              .map((mod) => fromB64(mod))
+              .toList(),
           "dependencies": command["Publish"]["dependencies"],
         };
       } else if (command["SplitCoins"] != null) {
@@ -157,21 +161,23 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
           "coin":
               convertTransactionArgument(command["SplitCoins"]["coin"], inputs),
           "amounts": command["SplitCoins"]["amounts"]
-              .map((arg) => convertTransactionArgument(arg, inputs)),
+              .map((arg) => convertTransactionArgument(arg, inputs))
+              .toList(),
         };
       } else if (command["TransferObjects"] != null) {
         return {
           "kind": 'TransferObjects',
-          "objects": command["TransferObjects"]["objects"].map(
-            (arg) => convertTransactionArgument(arg, inputs),
-          ),
+          "objects": command["TransferObjects"]["objects"]
+              .map((arg) => convertTransactionArgument(arg, inputs))
+              .toList(),
           "address": convertTransactionArgument(
               command["TransferObjects"]["address"], inputs),
         };
       } else if (command["Upgrade"] != null) {
         return {
           "kind": 'Upgrade',
-          "modules": command["Upgrade"]["modules"].map((mod) => fromB64(mod)),
+          "modules":
+              command["Upgrade"]["modules"].map((mod) => fromB64(mod)).toList(),
           "dependencies": command["Upgrade"]["dependencies"],
           "packageId": command["Upgrade"]["package"],
           "ticket":
