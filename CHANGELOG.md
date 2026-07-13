@@ -164,7 +164,7 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
 * Deps: add `protobuf` and `fixnum`; bump `bcs`, `dio`, `pointycastle` (4.0),
   `freezed`/`freezed_annotation` (3.0), `web_socket_channel` (3.0).
 
-## 0.5.0
+## 0.4.2
 
 * Migrate to `bcs` 0.2.0 (full rewrite of the BCS package). **Breaking for apps
   that imported `package:bcs/...` internals through this SDK**: the legacy
