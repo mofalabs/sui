@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
 
@@ -43,9 +42,9 @@ const anEphemeralSignature =
 
 void main() {
   test('test is parsed successfully', () async {
-    final result = parseZkLoginSignature(fromB64(aSignature).sublist(1));
+    final result = parseZkLoginSignature(base64Decode(aSignature).sublist(1));
     final isValid = result.maxEpoch == 174 &&
-        toB64(result.userSignature) == anEphemeralSignature &&
+        base64Encode(result.userSignature) == anEphemeralSignature &&
         jsonEncode(result.inputs.toJson()) ==
             jsonEncode(aSignatureInputs.toJson());
     expect(isValid, true);
@@ -56,7 +55,7 @@ void main() {
       ZkLoginSignature(
         inputs: aSignatureInputs,
         maxEpoch: 174,
-        userSignature: fromB64(anEphemeralSignature),
+        userSignature: base64Decode(anEphemeralSignature),
       ),
     );
     final isValid = result == aSignature;

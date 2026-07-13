@@ -163,3 +163,20 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   and make the package publishable; add hosted `crypto` and `bs58check`.
 * Deps: add `protobuf` and `fixnum`; bump `bcs`, `dio`, `pointycastle` (4.0),
   `freezed`/`freezed_annotation` (3.0), `web_socket_channel` (3.0).
+
+## 0.5.0
+
+* Migrate to `bcs` 0.2.0 (full rewrite of the BCS package). **Breaking for apps
+  that imported `package:bcs/...` internals through this SDK**: the legacy
+  registry API (`LegacyBCS`), `fromB64`/`toB64`, `fromHEX`/`toHEX`,
+  `fromB58`/`toB58` and split libraries (`bcs/utils.dart`, `bcs/hex.dart`, ...)
+  are gone. Use `dart:convert` for base64 and `package:bcs/bcs.dart`
+  (`hexEncode`/`hexDecode`, `base58Encode`/`base58Decode`) instead.
+* `SuiObjectRef.version` / `SharedObjectRef.initialSharedVersion` now parse
+  back from BCS as `int`, matching the SDK's object-ref types.
+* Deprecate `Transactions` in favor of `Commands`; its methods now delegate to
+  `Commands` and produce the `$kind`-style command maps the serialization
+  pipeline expects (the old flat `kind` maps no longer serialized correctly).
+* `Transaction.pureInt` now honors its `type` argument (previously always
+  serialized as `u64`).
+* `SenderTransactionPage.digests` convenience getter (GraphQL client).

@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'dart:typed_data';
 
-import 'package:bcs/bcs.dart';
 import 'package:sui/types/common.dart';
 
 enum UpgradePolicy {
@@ -21,12 +22,18 @@ class Commands {
       fn = parts.length > 2 ? parts[2] : '';
       typeArguments = input['typeArguments'] ?? [];
       arguments = input['arguments'] ?? [];
-    } else if (input is Map<String, dynamic>) {
+    } else if (input is Map<String, dynamic> &&
+        input['package'] is String &&
+        input['module'] is String &&
+        input['function'] is String) {
       pkg = input['package'];
       mod = input['module'];
       fn = input['function'];
       typeArguments = input['typeArguments'] ?? [];
       arguments = input['arguments'] ?? [];
+    } else {
+      throw ArgumentError.value(input, 'input',
+          'Expected a map with a target or package/module/function');
     }
 
     return {
@@ -82,7 +89,7 @@ class Commands {
       'Publish': {
         'modules': modules
             .map((module) =>
-                module is String ? module : toB64(Uint8List.fromList(module)))
+                module is String ? module : base64Encode(Uint8List.fromList(module)))
             .toList(),
         'dependencies':
             dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
@@ -101,7 +108,7 @@ class Commands {
       'Upgrade': {
         'modules': modules
             .map((module) =>
-                module is String ? module : toB64(Uint8List.fromList(module)))
+                module is String ? module : base64Encode(Uint8List.fromList(module)))
             .toList(),
         'dependencies':
             dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),

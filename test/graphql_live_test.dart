@@ -30,9 +30,27 @@ void main() {
     }
   });
 
-  test('queryEventsByModule(0x2, coin) returns events', () async {
-    final events = await client.queryEventsByModule('0x2', 'coin', first: 3);
-    print('events=${events.length}');
+  test('queryEventsByModule returns events for an active module', () async {
+    // Which modules have recent events depends on live testnet activity, so
+    // discover one from the unfiltered event stream first, then verify the
+    // module filter path returns its events.
+    final recent = await client.transport.query(r'''
+      query {
+        events(first: 20) {
+          nodes { transactionModule { name package { address } } }
+        }
+      }
+    ''');
+    final nodes =
+        ((recent['events'] as Map)['nodes'] as List).cast<Map<String, dynamic>>();
+    expect(nodes, isNotEmpty);
+    final module = nodes.first['transactionModule'] as Map<String, dynamic>;
+    final packageId = module['package']['address'] as String;
+    final moduleName = module['name'] as String;
+
+    final events =
+        await client.queryEventsByModule(packageId, moduleName, first: 3);
+    print('events=${events.length} for $packageId::$moduleName');
     expect(events, isNotEmpty);
     final first = events.first;
     expect(first['transactionModule'], isNotNull);

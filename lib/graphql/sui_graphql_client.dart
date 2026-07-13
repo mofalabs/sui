@@ -271,6 +271,9 @@ class SenderTransactionPage {
   final List<SenderTransaction> transactions;
   final bool hasNextPage;
   final String? endCursor;
+
+  /// The digests of the transactions in this page.
+  List<String> get digests => [for (final tx in transactions) tx.digest];
 }
 
 class SenderTransaction {

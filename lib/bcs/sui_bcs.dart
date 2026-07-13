@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
-import 'package:bcs/bcs_type.dart';
 import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/types/common.dart';
 
@@ -40,36 +41,43 @@ class SuiBcs {
 
   static final Address = Bcs.bytes(SUI_ADDRESS_LENGTH).transform(
     validate: (dynamic val) {
-      final address = val is String ? val : toHEX(val);
+      final address = val is String ? val : hexEncode(val);
       if (address.isEmpty || !isValidSuiAddress(normalizeSuiAddress(address))) {
         throw Exception('Invalid Sui address $address');
       }
     },
     input: (dynamic val) =>
-        val is String ? fromHEX(normalizeSuiAddress(val)) : val,
-    output: (Uint8List val) => normalizeSuiAddress(toHEX(val)),
+        val is String ? hexDecode(normalizeSuiAddress(val)) : val,
+    output: (Uint8List val) => normalizeSuiAddress(hexEncode(val)),
   );
 
   static final ObjectDigest = Bcs.vector(Bcs.u8()).transform(
     name: 'ObjectDigest',
-    input: (String value) => fromB58(value),
-    output: (List<int> value) => toB58(Uint8List.fromList(value)),
+    input: (String value) => base58Decode(value),
+    output: (List<int> value) => base58Encode(Uint8List.fromList(value)),
     validate: (String value) {
-      if (fromB58(value).length != 32) {
+      if (base58Decode(value).length != 32) {
         throw Exception('ObjectDigest must be 32 bytes');
       }
     },
   );
 
+  /// Object versions are `u64` on the wire but represented as `int` across
+  /// the SDK (`SuiObjectRef.version`), so parse them back to `int`.
+  static final _version = Bcs.u64().transform(
+    input: (dynamic value) => value,
+    output: (value) => value.toInt(),
+  );
+
   static final SuiObjectRef = Bcs.struct('SuiObjectRef', {
     'objectId': Address,
-    'version': Bcs.u64(),
+    'version': _version,
     'digest': ObjectDigest,
   });
 
   static final SharedObjectRef = Bcs.struct('SharedObjectRef', {
     'objectId': Address,
-    'initialSharedVersion': Bcs.u64(),
+    'initialSharedVersion': _version,
     'mutable': Bcs.boolean(),
   });
 
@@ -82,8 +90,8 @@ class SuiBcs {
   static final CallArg = Bcs.enumeration('CallArg', {
     'Pure': Bcs.struct('Pure', {
       'bytes': Bcs.vector(Bcs.u8()).transform(
-        input: (dynamic val) => val is String ? fromB64(val) : val,
-        output: (List<int> val) => toB64(Uint8List.fromList(val)),
+        input: (dynamic val) => val is String ? base64Decode(val) : val,
+        output: (List<int> val) => base64Encode(Uint8List.fromList(val)),
       ),
     }),
     'Object': ObjectArg,
@@ -143,8 +151,8 @@ class SuiBcs {
     'Publish': Bcs.struct('Publish', {
       'modules': Bcs.vector(
         Bcs.vector(Bcs.u8()).transform(
-          input: (dynamic val) => val is String ? fromB64(val) : val,
-          output: (List<int> val) => toB64(Uint8List.fromList(val)),
+          input: (dynamic val) => val is String ? base64Decode(val) : val,
+          output: (List<int> val) => base64Encode(Uint8List.fromList(val)),
         ),
       ),
       'dependencies': Bcs.vector(Address),
@@ -159,8 +167,8 @@ class SuiBcs {
     'Upgrade': Bcs.struct('Upgrade', {
       'modules': Bcs.vector(
         Bcs.vector(Bcs.u8()).transform(
-          input: (dynamic val) => val is String ? fromB64(val) : val,
-          output: (List<int> val) => toB64(Uint8List.fromList(val)),
+          input: (dynamic val) => val is String ? base64Decode(val) : val,
+          output: (List<int> val) => base64Encode(Uint8List.fromList(val)),
         ),
       ),
       'dependencies': Bcs.vector(Address),
@@ -272,8 +280,8 @@ class SuiBcs {
   });
 
   static final base64String = Bcs.vector(Bcs.u8()).transform(
-    input: (dynamic val) => val is String ? fromB64(val) : val,
-    output: (List<int> val) => toB64(Uint8List.fromList(val)),
+    input: (dynamic val) => val is String ? base64Decode(val) : val,
+    output: (List<int> val) => base64Encode(Uint8List.fromList(val)),
   );
 
   static final SenderSignedTransaction = Bcs.struct('SenderSignedTransaction', {

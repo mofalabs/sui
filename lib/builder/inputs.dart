@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'dart:typed_data';
 
-import 'package:bcs/bcs_type.dart';
-import 'package:bcs/utils.dart';
+import 'package:bcs/bcs.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 
@@ -11,7 +12,7 @@ class Inputs {
       "\$kind": 'Pure',
       "Pure": {
         "bytes": data is Uint8List
-            ? toB64(data)
+            ? base64Encode(data)
             : (data as SerializedBcs).toBase64(),
       },
     };
@@ -101,7 +102,7 @@ dynamic getSharedObjectInput(dynamic arg) {
 }
 
 bool isSharedObjectInput(dynamic arg) {
-  return getSharedObjectInput(arg) ?? false;
+  return getSharedObjectInput(arg) != null;
 }
 
 bool isMutableSharedObjectInput(dynamic arg) {

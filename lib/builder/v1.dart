@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'dart:typed_data';
 
-import 'package:bcs/bcs.dart';
 import 'package:sui/bcs/type_tag_serializer.dart';
 import 'package:sui/builder/transaction_block_data.dart';
 
@@ -79,7 +80,7 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
         "kind": 'Input',
         "index": index,
         "value": {
-          "Pure": fromB64(input["Pure"]["bytes"]),
+          "Pure": base64Decode(input["Pure"]["bytes"]),
         },
         "type": 'pure',
       });
@@ -151,7 +152,7 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
         return {
           "kind": 'Publish',
           "modules": command["Publish"]["modules"]
-              .map((mod) => fromB64(mod))
+              .map((mod) => base64Decode(mod))
               .toList(),
           "dependencies": command["Publish"]["dependencies"],
         };
@@ -177,7 +178,7 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
         return {
           "kind": 'Upgrade',
           "modules":
-              command["Upgrade"]["modules"].map((mod) => fromB64(mod)).toList(),
+              command["Upgrade"]["modules"].map((mod) => base64Decode(mod)).toList(),
           "dependencies": command["Upgrade"]["dependencies"],
           "packageId": command["Upgrade"]["package"],
           "ticket":
@@ -233,7 +234,7 @@ dynamic transactionDataFromV1(dynamic data) {
             "digest": ref["digest"],
             "objectId": ref["objectId"],
             "version": ref["version"]?.toString(),
-          })),
+          }))?.toList(),
     },
     "inputs": data["inputs"]?.map((input) {
       if (input["kind"] == 'Input') {
@@ -285,7 +286,7 @@ dynamic transactionDataFromV1(dynamic data) {
 
           return {
             "Pure": {
-              "bytes": toB64(Uint8List.fromList(value["Pure"].cast<int>())),
+              "bytes": base64Encode(Uint8List.fromList(value["Pure"].cast<int>())),
             },
           };
         }
@@ -306,7 +307,7 @@ dynamic transactionDataFromV1(dynamic data) {
       }
 
       throw ArgumentError('Invalid input');
-    }),
+    })?.toList(),
     "commands": data["transactions"]?.map((transaction) {
       switch (transaction["kind"]) {
         case 'MakeMoveVec':
@@ -316,7 +317,8 @@ dynamic transactionDataFromV1(dynamic data) {
                   ? TypeTagSerializer.tagToString(transaction["type"]["Some"])
                   : null,
               "elements": transaction["objects"]
-                  ?.map((arg) => parseV1TransactionArgument(arg)),
+                  ?.map((arg) => parseV1TransactionArgument(arg))
+                  ?.toList(),
             },
           };
         case 'MergeCoins':
@@ -326,7 +328,8 @@ dynamic transactionDataFromV1(dynamic data) {
                 "destination":
                     parseV1TransactionArgument(transaction["destination"]),
                 "sources": transaction["sources"]
-                    ?.map((arg) => parseV1TransactionArgument(arg)),
+                    ?.map((arg) => parseV1TransactionArgument(arg))
+                    ?.toList(),
               },
             };
           }
@@ -340,7 +343,8 @@ dynamic transactionDataFromV1(dynamic data) {
                 "function": fn,
                 "typeArguments": transaction["typeArguments"],
                 "arguments": transaction["arguments"]
-                    ?.map((arg) => parseV1TransactionArgument(arg)),
+                    ?.map((arg) => parseV1TransactionArgument(arg))
+                    ?.toList(),
               },
             };
           }
@@ -348,7 +352,7 @@ dynamic transactionDataFromV1(dynamic data) {
           {
             return {
               "Publish": {
-                "modules": transaction["modules"]?.map((mod) => toB64(mod)),
+                "modules": transaction["modules"]?.map((mod) => base64Encode(mod))?.toList(),
                 "dependencies": transaction["dependencies"],
               },
             };
@@ -359,7 +363,8 @@ dynamic transactionDataFromV1(dynamic data) {
               "SplitCoins": {
                 "coin": parseV1TransactionArgument(transaction["coin"]),
                 "amounts": transaction["amounts"]
-                    ?.map((arg) => parseV1TransactionArgument(arg)),
+                    ?.map((arg) => parseV1TransactionArgument(arg))
+                    ?.toList(),
               },
             };
           }
@@ -368,7 +373,8 @@ dynamic transactionDataFromV1(dynamic data) {
             return {
               "TransferObjects": {
                 "objects": transaction["objects"]
-                    ?.map((arg) => parseV1TransactionArgument(arg)),
+                    ?.map((arg) => parseV1TransactionArgument(arg))
+                    ?.toList(),
                 "address": parseV1TransactionArgument(transaction["address"]),
               },
             };
@@ -377,7 +383,7 @@ dynamic transactionDataFromV1(dynamic data) {
           {
             return {
               "Upgrade": {
-                "modules": transaction["modules"]?.map((mod) => toB64(mod)),
+                "modules": transaction["modules"]?.map((mod) => base64Encode(mod))?.toList(),
                 "dependencies": transaction["dependencies"],
                 "package": transaction["packageId"],
                 "ticket": parseV1TransactionArgument(transaction["ticket"]),
@@ -411,4 +417,5 @@ dynamic parseV1TransactionArgument(dynamic arg) {
         return {...arg, "Input": arg["index"]};
       }
   }
+  throw ArgumentError("Invalid argument $arg");
 }

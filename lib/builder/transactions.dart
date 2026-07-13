@@ -1,47 +1,40 @@
-import 'package:bcs/bcs.dart';
-import 'package:bcs/utils.dart';
-import 'package:sui/bcs/type_tag_serializer.dart';
-import 'package:sui/types/common.dart';
+import 'package:sui/builder/commands.dart';
 
-/// Simple helpers used to construct transactions:
+/// Legacy helpers used to construct transactions.
+///
+/// Kept for backwards compatibility; they now delegate to [Commands] and
+/// produce the same `$kind`-style command maps used by the serialization
+/// pipeline.
+@Deprecated('Use Commands instead')
 class Transactions {
   static Map<String, dynamic> moveCall(
       {required String target, List? typeArguments, List? arguments}) {
-    return {
-      "kind": 'MoveCall',
-      "target": target,
-      "arguments": arguments ?? [],
-      "typeArguments": typeArguments ?? [],
-    };
+    return Commands.moveCall({
+      'target': target,
+      'typeArguments': typeArguments ?? [],
+      'arguments': arguments ?? [],
+    });
   }
 
   static Map<String, dynamic> transferObjects(List objects, dynamic address) {
-    return {"kind": 'TransferObjects', "objects": objects, "address": address};
+    return Commands.transferObjects(List<dynamic>.from(objects), address);
   }
 
   static Map<String, dynamic> splitCoins(dynamic coin, dynamic amounts) {
-    return {"kind": 'SplitCoins', "coin": coin, "amounts": amounts};
+    return Commands.splitCoins(
+        coin, List<dynamic>.from(amounts as Iterable<dynamic>));
   }
 
   static Map<String, dynamic> mergeCoins(
     dynamic destination,
     List sources,
   ) {
-    return {
-      "kind": 'MergeCoins',
-      "destination": destination,
-      "sources": sources
-    };
+    return Commands.mergeCoins(destination, List<dynamic>.from(sources));
   }
 
   static Map<String, dynamic> publish(
       List<String> modules, List<String> dependencies) {
-    return {
-      "kind": 'Publish',
-      "modules": modules.map((m) => fromB64(m)).toList(),
-      "dependencies":
-          dependencies.map((dep) => normalizeSuiObjectId(dep)).toList(),
-    };
+    return Commands.publish(modules: modules, dependencies: dependencies);
   }
 
   static Map<String, dynamic> upgrade({
@@ -50,25 +43,21 @@ class Transactions {
     required String packageId,
     required dynamic ticket,
   }) {
-    return {
-      "kind": 'Upgrade',
-      "modules": modules.map((m) => fromB64(m)).toList(),
-      "dependencies": dependencies.map((dep) => normalizeSuiObjectId(dep)),
-      "packageId": packageId,
-      "ticket": ticket,
-    };
+    return Commands.upgrade(
+      modules: modules,
+      dependencies: dependencies,
+      package: packageId,
+      ticket: ticket,
+    );
   }
 
   static Map<String, dynamic> makeMoveVec({
     required dynamic objects,
     String? type,
   }) {
-    return {
-      "kind": 'MakeMoveVec',
-      "type": type != null
-          ? {"Some": TypeTagSerializer.parseFromStr(type)}
-          : {"None": null},
-      "objects": objects,
-    };
+    return Commands.makeMoveVec(
+      type: type,
+      elements: List<dynamic>.from(objects as Iterable<dynamic>),
+    );
   }
 }

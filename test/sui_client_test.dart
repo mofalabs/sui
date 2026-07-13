@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bcs/bcs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sui/sui.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -489,9 +488,9 @@ void main() {
     final txb = Transaction();
 
     final emptyVec =
-        txb.moveCall("0x1::vector::empty", typeArguments: [LegacyBCS.U64]);
+        txb.moveCall("0x1::vector::empty", typeArguments: ['u64']);
     txb.moveCall("0x1::vector::append", typeArguments: [
-      LegacyBCS.U64
+      'u64'
     ], arguments: [
       emptyVec,
       txb.pureVector([1, 2, 3])

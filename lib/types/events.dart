@@ -1,4 +1,3 @@
-import 'package:bcs/consts.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/objects.dart';
 import 'package:sui/types/transactions.dart';
@@ -118,4 +117,4 @@ enum BalanceChangeType { Gas, Pay, Receive }
 // mirrors the value defined in https://github.com/MystenLabs/sui/blob/e12f8c58ef7ba17205c4caf5ad2c350cbb01656c/crates/sui-json-rpc/src/api.rs#L27
 const EVENT_QUERY_MAX_LIMIT = 100;
 const DEFAULT_START_TIME = 0;
-final DEFAULT_END_TIME = MAX_U32_NUMBER;
+const DEFAULT_END_TIME = 4294967295; // max u32

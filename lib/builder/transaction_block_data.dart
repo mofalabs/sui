@@ -146,7 +146,7 @@ class TransactionBlockDataBuilder {
   /// Generate transaction digest.
   static String getDigestFromBytes(Uint8List bytes) {
     final hash = hashTypedData('TransactionData', bytes);
-    return toB58(hash);
+    return base58Encode(hash);
   }
 
   int version = 2;
@@ -257,27 +257,28 @@ class TransactionBlockDataBuilder {
             .map((arg) => fn(arg, command))
             .toList();
       } else if (command["TransferObjects"] != null) {
-        command["TransferObjects"]["objects"] =
-            command["TransferObjects"]["objects"].map(
-          (arg) => fn(arg, command),
-        );
+        command["TransferObjects"]["objects"] = command["TransferObjects"]
+                ["objects"]
+            .map((arg) => fn(arg, command))
+            .toList();
         command["TransferObjects"]["address"] =
             fn(command["TransferObjects"]["address"], command);
       } else if (command["SplitCoins"] != null) {
         command["SplitCoins"]["coin"] =
             fn(command["SplitCoins"]["coin"], command);
-        command["SplitCoins"]["amounts"] =
-            command["SplitCoins"]["amounts"].map((arg) => fn(arg, command));
+        command["SplitCoins"]["amounts"] = command["SplitCoins"]["amounts"]
+            .map((arg) => fn(arg, command))
+            .toList();
       } else if (command["MergeCoins"] != null) {
         command["MergeCoins"]["destination"] =
             fn(command["MergeCoins"]["destination"], command);
-        command["MergeCoins"]["sources"] =
-            command["MergeCoins"]["sources"].map((arg) => fn(arg, command));
+        command["MergeCoins"]["sources"] = command["MergeCoins"]["sources"]
+            .map((arg) => fn(arg, command))
+            .toList();
       } else if (command["MakeMoveVec"] != null) {
-        command["MakeMoveVec"]["elements"] =
-            command["MakeMoveVec"]["elements"].map(
-          (arg) => fn(arg, command),
-        );
+        command["MakeMoveVec"]["elements"] = command["MakeMoveVec"]["elements"]
+            .map((arg) => fn(arg, command))
+            .toList();
       } else if (command["Upgrade"] != null) {
         command["Upgrade"]["ticket"] =
             fn(command["Upgrade"]["ticket"], command);
@@ -287,7 +288,7 @@ class TransactionBlockDataBuilder {
 
         for (final [key, value] in inputs) {
           command["\$Intent"]["inputs"][key] = value is Iterable
-              ? value.map((arg) => fn(arg, command))
+              ? value.map((arg) => fn(arg, command)).toList()
               : fn(value, command);
         }
       } else if (command["Publish"] != null) {

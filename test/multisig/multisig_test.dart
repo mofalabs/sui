@@ -33,7 +33,7 @@ void main() {
       txb.setGasBudget(BigInt.from(100));
       txb.setGasPayment([
         SuiObjectRef(
-          toB58(Uint8List.fromList([
+          base58Encode(Uint8List.fromList([
             0,
             1,
             2,
@@ -145,7 +145,7 @@ void main() {
       tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.MultiSig]);
       tmp.setAll(1, bytes);
 
-      final multisig = toB64(tmp);
+      final multisig = base64Encode(tmp);
 
       expect(
           () => multiSigPublicKey
@@ -413,7 +413,7 @@ void main() {
         '0xb9c0780a3943cde13a2409bf1a6f06ae60b0dff2b2f373260cf627aa4f43a588',
       );
       final data = Uint8List.fromList(
-        fromB64(
+        base64Decode(
           'AAABACACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgEBAQABAAC5wHgKOUPN4TokCb8abwauYLDf8rLzcyYM9ieqT0OliAGbB4FfBEl+LgXSLKw6oGFBCyCGjMYZFUxCocYb6ZAnFwEAAAAAAAAAIJZw7UpW1XHubORIOaY8d2+WyBNwoJ+FEAxlsa7h7JHrucB4CjlDzeE6JAm/Gm8GrmCw3/Ky83MmDPYnqk9DpYgBAAAAAAAAABAnAAAAAAAAAA==',
         ),
       );
@@ -429,7 +429,7 @@ void main() {
       );
 
       final decoded = parsePartialSignatures(MultiSigStruct.fromJson(
-          SuiBcs.MultiSig.parse(fromB64(multisig).sublist(1))));
+          SuiBcs.MultiSig.parse(base64Decode(multisig).sublist(1))));
 
       final origin0 = ParsedPartialMultiSigSignature(
           signatureScheme: k6.getKeyScheme(),

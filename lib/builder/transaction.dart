@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
-import 'package:bcs/bcs_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/builder/commands.dart';
@@ -153,7 +152,7 @@ class Transaction {
     final tx = Transaction();
 
     tx._blockData = TransactionBlockDataBuilder.fromKindBytes(
-      serialized is String ? fromB64(serialized) : serialized,
+      serialized is String ? base64Decode(serialized) : serialized,
     );
 
     return tx;
@@ -391,8 +390,8 @@ class Transaction {
     return object(Inputs.sharedObjectRef(args));
   }
 
-  Map<String, dynamic> pureInt(int value, [String type = LegacyBCS.U64]) {
-    return pure.u64(BigInt.from(value));
+  Map<String, dynamic> pureInt(int value, [String type = 'u64']) {
+    return pure(type, value);
   }
 
   Map<String, dynamic> pureBool(bool value) {
@@ -408,7 +407,7 @@ class Transaction {
   }
 
   Map<String, dynamic> pureVector(List<dynamic> value,
-      [String type = LegacyBCS.U64]) {
+      [String type = 'u64']) {
     return pure.vector(type, value);
   }
 
@@ -923,7 +922,7 @@ class Transaction {
           if (amount["kind"] == 'Input') {
             final input = inputs[amount['index']];
             if (input["value"] is! Map) {
-              input['value'] = Inputs.pure(input['value'], LegacyBCS.U64);
+              input['value'] = Inputs.pure(input['value'], 'u64');
             }
           }
         }
@@ -933,7 +932,7 @@ class Transaction {
         if (transaction['address']['kind'] == 'Input') {
           final input = inputs[transaction['address']['index']];
           if (input["value"] is! Map) {
-            input['value'] = Inputs.pure(input['value'], LegacyBCS.ADDRESS);
+            input['value'] = Inputs.pure(input['value'], 'address');
           }
         }
       }

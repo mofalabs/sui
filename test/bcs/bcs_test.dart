@@ -288,7 +288,7 @@ void main() {
 SuiObjectRef ref() {
   final random = Random();
   return SuiObjectRef(
-    toB58(Uint8List.fromList([
+    base58Encode(Uint8List.fromList([
       0,
       1,
       2,

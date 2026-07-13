@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:bcs/utils.dart';
+import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
 
@@ -190,7 +190,7 @@ void main() {
 SuiObjectRef ref() {
   final random = Random();
   return SuiObjectRef(
-    toB58(Uint8List.fromList([
+    base58Encode(Uint8List.fromList([
       0,
       1,
       2,

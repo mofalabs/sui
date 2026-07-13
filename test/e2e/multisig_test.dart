@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'dart:typed_data';
 
-import 'package:bcs/bcs.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
@@ -155,13 +156,13 @@ void main() {
       final zkLoginSig = getZkLoginSignature(ZkLoginSignature(
           inputs: ZkLoginSignatureInputs.fromJson(zkLoginInputs),
           maxEpoch: 10,
-          userSignature: fromB64(ephemeralSig)));
+          userSignature: base64Decode(ephemeralSig)));
 
       // combine to multisig and execute the transaction.
       final signature =
           multiSigPublicKey.combinePartialSignatures([singleSig, zkLoginSig]);
       final result = await client.executeTransactionBlock(
-        toB64(bytes),
+        base64Encode(bytes),
         [signature],
         options: SuiTransactionBlockResponseOptions(showEffects: true),
       );

@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
-import 'package:bcs/bcs_type.dart';
 import 'package:sui/bcs/sui_bcs.dart';
 
 typedef PureCreator<T> = T Function(dynamic);

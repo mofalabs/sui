@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bcs/hex.dart';
+import 'package:bcs/bcs.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/utils/sha.dart';
@@ -22,6 +22,6 @@ String computeZkLoginAddressFromSeed(BigInt addressSeed, String iss) {
   tmp.setAll(2 + addressParamBytes.length, addressSeedBytesBigEndian);
 
   return normalizeSuiAddress(
-    Hex.encode(blake2b(tmp)).substring(0, SUI_ADDRESS_LENGTH * 2),
+    hexEncode(blake2b(tmp)).substring(0, SUI_ADDRESS_LENGTH * 2),
   );
 }

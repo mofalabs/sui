@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bcs/bcs_type.dart';
+import 'package:bcs/bcs.dart';
 import 'package:sui/bcs/sui_bcs.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
@@ -189,7 +189,7 @@ String? getPureSerializationType(
 
     final innerType = getPureSerializationType(
       normalizedType["Vector"],
-      argVal ? argVal[0] : null,
+      (argVal is Iterable && argVal.isNotEmpty) ? argVal.first : null,
     );
 
     if (innerType == null) {

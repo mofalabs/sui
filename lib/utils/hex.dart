@@ -20,11 +20,21 @@ class Hex {
 
     var result = Uint8List(str.length ~/ 2);
     for (int i = 0; i < str.length; i += 2) {
-      String num = str.substring(i, i + 2);
-      int byte = int.parse(num, radix: 16);
-      result[i ~/ 2] = byte;
+      final high = _hexDigit(str.codeUnitAt(i));
+      final low = _hexDigit(str.codeUnitAt(i + 1));
+      if (high == -1 || low == -1) {
+        throw FormatException("Invalid hexadecimal string", hex);
+      }
+      result[i ~/ 2] = (high << 4) | low;
     }
     return result;
+  }
+
+  static int _hexDigit(int code) {
+    if (code >= 0x30 && code <= 0x39) return code - 0x30; // 0-9
+    if (code >= 0x61 && code <= 0x66) return code - 0x57; // a-f
+    if (code >= 0x41 && code <= 0x46) return code - 0x37; // A-F
+    return -1;
   }
 
   static String trimHex(String hex) {

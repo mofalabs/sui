@@ -27,3 +27,4 @@ pubspec.lock
 .dart_tool/
 .packages
 build/
+pubspec_overrides.yaml

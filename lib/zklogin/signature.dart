@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bcs/index.dart';
+import 'package:bcs/bcs.dart';
 import 'package:sui/cryptography/signature.dart';
 import 'package:sui/zklogin/types.dart';
 
