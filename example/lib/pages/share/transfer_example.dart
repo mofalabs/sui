@@ -119,7 +119,7 @@ class _TransferExampleState extends State<TransferExample> {
       });
       try {
         final faucet = FaucetClient(SuiUrls.faucetDev);
-        await faucet.requestSuiFromFaucetV1(address);
+        await faucet.requestSuiFromFaucetV2(address);
         _getBalance();
       } catch (e) {
         showSnackBar(context, e.toString());

@@ -13,61 +13,28 @@ class FaucetCoinInfo {
   }
 }
 
+/// Response of the faucet `/v2/gas` route.
+///
+/// On success the faucet returns
+/// `{"status": "Success", "coins_sent": [...]}`; on failure `status` is an
+/// object such as `{"Failure": {"Internal": "..."}}` and `coins_sent` is
+/// null, so [error] carries the stringified failure and [isSuccess] is false.
 class FaucetResponse {
-  final List<FaucetCoinInfo> transferredGasObjects;
+  final List<FaucetCoinInfo> coinsSent;
   final String? error;
 
-  FaucetResponse(this.transferredGasObjects, this.error);
+  bool get isSuccess => error == null;
+
+  FaucetResponse(this.coinsSent, this.error);
 
   factory FaucetResponse.fromJson(dynamic data) {
-    final gasObjects = (data['transferredGasObjects'] as List)
-        .map((x) => FaucetCoinInfo.fromJson(x))
-        .toList();
-
-    return FaucetResponse(gasObjects, data['error']);
-  }
-}
-
-class BatchFaucetResponse {
-  final String? task;
-  final String? error;
-
-  BatchFaucetResponse(this.task, this.error);
-
-  factory BatchFaucetResponse.fromJson(dynamic data) {
-    return BatchFaucetResponse(data['task'], data['error']);
-  }
-}
-
-enum BatchSendStatus { INPROGRESS, SUCCEEDED, DISCARDED }
-
-class BatchSendStatusType {
-  BatchSendStatus status;
-  List<FaucetCoinInfo>? gasObjects;
-
-  BatchSendStatusType(this.status, this.gasObjects);
-
-  factory BatchSendStatusType.fromJson(dynamic data) {
-    var gasObjects = data['transferred_gas_objects'];
-    if (gasObjects != null) {
-      gasObjects = (gasObjects["sent"] as List)
-          .map((x) => FaucetCoinInfo.fromJson(x))
-          .toList();
-    }
-
-    return BatchSendStatusType(
-        BatchSendStatus.values.byName(data['status']), gasObjects);
-  }
-}
-
-class BatchStatusFaucetResponse {
-  BatchSendStatusType status;
-  final String? error;
-
-  BatchStatusFaucetResponse(this.status, this.error);
-
-  factory BatchStatusFaucetResponse.fromJson(dynamic data) {
-    return BatchStatusFaucetResponse(
-        BatchSendStatusType.fromJson(data['status']), data['error']);
+    final status = data['status'];
+    final error =
+        status == 'Success' ? null : (status?.toString() ?? 'Unknown error');
+    final coins = (data['coins_sent'] as List?) ?? const [];
+    return FaucetResponse(
+      coins.map((x) => FaucetCoinInfo.fromJson(x)).toList(),
+      error,
+    );
   }
 }

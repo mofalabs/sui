@@ -36,7 +36,6 @@ Hex.encode(account.getPublicKey());
 ?
 ```dart
 import 'package:sui/sui.dart';
-import 'package:sui/types/faucet.dart';
 
 final account = SuiAccount.ed25519Account();
 final suiClient = SuiClient(SuiUrls.devnet);
@@ -44,7 +43,7 @@ final coinBalance = await suiClient.getBalance(account.getAddress());
 final balance = coinBalance.totalBalance;
 
 final faucet = FaucetClient(SuiUrls.faucetDev);
-await faucet.requestSuiFromFaucetV1(account.getAddress());
+await faucet.requestSuiFromFaucetV2(account.getAddress());
 ```
 ?
 ```dart

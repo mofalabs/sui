@@ -4,7 +4,6 @@ import 'package:example/widget/markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/faucet.dart';
 
 class FaucetExample extends StatefulWidget {
   const FaucetExample({super.key});
@@ -66,18 +65,7 @@ class _FaucetExampleState extends State<FaucetExample> {
       });
       try {
         final faucet = FaucetClient(faucetUrl[network]);
-        final faucetResp = await faucet.requestSuiFromFaucetV1(address);
-        if (faucetResp.task != null) {
-          while (true) {
-            final statusResp =
-                await faucet.getFaucetRequestStatus(faucetResp.task!);
-            if (statusResp.status.status == BatchSendStatus.SUCCEEDED) {
-              break;
-            } else {
-              await Future.delayed(const Duration(seconds: 3));
-            }
-          }
-        }
+        await faucet.requestSuiFromFaucetV2(address);
       } catch (e) {
         showSnackBar(context, e.toString());
       } finally {

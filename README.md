@@ -203,16 +203,10 @@ final mainnetClient = SuiClient(SuiUrls.mainnet);
 
 ### Getting coins from the faucet
 
-#### Faucet V0
 ```dart
 final faucet = FaucetClient(SuiUrls.faucetDev);
-await faucet.requestSuiFromFaucetV0('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
-```
-
-#### Faucet V1
-```dart
-final faucet = FaucetClient(SuiUrls.faucetDev);
-await faucet.requestSuiFromFaucetV1('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+final resp = await faucet.requestSuiFromFaucetV2('0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
+print(resp.coinsSent.first.transferTxDigest);
 ```
 
 ### Writing APIs

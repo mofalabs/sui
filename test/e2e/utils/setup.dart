@@ -49,7 +49,7 @@ Future<TestToolbox> setup([int faucetCount = 1]) async {
   final faucetClient = FaucetClient(DEFAULT_FAUCET_URL);
   for (var i = 0; i < faucetCount; i++) {
     try {
-      await faucetClient.requestSuiFromFaucetV0(address);
+      await faucetClient.requestSuiFromFaucetV2(address);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -65,7 +65,7 @@ Future<TestToolbox> setupWithFundedAddress(
   final faucetClient = FaucetClient(DEFAULT_FAUCET_URL);
   for (var i = 0; i < faucetCount; i++) {
     try {
-      await faucetClient.requestSuiFromFaucetV0(address);
+      await faucetClient.requestSuiFromFaucetV2(address);
     } catch (e) {
       debugPrint(e.toString());
     }

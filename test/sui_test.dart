@@ -20,15 +20,9 @@ void main() {
     debugPrint(mainnetClient.client.url);
   });
 
-  test('test Getting coins from the faucet v0', () async {
+  test('test Getting coins from the faucet v2', () async {
     final faucet = FaucetClient(SuiUrls.faucetDev);
-    await faucet.requestSuiFromFaucetV0(
-        '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
-  });
-
-  test('test Getting coins from the faucet v1', () async {
-    final faucet = FaucetClient(SuiUrls.faucetDev);
-    await faucet.requestSuiFromFaucetV1(
+    await faucet.requestSuiFromFaucetV2(
         '0xa2d8bb82df40770ac5bc8628d8070b041a13386fef17db27b32f3b0f316ae5a2');
   });
 
@@ -234,8 +228,8 @@ void main() {
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(SuiUrls.faucetDev);
-      final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-      assert(resp.transferredGasObjects.isNotEmpty);
+      final resp = await faucet.requestSuiFromFaucetV2(account.getAddress());
+      assert(resp.coinsSent.isNotEmpty);
       coins = await client.getCoins(account.getAddress());
     }
 
@@ -260,8 +254,8 @@ void main() {
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(SuiUrls.faucetDev);
-      final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-      assert(resp.transferredGasObjects.isNotEmpty);
+      final resp = await faucet.requestSuiFromFaucetV2(account.getAddress());
+      assert(resp.coinsSent.isNotEmpty);
       coins = await client.getCoins(account.getAddress());
     }
 
@@ -286,8 +280,8 @@ void main() {
     var coins = await client.getCoins(account.getAddress());
     if (coins.data.isEmpty) {
       final faucet = FaucetClient(SuiUrls.faucetDev);
-      final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-      assert(resp.transferredGasObjects.isNotEmpty);
+      final resp = await faucet.requestSuiFromFaucetV2(account.getAddress());
+      assert(resp.coinsSent.isNotEmpty);
       coins = await client.getCoins(account.getAddress());
     }
 
@@ -311,8 +305,8 @@ void main() {
     final suiBalance = await client.getBalance(account.getAddress());
     if (suiBalance.totalBalance == BigInt.zero) {
       final faucet = FaucetClient(SuiUrls.faucetDev);
-      final resp = await faucet.requestSuiFromFaucetV0(account.getAddress());
-      assert(resp.transferredGasObjects.isNotEmpty);
+      final resp = await faucet.requestSuiFromFaucetV2(account.getAddress());
+      assert(resp.coinsSent.isNotEmpty);
     }
 
     final tx = Transaction();

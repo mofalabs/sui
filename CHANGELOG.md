@@ -180,3 +180,16 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
 * `Transaction.pureInt` now honors its `type` argument (previously always
   serialized as `u64`).
 * `SenderTransactionPage.digests` convenience getter (GraphQL client).
+
+## 0.4.3
+
+* **Breaking:** faucet migrated to the `/v2/gas` route. The `/gas` (V0) and
+  `/v1/gas` (V1) routes are deprecated upstream — devnet already rejects them
+  with `Route deprecated. Use /v2/gas instead.` — so
+  `requestSuiFromFaucetV0`, `requestSuiFromFaucetV1` and
+  `getFaucetRequestStatus` are removed in favor of a single
+  `requestSuiFromFaucetV2`, which throws when the faucet reports a
+  non-success status. `FaucetResponse` now mirrors the v2 payload
+  (`coinsSent` + `isSuccess`/`error`); `BatchFaucetResponse`,
+  `BatchSendStatus`, `BatchSendStatusType` and `BatchStatusFaucetResponse`
+  are gone.

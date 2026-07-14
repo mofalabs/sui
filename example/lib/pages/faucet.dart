@@ -2,7 +2,6 @@ import 'package:example/components/button.dart';
 import 'package:example/helper/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/types/faucet.dart';
 
 class Faucet extends StatefulWidget {
   const Faucet(this.account, {super.key});
@@ -43,18 +42,7 @@ class _FaucetState extends State<Faucet> {
 
       try {
         final faucet = FaucetClient(SuiUrls.faucetDev);
-        final faucetResp = await faucet.requestSuiFromFaucetV1(address);
-        if (faucetResp.task != null) {
-          while (true) {
-            final statusResp =
-                await faucet.getFaucetRequestStatus(faucetResp.task!);
-            if (statusResp.status.status == BatchSendStatus.SUCCEEDED) {
-              break;
-            } else {
-              await Future.delayed(const Duration(seconds: 3));
-            }
-          }
-        }
+        await faucet.requestSuiFromFaucetV2(address);
       } catch (e) {
         showSnackBar(context, e.toString());
       } finally {
