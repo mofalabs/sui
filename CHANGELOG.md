@@ -193,3 +193,12 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   (`coinsSent` + `isSuccess`/`error`); `BatchFaucetResponse`,
   `BatchSendStatus`, `BatchSendStatusType` and `BatchStatusFaucetResponse`
   are gone.
+
+## 0.4.4
+
+* **Breaking:** `SuiGraphQLClient.queryTransactionsBySender` is renamed to
+  `queryTransactionsByAddress` and now filters by `affectedAddress` instead of
+  `sentAddress`, so an account's transaction history includes both sent and
+  received transactions (the old query dropped every incoming transfer). The
+  `getTransactions` compatibility helper keeps the same signature and gains the
+  received transactions automatically.

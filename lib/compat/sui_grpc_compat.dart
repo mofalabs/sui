@@ -550,7 +550,7 @@ class SuiGrpcCompat {
     String? filterFromCursor,
     String? filterToCursor,
   }) async {
-    final page = await graphql.queryTransactionsBySender(address,
+    final page = await graphql.queryTransactionsByAddress(address,
         first: limit ?? 20, after: filterFromCursor);
     final txs = page.transactions
         .map((t) => SuiTransactionBlockResponse.fromJson({

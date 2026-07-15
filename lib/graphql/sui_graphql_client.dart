@@ -24,23 +24,24 @@ class SuiGraphQLClient {
     return data['chainIdentifier'] as String;
   }
 
-  /// Query transaction digests filtered by sender address.
+  /// Query transactions that affected [address] — both sent and received.
   ///
-  /// Returns the page of digests and the end cursor. Full result hydration is
-  /// left to callers via the gRPC `getTransaction` once digests are known.
-  Future<SenderTransactionPage> queryTransactionsBySender(
-    String sender, {
+  /// Uses the `affectedAddress` filter so an account's activity is complete;
+  /// `sentAddress` would only return transactions the account signed, dropping
+  /// every incoming transfer. Each node carries the timestamp, status, and the
+  /// per-owner balance deltas, so callers can derive direction / counterparty
+  /// from the balance changes without a second lookup.
+  Future<SenderTransactionPage> queryTransactionsByAddress(
+    String address, {
     int first = 20,
     String? after,
   }) async {
-    // Fetch enough per transaction to render a wallet activity row: timestamp,
-    // status, and the balance deltas (amount / coin / owner).
     const q = r'''
-      query ($sender: SuiAddress!, $first: Int!, $after: String) {
+      query ($address: SuiAddress!, $first: Int!, $after: String) {
         transactions(
           first: $first
           after: $after
-          filter: { sentAddress: $sender }
+          filter: { affectedAddress: $address }
         ) {
           pageInfo { hasNextPage endCursor }
           nodes {
@@ -57,7 +58,7 @@ class SuiGraphQLClient {
       }
     ''';
     final data = await transport.query(q, variables: {
-      'sender': sender,
+      'address': address,
       'first': first,
       if (after != null) 'after': after,
     });

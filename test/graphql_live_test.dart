@@ -17,9 +17,9 @@ void main() {
     expect(id, '69WiPg3DAQiwdxfncX6wYQ2siKwAe6L9BZthQea3JNMD');
   });
 
-  test('queryTransactionsBySender returns a page of digests', () async {
-    // 0x0...0 (the "0x0" sender) has transactions on testnet (system txs).
-    final page = await client.queryTransactionsBySender(
+  test('queryTransactionsByAddress returns a page of digests', () async {
+    // 0x0...0 (the "0x0" address) has transactions on testnet (system txs).
+    final page = await client.queryTransactionsByAddress(
       '0x0000000000000000000000000000000000000000000000000000000000000000',
       first: 3,
     );

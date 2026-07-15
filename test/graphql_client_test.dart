@@ -49,9 +49,9 @@ void main() {
     expect(adapter.lastRequestBody!['query'], contains('chainIdentifier'));
   });
 
-  test('queryTransactionsBySender sends filter + parses page', () async {
+  test('queryTransactionsByAddress sends filter + parses page', () async {
     final adapter = _MockAdapter((body) {
-      expect(body['variables']['sender'], '0xabc');
+      expect(body['variables']['address'], '0xabc');
       expect(body['variables']['first'], 2);
       return {
         'data': {
@@ -67,11 +67,11 @@ void main() {
     });
     final client =
         SuiGraphQLClient(endpoint: 'https://x/graphql', dio: _dioWith(adapter));
-    final page = await client.queryTransactionsBySender('0xabc', first: 2);
+    final page = await client.queryTransactionsByAddress('0xabc', first: 2);
     expect(page.digests, ['D1', 'D2']);
     expect(page.hasNextPage, isTrue);
     expect(page.endCursor, 'cursor1');
-    expect(adapter.lastRequestBody!['query'], contains('sentAddress'));
+    expect(adapter.lastRequestBody!['query'], contains('affectedAddress'));
   });
 
   test('GraphQL errors are surfaced as GraphQLException', () async {
