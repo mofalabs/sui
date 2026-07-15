@@ -74,6 +74,27 @@ void main() {
     expect(adapter.lastRequestBody!['query'], contains('affectedAddress'));
   });
 
+  test('queryTransactionsBySender uses the sentAddress filter', () async {
+    final adapter = _MockAdapter((body) {
+      expect(body['variables']['sender'], '0xabc');
+      return {
+        'data': {
+          'transactions': {
+            'pageInfo': {'hasNextPage': false, 'endCursor': null},
+            'nodes': [
+              {'digest': 'S1'},
+            ],
+          }
+        }
+      };
+    });
+    final client =
+        SuiGraphQLClient(endpoint: 'https://x/graphql', dio: _dioWith(adapter));
+    final page = await client.queryTransactionsBySender('0xabc');
+    expect(page.digests, ['S1']);
+    expect(adapter.lastRequestBody!['query'], contains('sentAddress'));
+  });
+
   test('GraphQL errors are surfaced as GraphQLException', () async {
     final adapter = _MockAdapter((_) => {
           'errors': [

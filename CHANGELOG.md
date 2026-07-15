@@ -202,3 +202,12 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   received transactions (the old query dropped every incoming transfer). The
   `getTransactions` compatibility helper keeps the same signature and gains the
   received transactions automatically.
+
+## 0.4.5
+
+* Restore `SuiGraphQLClient.queryTransactionsBySender` (the `sentAddress`
+  sender-only primitive) alongside `queryTransactionsByAddress` (`affectedAddress`,
+  sent + received). 0.4.4 replaced the former with the latter, which removed a
+  valid query; both now coexist. `getTransactions` continues to use
+  `affectedAddress` for a complete wallet history. Additive over 0.4.4 — no
+  breaking changes.

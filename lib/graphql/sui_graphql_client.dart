@@ -62,6 +62,49 @@ class SuiGraphQLClient {
       'first': first,
       if (after != null) 'after': after,
     });
+    return _parseTransactionsPage(data);
+  }
+
+  /// Query transactions the account *sent* (signed), via the `sentAddress`
+  /// filter — the sender-only primitive. For a complete wallet history that
+  /// also includes incoming transfers, use [queryTransactionsByAddress].
+  Future<SenderTransactionPage> queryTransactionsBySender(
+    String sender, {
+    int first = 20,
+    String? after,
+  }) async {
+    const q = r'''
+      query ($sender: SuiAddress!, $first: Int!, $after: String) {
+        transactions(
+          first: $first
+          after: $after
+          filter: { sentAddress: $sender }
+        ) {
+          pageInfo { hasNextPage endCursor }
+          nodes {
+            digest
+            effects {
+              timestamp
+              status
+              balanceChanges {
+                nodes { amount coinType { repr } owner { address } }
+              }
+            }
+          }
+        }
+      }
+    ''';
+    final data = await transport.query(q, variables: {
+      'sender': sender,
+      'first': first,
+      if (after != null) 'after': after,
+    });
+    return _parseTransactionsPage(data);
+  }
+
+  /// Parses a `transactions` GraphQL page into a [SenderTransactionPage].
+  /// Shared by [queryTransactionsByAddress] and [queryTransactionsBySender].
+  SenderTransactionPage _parseTransactionsPage(Map<String, dynamic> data) {
     final tx = data['transactions'] as Map<String, dynamic>;
     final txs = (tx['nodes'] as List)
         .map((n) => SenderTransaction._fromNode(n as Map<String, dynamic>))
