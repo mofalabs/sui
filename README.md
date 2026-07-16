@@ -8,8 +8,6 @@ Sui Dart SDK
 > for advanced queries — see [gRPC-web API (recommended)](#grpc-web-api-recommended) below.
 > The legacy `SuiClient` (JSON-RPC) API is kept for compatibility but is `@Deprecated` and will stop working.
 
-> Note: This branch is in active development and may introduce breaking changes. If you don’t need Transaction v2 feature, use the `v1` branch.
-
 Installation
 -
 
