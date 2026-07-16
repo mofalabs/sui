@@ -16,6 +16,7 @@ enum SignatureScheme {
   Secp256r1,
   MultiSig,
   ZkLogin,
+  Passkey,
 }
 
 // ignore: camel_case_types
@@ -25,6 +26,7 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
   static const int Secp256r1 = 0x02;
   static const int MultiSig = 0x03;
   static const int ZkLogin = 0x05;
+  static const int Passkey = 0x06;
 
   static int schemeToFlag(SignatureScheme scheme) {
     switch (scheme) {
@@ -38,6 +40,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
         return MultiSig;
       case SignatureScheme.ZkLogin:
         return ZkLogin;
+      case SignatureScheme.Passkey:
+        return Passkey;
       // ignore: unreachable_switch_default
       default:
         throw ArgumentError("Undefined Signature Scheme $scheme");
@@ -56,6 +60,8 @@ abstract class SIGNATURE_SCHEME_TO_FLAG {
         return SignatureScheme.MultiSig;
       case ZkLogin:
         return SignatureScheme.ZkLogin;
+      case Passkey:
+        return SignatureScheme.Passkey;
       default:
         throw ArgumentError("Undefined Signature Flag $flag");
     }

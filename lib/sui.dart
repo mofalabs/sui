@@ -60,6 +60,8 @@ export 'cryptography/secp256.dart';
 export 'cryptography/secp256_publickey.dart';
 export 'cryptography/secp256k1_keypair.dart';
 export 'cryptography/secp256r1_keypair.dart';
+export 'cryptography/passkey_publickey.dart';
+export 'cryptography/passkey_keypair.dart';
 export 'cryptography/signature.dart';
 export 'cryptography/multisig.dart';
 export 'rpc/client.dart';

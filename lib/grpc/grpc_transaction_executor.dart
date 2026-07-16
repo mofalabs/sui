@@ -63,23 +63,22 @@ extension GrpcTransactionExecutor on GrpcCoreClient {
     final gasPrice = BigInt.from((await getReferenceGasPrice()).toInt());
     tx.setGasPrice(gasPrice);
 
-    final gasCoin = await _selectGasCoin(sender);
-    tx.setGasPayment([gasCoin]);
-
     if (gasBudget != null) {
+      tx.setGasPayment([await _selectGasCoin(sender)]);
       tx.setGasBudget(gasBudget);
       return tx.build(buildOptions);
     }
 
-    // Estimate budget by simulating. The provisional budget must (a) not exceed
-    // the gas coin's balance and (b) leave room for amounts the transaction
-    // splits off the gas coin. Use a modest cap; callers moving large amounts
-    // from gas should pass an explicit [gasBudget].
-    final suiBalance = BigInt.from((await getBalance(sender)).balance.toInt());
-    final provisionalCap = BigInt.from(100000000); // 0.1 SUI
-    tx.setGasBudget(suiBalance < provisionalCap ? suiBalance : provisionalCap);
-    final provisional = await tx.build(buildOptions);
-    final sim = await simulateTransaction(provisional);
+    // Estimate gas the way Mysten's TS SDK does: dry-run with a fixed MAX_GAS
+    // budget and an EMPTY gas payment, so the estimate isn't constrained by any
+    // single coin's balance. Pinning a coin and capping the budget at the
+    // balance breaks a partial transfer that splits SUI off the gas coin, since
+    // (budget + split) must fit in that one coin. An explicit empty payment
+    // skips the builder's coin auto-selection; the server picks gas for the dry
+    // run (doGasSelection). The real coin + computed budget are set afterwards.
+    tx.setGasPayment(<SuiObjectRef>[]);
+    tx.setGasBudget(BigInt.from(50000000000)); // 50 SUI (matches TS MAX_GAS)
+    final sim = await simulateTransaction(await tx.build(buildOptions));
     final status = sim.transaction.effects.status;
     if (!status.success) {
       throw StateError('Gas estimation simulation failed: ${status.error}');
@@ -92,6 +91,7 @@ extension GrpcTransactionExecutor on GrpcCoreClient {
     final withStorage = base + storage - rebate;
     final budget = withStorage > base ? withStorage : base;
 
+    tx.setGasPayment([await _selectGasCoin(sender)]);
     tx.setGasBudget(budget);
     return tx.build(buildOptions);
   }

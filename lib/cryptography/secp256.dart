@@ -26,6 +26,24 @@ class Secp256 {
 
   factory Secp256.fromSecp256r1() => Secp256(curve256r1Params);
 
+  // Field prime (p) of the underlying curve, selected by the curve order (n) so
+  // point recovery/verify use the right modulus for BOTH secp256k1 and
+  // secp256r1 (passkey). Previously this was hardcoded to secp256k1's prime,
+  // which could wrongly reject valid secp256r1 candidates for recovery id 2/3.
+  static final BigInt _secp256k1FieldPrime = BigInt.parse(
+      'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f',
+      radix: 16);
+  static final BigInt _secp256r1FieldPrime = BigInt.parse(
+      'ffffffff00000001000000000000000000000000ffffffffffffffffffffffff',
+      radix: 16);
+  static final BigInt _secp256r1Order = BigInt.parse(
+      'ffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551',
+      radix: 16);
+
+  BigInt get _fieldPrime => _ecDomainParams.n == _secp256r1Order
+      ? _secp256r1FieldPrime
+      : _secp256k1FieldPrime;
+
   AsymmetricKeyPair<PublicKey, PrivateKey> generateKeypair(
       [SecureRandom? random]) {
     random ??= getRandom();
@@ -111,6 +129,56 @@ class Secp256 {
     return SignatureData(signature.r, signature.s);
   }
 
+  /// Compress an uncompressed (`0x04 || x || y`) EC point to 33 bytes.
+  Uint8List compressPoint(Uint8List uncompressed) {
+    final point = _ecDomainParams.curve.decodePoint(uncompressed);
+    if (point == null) throw ArgumentError('Invalid EC point');
+    return Uint8List.fromList(point.getEncoded(true));
+  }
+
+  /// Decode a DER ECDSA signature into `(r, s)`. ECDSA signatures are short
+  /// (< 128 bytes) so the ASN.1 lengths are always single-byte.
+  (BigInt, BigInt) _decodeDer(Uint8List der) {
+    var i = 0;
+    if (der[i++] != 0x30) throw ArgumentError('Invalid DER: no sequence');
+    i++; // total sequence length
+    if (der[i++] != 0x02) throw ArgumentError('Invalid DER: no r integer');
+    final rLen = der[i++];
+    final r = decodeBigIntToUnsigned(der.sublist(i, i + rLen));
+    i += rLen;
+    if (der[i++] != 0x02) throw ArgumentError('Invalid DER: no s integer');
+    final sLen = der[i++];
+    final s = decodeBigIntToUnsigned(der.sublist(i, i + sLen));
+    return (r, s);
+  }
+
+  /// Decode a DER ECDSA signature into a low-S–normalized 64-byte compact sig.
+  Uint8List derToNormalizedCompact(Uint8List der) {
+    final (r, s) = _decodeDer(der);
+    var sig = ECSignature(r, s);
+    if (!sig.isNormalized(_ecDomainParams)) {
+      sig = sig.normalize(_ecDomainParams);
+    }
+    return SignatureData(sig.r, sig.s).toBytes();
+  }
+
+  /// Recover up to 4 candidate compressed public keys from a DER ECDSA
+  /// signature over [messageHash] (used for passkey wallet recovery).
+  List<Uint8List> recoverCompressedFromDer(
+      Uint8List der, Uint8List messageHash) {
+    final (r, s) = _decodeDer(der);
+    final sig = SignatureData(r, s);
+    final res = <Uint8List>[];
+    for (var i = 0; i < 4; i++) {
+      try {
+        res.add(ecRecover(i, messageHash, sig, true));
+      } catch (_) {
+        continue;
+      }
+    }
+    return res;
+  }
+
   int recoveryId(
     ECSignature signature,
     Uint8List messageHash,
@@ -146,11 +214,7 @@ class Secp256 {
     final i = BigInt.from(recId ~/ 2);
     final x = sig.r + (i * n);
 
-    final prime = BigInt.parse(
-      'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f',
-      radix: 16,
-    );
-    if (x.compareTo(prime) >= 0) return null;
+    if (x.compareTo(_fieldPrime) >= 0) return null;
 
     final R = _decompressKey(x, (recId & 1) == 1);
     if (!(R * n)!.isInfinity) return null;

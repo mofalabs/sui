@@ -279,6 +279,15 @@ class SuiBcs {
     'multisig_pk': MultiSigPublicKey,
   });
 
+  /// SIP-9 passkey authenticator. The serialized passkey signature is
+  /// `flag(0x06) || BCS(PasskeyAuthenticator)`, where `userSignature` itself is
+  /// `flag(secp256r1=0x02) || 64-byte-sig || 33-byte-compressed-pubkey`.
+  static final PasskeyAuthenticator = Bcs.struct('PasskeyAuthenticator', {
+    'authenticatorData': Bcs.vector(Bcs.u8()),
+    'clientDataJson': Bcs.string(),
+    'userSignature': Bcs.vector(Bcs.u8()),
+  });
+
   static final base64String = Bcs.vector(Bcs.u8()).transform(
     input: (dynamic val) => val is String ? base64Decode(val) : val,
     output: (List<int> val) => base64Encode(Uint8List.fromList(val)),

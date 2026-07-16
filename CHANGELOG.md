@@ -226,3 +226,24 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   `objectChanges` list (`TxObjectChange`). `getTransactions` requests object
   changes and maps them into `SuiTransactionBlockResponse.objectChanges`.
   Additive over 0.4.5 — no breaking changes.
+
+## 0.4.7
+
+* Add **Passkey (SIP-9)** support: a `Passkey` signature scheme (flag `0x06`),
+  `PasskeyPublicKey` (33-byte compressed secp256r1, address derivation, `verify`)
+  with `parseDerSPKI`, the `PasskeyAuthenticator` BCS struct, and a
+  `PasskeyKeypair` signer over a platform-agnostic `PasskeyProvider`
+  (`sign`/`signWithIntent`, plus `signAndRecover` + `findCommonPublicKey` for
+  recovering a wallet's public key from assertions). Verified against Mysten's
+  `@mysten/sui` passkey test vectors (address, sign/verify, recover).
+* Fix automatic gas-budget estimation for partial transfers from a small
+  balance. The provisional dry-run budget was capped at `min(balance, 0.1 SUI)`
+  with a pinned gas coin, so a transaction splitting SUI off that coin needed
+  `split + budget` to fit in one coin and failed once the balance was near the
+  cap. It now mirrors Mysten's TS SDK — dry-run with a fixed `MAX_GAS` (50 SUI)
+  and an empty gas payment (server-side gas selection), unconstrained by any
+  coin — then sets the real coin + computed budget.
+* Fix secp256r1 public-key recovery: `recoverFromSignature` hardcoded the
+  secp256k1 field prime for both curves, which could reject valid secp256r1
+  recovery-id 2/3 candidates. The field prime is now selected by curve order.
+* Additive over 0.4.6 — no breaking changes.
