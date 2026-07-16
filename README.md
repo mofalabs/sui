@@ -1,7 +1,7 @@
 Sui Dart SDK
 -
 
-[![Pub](https://img.shields.io/badge/pub-v0.4.0-blue)](https://pub.dev/packages/sui)
+[![Pub](https://img.shields.io/pub/v/sui.svg)](https://pub.dev/packages/sui)
 
 > ⚠️ **JSON-RPC is being decommissioned by Sui (public endpoints shut down July 2026, fully off 2026-07-31).**
 > Use the new **gRPC-web** client (`SuiGrpcClient`) for reads/writes and **GraphQL** (`SuiGraphQLClient`)
@@ -15,7 +15,7 @@ Installation
 
 ```
 dependencies:
-  sui: ^0.4.0
+  sui: ^0.4.6
 ```
 
 Demo
