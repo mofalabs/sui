@@ -261,3 +261,10 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   `resolveGasData` (with a default no-op returning null). Code that `implements`
   the interface must add the method; `extends` users and normal SDK usage
   (`SuiClient` / `SuiGrpcClient`) are unaffected.
+
+## 0.4.8
+
+* Percent-decode `grpc-message` error text on the trailers-only-in-headers
+  path (per the gRPC-web spec), matching the trailer-frame path — error
+  messages no longer surface `%20`-style escapes. Malformed escapes fall back
+  to the raw value.

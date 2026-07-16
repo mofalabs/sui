@@ -111,7 +111,7 @@ class GrpcWebTransport {
       if (code != GrpcStatus.ok) {
         throw GrpcWebException(
           code,
-          resp.headers.value('grpc-message') ?? 'gRPC error',
+          _decodeGrpcMessage(resp.headers.value('grpc-message') ?? 'gRPC error'),
         );
       }
     }
@@ -232,10 +232,20 @@ class GrpcWebTransport {
       if (key == 'grpc-status') {
         status = int.tryParse(value) ?? GrpcStatus.unknown;
       }
-      if (key == 'grpc-message') message = Uri.decodeFull(value);
+      if (key == 'grpc-message') message = _decodeGrpcMessage(value);
     }
     if (status != GrpcStatus.ok) {
       throw GrpcWebException(status, message ?? 'gRPC error');
+    }
+  }
+
+  /// `grpc-message` values are percent-encoded (gRPC-web spec); decode them
+  /// for human-readable errors, keeping the raw value on malformed escapes.
+  static String _decodeGrpcMessage(String value) {
+    try {
+      return Uri.decodeFull(value);
+    } catch (_) {
+      return value;
     }
   }
 
