@@ -133,8 +133,7 @@ class ParsedPasskeySignature {
   });
 
   /// The 33-byte compressed public key carried in [userSignature].
-  Uint8List get publicKey =>
-      userSignature.sublist(1 + PASSKEY_SIGNATURE_SIZE);
+  Uint8List get publicKey => userSignature.sublist(1 + PASSKEY_SIGNATURE_SIZE);
 }
 
 /// Parses `flag(0x06) || BCS(PasskeyAuthenticator)` into its fields.

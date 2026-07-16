@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import '../builder/transaction_block_data.dart';
 import '../builder/transaction_builder_client.dart';
+import 'grpc_transaction_mapper.dart';
 import '../types/coins.dart';
 import '../types/normalized.dart';
 import '../types/objects.dart';
@@ -11,14 +13,8 @@ import 'proto/sui/rpc/v2/move_package.pb.dart';
 import 'proto/sui/rpc/v2/owner.pb.dart';
 
 /// Adapts [GrpcCoreClient] to the [TransactionBuilderClient] interface so the
-/// existing [Transaction] builder can resolve objects and Move function
-/// signatures over gRPC-web (enabling `moveCall` with object arguments).
-///
-/// Object resolution and Move-function lookup are fully implemented. Gas-coin
-/// selection and budget dry-run are intentionally left to
-/// `GrpcTransactionExecutor` (which sets gas explicitly and estimates the
-/// budget via `simulateTransaction`), so those interface methods are not used
-/// on the executor path.
+/// [Transaction] builder can resolve objects, Move function signatures and gas
+/// (via server-side [resolveGasData]) over gRPC-web.
 class GrpcBuilderAdapter implements TransactionBuilderClient {
   GrpcBuilderAdapter(this.core);
 
@@ -144,7 +140,38 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
   Future<BigInt> getReferenceGasPrice() async =>
       BigInt.from((await core.getReferenceGasPrice()).toInt());
 
-  // --- Not used on the executor path (gas is set explicitly there). ---
+  @override
+  Future<ResolvedGasData?> resolveGasData(
+      TransactionBlockDataBuilder data) async {
+    // Structured message (not BCS, which cannot express an unset budget) +
+    // `doGasSelection` — mirrors Mysten's TS gRPC `resolveTransactionPlugin`.
+    final grpcTx = transactionDataToGrpcTransaction(data);
+    final sim = await core.simulateStructured(
+      grpcTx,
+      doGasSelection: true,
+      readMask: const [
+        'transaction.transaction.gas_payment',
+        'transaction.effects.status',
+      ],
+    );
+    final status = sim.transaction.effects.status;
+    if (!status.success) {
+      throw StateError(
+          'Gas resolution simulation failed: ${status.error.description}');
+    }
+    final gp = sim.transaction.transaction.gasPayment;
+    if (gp.objects.isEmpty) {
+      // Server did not resolve a gas payment; let the caller fall back.
+      return null;
+    }
+    return ResolvedGasData(
+      budget: BigInt.parse(gp.budget.toString()),
+      price: gp.hasPrice() ? BigInt.parse(gp.price.toString()) : null,
+      payment: gp.objects
+          .map((o) => SuiObjectRef(o.digest, o.objectId, o.version.toInt()))
+          .toList(),
+    );
+  }
 
   @override
   Future<dynamic> getProtocolConfig([String? version]) async {

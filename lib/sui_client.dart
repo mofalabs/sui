@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:sui/builder/transaction.dart';
+import 'package:sui/builder/transaction_block_data.dart';
 import 'package:sui/builder/transaction_builder_client.dart';
 import 'package:sui/models/dev_inspect_results.dart';
 import 'package:sui/signers/signer_with_provider.dart';
@@ -27,6 +28,14 @@ class SuiClient extends SignerWithProvider implements TransactionBuilderClient {
 
   /// The signing account, or null if none has been set.
   SuiAccount? get account => _account;
+
+  /// JSON-RPC has no server-side gas resolution; the builder falls back to
+  /// local coin selection and a budget dry-run.
+  @override
+  Future<ResolvedGasData?> resolveGasData(
+    TransactionBlockDataBuilder data,
+  ) async =>
+      null;
 
   @override
   void setSigner(SuiAccount signer) {

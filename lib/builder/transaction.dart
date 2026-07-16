@@ -406,8 +406,7 @@ class Transaction {
     return pure.string(str);
   }
 
-  Map<String, dynamic> pureVector(List<dynamic> value,
-      [String type = 'u64']) {
+  Map<String, dynamic> pureVector(List<dynamic> value, [String type = 'u64']) {
     return pure.vector(type, value);
   }
 
@@ -1101,44 +1100,72 @@ class Transaction {
         [_prepareGasPrice(options), _prepareTransactions(options)]);
 
     if (options.onlyTransactionKind != true) {
-      await _prepareGasPayment(options);
+      // When the gas payment and/or budget is unset, let the server resolve
+      // them in a single call where the transport supports it (gRPC `simulate`
+      // with `doGasSelection`), matching Mysten's TS gRPC client. A locally
+      // guessed budget cannot account for SUI the transaction spends from the
+      // gas coin (`budget + spend <= coin balance`).
+      final resolved = (_blockData.gasData.budget == null ||
+              _blockData.gasData.payment == null)
+          ? await expectClient(options).resolveGasData(_blockData)
+          : null;
 
-      if (_blockData.gasData.budget == null) {
-        final dryRunResult = await expectClient(options).dryRunTransaction(
-          _blockData.build(
-              gasConfig: GasConfig(
-                  budget: BigInt.tryParse(_getConfig('maxTxGas', options)),
-                  payment: [])),
-          signerAddress: _blockData.sender,
-        );
+      if (resolved != null) {
+        setGasPayment(resolved.payment);
+        if (resolved.price != null) setGasPrice(resolved.price!);
+        setGasBudget(resolved.budget);
+      } else {
+        // Fallback (e.g. JSON-RPC): select gas coins locally and estimate the
+        // budget from a dry-run.
+        await _prepareGasPayment(options);
 
-        if (dryRunResult.effects.status.status != ExecutionStatusType.success) {
-          throw ArgumentError(
-              "Dry run failed, could not automatically determine a budget: ${dryRunResult.effects.status.error}");
+        if (_blockData.gasData.budget == null) {
+          final dryRunResult = await _estimateGasDryRun(options);
+
+          final safeOverhead =
+              GAS_SAFE_OVERHEAD * (_blockData.gasData.price ?? BigInt.one);
+
+          final baseComputationCostWithOverhead =
+              BigInt.from(dryRunResult.effects.gasUsed.computationCost) +
+                  safeOverhead;
+
+          final gasBudget = baseComputationCostWithOverhead +
+              BigInt.from(dryRunResult.effects.gasUsed.storageCost) -
+              BigInt.from(dryRunResult.effects.gasUsed.storageRebate);
+
+          // Set the budget to max(computation, computation + storage - rebate)
+          setGasBudget(
+            gasBudget > baseComputationCostWithOverhead
+                ? gasBudget
+                : baseComputationCostWithOverhead,
+          );
         }
-
-        final safeOverhead =
-            GAS_SAFE_OVERHEAD * (_blockData.gasData.price ?? BigInt.one);
-
-        final baseComputationCostWithOverhead =
-            BigInt.from(dryRunResult.effects.gasUsed.computationCost) +
-                safeOverhead;
-
-        final gasBudget = baseComputationCostWithOverhead +
-            BigInt.from(dryRunResult.effects.gasUsed.storageCost) -
-            BigInt.from(dryRunResult.effects.gasUsed.storageRebate);
-
-        // Set the budget to max(computation, computation + storage - rebate)
-        setGasBudget(
-          gasBudget > baseComputationCostWithOverhead
-              ? gasBudget
-              : baseComputationCostWithOverhead,
-        );
       }
     }
 
     // Perform final validation on the transaction:
     _validate(options);
+  }
+
+  /// Dry-runs with the protocol-max budget and an empty gas payment to read
+  /// the real `gasUsed`, matching Mysten's TS JSON-RPC estimation (the empty
+  /// payment keeps the node from checking the max budget against a specific
+  /// coin's balance). Only reached when the transport has no server-side gas
+  /// resolution (see [TransactionBuilderClient.resolveGasData]).
+  Future<DryRunTransactionBlockResponse> _estimateGasDryRun(
+      BuildOptions options) async {
+    final maxGas = BigInt.tryParse(_getConfig('maxTxGas', options)) ??
+        BigInt.from(50000000000);
+    final result = await expectClient(options).dryRunTransaction(
+      _blockData.build(gasConfig: GasConfig(budget: maxGas, payment: [])),
+      signerAddress: _blockData.sender,
+    );
+    if (result.effects.status.status != ExecutionStatusType.success) {
+      throw ArgumentError(
+          'Dry run failed, could not automatically determine a budget: '
+          '${result.effects.status.error}');
+    }
+    return result;
   }
 
   bool isUsedAsMutable(TransactionBlockDataBuilder transactionData, int index) {

@@ -237,13 +237,27 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   recovering a wallet's public key from assertions). Verified against Mysten's
   `@mysten/sui` passkey test vectors (address, sign/verify, recover).
 * Fix automatic gas-budget estimation for partial transfers from a small
-  balance. The provisional dry-run budget was capped at `min(balance, 0.1 SUI)`
-  with a pinned gas coin, so a transaction splitting SUI off that coin needed
-  `split + budget` to fit in one coin and failed once the balance was near the
-  cap. It now mirrors Mysten's TS SDK — dry-run with a fixed `MAX_GAS` (50 SUI)
-  and an empty gas payment (server-side gas selection), unconstrained by any
-  coin — then sets the real coin + computed budget.
+  balance (a partial SUI transfer from ~0.1 SUI silently failed). The gRPC path
+  previously submitted the transaction to `simulate` as opaque BCS, whose
+  `GasData.budget` is a mandatory `u64` that cannot express "unset" — so the
+  server's gas selection could not run, and any fixed provisional budget was
+  wrong (`maxTxGas` exceeds a small balance; a budget near the balance leaves no
+  room for the amount split off the gas coin). Gas resolution now matches
+  Mysten's TS gRPC client (`resolveTransactionPlugin`): `Transaction.build`
+  sends the transaction as a **structured** gRPC `Transaction` with the gas
+  payment and budget left unset and `doGasSelection: true`, so the server
+  selects the gas coin and computes a fitting budget in a single call, which the
+  builder reads back and applies. New `TransactionBuilderClient.resolveGasData`
+  hook (implemented over gRPC, returns null on JSON-RPC), a
+  `transactionDataToGrpcTransaction` mapper (builder internal → structured
+  proto) and `GrpcCoreClient.simulateStructured`. On JSON-RPC (no server-side
+  resolution) the builder falls back to local coin selection and a budget
+  dry-run. The gRPC executor delegates gas price, coin selection and budget
+  entirely to `build`.
 * Fix secp256r1 public-key recovery: `recoverFromSignature` hardcoded the
   secp256k1 field prime for both curves, which could reject valid secp256r1
   recovery-id 2/3 candidates. The field prime is now selected by curve order.
-* Additive over 0.4.6 — no breaking changes.
+* **Breaking (interface implementers only):** `TransactionBuilderClient` gained
+  `resolveGasData` (with a default no-op returning null). Code that `implements`
+  the interface must add the method; `extends` users and normal SDK usage
+  (`SuiClient` / `SuiGrpcClient`) are unaffected.

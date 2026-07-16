@@ -98,13 +98,15 @@ Future<MockPasskeySigner> _mockWithFreshKey({
   final s = Secp256.fromSecp256r1();
   final sk = s.generatePrivateKeyBytes();
   final uncompressed = s.getPublicKey(decodeBigIntToUnsigned(sk), false);
-  final der = Uint8List.fromList([...SECP256R1_SPKI_HEADER, 0x04, ...uncompressed]);
+  final der =
+      Uint8List.fromList([...SECP256R1_SPKI_HEADER, 0x04, ...uncompressed]);
   return MockPasskeySigner(
       sk: sk, der: der, changeDigest: changeDigest, wrongType: wrongType);
 }
 
 void main() {
-  test('derives the known Sui address from the default passkey vector', () async {
+  test('derives the known Sui address from the default passkey vector',
+      () async {
     final signer = await PasskeyKeypair.getPasskeyInstance(MockPasskeySigner());
     expect(
       signer.getPublicKey().toSuiAddress(),
@@ -118,7 +120,8 @@ void main() {
     final message = Uint8List.fromList(utf8.encode('Hello world!'));
     final signed = await signer.signPersonalMessage(message);
 
-    expect(signer.getPublicKey().verifyPersonalMessage(message, signed.signature),
+    expect(
+        signer.getPublicKey().verifyPersonalMessage(message, signed.signature),
         isTrue);
 
     final parsed =
@@ -158,13 +161,13 @@ void main() {
 
   test('recovers the public key from two signings', () async {
     final mock = await _mockWithFreshKey();
-    final expected = (await PasskeyKeypair.getPasskeyInstance(mock))
-        .getPublicKey();
+    final expected =
+        (await PasskeyKeypair.getPasskeyInstance(mock)).getPublicKey();
 
-    final pks1 =
-        await PasskeyKeypair.signAndRecover(mock, Uint8List.fromList(utf8.encode('m1')));
-    final pks2 =
-        await PasskeyKeypair.signAndRecover(mock, Uint8List.fromList(utf8.encode('m2')));
+    final pks1 = await PasskeyKeypair.signAndRecover(
+        mock, Uint8List.fromList(utf8.encode('m1')));
+    final pks2 = await PasskeyKeypair.signAndRecover(
+        mock, Uint8List.fromList(utf8.encode('m2')));
     final common = findCommonPublicKey(pks1, pks2);
     expect(common.equals(expected), isTrue);
   });

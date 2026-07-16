@@ -230,6 +230,27 @@ class GrpcCoreClient extends CoreClient {
     return SimulateTransactionResponse.fromBuffer(bytes);
   }
 
+  /// Simulate a structured [Transaction] (as opposed to opaque BCS), so the
+  /// gas payment/budget can be left unset for server-side gas selection.
+  Future<SimulateTransactionResponse> simulateStructured(
+    Transaction structuredTx, {
+    List<String>? readMask,
+    bool doGasSelection = true,
+    bool checksEnabled = true,
+  }) async {
+    final req = SimulateTransactionRequest(
+      transaction: structuredTx,
+      readMask: _mask(readMask),
+      checks: checksEnabled
+          ? SimulateTransactionRequest_TransactionChecks.ENABLED
+          : SimulateTransactionRequest_TransactionChecks.DISABLED,
+      doGasSelection: doGasSelection,
+    );
+    final bytes =
+        await _call(_exec, 'SimulateTransaction', req.writeToBuffer());
+    return SimulateTransactionResponse.fromBuffer(bytes);
+  }
+
   @override
   Future<Package> getPackage(String packageId) async {
     final req = GetPackageRequest(packageId: packageId);
