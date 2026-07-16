@@ -29,39 +29,23 @@ class SuiGraphQLClient {
   /// Uses the `affectedAddress` filter so an account's activity is complete;
   /// `sentAddress` would only return transactions the account signed, dropping
   /// every incoming transfer. Each node carries the timestamp, status, and the
-  /// per-owner balance deltas, so callers can derive direction / counterparty
-  /// from the balance changes without a second lookup.
+  /// per-owner balance deltas; pass [options] with `showObjectChanges: true` to
+  /// also fetch object changes and surface NFT / owned-object transfers (which
+  /// produce no balance change).
   Future<SenderTransactionPage> queryTransactionsByAddress(
     String address, {
     int first = 20,
     String? after,
+    TransactionHistoryOptions options = const TransactionHistoryOptions(),
   }) async {
-    const q = r'''
-      query ($address: SuiAddress!, $first: Int!, $after: String) {
-        transactions(
-          first: $first
-          after: $after
-          filter: { affectedAddress: $address }
-        ) {
-          pageInfo { hasNextPage endCursor }
-          nodes {
-            digest
-            effects {
-              timestamp
-              status
-              balanceChanges {
-                nodes { amount coinType { repr } owner { address } }
-              }
-            }
-          }
-        }
-      }
-    ''';
-    final data = await transport.query(q, variables: {
-      'address': address,
-      'first': first,
-      if (after != null) 'after': after,
-    });
+    final data = await transport.query(
+      _historyQuery('affectedAddress', options),
+      variables: {
+        'addr': address,
+        'first': first,
+        if (after != null) 'after': after,
+      },
+    );
     return _parseTransactionsPage(data);
   }
 
@@ -72,34 +56,52 @@ class SuiGraphQLClient {
     String sender, {
     int first = 20,
     String? after,
+    TransactionHistoryOptions options = const TransactionHistoryOptions(),
   }) async {
-    const q = r'''
-      query ($sender: SuiAddress!, $first: Int!, $after: String) {
+    final data = await transport.query(
+      _historyQuery('sentAddress', options),
+      variables: {
+        'addr': sender,
+        'first': first,
+        if (after != null) 'after': after,
+      },
+    );
+    return _parseTransactionsPage(data);
+  }
+
+  /// Builds the `transactions` history query for the given [filterField]
+  /// (`affectedAddress` or `sentAddress`), selecting only the per-tx detail
+  /// blocks that [options] asks for so callers never over-fetch.
+  String _historyQuery(String filterField, TransactionHistoryOptions options) {
+    final balanceChanges = options.showBalanceChanges
+        ? 'balanceChanges { nodes { amount coinType { repr } owner { address } } }'
+        : '';
+    final objectChanges = options.showObjectChanges
+        ? 'objectChanges { nodes { address idCreated idDeleted '
+            'inputState { owner { __typename ... on AddressOwner { address { address } } } } '
+            'outputState { owner { __typename ... on AddressOwner { address { address } } } '
+            'asMoveObject { contents { type { repr } } } } } }'
+        : '';
+    // Sui's `transactions` connection is ordered oldest-first, so page from the
+    // END (`last`/`before`) to get the most recent transactions — `first` would
+    // return the account's oldest history (e.g. its 2023 txs). The pageInfo
+    // fields are aliased so the shared parser keeps reading hasNextPage /
+    // endCursor (here meaning "has an older page" / "cursor to older").
+    return '''
+      query (\$addr: SuiAddress!, \$first: Int!, \$after: String) {
         transactions(
-          first: $first
-          after: $after
-          filter: { sentAddress: $sender }
+          last: \$first
+          before: \$after
+          filter: { $filterField: \$addr }
         ) {
-          pageInfo { hasNextPage endCursor }
+          pageInfo { hasNextPage: hasPreviousPage endCursor: startCursor }
           nodes {
             digest
-            effects {
-              timestamp
-              status
-              balanceChanges {
-                nodes { amount coinType { repr } owner { address } }
-              }
-            }
+            effects { timestamp status $balanceChanges $objectChanges }
           }
         }
       }
     ''';
-    final data = await transport.query(q, variables: {
-      'sender': sender,
-      'first': first,
-      if (after != null) 'after': after,
-    });
-    return _parseTransactionsPage(data);
   }
 
   /// Parses a `transactions` GraphQL page into a [SenderTransactionPage].
@@ -320,12 +322,27 @@ class SenderTransactionPage {
   List<String> get digests => [for (final tx in transactions) tx.digest];
 }
 
+/// Selects which per-transaction details a history query fetches. Mirrors the
+/// SDK's `SuiTransactionBlockResponseOptions` convention. Object changes are
+/// off by default because they can be large; enable them to surface NFT /
+/// owned-object transfers, which produce no balance change.
+class TransactionHistoryOptions {
+  const TransactionHistoryOptions({
+    this.showBalanceChanges = true,
+    this.showObjectChanges = false,
+  });
+
+  final bool showBalanceChanges;
+  final bool showObjectChanges;
+}
+
 class SenderTransaction {
   SenderTransaction({
     required this.digest,
     required this.timestampMs,
     required this.success,
     required this.balanceChanges,
+    this.objectChanges = const [],
   });
 
   final String digest;
@@ -335,11 +352,17 @@ class SenderTransaction {
   final bool success;
   final List<TxBalanceChange> balanceChanges;
 
+  /// Populated only when the query requested object changes (see
+  /// [TransactionHistoryOptions.showObjectChanges]).
+  final List<TxObjectChange> objectChanges;
+
   factory SenderTransaction._fromNode(Map<String, dynamic> n) {
     final ef = n['effects'] as Map<String, dynamic>?;
     final ts = ef?['timestamp'] as String?;
     final bcNodes =
         ((ef?['balanceChanges'] as Map?)?['nodes'] as List?) ?? const [];
+    final ocNodes =
+        ((ef?['objectChanges'] as Map?)?['nodes'] as List?) ?? const [];
     return SenderTransaction(
       digest: n['digest'] as String,
       timestampMs:
@@ -352,6 +375,9 @@ class SenderTransaction {
             amount: b['amount']?.toString() ?? '0',
             coinType: ((b['coinType'] as Map?)?['repr'] as String?) ?? '',
           )
+      ],
+      objectChanges: [
+        for (final o in ocNodes) TxObjectChange._fromNode(o as Map),
       ],
     );
   }
@@ -367,6 +393,60 @@ class TxBalanceChange {
   final String? ownerAddress;
   final String amount;
   final String coinType;
+}
+
+/// An object's ownership/state change within a transaction — enough to surface
+/// NFT (and other owned-object) transfers, which leave no balance change.
+class TxObjectChange {
+  TxObjectChange({
+    required this.objectId,
+    required this.type,
+    required this.kind,
+    this.fromAddress,
+    this.toAddress,
+  });
+
+  final String objectId;
+
+  /// Move type of the object (e.g. `0x…::nft::Nft`), empty if unavailable.
+  final String type;
+
+  /// `created`, `deleted`, or `mutated`.
+  final String kind;
+
+  /// Address owner before / after — null when the object isn't address-owned,
+  /// or was created (no `from`) / deleted (no `to`).
+  final String? fromAddress;
+  final String? toAddress;
+
+  /// Reads the address out of an `AddressOwner` owner shape
+  /// (`{ __typename, address: { address } }`); null for other owner kinds.
+  static String? _ownerAddress(Map? owner) =>
+      ((owner?['address'] as Map?)?['address']) as String?;
+
+  factory TxObjectChange._fromNode(Map o) {
+    final created = o['idCreated'] == true;
+    final deleted = o['idDeleted'] == true;
+    final contents =
+        ((o['outputState'] as Map?)?['asMoveObject'] as Map?)?['contents']
+            as Map?;
+    final typeRepr = (contents?['type'] as Map?)?['repr'] as String?;
+    return TxObjectChange(
+      objectId: o['address'] as String? ?? '',
+      type: typeRepr ?? '',
+      kind: created ? 'created' : (deleted ? 'deleted' : 'mutated'),
+      fromAddress: _ownerAddress((o['inputState'] as Map?)?['owner'] as Map?),
+      toAddress: _ownerAddress((o['outputState'] as Map?)?['owner'] as Map?),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'objectId': objectId,
+        'type': type,
+        'kind': kind,
+        'from': fromAddress,
+        'to': toAddress,
+      };
 }
 
 class ValidatorInfo {

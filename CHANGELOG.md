@@ -211,3 +211,18 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   valid query; both now coexist. `getTransactions` continues to use
   `affectedAddress` for a complete wallet history. Additive over 0.4.4 — no
   breaking changes.
+
+## 0.4.6
+
+* Transaction history now pages from the newest end. The `transactions`
+  connection is ordered oldest-first, so the previous `first`/`after` returned
+  an account's *oldest* transactions (e.g. its 2023 history); the query now uses
+  `last`/`before` to return the most recent ones.
+* `queryTransactionsByAddress` / `queryTransactionsBySender` gain an optional
+  `TransactionHistoryOptions` (`showBalanceChanges` / `showObjectChanges`) so
+  callers select only the per-transaction detail they need. `showObjectChanges`
+  (off by default) fetches object ownership changes, surfacing NFT / owned-object
+  transfers that produce no balance change; `SenderTransaction` gains an
+  `objectChanges` list (`TxObjectChange`). `getTransactions` requests object
+  changes and maps them into `SuiTransactionBlockResponse.objectChanges`.
+  Additive over 0.4.5 — no breaking changes.

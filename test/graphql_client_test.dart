@@ -51,7 +51,7 @@ void main() {
 
   test('queryTransactionsByAddress sends filter + parses page', () async {
     final adapter = _MockAdapter((body) {
-      expect(body['variables']['address'], '0xabc');
+      expect(body['variables']['addr'], '0xabc');
       expect(body['variables']['first'], 2);
       return {
         'data': {
@@ -76,7 +76,7 @@ void main() {
 
   test('queryTransactionsBySender uses the sentAddress filter', () async {
     final adapter = _MockAdapter((body) {
-      expect(body['variables']['sender'], '0xabc');
+      expect(body['variables']['addr'], '0xabc');
       return {
         'data': {
           'transactions': {

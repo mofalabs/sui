@@ -550,8 +550,14 @@ class SuiGrpcCompat {
     String? filterFromCursor,
     String? filterToCursor,
   }) async {
-    final page = await graphql.queryTransactionsByAddress(address,
-        first: limit ?? 20, after: filterFromCursor);
+    // Fetch object changes too, so NFT / owned-object transfers (which leave no
+    // balance change) surface in the wallet history from this one query.
+    final page = await graphql.queryTransactionsByAddress(
+      address,
+      first: limit ?? 20,
+      after: filterFromCursor,
+      options: const TransactionHistoryOptions(showObjectChanges: true),
+    );
     final txs = page.transactions
         .map((t) => SuiTransactionBlockResponse.fromJson({
               'digest': t.digest,
@@ -565,6 +571,9 @@ class SuiGrpcCompat {
                     'amount': b.amount,
                   }
               ],
+              // Untyped passthrough (SuiTransactionBlockResponse.objectChanges
+              // is List<dynamic>); the app reads objectId/type/kind/from/to.
+              'objectChanges': [for (final o in t.objectChanges) o.toJson()],
             }))
         .toList();
     return (txs, page.endCursor, null);
