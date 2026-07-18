@@ -268,3 +268,26 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   path (per the gRPC-web spec), matching the trailer-frame path — error
   messages no longer surface `%20`-style escapes. Malformed escapes fall back
   to the raw value.
+
+## 0.4.9
+
+* Fix building transactions serialized by a dApp (`@mysten/sui`'s `toJSON`):
+  inputs/arguments/commands in the unwrapped form (`{Pure: {...}}`,
+  `{Input: 0}`, `{MoveCall: {...}}` — no `$kind` tag) are now recognized
+  throughout the gRPC transaction mapper, so wallet-side builds of
+  dApp-provided transactions (e.g. swaps) no longer fail with
+  "Input kind null must be resolved".
+* Resolve `$Intent` **CoinWithBalance** commands at build time (ported from
+  Mysten's `resolveCoinBalance` plugin): the wallet splits the gas coin for SUI
+  or merges+splits owned coins for other types, remapping Result/NestedResult
+  indices. dApp transactions built with `coinWithBalance()` now execute instead
+  of failing with "Unknown Command $Intent".
+* Server-side gas resolution (`resolveGasData`) now omits a caller/dApp-preset
+  gas budget so the node estimates the real budget from simulation. Previously
+  a dApp's conservative ceiling (e.g. 0.05 SUI) made the node select coins to
+  satisfy that budget, failing for accounts holding less even though the actual
+  gas was tiny.
+* Surface validator display metadata (`image_url` / `project_url` /
+  `description`) from the GraphQL active-validator query in
+  `SuiValidatorSummary` — previously hardcoded to empty strings, so staking
+  UIs showed no validator logos.
