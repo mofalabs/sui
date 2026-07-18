@@ -8,6 +8,27 @@ import 'proto/sui/rpc/v2/input.pb.dart';
 import 'proto/sui/rpc/v2/object_reference.pb.dart';
 import 'proto/sui/rpc/v2/transaction.pb.dart';
 
+/// The variant tag of a tagged-union node (input / argument / command).
+///
+/// The builder's own nodes carry an explicit `$kind`, but a transaction parsed
+/// from a dApp's serialized JSON (`@mysten/sui`'s `toJSON()`) uses the
+/// unwrapped form — e.g. `{Pure: {...}}`, `{Input: 0}`, `{MoveCall: {...}}` —
+/// with no `$kind` field. Fall back to the sole non-`$kind` key so both forms
+/// map correctly.
+///
+/// [node] is `dynamic`, not `Map`: builder arguments can be a [TransactionResult]
+/// (a `Result`/`NestedResult` that behaves like a map via `operator []` but is
+/// not one), so a typed `Map` parameter would fail its implicit downcast.
+String? _kindOf(dynamic node) {
+  final kind = node[r'$kind'];
+  if (kind is String) return kind;
+  if (node is Map) {
+    return node.keys.cast<String>().firstWhere((k) => k != r'$kind',
+        orElse: () => '');
+  }
+  return null;
+}
+
 /// Maps the transaction builder's internal (`$kind`-tagged map) representation
 /// to the gRPC structured `Transaction` message, so it can be simulated with
 /// the gas payment/budget left unset for server-side gas selection — mirroring
@@ -18,6 +39,7 @@ import 'proto/sui/rpc/v2/transaction.pb.dart';
 Transaction transactionDataToGrpcTransaction(
   TransactionBlockDataBuilder data, {
   bool includeGas = true,
+  bool includeBudget = true,
 }) {
   final inputs = (data.inputs).map(_callArgToGrpcInput).toList();
   final commands = (data.commands).map(_commandToGrpcCommand).toList();
@@ -50,7 +72,12 @@ Transaction transactionDataToGrpcTransaction(
     final owner = gas.owner ?? data.sender;
     if (owner != null) payment.owner = owner;
     if (gas.price != null) payment.price = Int64.parseInt(gas.price.toString());
-    if (gas.budget != null) {
+    // For server-side gas selection (`doGasSelection`) the budget is omitted so
+    // the node estimates it from the simulation. Honoring a caller/dApp-supplied
+    // budget here would make the node select coins to satisfy that budget (often
+    // a conservative 50_000_000 ceiling), which fails for accounts holding less
+    // than it even though the transaction's real gas is tiny.
+    if (includeBudget && gas.budget != null) {
       payment.budget = Int64.parseInt(gas.budget.toString());
     }
     tx.gasPayment = payment;
@@ -60,7 +87,7 @@ Transaction transactionDataToGrpcTransaction(
 }
 
 Argument _argToGrpcArgument(dynamic arg) {
-  final kind = arg['\$kind'];
+  final kind = _kindOf(arg);
   switch (kind) {
     case 'GasCoin':
       return Argument(kind: Argument_ArgumentKind.GAS);
@@ -82,7 +109,7 @@ Argument _argToGrpcArgument(dynamic arg) {
 }
 
 Input _callArgToGrpcInput(Map<String, dynamic> arg) {
-  final kind = arg['\$kind'];
+  final kind = _kindOf(arg);
   switch (kind) {
     case 'Pure':
       return Input(
@@ -124,7 +151,7 @@ Input _callArgToGrpcInput(Map<String, dynamic> arg) {
 }
 
 Command _commandToGrpcCommand(Map<dynamic, dynamic> cmd) {
-  final kind = cmd['\$kind'];
+  final kind = _kindOf(cmd);
   switch (kind) {
     case 'MoveCall':
       final c = cmd['MoveCall'] as Map;

@@ -145,7 +145,9 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
       TransactionBlockDataBuilder data) async {
     // Structured message (not BCS, which cannot express an unset budget) +
     // `doGasSelection` — mirrors Mysten's TS gRPC `resolveTransactionPlugin`.
-    final grpcTx = transactionDataToGrpcTransaction(data);
+    // Omit any preset (e.g. dApp-supplied) budget so the node estimates it
+    // rather than selecting coins to satisfy that budget.
+    final grpcTx = transactionDataToGrpcTransaction(data, includeBudget: false);
     final sim = await core.simulateStructured(
       grpcTx,
       doGasSelection: true,
