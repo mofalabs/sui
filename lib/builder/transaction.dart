@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:bcs/bcs.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sui/bcs/sui_bcs.dart';
+import 'package:sui/builder/coin_with_balance.dart';
 import 'package:sui/builder/commands.dart';
 import 'package:sui/builder/inputs.dart';
 import 'package:sui/builder/pure.dart';
@@ -1093,6 +1094,7 @@ class Transaction {
       options.protocolConfig = await client.getProtocolConfig();
     }
 
+    await resolveCoinBalanceIntents(_blockData, options.client);
     await normalizeInputs(options);
     await resolveObjectReferences(options);
 
