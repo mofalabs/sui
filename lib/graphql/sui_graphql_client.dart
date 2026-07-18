@@ -460,10 +460,20 @@ class ValidatorInfo {
     required this.poolTokenBalance,
     required this.stakingPoolId,
     required this.activationEpoch,
+    this.imageUrl,
+    this.projectUrl,
+    this.description,
   });
 
   final String? name;
   final String? suiAddress;
+
+  /// Display metadata from the validator's on-chain `ValidatorMetadata`
+  /// (`image_url` / `project_url` / `description`). Surfaced so the wallet can
+  /// render validator logos on the staking screen.
+  final String? imageUrl;
+  final String? projectUrl;
+  final String? description;
   final int votingPower;
   final int commissionRate;
   final BigInt nextEpochStake;
@@ -486,6 +496,9 @@ class ValidatorInfo {
     return ValidatorInfo(
       name: md['name'] as String?,
       suiAddress: md['sui_address'] as String?,
+      imageUrl: md['image_url'] as String?,
+      projectUrl: md['project_url'] as String?,
+      description: md['description'] as String?,
       votingPower: int.tryParse('${j['voting_power']}') ?? 0,
       commissionRate: int.tryParse('${j['commission_rate']}') ?? 0,
       nextEpochStake: _big(j['next_epoch_stake']),
