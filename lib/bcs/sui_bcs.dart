@@ -87,6 +87,31 @@ class SuiBcs {
     'Receiving': SuiObjectRef,
   });
 
+  // Address-balance withdrawal (Sui gasless stablecoin transfers). Ports the
+  // reference `@mysten/sui` bcs schema (crates/sui-types/src/transaction.rs):
+  // a FundsWithdrawal CallArg produces a `Balance<T>` sourced from the sender's
+  // address balance, consumed by `0x2::balance::send_funds<T>`.
+  static final Reservation = Bcs.enumeration('Reservation', {
+    'MaxAmountU64': Bcs.u64(),
+  });
+
+  static final WithdrawalType = Bcs.enumeration('WithdrawalType', {
+    'Balance': Bcs.lazy(() => TypeTag),
+  });
+
+  static final WithdrawFrom = Bcs.enumeration('WithdrawFrom', {
+    'Sender': null,
+    'Sponsor': null,
+  });
+
+  static final FundsWithdrawal = Bcs.struct('FundsWithdrawal', {
+    'reservation': Reservation,
+    'typeArg': WithdrawalType,
+    'withdrawFrom': WithdrawFrom,
+  });
+
+  // Enum-variant order MUST match the reference SDK: Pure(0), Object(1),
+  // FundsWithdrawal(2) — the index is the on-wire BCS tag.
   static final CallArg = Bcs.enumeration('CallArg', {
     'Pure': Bcs.struct('Pure', {
       'bytes': Bcs.vector(Bcs.u8()).transform(
@@ -95,6 +120,7 @@ class SuiBcs {
       ),
     }),
     'Object': ObjectArg,
+    'FundsWithdrawal': FundsWithdrawal,
   });
 
   static final BcsType<dynamic, dynamic> InnerTypeTag =

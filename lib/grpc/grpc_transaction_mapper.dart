@@ -144,6 +144,24 @@ Input _callArgToGrpcInput(Map<String, dynamic> arg) {
         );
       }
       throw ArgumentError('Unknown Object input kind: $arg');
+    case 'FundsWithdrawal':
+      // Address-balance withdrawal (gasless stablecoin transfer). The BCS
+      // reservation/typeArg/withdrawFrom shape collapses to the structured
+      // message's (amount, coinType, source).
+      final fw = arg['FundsWithdrawal'] as Map;
+      final amount = (fw['reservation'] as Map)['MaxAmountU64'].toString();
+      final coinType = (fw['typeArg'] as Map)['Balance'] as String;
+      final fromSponsor = (fw['withdrawFrom'] as Map).containsKey('Sponsor');
+      return Input(
+        kind: Input_InputKind.FUNDS_WITHDRAWAL,
+        fundsWithdrawal: FundsWithdrawal(
+          amount: Int64.parseInt(amount),
+          coinType: coinType,
+          source: fromSponsor
+              ? FundsWithdrawal_Source.SPONSOR
+              : FundsWithdrawal_Source.SENDER,
+        ),
+      );
     default:
       throw ArgumentError(
           'Input kind "$kind" must be resolved before gRPC conversion: $arg');

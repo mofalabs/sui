@@ -325,6 +325,25 @@ class Transaction {
     return input;
   }
 
+  /// Adds an address-balance withdrawal input, producing a `Balance<[type]>`
+  /// argument sourced from the sender's address balance — the input half of a
+  /// Sui gasless stablecoin transfer (`0x2::balance::send_funds<T>`).
+  ///
+  /// [type] is the coin type `T` (e.g. native USDC), [amount] the base-unit
+  /// balance to withdraw. Ports `@mysten/sui`'s FundsWithdrawal CallArg
+  /// (reservation = MaxAmountU64, typeArg = Balance\<T\>, withdrawFrom = Sender).
+  /// The returned argument is passed straight to `send_funds`.
+  Map<String, dynamic> balanceWithdrawal(String type, BigInt amount) {
+    return _blockData.addInput('balanceWithdrawal', {
+      '\$kind': 'FundsWithdrawal',
+      'FundsWithdrawal': {
+        'reservation': {'MaxAmountU64': amount.toString()},
+        'typeArg': {'Balance': type},
+        'withdrawFrom': {'Sender': true},
+      },
+    }) as Map<String, dynamic>;
+  }
+
   Map<String, dynamic> object(dynamic value) {
     if (value is Function) {
       return object(value(this));
