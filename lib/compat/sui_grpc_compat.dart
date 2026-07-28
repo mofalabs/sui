@@ -96,6 +96,16 @@ class SuiGrpcCompat {
         b.coinType, 0, BigInt.from(b.balance.toInt()), BigInt.zero);
   }
 
+  /// The address-balance component of the owner's [coinType] holdings — the
+  /// accumulator funds a gasless transfer draws from without touching coin
+  /// objects. When this covers the amount, an allowlisted-stablecoin send is
+  /// free (drawn entirely from the address balance).
+  Future<BigInt> getAddressBalance(String owner,
+      {String coinType = '0x2::sui::SUI'}) async {
+    final b = await grpc.getBalance(owner, coinType: coinType);
+    return BigInt.parse(b.addressBalance.toString());
+  }
+
   Future<List<CoinBalance>> getAllBalance(String owner) async {
     final resp = await grpc.listBalances(owner);
     return resp.balances
