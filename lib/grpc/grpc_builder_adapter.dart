@@ -162,12 +162,22 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
           'Gas resolution simulation failed: ${status.error.description}');
     }
     final gp = sim.transaction.transaction.gasPayment;
+    final budget = BigInt.parse(gp.budget.toString());
     if (gp.objects.isEmpty) {
-      // Server did not resolve a gas payment; let the caller fall back.
+      // A successful simulation that selected no gas coin and resolved a zero
+      // budget is a GASLESS transaction: the node recognized an eligible
+      // address-balance / allowlisted-stablecoin PTB and set gas to 0. Apply
+      // zero gas (empty payment, price/budget 0) so the build carries no gas
+      // coin — the sender needs no SUI. Any other empty result means the node
+      // could not resolve gas; fall back to local selection.
+      if (budget == BigInt.zero) {
+        return ResolvedGasData(
+            budget: BigInt.zero, price: BigInt.zero, payment: const []);
+      }
       return null;
     }
     return ResolvedGasData(
-      budget: BigInt.parse(gp.budget.toString()),
+      budget: budget,
       price: gp.hasPrice() ? BigInt.parse(gp.price.toString()) : null,
       payment: gp.objects
           .map((o) => SuiObjectRef(o.digest, o.objectId, o.version.toInt()))
@@ -207,6 +217,22 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
             ))
         .toList();
     return PaginatedCoins(coins, page.cursor, page.hasNextPage);
+  }
+
+  @override
+  Future<CoinBalanceBreakdown> getBalanceBreakdown(
+    String owner,
+    String coinType,
+  ) async {
+    // The gRPC Balance message carries the total plus its address-balance and
+    // coin-object components, which the CoinWithBalance resolver needs to pick
+    // between the gasless (address-balance) and coin-object sources.
+    final b = await core.getBalance(owner, coinType: coinType);
+    return CoinBalanceBreakdown(
+      total: BigInt.parse(b.balance.toString()),
+      addressBalance: BigInt.parse(b.addressBalance.toString()),
+      coinBalance: BigInt.parse(b.coinBalance.toString()),
+    );
   }
 
   @override

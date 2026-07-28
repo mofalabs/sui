@@ -4,6 +4,21 @@ import '../types/objects.dart';
 import '../types/transactions.dart';
 import 'transaction_block_data.dart';
 
+/// An owner's balance for a coin type, split into its two sources: [coinBalance]
+/// held in owned coin objects and [addressBalance] held in the account's
+/// per-address accumulator. [total] is their sum.
+class CoinBalanceBreakdown {
+  CoinBalanceBreakdown({
+    required this.total,
+    required this.addressBalance,
+    required this.coinBalance,
+  });
+
+  final BigInt total;
+  final BigInt addressBalance;
+  final BigInt coinBalance;
+}
+
 /// Result of one-shot server-side gas resolution: the gas payment the server
 /// selected and the budget it computed (and echoed gas price).
 class ResolvedGasData {
@@ -63,4 +78,15 @@ abstract class TransactionBuilderClient {
     TransactionBlockDataBuilder data,
   ) async =>
       null;
+
+  /// The owner's [coinType] balance split into coin-object vs address-balance
+  /// sources — needed to resolve `CoinWithBalance` intents that may draw from
+  /// the address balance. Transports without address-balance support (e.g.
+  /// JSON-RPC) throw; the resolver only reaches this on the gRPC path.
+  Future<CoinBalanceBreakdown> getBalanceBreakdown(
+    String owner,
+    String coinType,
+  ) async =>
+      throw UnimplementedError(
+          'getBalanceBreakdown is not supported by this client');
 }

@@ -38,6 +38,15 @@ class SuiClient extends SignerWithProvider implements TransactionBuilderClient {
       null;
 
   @override
+  Future<CoinBalanceBreakdown> getBalanceBreakdown(
+    String owner,
+    String coinType,
+  ) async =>
+      throw UnimplementedError(
+          'Address-balance breakdown is not available over JSON-RPC; use the '
+          'gRPC client for CoinWithBalance resolution from address balances.');
+
+  @override
   void setSigner(SuiAccount signer) {
     _account = signer;
   }

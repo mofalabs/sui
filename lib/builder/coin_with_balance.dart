@@ -8,18 +8,21 @@ import 'inputs.dart';
 import 'transaction_block_data.dart';
 import 'transaction_builder_client.dart';
 
-/// Resolves `CoinWithBalance` `$Intent` commands into concrete
-/// `MergeCoins`/`SplitCoins` commands.
+/// Resolves `CoinWithBalance` `$Intent` commands into concrete commands.
 ///
-/// Swap / DeFi dApps build transactions with `@mysten/sui`'s
-/// `coinWithBalance({ balance, type })` to obtain a coin of an exact balance,
-/// which serializes to an unresolved `$Intent` the wallet must resolve at build
-/// time (like the reference TS SDK's `resolveCoinBalance`). Without this,
-/// `Transaction.from(dAppJson).build()` fails converting the `$Intent` command.
-///
-/// This ports the coin-output paths (splitting the gas coin, or gathering and
-/// splitting owned coins of a given type). The newer address-balance path
-/// (`outputKind: 'balance'` / `FundsWithdrawal`) is not supported and throws.
+/// The intent (created by `Transaction.coin()` / `Transaction.balance()`, or
+/// carried in a dApp's serialized transaction) asks for a coin or balance of an
+/// exact amount. This resolves it at build time by choosing between the account's
+/// two fund sources:
+///  - **Address balance** (per-address accumulator) — withdrawn via
+///    `redeem_funds`; a transfer built entirely this way is gasless-eligible.
+///  - **Owned coin objects** — merged then split.
+/// It mirrors the two-path strategy of the on-chain-aware reference resolver:
+/// Path 1 (all balance-output intents and address balance sufficient) does a
+/// direct per-intent `balance::redeem_funds`; Path 2 merges available sources
+/// (address balance, gas coin, or owned coins) and splits all intents at once,
+/// converting to `Balance` via `coin::into_balance` for balance outputs and
+/// returning any remainder to the address balance via `coin::send_funds`.
 const _coinWithBalance = 'CoinWithBalance';
 final String _suiType = normalizeStructTagString('0x2::sui::SUI');
 const _coinPackage =
@@ -29,6 +32,8 @@ bool _isCwbIntent(dynamic cmd) =>
     cmd is Map &&
     cmd[r'$Intent'] != null &&
     cmd[r'$Intent']['name'] == _coinWithBalance;
+
+typedef _Intent = ({BigInt balance, String outputKind});
 
 Future<void> resolveCoinBalanceIntents(
     TransactionBlockDataBuilder data, TransactionBuilderClient? client) async {
@@ -42,10 +47,11 @@ Future<void> resolveCoinBalanceIntents(
   }
 
   final totalByType = <String, BigInt>{};
-  final intentsByType = <String, List<BigInt>>{};
+  final intentsByType = <String, List<_Intent>>{};
 
   // First pass: sum required balances per coin type and resolve any
-  // zero-balance intents in place (they need no coins).
+  // zero-balance intents in place (they need no funds) — a zero coin or a zero
+  // balance depending on the intent's output kind.
   for (var i = 0; i < data.commands.length; i++) {
     final cmd = data.commands[i];
     if (!_isCwbIntent(cmd)) continue;
@@ -53,21 +59,20 @@ Future<void> resolveCoinBalanceIntents(
     final type = d['type'] as String;
     final balance = BigInt.parse(d['balance'].toString());
     final outputKind = (d['outputKind'] ?? 'coin') as String;
-    if (outputKind != 'coin') {
-      throw UnsupportedError(
-          'CoinWithBalance outputKind "$outputKind" (address-balance) is not '
-          'supported');
-    }
     if (balance == BigInt.zero) {
       final coinType = type == 'gas' ? _suiType : type;
-      _replaceCommand(data, i, [_moveCall('$_coinPackage::coin::zero', [
-        coinType
-      ], const [])]);
+      final target = outputKind == 'balance'
+          ? '$_coinPackage::balance::zero'
+          : '$_coinPackage::coin::zero';
+      _replaceCommand(data, i, [_moveCall(target, [coinType], const [])]);
       continue;
     }
     totalByType[type] = (totalByType[type] ?? BigInt.zero) + balance;
-    (intentsByType[type] ??= <BigInt>[]).add(balance);
+    (intentsByType[type] ??= <_Intent>[])
+        .add((balance: balance, outputKind: outputKind));
   }
+
+  if (totalByType.isEmpty) return; // all intents were zero-balance
 
   if (totalByType.containsKey('gas') && totalByType.containsKey(_suiType)) {
     throw ArgumentError('Cannot mix SUI CoinWithBalance intents that use the '
@@ -83,17 +88,28 @@ Future<void> resolveCoinBalanceIntents(
     if (unresolved != null) usedIds.add(normalizeSuiAddress(unresolved));
   }
 
+  // Resolve owned coins + address balance per type. For 'gas', only the SUI
+  // address balance matters (coins come from the gas coin, not selected here).
   final coinsByType = <String, List<CoinStruct>>{};
+  final addressBalanceByType = <String, BigInt>{};
   for (final entry in totalByType.entries) {
-    if (entry.key == 'gas') continue;
-    coinsByType[entry.key] = await _selectCoins(
-        client, data.sender!, entry.key, entry.value, usedIds);
+    if (entry.key == 'gas') {
+      final b = await client.getBalanceBreakdown(data.sender!, _suiType);
+      addressBalanceByType['gas'] = b.addressBalance;
+    } else {
+      final r = await _getCoinsAndBalance(
+          client, data.sender!, entry.key, entry.value, usedIds);
+      coinsByType[entry.key] = r.coins;
+      addressBalanceByType[entry.key] = r.addressBalance;
+    }
   }
 
-  // Second pass: replace each intent with the real commands. All intents of a
-  // type share one merge+split, produced when the first is encountered.
+  final exactBalanceByType = <String, bool>{};
+  final usedAddressBalance = <String>{};
+  // Per-type Path-2 state: the ordered intent results + a cursor.
   final typeResults = <String, List<dynamic>>{};
   final typeNext = <String, int>{};
+
   var index = 0;
   while (index < data.commands.length) {
     final cmd = data.commands[index];
@@ -101,71 +117,173 @@ Future<void> resolveCoinBalanceIntents(
       index++;
       continue;
     }
-    final type = cmd[r'$Intent']['data']['type'] as String;
-    final commands = <Map<String, dynamic>>[];
+    final d = cmd[r'$Intent']['data'] as Map;
+    final type = d['type'] as String;
+    final balance = BigInt.parse(d['balance'].toString());
+    final coinType = type == 'gas' ? _suiType : type;
+    final totalRequired = totalByType[type]!;
+    final addressBalance = addressBalanceByType[type] ?? BigInt.zero;
+    final intents = intentsByType[type]!;
+    final allBalance = intents.every((i) => i.outputKind == 'balance');
 
-    if (!typeResults.containsKey(type)) {
-      final intents = intentsByType[type]!;
-      final sources = <dynamic>[];
-      if (type == 'gas') {
-        sources.add({r'$kind': 'GasCoin', 'GasCoin': true});
-      } else {
-        for (final coin in coinsByType[type]!) {
-          sources.add(data.addInput(
-              'object',
-              Inputs.objectRef(
-                  SuiObjectRef(coin.digest, coin.coinObjectId, coin.version))));
+    final commands = <Map<String, dynamic>>[];
+    dynamic intentResult;
+
+    if (allBalance && addressBalance >= totalRequired) {
+      // Path 1: all balance-output intents with sufficient address balance —
+      // withdraw this intent's amount directly (no coins; parallel-safe).
+      commands.add(_moveCall('$_coinPackage::balance::redeem_funds', [coinType], [
+        data.addInput('withdrawal', _fundsWithdrawal(balance, coinType))
+      ]));
+      intentResult = {
+        r'$kind': 'NestedResult',
+        'NestedResult': [index + commands.length - 1, 0]
+      };
+    } else {
+      // Path 2: merge sources then split all intents of this type at once,
+      // built the first time the type is seen.
+      if (!typeResults.containsKey(type)) {
+        final sources = <dynamic>[];
+
+        if (addressBalance >= totalRequired) {
+          // Source entirely from address balance — no coins needed.
+          usedAddressBalance.add(type);
+          commands.add(_moveCall('$_coinPackage::coin::redeem_funds', [coinType], [
+            data.addInput('withdrawal', _fundsWithdrawal(totalRequired, coinType))
+          ]));
+          sources.add(
+              {r'$kind': 'Result', 'Result': index + commands.length - 1});
+        } else if (type == 'gas') {
+          sources.add({r'$kind': 'GasCoin', 'GasCoin': true});
+        } else {
+          final coins = coinsByType[type]!;
+          final loaded =
+              coins.fold(BigInt.zero, (s, c) => s + BigInt.parse(c.balance));
+          final abNeeded =
+              totalRequired > loaded ? totalRequired - loaded : BigInt.zero;
+          exactBalanceByType[type] = loaded + abNeeded == totalRequired;
+          for (final coin in coins) {
+            sources.add(data.addInput(
+                'object',
+                Inputs.objectRef(SuiObjectRef(
+                    coin.digest, coin.coinObjectId, coin.version))));
+          }
+          if (abNeeded > BigInt.zero) {
+            usedAddressBalance.add(type);
+            commands.add(
+                _moveCall('$_coinPackage::coin::redeem_funds', [coinType], [
+              data.addInput('withdrawal', _fundsWithdrawal(abNeeded, coinType))
+            ]));
+            sources.add(
+                {r'$kind': 'Result', 'Result': index + commands.length - 1});
+          }
         }
+
+        final baseCoin = sources.first;
+        final rest = sources.sublist(1);
+        for (var i = 0; i < rest.length; i += 500) {
+          commands.add(_mergeCoins(
+              baseCoin, rest.sublist(i, min(i + 500, rest.length))));
+        }
+
+        final splitCmdIndex = index + commands.length;
+        commands.add(_splitCoins(
+            baseCoin,
+            intents
+                .map((it) => data.addInput(
+                    'pure', Inputs.pure(SuiBcs.U64.serialize(it.balance))))
+                .toList()));
+
+        final results = <dynamic>[];
+        for (var i = 0; i < intents.length; i++) {
+          final splitResult = {
+            r'$kind': 'NestedResult',
+            'NestedResult': [splitCmdIndex, i]
+          };
+          if (intents[i].outputKind == 'balance') {
+            commands.add(_moveCall(
+                '$_coinPackage::coin::into_balance', [coinType], [splitResult]));
+            results.add({
+              r'$kind': 'NestedResult',
+              'NestedResult': [index + commands.length - 1, 0]
+            });
+          } else {
+            results.add(splitResult);
+          }
+        }
+
+        // Remainder: when funds came from the gas coin, leftover just stays in
+        // it. Otherwise return the merged coin's remainder to the sender's
+        // address balance (gasless-eligible, handles zero), or destroy the
+        // zero-value dust when the coin sources matched exactly.
+        if (type != 'gas' || usedAddressBalance.contains(type)) {
+          final hasBalanceIntent =
+              intents.any((it) => it.outputKind == 'balance');
+          final sourcedFromAB = usedAddressBalance.contains(type);
+          if (hasBalanceIntent || sourcedFromAB) {
+            commands.add(_moveCall('$_coinPackage::coin::send_funds', [coinType], [
+              baseCoin,
+              data.addInput(
+                  'pure', Inputs.pure(SuiBcs.Address.serialize(data.sender!)))
+            ]));
+          } else if (exactBalanceByType[type] == true) {
+            commands.add(_moveCall(
+                '$_coinPackage::coin::destroy_zero', [coinType], [baseCoin]));
+          }
+        }
+
+        typeResults[type] = results;
+        typeNext[type] = 0;
       }
-      final baseCoin = sources.first;
-      final rest = sources.sublist(1);
-      for (var i = 0; i < rest.length; i += 500) {
-        commands.add(_mergeCoins(baseCoin, rest.sublist(i, min(i + 500, rest.length))));
-      }
-      final splitCmdIndex = index + commands.length;
-      commands.add(_splitCoins(
-          baseCoin,
-          intents
-              .map((b) =>
-                  data.addInput('pure', Inputs.pure(SuiBcs.U64.serialize(b))))
-              .toList()));
-      typeResults[type] = [
-        for (var i = 0; i < intents.length; i++)
-          {r'$kind': 'NestedResult', 'NestedResult': [splitCmdIndex, i]}
-      ];
-      typeNext[type] = 0;
+
+      intentResult = typeResults[type]![typeNext[type]!];
+      typeNext[type] = typeNext[type]! + 1;
     }
 
-    final intentResult = typeResults[type]![typeNext[type]!];
-    typeNext[type] = typeNext[type]! + 1;
     _replaceCommand(data, index, commands, intentResult);
     index += commands.length;
   }
 }
 
-Future<List<CoinStruct>> _selectCoins(TransactionBuilderClient client,
-    String owner, String coinType, BigInt needed, Set<String> usedIds) async {
+/// A FundsWithdrawal input CallArg reserving [amount] of [coinType] from the
+/// sender's address balance (materialized by `redeem_funds`).
+Map<String, dynamic> _fundsWithdrawal(BigInt amount, String coinType) => {
+      r'$kind': 'FundsWithdrawal',
+      'FundsWithdrawal': {
+        'reservation': {'MaxAmountU64': amount.toString()},
+        'typeArg': {'Balance': coinType},
+        'withdrawFrom': {'Sender': true},
+      },
+    };
+
+/// Loads the owner's owned [coinType] coins (excluding [usedIds]) plus their
+/// address balance. Loads whole pages, paginating only while owned coins +
+/// address balance remain below [needed]; throws if the total can't cover it.
+Future<({List<CoinStruct> coins, BigInt addressBalance})> _getCoinsAndBalance(
+    TransactionBuilderClient client,
+    String owner,
+    String coinType,
+    BigInt needed,
+    Set<String> usedIds) async {
+  final breakdown = await client.getBalanceBreakdown(owner, coinType);
+  if (breakdown.total < needed) {
+    throw ArgumentError('Insufficient balance of $coinType for owner $owner. '
+        'Required: $needed, Available: ${breakdown.total}');
+  }
+  var remaining = needed - breakdown.addressBalance;
   final coins = <CoinStruct>[];
-  var total = BigInt.zero;
-  var remaining = needed;
   String? cursor;
-  while (true) {
+  while (remaining > BigInt.zero) {
     final page = await client.getCoins(owner, coinType: coinType, cursor: cursor);
     for (final c in page.data) {
       if (usedIds.contains(normalizeSuiAddress(c.coinObjectId))) continue;
       coins.add(c);
-      final b = BigInt.parse(c.balance);
-      total += b;
-      remaining -= b;
+      remaining -= BigInt.parse(c.balance);
     }
-    if (remaining <= BigInt.zero || !page.hasNextPage) break;
+    if (!page.hasNextPage) break;
     cursor = page.nextCursor;
   }
-  if (total < needed) {
-    throw ArgumentError('Insufficient balance of $coinType for owner $owner. '
-        'Required: $needed, Available: $total');
-  }
-  return coins;
+  return (coins: coins, addressBalance: breakdown.addressBalance);
 }
 
 Map<String, dynamic> _moveCall(

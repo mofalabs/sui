@@ -1,13 +1,61 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/builder/transaction.dart';
 import 'package:sui/builder/transaction_block_data.dart';
-import 'package:sui/grpc/grpc_transaction_mapper.dart';
-import 'package:sui/grpc/proto/sui/rpc/v2/input.pb.dart';
+import 'package:sui/builder/transaction_builder_client.dart';
+import 'package:sui/types/coins.dart';
+import 'package:sui/types/normalized.dart';
+import 'package:sui/types/objects.dart';
+import 'package:sui/types/transactions.dart';
 
-/// Encoding-layer verification for gasless stablecoin transfers
-/// (`0x2::balance::send_funds<T>` sourced from an address-balance withdrawal).
-/// Exercises the BCS `FundsWithdrawal` CallArg and the gRPC input mapper
-/// without any network / funds.
+/// Verifies that `Transaction.balance()` + `0x2::balance::send_funds` resolves
+/// to the right on-chain commands for the two `CoinWithBalance` paths — the
+/// gasless address-balance withdrawal and the owned-coin fallback — without any
+/// network (the client is mocked).
+class _MockClient implements TransactionBuilderClient {
+  _MockClient({required this.addressBalance, this.coins = const []});
+
+  final BigInt addressBalance;
+  final List<CoinStruct> coins;
+
+  BigInt get _coinTotal =>
+      coins.fold(BigInt.zero, (s, c) => s + BigInt.parse(c.balance));
+
+  @override
+  Future<CoinBalanceBreakdown> getBalanceBreakdown(
+          String owner, String coinType) async =>
+      CoinBalanceBreakdown(
+        total: addressBalance + _coinTotal,
+        addressBalance: addressBalance,
+        coinBalance: _coinTotal,
+      );
+
+  @override
+  Future<PaginatedCoins> getCoins(String owner,
+          {String? coinType, String? cursor, int? limit}) async =>
+      PaginatedCoins(coins, null, false);
+
+  // Not reached for these already-resolved, kind-only builds.
+  @override
+  Future<List<SuiObjectResponse>> multiGetObjects(List<String> objectIds,
+          {SuiObjectDataOptions? options}) =>
+      throw UnimplementedError();
+  @override
+  Future<SuiMoveNormalizedFunction> getNormalizedMoveFunction(
+          String p, String m, String f) =>
+      throw UnimplementedError();
+  @override
+  Future<BigInt> getReferenceGasPrice() => throw UnimplementedError();
+  @override
+  Future<dynamic> getProtocolConfig([String? version]) async => null;
+  @override
+  Future<DryRunTransactionBlockResponse> dryRunTransaction<T>(T tx,
+          {String? signerAddress}) =>
+      throw UnimplementedError();
+  @override
+  Future<ResolvedGasData?> resolveGasData(TransactionBlockDataBuilder data) async =>
+      null;
+}
+
 void main() {
   const usdc =
       '0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC';
@@ -17,60 +65,58 @@ void main() {
       '0x0000000000000000000000000000000000000000000000000000000000000def';
   final amount = BigInt.from(1000000); // 1.0 USDC (6 decimals)
 
-  Transaction buildGasless() {
+  Transaction sendFundsTx() {
     final tx = Transaction();
-    final balance = tx.balanceWithdrawal(usdc, amount);
-    tx.moveCall(
-      '0x2::balance::send_funds',
-      typeArguments: [usdc],
-      arguments: [balance, tx.pureAddress(recipient)],
-    );
+    final bal = tx.balance(usdc, amount, useGasCoin: false);
+    tx.moveCall('0x2::balance::send_funds',
+        typeArguments: [usdc], arguments: [bal, tx.pureAddress(recipient)]);
     tx.setSender(sender);
-    tx.setGasPrice(BigInt.zero);
-    tx.setGasBudget(BigInt.zero);
-    tx.setGasPayment(const []);
     return tx;
   }
 
-  test('FundsWithdrawal input node has the expected shape', () {
-    final tx = Transaction();
-    final arg = tx.balanceWithdrawal(usdc, amount);
-    // Argument returned is Input(0).
-    expect(arg[r'$kind'], 'Input');
-    expect(arg['Input'], 0);
-    final data = tx.getData();
-    final input = data.inputs!.first;
-    expect(input[r'$kind'], 'FundsWithdrawal');
-    final fw = input['FundsWithdrawal'] as Map;
-    expect(fw['reservation'], {'MaxAmountU64': '1000000'});
-    expect(fw['typeArg'], {'Balance': usdc});
-    expect(fw['withdrawFrom'], {'Sender': true});
-  });
+  List<String> moveFns(List commands) => [
+        for (final c in commands)
+          if ((c as Map)['MoveCall'] != null)
+            '${c['MoveCall']['module']}::${c['MoveCall']['function']}'
+      ];
 
-  test('BCS-serializes the TransactionKind (FundsWithdrawal CallArg) without throwing',
+  test('Path 1: address balance sufficient -> balance::redeem_funds (gasless)',
       () async {
-    final tx = buildGasless();
-    // onlyTransactionKind serializes inputs+commands through the sui BCS,
-    // exercising the new CallArg.FundsWithdrawal variant.
-    final bytes = await tx.build(BuildOptions(onlyTransactionKind: true));
-    expect(bytes, isNotEmpty);
-    // Sanity: the send_funds command references the withdrawal input.
+    final tx = sendFundsTx();
+    await tx.build(BuildOptions(
+        onlyTransactionKind: true,
+        client: _MockClient(addressBalance: BigInt.from(5000000))));
+
     final data = tx.getData();
-    expect(data.commands!.length, 1);
-    expect(data.inputs!.length, 2); // FundsWithdrawal + recipient pure address
+    // The balance() intent resolved to a redeem_funds; send_funds deposits it.
+    expect(moveFns(data.commands!),
+        containsAllInOrder(['balance::redeem_funds', 'balance::send_funds']));
+    // A FundsWithdrawal input reserving the amount from the sender's balance.
+    final fw = data.inputs!.firstWhere((i) => i['FundsWithdrawal'] != null);
+    expect(fw['FundsWithdrawal']['reservation'], {'MaxAmountU64': '1000000'});
+    expect(fw['FundsWithdrawal']['typeArg'], {'Balance': usdc});
+    // No owned coin objects touched — this is the gasless path.
+    expect(data.inputs!.any((i) => i['Object'] != null), isFalse);
   });
 
-  test('maps the FundsWithdrawal input to the structured gRPC Input', () {
-    final tx = buildGasless();
-    final grpc = transactionDataToGrpcTransaction(TransactionBlockDataBuilder(tx.getData()),
-        includeGas: false);
-    final inputs =
-        grpc.kind.programmableTransaction.inputs;
-    expect(inputs.length, 2); // FundsWithdrawal + recipient pure address
-    final input = inputs.first;
-    expect(input.kind, Input_InputKind.FUNDS_WITHDRAWAL);
-    expect(input.fundsWithdrawal.amount.toInt(), 1000000);
-    expect(input.fundsWithdrawal.coinType, usdc);
-    expect(input.fundsWithdrawal.source, FundsWithdrawal_Source.SENDER);
+  test('Path 2: no address balance -> merge/split owned coins + into_balance',
+      () async {
+    final tx = sendFundsTx();
+    final coin = CoinStruct(usdc, '0x${'1' * 64}', 1, '11111111111111111111111111111111',
+        '5000000', '');
+    await tx.build(BuildOptions(
+        onlyTransactionKind: true,
+        client: _MockClient(addressBalance: BigInt.zero, coins: [coin])));
+
+    final data = tx.getData();
+    final fns = moveFns(data.commands!);
+    // Split the owned coin, convert to Balance, and deposit; remainder returns
+    // to the sender's address balance.
+    expect(data.commands!.any((c) => (c as Map)['SplitCoins'] != null), isTrue);
+    expect(fns, contains('coin::into_balance'));
+    expect(fns, contains('coin::send_funds')); // remainder back to sender AB
+    expect(fns, contains('balance::send_funds')); // the transfer
+    // Sourced an owned coin object (not the address balance).
+    expect(data.inputs!.any((i) => i['Object'] != null), isTrue);
   });
 }

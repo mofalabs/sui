@@ -325,23 +325,46 @@ class Transaction {
     return input;
   }
 
-  /// Adds an address-balance withdrawal input, producing a `Balance<[type]>`
-  /// argument sourced from the sender's address balance — the input half of a
-  /// Sui gasless stablecoin transfer (`0x2::balance::send_funds<T>`).
+  /// Produces a `Coin<[type]>` of exactly [balance] base units, sourced from the
+  /// sender's owned coin objects and/or per-address balance. The exact commands
+  /// (merge + split of owned coins, or an address-balance withdrawal) are chosen
+  /// at build time by the CoinWithBalance resolver based on what the sender
+  /// holds. For SUI, [useGasCoin] (the default) splits from the gas coin.
   ///
-  /// [type] is the coin type `T` (e.g. native USDC), [amount] the base-unit
-  /// balance to withdraw. Ports `@mysten/sui`'s FundsWithdrawal CallArg
-  /// (reservation = MaxAmountU64, typeArg = Balance\<T\>, withdrawFrom = Sender).
-  /// The returned argument is passed straight to `send_funds`.
-  Map<String, dynamic> balanceWithdrawal(String type, BigInt amount) {
-    return _blockData.addInput('balanceWithdrawal', {
-      '\$kind': 'FundsWithdrawal',
-      'FundsWithdrawal': {
-        'reservation': {'MaxAmountU64': amount.toString()},
-        'typeArg': {'Balance': type},
-        'withdrawFrom': {'Sender': true},
+  /// [type] is the coin type `T` (e.g. `0x…::usdc::USDC`), or `'gas'` for SUI
+  /// via the gas coin.
+  TransactionResult coin(String type, BigInt balance, {bool useGasCoin = true}) =>
+      _coinWithBalanceIntent(type, balance, 'coin', useGasCoin);
+
+  /// Like [coin] but produces a `Balance<[type]>` value — for Move functions
+  /// that take a balance directly, and for gasless address-balance transfers
+  /// (e.g. `0x2::balance::send_funds<T>`).
+  TransactionResult balance(String type, BigInt balance,
+          {bool useGasCoin = true}) =>
+      _coinWithBalanceIntent(type, balance, 'balance', useGasCoin);
+
+  static final String _suiTypeStr =
+      normalizeStructTagString('0x2::sui::SUI');
+
+  /// Adds a `CoinWithBalance` `$Intent` (resolved to concrete commands at build
+  /// time). SUI with [useGasCoin] resolves through the gas coin (`'gas'`).
+  TransactionResult _coinWithBalanceIntent(
+      String type, BigInt balance, String outputKind, bool useGasCoin) {
+    final normalized = type == 'gas' ? 'gas' : normalizeStructTagString(type);
+    final coinType =
+        (normalized == _suiTypeStr && useGasCoin) ? 'gas' : normalized;
+    return add({
+      '\$kind': '\$Intent',
+      '\$Intent': {
+        'name': 'CoinWithBalance',
+        'inputs': <String, dynamic>{},
+        'data': {
+          'type': coinType,
+          'balance': balance.toString(),
+          'outputKind': outputKind,
+        },
       },
-    }) as Map<String, dynamic>;
+    });
   }
 
   Map<String, dynamic> object(dynamic value) {
