@@ -119,4 +119,49 @@ void main() {
     // Sourced an owned coin object (not the address balance).
     expect(data.inputs!.any((i) => i['Object'] != null), isTrue);
   });
+
+  // A coin-output intent (tx.coin) sourced from owned coins. These exercise the
+  // remainder pass's non-send_funds branches, which the balance-output cases
+  // above don't reach.
+  Transaction coinTransferTx(BigInt amount) {
+    final tx = Transaction();
+    final c = tx.coin(usdc, amount, useGasCoin: false);
+    tx.transferObjects([c], tx.pureAddress(recipient));
+    tx.setSender(sender);
+    return tx;
+  }
+
+  test('Path 2 coin output, surplus coin -> merged coin kept (no remainder call)',
+      () async {
+    final tx = coinTransferTx(amount); // need 1.0 USDC
+    final coin = CoinStruct(usdc, '0x${'1' * 64}', 1,
+        '11111111111111111111111111111111', '5000000', ''); // 5.0 surplus
+    await tx.build(BuildOptions(
+        onlyTransactionKind: true,
+        client: _MockClient(addressBalance: BigInt.zero, coins: [coin])));
+
+    final fns = moveFns(tx.getData().commands!);
+    // Split off the transferred coin; convert nothing; the 4.0 remainder stays
+    // as an owned object, so no send_funds/destroy_zero/into_balance is emitted.
+    expect(tx.getData().commands!.any((c) => (c as Map)['SplitCoins'] != null),
+        isTrue);
+    expect(fns, isNot(contains('coin::into_balance')));
+    expect(fns, isNot(contains('coin::send_funds')));
+    expect(fns, isNot(contains('coin::destroy_zero')));
+  });
+
+  test('Path 2 coin output, exact coin -> destroy_zero dust', () async {
+    final tx = coinTransferTx(amount); // need 1.0 USDC
+    final coin = CoinStruct(usdc, '0x${'1' * 64}', 1,
+        '11111111111111111111111111111111', '1000000', ''); // exact 1.0
+    await tx.build(BuildOptions(
+        onlyTransactionKind: true,
+        client: _MockClient(addressBalance: BigInt.zero, coins: [coin])));
+
+    final fns = moveFns(tx.getData().commands!);
+    // Coin sources matched the amount exactly, so the emptied base coin is
+    // destroyed rather than returned.
+    expect(fns, contains('coin::destroy_zero'));
+    expect(fns, isNot(contains('coin::send_funds')));
+  });
 }

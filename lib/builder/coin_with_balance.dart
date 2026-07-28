@@ -104,6 +104,7 @@ Future<void> resolveCoinBalanceIntents(
     }
   }
 
+  final mergedCoins = <String, dynamic>{};
   final exactBalanceByType = <String, bool>{};
   final usedAddressBalance = <String>{};
   // Per-type Path-2 state: the ordered intent results + a cursor.
@@ -186,6 +187,10 @@ Future<void> resolveCoinBalanceIntents(
               baseCoin, rest.sublist(i, min(i + 500, rest.length))));
         }
 
+        // Remember the merged coin so its remainder can be handled after all
+        // intents are placed (see the remainder pass below).
+        mergedCoins[type] = baseCoin;
+
         final splitCmdIndex = index + commands.length;
         commands.add(_splitCoins(
             baseCoin,
@@ -212,26 +217,6 @@ Future<void> resolveCoinBalanceIntents(
           }
         }
 
-        // Remainder: when funds came from the gas coin, leftover just stays in
-        // it. Otherwise return the merged coin's remainder to the sender's
-        // address balance (gasless-eligible, handles zero), or destroy the
-        // zero-value dust when the coin sources matched exactly.
-        if (type != 'gas' || usedAddressBalance.contains(type)) {
-          final hasBalanceIntent =
-              intents.any((it) => it.outputKind == 'balance');
-          final sourcedFromAB = usedAddressBalance.contains(type);
-          if (hasBalanceIntent || sourcedFromAB) {
-            commands.add(_moveCall('$_coinPackage::coin::send_funds', [coinType], [
-              baseCoin,
-              data.addInput(
-                  'pure', Inputs.pure(SuiBcs.Address.serialize(data.sender!)))
-            ]));
-          } else if (exactBalanceByType[type] == true) {
-            commands.add(_moveCall(
-                '$_coinPackage::coin::destroy_zero', [coinType], [baseCoin]));
-          }
-        }
-
         typeResults[type] = results;
         typeNext[type] = 0;
       }
@@ -242,6 +227,39 @@ Future<void> resolveCoinBalanceIntents(
 
     _replaceCommand(data, index, commands, intentResult);
     index += commands.length;
+  }
+
+  // Remainder pass: after every intent is placed, dispose of each merged coin's
+  // leftover. The merged coin's argument (an object input, a `redeem_funds`
+  // result, or the gas coin) keeps its position across the earlier splices, so
+  // these commands can be appended to the end of the list.
+  for (final entry in mergedCoins.entries) {
+    final type = entry.key;
+    final mergedCoin = entry.value;
+    // Gas coin funded from itself (not the address balance): the leftover simply
+    // stays in the gas coin, so nothing to return.
+    if (type == 'gas' && !usedAddressBalance.contains(type)) continue;
+
+    final coinType = type == 'gas' ? _suiType : type;
+    final hasBalanceIntent =
+        (intentsByType[type] ?? const <_Intent>[]).any((i) => i.outputKind == 'balance');
+    final sourcedFromAB = usedAddressBalance.contains(type);
+
+    if (hasBalanceIntent || sourcedFromAB) {
+      // Sourced from the address balance, or a balance output was produced:
+      // return the remainder to the sender's address balance (gasless-eligible,
+      // and a no-op for a zero remainder).
+      data.commands.add(_moveCall('$_coinPackage::coin::send_funds', [coinType], [
+        mergedCoin,
+        data.addInput('pure', Inputs.pure(SuiBcs.Address.serialize(data.sender!)))
+      ]));
+    } else if (exactBalanceByType[type] == true) {
+      // Coin-only sources matched the amount exactly: destroy the zero dust.
+      data.commands.add(
+          _moveCall('$_coinPackage::coin::destroy_zero', [coinType], [mergedCoin]));
+    }
+    // Coin-only with a surplus: the merged coin stays with the sender as an
+    // owned object.
   }
 }
 
@@ -345,7 +363,8 @@ void _replaceCommand(TransactionBlockDataBuilder data, int index,
       if (arg.containsKey('Result')) {
         if (arg['Result'] == index && resultIndex is int) {
           arg['Result'] = resultIndex;
-        } else if (arg['Result'] > index) {
+        }
+        if (arg['Result'] > index) {
           arg['Result'] = arg['Result'] + sizeDiff;
         }
       } else if (arg.containsKey('NestedResult')) {
