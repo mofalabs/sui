@@ -185,6 +185,30 @@ class Transaction {
     _blockData.sender ??= sender;
   }
 
+  /// Bounds this transaction's validity to a window (epochs and/or timestamps)
+  /// with a random [nonce]. Required for transactions carrying no gas payment
+  /// (address-balance / gasless): validators use the window + nonce instead of
+  /// an owned gas object to prevent equivocation. [chain] is the chain
+  /// identifier (genesis checkpoint digest, base58 — e.g. from
+  /// `getChainIdentifier()`).
+  void setValidDuringExpiration({
+    int? minEpoch,
+    int? maxEpoch,
+    int? minTimestamp,
+    int? maxTimestamp,
+    required String chain,
+    required int nonce,
+  }) {
+    _blockData.expiration = TransactionExpiration(validDuring: {
+      'minEpoch': minEpoch,
+      'maxEpoch': maxEpoch,
+      'minTimestamp': minTimestamp,
+      'maxTimestamp': maxTimestamp,
+      'chain': chain,
+      'nonce': nonce,
+    });
+  }
+
   void setExpiration(int? epoch) {
     _blockData.expiration = TransactionExpiration(epoch: epoch);
   }

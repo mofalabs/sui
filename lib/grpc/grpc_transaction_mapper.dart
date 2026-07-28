@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fixnum/fixnum.dart';
 
-import '../builder/transaction_block_data.dart';
+import '../builder/transaction_block_data.dart' hide TransactionExpiration;
 import 'proto/sui/rpc/v2/argument.pb.dart';
 import 'proto/sui/rpc/v2/input.pb.dart';
 import 'proto/sui/rpc/v2/object_reference.pb.dart';
@@ -81,6 +81,25 @@ Transaction transactionDataToGrpcTransaction(
       payment.budget = Int64.parseInt(gas.budget.toString());
     }
     tx.gasPayment = payment;
+  }
+
+  final expiration = data.expiration?.toJson();
+  if (expiration != null && expiration['Epoch'] != null) {
+    tx.expiration = TransactionExpiration(
+      kind: TransactionExpiration_TransactionExpirationKind.EPOCH,
+      epoch: Int64.parseInt(expiration['Epoch'].toString()),
+    );
+  } else if (expiration != null && expiration['ValidDuring'] != null) {
+    final vd = expiration['ValidDuring'] as Map;
+    tx.expiration = TransactionExpiration(
+      kind: TransactionExpiration_TransactionExpirationKind.VALID_DURING,
+      minEpoch:
+          vd['minEpoch'] == null ? null : Int64.parseInt('${vd['minEpoch']}'),
+      // The structured message reuses `epoch` as the ValidDuring max epoch.
+      epoch: vd['maxEpoch'] == null ? null : Int64.parseInt('${vd['maxEpoch']}'),
+      chain: vd['chain'] as String?,
+      nonce: vd['nonce'] as int?,
+    );
   }
 
   return tx;

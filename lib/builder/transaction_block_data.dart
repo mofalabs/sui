@@ -10,14 +10,26 @@ import 'package:sui/types/sui_bcs.dart';
 
 class TransactionExpiration {
   final int? epoch;
-  TransactionExpiration({this.epoch});
+
+  /// A `ValidDuring` validity window (`minEpoch`/`maxEpoch`/`minTimestamp`/
+  /// `maxTimestamp`/`chain`/`nonce`) — required for transactions with no gas
+  /// payment (address-balance / gasless). Takes precedence over [epoch].
+  final Map<String, dynamic>? validDuring;
+
+  TransactionExpiration({this.epoch, this.validDuring});
 
   Map<String, dynamic> toJson() {
+    if (validDuring != null) return {"ValidDuring": validDuring};
     if (epoch == null) return {"None": true};
     return {"Epoch": epoch};
   }
 
   factory TransactionExpiration.fromJson(Map<String, dynamic>? json) {
+    final validDuring = json?["ValidDuring"];
+    if (validDuring != null) {
+      return TransactionExpiration(
+          validDuring: Map<String, dynamic>.from(validDuring));
+    }
     dynamic epoch = json?["Epoch"];
     if (epoch != null) {
       return TransactionExpiration(epoch: int.parse(epoch.toString()));

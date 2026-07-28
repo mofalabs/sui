@@ -217,10 +217,27 @@ class SuiBcs {
     'ConsensusCommitPrologue': null,
   });
 
+  /// Validity window for a transaction with no gas payment (an address-balance
+  /// / gasless transaction): bounded epochs or timestamps plus a nonce, so
+  /// validators only need to retain the digest for the window to prevent
+  /// equivocation. `chain` is the chain identifier (the genesis checkpoint
+  /// digest, base58).
+  static final ValidDuring = Bcs.struct('ValidDuring', {
+    'minEpoch': Bcs.option(Bcs.u64()),
+    'maxEpoch': Bcs.option(Bcs.u64()),
+    'minTimestamp': Bcs.option(Bcs.u64()),
+    'maxTimestamp': Bcs.option(Bcs.u64()),
+    'chain': ObjectDigest,
+    'nonce': Bcs.u32(),
+  });
+
+  // Variant order is fixed by the on-chain transaction format:
+  // None(0), Epoch(1), ValidDuring(2) must not be reordered.
   static final TransactionExpiration =
       Bcs.enumeration('TransactionExpiration', {
     'None': null,
     'Epoch': unsafe_u64(),
+    'ValidDuring': ValidDuring,
   });
 
   static final StructTag = Bcs.struct('StructTag', {
