@@ -291,3 +291,22 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
   `description`) from the GraphQL active-validator query in
   `SuiValidatorSummary` — previously hardcoded to empty strings, so staking
   UIs showed no validator logos.
+
+## 0.5.0
+
+* Gasless stablecoin transfers (Sui address balances), verified on mainnet:
+  - `Transaction.coin()` / `Transaction.balance()` backed by the full
+    CoinWithBalance resolver (address-balance and coin-object paths)
+  - `FundsWithdrawal` CallArg (BCS + gRPC input mapping)
+  - `ValidDuring` transaction expiration (BCS variant, builder API, gRPC
+    mapping); `SuiGrpcCompat.setGaslessGas()` builds the gasless form
+    (empty gas payment, budget 0, price 0, ValidDuring bounded to the
+    current epoch +1)
+  - `SuiGrpcCompat.getAddressBalance()` and the builder-client
+    `getBalanceBreakdown()` expose the address-balance component
+* BREAKING: `TransactionBuilderClient` gains `getBalanceBreakdown`; custom
+  implementations must add it (the JSON-RPC `SuiClient` throws
+  `UnimplementedError` — address balances are a gRPC-era concept)
+* Server-side gas resolution no longer misreads an empty node gas selection
+  as gasless (executing it without `ValidDuring` would be rejected); build
+  gasless transactions explicitly via `setGaslessGas`
