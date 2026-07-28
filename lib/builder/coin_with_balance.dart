@@ -5,6 +5,7 @@ import '../types/coins.dart';
 import '../types/common.dart';
 import '../types/objects.dart';
 import 'inputs.dart';
+import 'transaction.dart';
 import 'transaction_block_data.dart';
 import 'transaction_builder_client.dart';
 
@@ -38,6 +39,18 @@ typedef _Intent = ({BigInt balance, String outputKind});
 Future<void> resolveCoinBalanceIntents(
     TransactionBlockDataBuilder data, TransactionBuilderClient? client) async {
   if (!data.commands.any(_isCwbIntent)) return;
+
+  // Command arguments may hold `TransactionResult` instances — e.g. the value
+  // returned by `tx.coin()`/`tx.balance()` and passed into another command.
+  // Normalize them to their `Result`/`NestedResult` map form up front so the
+  // index remapping below (which matches on those maps) can rewrite references
+  // to a resolved intent. Left as instances, such an argument would serialize
+  // as a `Result` pointing at the now-replaced intent command and the node
+  // would reject it (wrong result arity).
+  for (final cmd in data.commands) {
+    _mapCommandArgs(cmd, (arg) => arg is TransactionResult ? arg.toJson() : arg);
+  }
+
   if (data.sender == null) {
     throw ArgumentError('Sender must be set to resolve CoinWithBalance');
   }

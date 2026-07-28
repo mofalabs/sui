@@ -80,6 +80,18 @@ void main() {
             '${c['MoveCall']['module']}::${c['MoveCall']['function']}'
       ];
 
+  // The first argument passed to the app's balance::send_funds — the resolved
+  // intent value. It must be a concrete Result/NestedResult map, never an
+  // unresolved TransactionResult instance (which would serialize as a Result
+  // pointing at the replaced intent command and be rejected by the node).
+  dynamic sendFundsArg0(List commands) {
+    final c = commands.firstWhere((c) =>
+        (c as Map)['MoveCall'] != null &&
+        c['MoveCall']['module'] == 'balance' &&
+        c['MoveCall']['function'] == 'send_funds') as Map;
+    return c['MoveCall']['arguments'][0];
+  }
+
   test('Path 1: address balance sufficient -> balance::redeem_funds (gasless)',
       () async {
     final tx = sendFundsTx();
@@ -97,6 +109,11 @@ void main() {
     expect(fw['FundsWithdrawal']['typeArg'], {'Balance': usdc});
     // No owned coin objects touched — this is the gasless path.
     expect(data.inputs!.any((i) => i['Object'] != null), isFalse);
+    // send_funds receives the resolved redeem_funds result, not a raw intent.
+    final arg = sendFundsArg0(data.commands!);
+    expect(arg, isA<Map>(),
+        reason: 'send_funds arg must be resolved, got ${arg.runtimeType}');
+    expect((arg as Map).containsKey('NestedResult'), isTrue);
   });
 
   test('Path 2: no address balance -> merge/split owned coins + into_balance',
@@ -118,6 +135,11 @@ void main() {
     expect(fns, contains('balance::send_funds')); // the transfer
     // Sourced an owned coin object (not the address balance).
     expect(data.inputs!.any((i) => i['Object'] != null), isTrue);
+    // send_funds receives the resolved into_balance result, not a raw intent.
+    final arg = sendFundsArg0(data.commands!);
+    expect(arg, isA<Map>(),
+        reason: 'send_funds arg must be resolved, got ${arg.runtimeType}');
+    expect((arg as Map).containsKey('NestedResult'), isTrue);
   });
 
   // A coin-output intent (tx.coin) sourced from owned coins. These exercise the
