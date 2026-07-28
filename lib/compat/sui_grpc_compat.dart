@@ -107,16 +107,20 @@ class SuiGrpcCompat {
   }
 
   /// Configures [tx] as a gasless (address-balance) transaction: an empty gas
-  /// payment (no gas coin is consumed, the sender pays no SUI), a nominal
-  /// [budget], and a `ValidDuring` expiration bounded to the current epoch +1
-  /// — the validity window the chain requires of transactions without an
-  /// owned gas object. The transaction must draw its funds from the sender's
-  /// address balance (e.g. an allowlisted-stablecoin `send_funds`); the node
-  /// rejects it otherwise.
-  Future<void> setGaslessGas(Transaction tx, {BigInt? budget}) async {
+  /// payment with zero budget/price (no gas coin, nothing charged — matching
+  /// executed gasless transactions on mainnet) and a `ValidDuring` expiration
+  /// bounded to the current epoch +1 — the validity window the chain requires
+  /// of transactions without an owned gas object. A non-zero budget must NOT
+  /// be set here: the node treats an empty payment with a positive budget as a
+  /// request to select gas coins for that budget, which fails for senders
+  /// without that much SUI — defeating the point of gasless. The transaction
+  /// must draw its funds from the sender's address balance (e.g. an
+  /// allowlisted-stablecoin `send_funds`); the node rejects it otherwise.
+  Future<void> setGaslessGas(Transaction tx) async {
     final info = await (grpc.core as GrpcCoreClient).getServiceInfo();
     tx.setGasPayment(const []);
-    tx.setGasBudget(budget ?? BigInt.from(50000000));
+    tx.setGasBudget(BigInt.zero);
+    tx.setGasPrice(BigInt.zero);
     tx.setValidDuringExpiration(
       minEpoch: info.epoch.toInt(),
       maxEpoch: info.epoch.toInt() + 1,
