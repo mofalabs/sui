@@ -24,6 +24,13 @@ import 'transaction_builder_client.dart';
 /// (address balance, gas coin, or owned coins) and splits all intents at once,
 /// converting to `Balance` via `coin::into_balance` for balance outputs and
 /// returning any remainder to the address balance via `coin::send_funds`.
+/// Test hook: pretend every CoinWithBalance intent is fully covered by the
+/// sender's address balance, skipping the client-side sufficiency check and
+/// coin lookup. Lets a knowingly-underfunded transaction reach the node to
+/// probe node-side validation (signature scheme, expiration rules) in
+/// isolation. Never enable outside tests/debug probes.
+bool debugForceAddressBalanceCoverage = false;
+
 const _coinWithBalance = 'CoinWithBalance';
 final String _suiType = normalizeStructTagString('0x2::sui::SUI');
 const _coinPackage =
@@ -106,7 +113,10 @@ Future<void> resolveCoinBalanceIntents(
   final coinsByType = <String, List<CoinStruct>>{};
   final addressBalanceByType = <String, BigInt>{};
   for (final entry in totalByType.entries) {
-    if (entry.key == 'gas') {
+    if (debugForceAddressBalanceCoverage) {
+      coinsByType[entry.key] = const [];
+      addressBalanceByType[entry.key] = entry.value;
+    } else if (entry.key == 'gas') {
       final b = await client.getBalanceBreakdown(data.sender!, _suiType);
       addressBalanceByType['gas'] = b.addressBalance;
     } else {
