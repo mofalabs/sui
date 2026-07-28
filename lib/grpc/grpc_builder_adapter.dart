@@ -164,17 +164,18 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
     final gp = sim.transaction.transaction.gasPayment;
     final budget = BigInt.parse(gp.budget.toString());
     if (gp.objects.isEmpty) {
-      // A successful simulation that selected no gas coin and resolved a zero
-      // budget is a GASLESS transaction: the node recognized an eligible
-      // address-balance / allowlisted-stablecoin PTB and set gas to 0. Apply
-      // zero gas (empty payment, price/budget 0) so the build carries no gas
-      // coin — the sender needs no SUI. Any other empty result means the node
-      // could not resolve gas; fall back to local selection.
-      if (budget == BigInt.zero) {
-        return ResolvedGasData(
-            budget: BigInt.zero, price: BigInt.zero, payment: const []);
-      }
-      return null;
+      // A successful simulation that selected NO gas coin is a GASLESS
+      // transaction: the node recognized an eligible address-balance /
+      // allowlisted-stablecoin PTB, so no gas coin is consumed and the sender
+      // pays no SUI. The node still returns a nominal budget/price (e.g.
+      // 200000/100) — carry them with an empty payment. (A normal transaction
+      // that simply lacked gas would have failed the simulation above, not
+      // reached here with an empty payment.)
+      return ResolvedGasData(
+        budget: budget,
+        price: gp.hasPrice() ? BigInt.parse(gp.price.toString()) : null,
+        payment: const [],
+      );
     }
     return ResolvedGasData(
       budget: budget,
