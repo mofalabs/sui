@@ -60,8 +60,13 @@ class GrpcBuilderAdapter implements TransactionBuilderClient {
   dynamic _ownerJson(Owner? owner) {
     if (owner == null) return null;
     return switch (owner.kind) {
-      Owner_OwnerKind.ADDRESS || Owner_OwnerKind.CONSENSUS_ADDRESS => {
-          'AddressOwner': owner.address
+      Owner_OwnerKind.ADDRESS => {'AddressOwner': owner.address},
+      // Party (consensus-address-owned) objects, e.g. coin_registry
+      // Currencies, are consensus objects: transaction inputs must use the
+      // SharedObject form with the owner's start version — mirroring the TS
+      // core-resolver, which treats ConsensusAddressOwner like Shared.
+      Owner_OwnerKind.CONSENSUS_ADDRESS => {
+          'Shared': {'initial_shared_version': owner.version.toInt()}
         },
       Owner_OwnerKind.OBJECT => {'ObjectOwner': owner.address},
       Owner_OwnerKind.SHARED => {
