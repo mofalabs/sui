@@ -310,3 +310,22 @@ Major transport migration ahead of Sui's JSON-RPC decommission (fully off 2026-0
 * Server-side gas resolution no longer misreads an empty node gas selection
   as gasless (executing it without `ValidDuring` would be rejected); build
   gasless transactions explicitly via `setGaslessGas`
+
+## 0.5.1
+
+* Fix `SuiGrpcCompat.estimateGas` / `devInspectTransactionBlock` building
+  transactions with no client: any input needing on-chain resolution
+  (shared objects such as `0x5` in `request_add_stake`, kiosk objects,
+  bare `tx.object(...)` coins) threw "No provider passed to
+  Transaction#build"
+* `estimateGas` now delegates gas price / payment / budget to
+  `Transaction.build` (server-side simulate with `doGasSelection`,
+  matching the TS gRPC client) instead of hand-picking a single gas coin
+  and budgeting the whole balance — which multi-coin accounts rejected
+  (coin < budget) and which leaked balance-sized fee estimates to UIs
+* `devInspectTransactionBlock` sets the sender and returns the required
+  (empty) `events` list instead of crashing on a null cast
+* Fix the gRPC builder adapter mapping party (consensus-address-owned)
+  objects as `AddressOwner`: they are consensus objects and must enter
+  transactions as SharedObject inputs with the owner's start version,
+  mirroring the TS core-resolver — verified end-to-end on testnet
