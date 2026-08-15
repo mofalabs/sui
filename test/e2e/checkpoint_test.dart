@@ -1,3 +1,6 @@
+@Skip('Legacy JSON-RPC e2e: public fullnodes answer these calls with "JSON-RPC has been deprecated" since 2026-07-31. Kept for reference; the gRPC suites (grpc_*_test.dart) cover this ground.')
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
 

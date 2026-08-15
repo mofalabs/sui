@@ -10,6 +10,8 @@ analyzer:
     - "lib/**.freezed.dart"
     - "lib/**.g.dart"
     - "lib/grpc/proto/**"
+    # Flutter build artifacts copied into the example app's asset bundle.
+    - "example/build/**"
   errors:
     invalid_annotation_target: ignore
 

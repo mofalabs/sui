@@ -1,3 +1,6 @@
+@Skip('Legacy JSON-RPC/WebSocket layer: the public Sui JSON-RPC endpoints were shut down on 2026-07-31, so these JsonRpcProvider tests can no longer reach a node. Kept for reference; use the gRPC suites (grpc_*_test.dart) instead.')
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
 
