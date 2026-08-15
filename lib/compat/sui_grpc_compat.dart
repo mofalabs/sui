@@ -228,33 +228,27 @@ class SuiGrpcCompat {
   }
 
   /// Estimate a gas budget for [tx] by simulating it (no signing needed).
+  ///
+  /// Gas price / payment / budget resolution is left to `Transaction.build`
+  /// (server-side `simulate` with `doGasSelection`), which also resolves any
+  /// shared-object or moveCall inputs via [builderClient]. Manually picking a
+  /// single gas coin and budgeting the whole balance — the previous approach —
+  /// breaks both on multi-coin accounts (coin < budget is rejected at input
+  /// checking) and on transactions that cannot build offline.
   Future<BigInt> estimateGas(Transaction tx, String sender) async {
     tx.setSenderIfNotSet(sender);
-    final gasPrice = await grpc.getReferenceGasPrice();
-    tx.setGasPrice(BigInt.from(gasPrice.toInt()));
-    final coin = await _firstGasCoin(sender);
-    if (coin != null) tx.setGasPayment([coin]);
-    final bal = await grpc.getBalance(sender);
-    tx.setGasBudget(BigInt.from(bal.balance.toInt()));
-    final data = await tx.build(BuildOptions(limits: <String, dynamic>{}));
+    final data = await tx
+        .build(BuildOptions(client: builderClient, limits: <String, dynamic>{}));
     final sim = await grpc.simulateTransaction(Uint8List.fromList(data));
     final g = sim.transaction.effects.gasUsed;
+    final gasPrice = tx.getData().gasData.price ??
+        BigInt.from((await grpc.getReferenceGasPrice()).toInt());
     final budget = BigInt.from(g.computationCost.toInt()) +
         BigInt.from(g.storageCost.toInt()) -
         BigInt.from(g.storageRebate.toInt());
     final floor = BigInt.from(g.computationCost.toInt()) +
-        BigInt.from(1000) * BigInt.from(gasPrice.toInt());
+        BigInt.from(1000) * gasPrice;
     return budget > floor ? budget : floor;
-  }
-
-  Future<SuiObjectRef?> _firstGasCoin(String owner) async {
-    final owned = await grpc.listOwnedObjects(owner,
-        objectType: '0x2::coin::Coin<0x2::sui::SUI>',
-        readMask: const ['object_id', 'version', 'digest'],
-        pageSize: 1);
-    if (owned.objects.isEmpty) return null;
-    final o = owned.objects.first;
-    return SuiObjectRef(o.digest, o.objectId, o.version.toInt());
   }
 
   /// Verify a signed message/transaction (used by dApp flows).
@@ -643,10 +637,14 @@ class SuiGrpcCompat {
 
   Future<DevInspectResults> devInspectTransactionBlock(
       String sender, Transaction tx) async {
-    final data = await tx.build(BuildOptions(limits: <String, dynamic>{}));
+    tx.setSenderIfNotSet(sender);
+    final data = await tx
+        .build(BuildOptions(client: builderClient, limits: <String, dynamic>{}));
     final sim = await grpc.simulateTransaction(Uint8List.fromList(data));
+    // `events` is required by the legacy model; the gRPC event payloads are
+    // proto-encoded and not mapped to the JSON event shape here.
     return DevInspectResults.fromJson(
-        {'effects': _effectsJson(sim.transaction)});
+        {'effects': _effectsJson(sim.transaction), 'events': const []});
   }
 
   Future<DryRunTransactionBlockResponse> dryRunTransactionBlock(
