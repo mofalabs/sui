@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:bcs/bcs.dart';
@@ -13,9 +14,19 @@ class SignatureWithBytes {
   SignatureWithBytes(this.signature, this.bytes);
 }
 
+/// Shared interface for local keys and asynchronous hardware/proof signers.
+abstract interface class Signer {
+  PublicKey getPublicKey();
+  FutureOr<SignatureWithBytes> signWithIntent(
+    Uint8List bytes,
+    IntentScope intent,
+  );
+}
+
 /// A keypair used for signing transactions.
-mixin Keypair {
+mixin Keypair implements Signer {
   /// The public key for this keypair
+  @override
   PublicKey getPublicKey();
 
   /// The secret key for this keypair
@@ -32,18 +43,25 @@ mixin Keypair {
 
   /// Verify serialized signature
   bool verifySerialized(
-      Uint8List message, String signature, Uint8List publicKey);
+    Uint8List message,
+    String signature,
+    Uint8List publicKey,
+  );
 
   Uint8List sign(Uint8List bytes) {
     return signData(bytes);
   }
 
+  @override
   SignatureWithBytes signWithIntent(Uint8List bytes, IntentScope intent) {
     final intentMessage = messageWithIntent(intent, bytes);
     final digest = blake2b(intentMessage);
 
-    final signature =
-        toSerializedSignature(getKeyScheme(), sign(digest), getPublicKey());
+    final signature = toSerializedSignature(
+      getKeyScheme(),
+      sign(digest),
+      getPublicKey(),
+    );
 
     return SignatureWithBytes(signature, base64Encode(bytes));
   }
@@ -53,15 +71,13 @@ mixin Keypair {
   }
 
   SignatureWithBytes signPersonalMessage(Uint8List bytes) {
-    return signWithIntent(Bcs.vector(Bcs.u8()).serialize(bytes).toBytes(),
-        IntentScope.personalMessage);
+    return signWithIntent(
+      Bcs.vector(Bcs.u8()).serialize(bytes).toBytes(),
+      IntentScope.personalMessage,
+    );
   }
 
-  bool verifyWithIntent(
-    Uint8List bytes,
-    String signature,
-    IntentScope intent,
-  ) {
+  bool verifyWithIntent(Uint8List bytes, String signature, IntentScope intent) {
     final intentMessage = messageWithIntent(intent, bytes);
     final digest = blake2b(intentMessage);
 
@@ -79,7 +95,10 @@ mixin Keypair {
 
   bool verifyTransaction(Uint8List transaction, String signature) {
     return verifyWithIntent(
-        transaction, signature, IntentScope.transactionData);
+      transaction,
+      signature,
+      IntentScope.transactionData,
+    );
   }
 }
 
@@ -127,21 +146,14 @@ mixin PublicKey {
     return base64Encode(toSuiBytes());
   }
 
-  bool verifyWithIntent(
-    Uint8List bytes,
-    String signature,
-    IntentScope intent,
-  ) {
+  bool verifyWithIntent(Uint8List bytes, String signature, IntentScope intent) {
     final intentMessage = messageWithIntent(intent, bytes);
     final digest = blake2b(intentMessage);
 
     return verify(digest, base64Decode(signature));
   }
 
-  bool verifyPersonalMessage(
-    Uint8List message,
-    String signature,
-  ) {
+  bool verifyPersonalMessage(Uint8List message, String signature) {
     return verifyWithIntent(
       Bcs.vector(Bcs.u8()).serialize(message).toBytes(),
       signature,
@@ -149,12 +161,12 @@ mixin PublicKey {
     );
   }
 
-  bool verifyTransaction(
-    Uint8List transaction,
-    String signature,
-  ) {
+  bool verifyTransaction(Uint8List transaction, String signature) {
     return verifyWithIntent(
-        transaction, signature, IntentScope.transactionData);
+      transaction,
+      signature,
+      IntentScope.transactionData,
+    );
   }
 
   /// Return the base-64 representation of the public key

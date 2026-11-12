@@ -21,10 +21,13 @@ const ErrorReason$json = {
     {'1': 'ERROR_REASON_UNKNOWN', '2': 0},
     {'1': 'FIELD_INVALID', '2': 1},
     {'1': 'FIELD_MISSING', '2': 2},
+    {'1': 'INSUFFICIENT_GAS_BALANCE', '2': 3},
+    {'1': 'TRANSACTION_EXECUTION_FAILED', '2': 4},
   ],
 };
 
 /// Descriptor for `ErrorReason`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List errorReasonDescriptor = $convert.base64Decode(
     'CgtFcnJvclJlYXNvbhIYChRFUlJPUl9SRUFTT05fVU5LTk9XThAAEhEKDUZJRUxEX0lOVkFMSU'
-    'QQARIRCg1GSUVMRF9NSVNTSU5HEAI=');
+    'QQARIRCg1GSUVMRF9NSVNTSU5HEAISHAoYSU5TVUZGSUNJRU5UX0dBU19CQUxBTkNFEAMSIAoc'
+    'VFJBTlNBQ1RJT05fRVhFQ1VUSU9OX0ZBSUxFRBAE');

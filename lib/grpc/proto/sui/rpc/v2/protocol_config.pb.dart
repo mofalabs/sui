@@ -15,18 +15,24 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../../google/protobuf/struct.pb.dart' as $0;
+
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class ProtocolConfig extends $pb.GeneratedMessage {
   factory ProtocolConfig({
     $fixnum.Int64? protocolVersion,
+    @$core.Deprecated('This field is deprecated.')
     $core.Iterable<$core.MapEntry<$core.String, $core.bool>>? featureFlags,
+    @$core.Deprecated('This field is deprecated.')
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? attributes,
+    $core.Iterable<$core.MapEntry<$core.String, $0.Value>>? configs,
   }) {
     final result = create();
     if (protocolVersion != null) result.protocolVersion = protocolVersion;
     if (featureFlags != null) result.featureFlags.addEntries(featureFlags);
     if (attributes != null) result.attributes.addEntries(attributes);
+    if (configs != null) result.configs.addEntries(configs);
     return result;
   }
 
@@ -55,6 +61,13 @@ class ProtocolConfig extends $pb.GeneratedMessage {
         entryClassName: 'ProtocolConfig.AttributesEntry',
         keyFieldType: $pb.PbFieldType.OS,
         valueFieldType: $pb.PbFieldType.OS,
+        packageName: const $pb.PackageName('sui.rpc.v2'))
+    ..m<$core.String, $0.Value>(4, _omitFieldNames ? '' : 'configs',
+        entryClassName: 'ProtocolConfig.ConfigsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: $0.Value.create,
+        valueDefaultOrMaker: $0.Value.getDefault,
         packageName: const $pb.PackageName('sui.rpc.v2'))
     ..hasRequiredFields = false;
 
@@ -88,11 +101,18 @@ class ProtocolConfig extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearProtocolVersion() => $_clearField(1);
 
+  /// Deprecated in favor of the lossless `configs` field.
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(2)
   $pb.PbMap<$core.String, $core.bool> get featureFlags => $_getMap(1);
 
+  /// Deprecated in favor of the lossless `configs` field.
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   $pb.PbMap<$core.String, $core.String> get attributes => $_getMap(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbMap<$core.String, $0.Value> get configs => $_getMap(3);
 }
 
 const $core.bool _omitFieldNames =

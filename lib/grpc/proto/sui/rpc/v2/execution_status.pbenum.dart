@@ -441,6 +441,13 @@ class CommandArgumentError_CommandArgumentErrorKind extends $pb.ProtobufEnum {
       CommandArgumentError_CommandArgumentErrorKind._(
           19, _omitEnumNames ? '' : 'INVALID_REFERENCE_ARGUMENT');
 
+  /// Invalid usage of TxContext in the function signature. TxContext can only be used by
+  /// reference, `&TxContext` or `&mut TxContext`. If used mutably, it must be the only
+  /// TxContext parameter, and TxContext can never be returned from a Move call.
+  static const CommandArgumentError_CommandArgumentErrorKind
+      INVALID_TX_CONTEXT = CommandArgumentError_CommandArgumentErrorKind._(
+          20, _omitEnumNames ? '' : 'INVALID_TX_CONTEXT');
+
   static const $core.List<CommandArgumentError_CommandArgumentErrorKind>
       values = <CommandArgumentError_CommandArgumentErrorKind>[
     COMMAND_ARGUMENT_ERROR_KIND_UNKNOWN,
@@ -463,10 +470,11 @@ class CommandArgumentError_CommandArgumentErrorKind extends $pb.ProtobufEnum {
     CANNOT_MOVE_BORROWED_VALUE,
     CANNOT_WRITE_TO_EXTENDED_REFERENCE,
     INVALID_REFERENCE_ARGUMENT,
+    INVALID_TX_CONTEXT,
   ];
 
   static final $core.List<CommandArgumentError_CommandArgumentErrorKind?>
-      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 19);
+      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 20);
   static CommandArgumentError_CommandArgumentErrorKind? valueOf(
           $core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];

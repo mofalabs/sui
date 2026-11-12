@@ -50,7 +50,7 @@ abstract class PasskeyProvider {
 /// A passkey signer implementing SIP-9. Holds the 33-byte compressed secp256r1
 /// public key and a [PasskeyProvider]; the private key never leaves the
 /// authenticator. Mirrors Mysten's `PasskeyKeypair`.
-class PasskeyKeypair {
+class PasskeyKeypair implements Signer {
   final Uint8List publicKey;
   final PasskeyProvider provider;
   final Uint8List? credentialId;
@@ -59,6 +59,7 @@ class PasskeyKeypair {
 
   SignatureScheme getKeyScheme() => SignatureScheme.Passkey;
 
+  @override
   PasskeyPublicKey getPublicKey() => PasskeyPublicKey(publicKey);
 
   Uint8List? getCredentialId() => credentialId;
@@ -67,7 +68,8 @@ class PasskeyKeypair {
   /// credential. Only call this when creating a passkey wallet for the first
   /// time. To reconstruct from an existing passkey, use [signAndRecover].
   static Future<PasskeyKeypair> getPasskeyInstance(
-      PasskeyProvider provider) async {
+    PasskeyProvider provider,
+  ) async {
     final reg = await provider.create();
     final uncompressed = parseDerSPKI(reg.derSPKI);
     final compressed = Secp256.fromSecp256r1().compressPoint(uncompressed);
@@ -82,8 +84,9 @@ class PasskeyKeypair {
     final clientDataJson = utf8.decode(assertion.clientDataJSON);
 
     // Low-S–normalized 64-byte compact secp256r1 signature.
-    final normalized =
-        Secp256.fromSecp256r1().derToNormalizedCompact(assertion.signature);
+    final normalized = Secp256.fromSecp256r1().derToNormalizedCompact(
+      assertion.signature,
+    );
     if (normalized.length != PASSKEY_SIGNATURE_SIZE ||
         publicKey.length != PASSKEY_PUBLIC_KEY_SIZE) {
       throw ArgumentError('Invalid signature or public key length');
@@ -95,17 +98,22 @@ class PasskeyKeypair {
     userSignature.setAll(1, normalized);
     userSignature.setAll(1 + normalized.length, publicKey);
 
-    return Uint8List.fromList(SuiBcs.PasskeyAuthenticator.serialize({
-      'authenticatorData': assertion.authenticatorData,
-      'clientDataJson': clientDataJson,
-      'userSignature': userSignature,
-    }).toBytes());
+    return Uint8List.fromList(
+      SuiBcs.PasskeyAuthenticator.serialize({
+        'authenticatorData': assertion.authenticatorData,
+        'clientDataJson': clientDataJson,
+        'userSignature': userSignature,
+      }).toBytes(),
+    );
   }
 
   /// Signs [bytes] under [intent], returning the base64 passkey signature
   /// (`flag(0x06) || BCS(PasskeyAuthenticator)`) and the base64 message bytes.
+  @override
   Future<SignatureWithBytes> signWithIntent(
-      Uint8List bytes, IntentScope intent) async {
+    Uint8List bytes,
+    IntentScope intent,
+  ) async {
     final intentMessage = messageWithIntent(intent, bytes);
     final digest = blake2b(intentMessage);
     final signature = await sign(digest);
@@ -132,15 +140,19 @@ class PasskeyKeypair {
   /// and intersect with [findCommonPublicKey] to identify a previously created
   /// passkey wallet whose public key isn't stored locally.
   static Future<List<PasskeyPublicKey>> signAndRecover(
-      PasskeyProvider provider, Uint8List message) async {
+    PasskeyProvider provider,
+    Uint8List message,
+  ) async {
     final assertion = await provider.get(message);
     // The signed message is authenticatorData || sha256(clientDataJSON).
     final fullMessage = Uint8List.fromList([
       ...assertion.authenticatorData,
       ...sha256(assertion.clientDataJSON),
     ]);
-    final candidates = Secp256.fromSecp256r1()
-        .recoverCompressedFromDer(assertion.signature, sha256(fullMessage));
+    final candidates = Secp256.fromSecp256r1().recoverCompressedFromDer(
+      assertion.signature,
+      sha256(fullMessage),
+    );
     return candidates.map((pk) => PasskeyPublicKey(pk)).toList();
   }
 }
@@ -148,7 +160,9 @@ class PasskeyKeypair {
 /// Returns the single public key present in both candidate lists; throws if
 /// there isn't exactly one common key.
 PasskeyPublicKey findCommonPublicKey(
-    List<PasskeyPublicKey> a, List<PasskeyPublicKey> b) {
+  List<PasskeyPublicKey> a,
+  List<PasskeyPublicKey> b,
+) {
   final matches = <PasskeyPublicKey>[];
   for (final x in a) {
     for (final y in b) {

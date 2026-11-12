@@ -25,10 +25,7 @@ class PubkeyEnumWeightPair {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "pubKey": pubKey,
-      "weight": weight,
-    };
+    return {"pubKey": pubKey, "weight": weight};
   }
 }
 
@@ -73,11 +70,7 @@ class MultiSigStruct {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "sigs": sigs,
-      "bitmap": bitmap,
-      "multisig_pk": multisigPK,
-    };
+    return {"sigs": sigs, "bitmap": bitmap, "multisig_pk": multisigPK};
   }
 }
 
@@ -87,11 +80,12 @@ class ParsedPartialMultiSigSignature {
   PublicKey publicKey;
   int weight;
 
-  ParsedPartialMultiSigSignature(
-      {required this.signatureScheme,
-      required this.signature,
-      required this.publicKey,
-      required this.weight});
+  ParsedPartialMultiSigSignature({
+    required this.signatureScheme,
+    required this.signature,
+    required this.publicKey,
+    required this.weight,
+  });
 }
 
 const MAX_SIGNER_IN_MULTISIG = 10;
@@ -127,7 +121,9 @@ class MultiSigPublicKey with PublicKey {
         throw ArgumentError("Invalid weight");
       }
       return PublicKeyWeight(
-          e.weight, publicKeyFromRawBytes(scheme, Uint8List.fromList(bytes)));
+        e.weight,
+        publicKeyFromRawBytes(scheme, Uint8List.fromList(bytes)),
+      );
     }).toList();
 
     final totalWeight = publicKeys.isEmpty
@@ -140,23 +136,29 @@ class MultiSigPublicKey with PublicKey {
 
     if (publicKeys.length > MAX_SIGNER_IN_MULTISIG) {
       throw ArgumentError(
-          "Max number of signers in a multisig is $MAX_SIGNER_IN_MULTISIG");
+        "Max number of signers in a multisig is $MAX_SIGNER_IN_MULTISIG",
+      );
     }
 
     if (publicKeys.length < MIN_SIGNER_IN_MULTISIG) {
       throw ArgumentError(
-          "Min number of signers in a multisig is $MIN_SIGNER_IN_MULTISIG");
+        "Min number of signers in a multisig is $MIN_SIGNER_IN_MULTISIG",
+      );
     }
   }
 
-  factory MultiSigPublicKey.fromPublicKeys(
-      {required int threshold, required List<PublicKeyWeight> publicKeys}) {
+  factory MultiSigPublicKey.fromPublicKeys({
+    required int threshold,
+    required List<PublicKeyWeight> publicKeys,
+  }) {
     final pubKeyStruct = MultiSigPublicKeyStruct(
       publicKeys.map((e) {
-        final scheme =
-            SIGNATURE_SCHEME_TO_FLAG.flagToScheme(e.publicKey.flag());
-        return PubkeyEnumWeightPair(
-            {scheme.name: e.publicKey.toRawBytes()}, e.weight);
+        final scheme = SIGNATURE_SCHEME_TO_FLAG.flagToScheme(
+          e.publicKey.flag(),
+        );
+        return PubkeyEnumWeightPair({
+          scheme.name: e.publicKey.toRawBytes(),
+        }, e.weight);
       }).toList(),
       threshold,
     );
@@ -165,7 +167,8 @@ class MultiSigPublicKey with PublicKey {
 
   factory MultiSigPublicKey.fromBytes(Uint8List publicKey) {
     final pubkeyStruct = MultiSigPublicKeyStruct.fromJson(
-        SuiBcs.MultiSigPublicKey.parse(publicKey));
+      SuiBcs.MultiSigPublicKey.parse(publicKey),
+    );
     return MultiSigPublicKey(pubkeyStruct);
   }
 
@@ -187,7 +190,12 @@ class MultiSigPublicKey with PublicKey {
   @override
   String toSuiAddress() {
     // max length = 1 flag byte + (max pk size + max weight size (u8)) * max signer size + 2 threshold bytes (u16)
-    const maxLength = 1 + (64 + 1) * MAX_SIGNER_IN_MULTISIG + 2;
+    final maxLength =
+        3 +
+        publicKeys.fold<int>(
+          0,
+          (length, member) => length + member.publicKey.toRawBytes().length + 2,
+        );
     final tmp = Uint8List(maxLength);
     tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.MultiSig]);
     // tmp.setAll(1, bcs.ser('u16', _multisigPublicKey.threshold).toBytes());
@@ -220,8 +228,9 @@ class MultiSigPublicKey with PublicKey {
 
     if (!bytesEqual(
       SuiBcs.MultiSigPublicKey.serialize(_multisigPublicKey.toJson()).toBytes(),
-      SuiBcs.MultiSigPublicKey.serialize(multisig!.multisigPK.toJson())
-          .toBytes(),
+      SuiBcs.MultiSigPublicKey.serialize(
+        multisig!.multisigPK.toJson(),
+      ).toBytes(),
     )) {
       return false;
     }
@@ -242,12 +251,36 @@ class MultiSigPublicKey with PublicKey {
     return signatureWeight >= _multisigPublicKey.threshold;
   }
 
+  /// Verifies all members, including zkLogin proofs using the supplied client.
+  Future<bool> verifyPersonalMessageAsync(
+    Uint8List message,
+    String signature, {
+    CoreClient? client,
+  }) => isValidPersonalMessageSignature(
+    message,
+    signature,
+    client: client,
+    address: toSuiAddress(),
+  );
+
+  Future<bool> verifyTransactionAsync(
+    Uint8List transaction,
+    String signature, {
+    CoreClient? client,
+  }) => isValidTransactionSignature(
+    transaction,
+    signature,
+    client: client,
+    address: toSuiAddress(),
+  );
+
   /// Combines multiple partial signatures into a single multisig, ensuring that each public key signs only once
   /// and that all the public keys involved are known and valid, and then serializes multisig into the standard format
   String combinePartialSignatures(List<String> signatures) {
     if (signatures.length > MAX_SIGNER_IN_MULTISIG) {
       throw ArgumentError(
-          "Max number of signatures in a multisig is $MAX_SIGNER_IN_MULTISIG");
+        "Max number of signatures in a multisig is $MAX_SIGNER_IN_MULTISIG",
+      );
     }
 
     var bitmap = 0;
@@ -269,16 +302,15 @@ class MultiSigPublicKey with PublicKey {
         publicKey = parsed.pubKey!.toRawBytes();
       }
 
-      compressedSignatures.add({
-        parsed.signatureScheme.name: parsed.signature,
-      });
+      compressedSignatures.add({parsed.signatureScheme.name: parsed.signature});
 
       int? publicKeyIndex;
       for (int j = 0; j < publicKeys.length; j++) {
         if (bytesEqual(publicKey, publicKeys[j].publicKey.toRawBytes())) {
           if (bitmap & (1 << j) != 0) {
             throw ArgumentError(
-                "Received multiple signatures from the same public key");
+              "Received multiple signatures from the same public key",
+            );
           }
 
           publicKeyIndex = j;
@@ -298,9 +330,10 @@ class MultiSigPublicKey with PublicKey {
       "bitmap": bitmap,
       "multisig_pk": _multisigPublicKey.toJson(),
     };
-    final bytes = SuiBcs.MultiSig.serialize(multisig,
-            options: BcsWriterOptions(maxSize: 8192))
-        .toBytes();
+    final bytes = SuiBcs.MultiSig.serialize(
+      multisig,
+      options: BcsWriterOptions(maxSize: 65536),
+    ).toBytes();
     var tmp = Uint8List(bytes.length + 1);
     tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.MultiSig]);
     tmp.setAll(1, bytes);
@@ -310,24 +343,37 @@ class MultiSigPublicKey with PublicKey {
 
 /// Parse multisig structure into an array of individual signatures: signature scheme, the actual individual signature, public key and its weight.
 List<ParsedPartialMultiSigSignature> parsePartialSignatures(
-    MultiSigStruct multisig) {
+  MultiSigStruct multisig,
+) {
   final sigs = multisig.sigs;
   final len = sigs.length;
   final res = <ParsedPartialMultiSigSignature>[];
+  final indices = asIndices(multisig.bitmap);
+  if (indices.length != len ||
+      indices.any((index) => index >= multisig.multisigPK.pks.length)) {
+    throw ArgumentError('Multisig bitmap does not match signatures');
+  }
   for (int i = 0; i < len; i++) {
     final sss = sigs[i].entries.first;
     final signatureScheme = sss.key;
     final signature = sss.value.cast<int>();
-    final pkIndex = asIndices(multisig.bitmap)[i];
+    final pkIndex = indices[i];
     final pair = multisig.multisigPK.pks[pkIndex];
+    if (pair.pubKey.keys.first != signatureScheme) {
+      throw const FormatException(
+        'Multisig signature scheme does not match member',
+      );
+    }
     final pkBytes = pair.pubKey.entries.first.value.cast<int>();
 
     if (signatureScheme == SignatureScheme.MultiSig.name) {
       throw ArgumentError("MultiSig is not supported inside MultiSig");
     }
 
-    final publicKey =
-        publicKeyFromRawBytes(signatureScheme, Uint8List.fromList(pkBytes));
+    final publicKey = publicKeyFromRawBytes(
+      signatureScheme,
+      Uint8List.fromList(pkBytes),
+    );
 
     final parsedSign = ParsedPartialMultiSigSignature(
       signatureScheme: SignatureScheme.values.byName(signatureScheme),
@@ -341,7 +387,7 @@ List<ParsedPartialMultiSigSignature> parsePartialSignatures(
 }
 
 Uint8List asIndices(int bitmap) {
-  if (bitmap < 0 || bitmap > 1024) {
+  if (bitmap < 0 || bitmap >= 1024) {
     throw ArgumentError('Invalid bitmap');
   }
   final res = <int>[];
@@ -359,14 +405,22 @@ PublicKey publicKeyFromRawBytes(String signatureScheme, Uint8List bytes) {
       return Ed25519PublicKey.fromBytes(bytes);
     case "Secp256k1":
       return Secp256PublicKey.fromBytes(
-          bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256k1);
+        bytes,
+        SIGNATURE_SCHEME_TO_FLAG.Secp256k1,
+      );
     case "Secp256r1":
       return Secp256PublicKey.fromBytes(
-          bytes, SIGNATURE_SCHEME_TO_FLAG.Secp256r1);
+        bytes,
+        SIGNATURE_SCHEME_TO_FLAG.Secp256r1,
+      );
     case "MultiSig":
       return MultiSigPublicKey.fromBytes(bytes);
     case "ZkLogin":
       return ZkLoginPublicIdentifier.fromBytes(bytes);
+    case "Passkey":
+      return PasskeyPublicKey(bytes);
+    case "MLDSA65":
+      return Mldsa65PublicKey(bytes);
     default:
       throw ArgumentError("Unsupported signature scheme $signatureScheme");
   }

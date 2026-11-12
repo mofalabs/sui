@@ -15,43 +15,55 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'ledger_service.pb.dart' as $28;
+import 'ledger_service.pb.dart' as $30;
 import 'ledger_service.pbjson.dart';
 
 export 'ledger_service.pb.dart';
 
 abstract class LedgerServiceBase extends $pb.GeneratedService {
-  $async.Future<$28.GetServiceInfoResponse> getServiceInfo(
-      $pb.ServerContext ctx, $28.GetServiceInfoRequest request);
-  $async.Future<$28.GetObjectResponse> getObject(
-      $pb.ServerContext ctx, $28.GetObjectRequest request);
-  $async.Future<$28.BatchGetObjectsResponse> batchGetObjects(
-      $pb.ServerContext ctx, $28.BatchGetObjectsRequest request);
-  $async.Future<$28.GetTransactionResponse> getTransaction(
-      $pb.ServerContext ctx, $28.GetTransactionRequest request);
-  $async.Future<$28.BatchGetTransactionsResponse> batchGetTransactions(
-      $pb.ServerContext ctx, $28.BatchGetTransactionsRequest request);
-  $async.Future<$28.GetCheckpointResponse> getCheckpoint(
-      $pb.ServerContext ctx, $28.GetCheckpointRequest request);
-  $async.Future<$28.GetEpochResponse> getEpoch(
-      $pb.ServerContext ctx, $28.GetEpochRequest request);
+  $async.Future<$30.GetServiceInfoResponse> getServiceInfo(
+      $pb.ServerContext ctx, $30.GetServiceInfoRequest request);
+  $async.Future<$30.GetObjectResponse> getObject(
+      $pb.ServerContext ctx, $30.GetObjectRequest request);
+  $async.Future<$30.BatchGetObjectsResponse> batchGetObjects(
+      $pb.ServerContext ctx, $30.BatchGetObjectsRequest request);
+  $async.Future<$30.GetTransactionResponse> getTransaction(
+      $pb.ServerContext ctx, $30.GetTransactionRequest request);
+  $async.Future<$30.BatchGetTransactionsResponse> batchGetTransactions(
+      $pb.ServerContext ctx, $30.BatchGetTransactionsRequest request);
+  $async.Future<$30.GetCheckpointResponse> getCheckpoint(
+      $pb.ServerContext ctx, $30.GetCheckpointRequest request);
+  $async.Future<$30.GetEpochResponse> getEpoch(
+      $pb.ServerContext ctx, $30.GetEpochRequest request);
+  $async.Future<$30.ListCheckpointsResponse> listCheckpoints(
+      $pb.ServerContext ctx, $30.ListCheckpointsRequest request);
+  $async.Future<$30.ListTransactionsResponse> listTransactions(
+      $pb.ServerContext ctx, $30.ListTransactionsRequest request);
+  $async.Future<$30.ListEventsResponse> listEvents(
+      $pb.ServerContext ctx, $30.ListEventsRequest request);
 
   $pb.GeneratedMessage createRequest($core.String methodName) {
     switch (methodName) {
       case 'GetServiceInfo':
-        return $28.GetServiceInfoRequest();
+        return $30.GetServiceInfoRequest();
       case 'GetObject':
-        return $28.GetObjectRequest();
+        return $30.GetObjectRequest();
       case 'BatchGetObjects':
-        return $28.BatchGetObjectsRequest();
+        return $30.BatchGetObjectsRequest();
       case 'GetTransaction':
-        return $28.GetTransactionRequest();
+        return $30.GetTransactionRequest();
       case 'BatchGetTransactions':
-        return $28.BatchGetTransactionsRequest();
+        return $30.BatchGetTransactionsRequest();
       case 'GetCheckpoint':
-        return $28.GetCheckpointRequest();
+        return $30.GetCheckpointRequest();
       case 'GetEpoch':
-        return $28.GetEpochRequest();
+        return $30.GetEpochRequest();
+      case 'ListCheckpoints':
+        return $30.ListCheckpointsRequest();
+      case 'ListTransactions':
+        return $30.ListTransactionsRequest();
+      case 'ListEvents':
+        return $30.ListEventsRequest();
       default:
         throw $core.ArgumentError('Unknown method: $methodName');
     }
@@ -61,20 +73,26 @@ abstract class LedgerServiceBase extends $pb.GeneratedService {
       $core.String methodName, $pb.GeneratedMessage request) {
     switch (methodName) {
       case 'GetServiceInfo':
-        return getServiceInfo(ctx, request as $28.GetServiceInfoRequest);
+        return getServiceInfo(ctx, request as $30.GetServiceInfoRequest);
       case 'GetObject':
-        return getObject(ctx, request as $28.GetObjectRequest);
+        return getObject(ctx, request as $30.GetObjectRequest);
       case 'BatchGetObjects':
-        return batchGetObjects(ctx, request as $28.BatchGetObjectsRequest);
+        return batchGetObjects(ctx, request as $30.BatchGetObjectsRequest);
       case 'GetTransaction':
-        return getTransaction(ctx, request as $28.GetTransactionRequest);
+        return getTransaction(ctx, request as $30.GetTransactionRequest);
       case 'BatchGetTransactions':
         return batchGetTransactions(
-            ctx, request as $28.BatchGetTransactionsRequest);
+            ctx, request as $30.BatchGetTransactionsRequest);
       case 'GetCheckpoint':
-        return getCheckpoint(ctx, request as $28.GetCheckpointRequest);
+        return getCheckpoint(ctx, request as $30.GetCheckpointRequest);
       case 'GetEpoch':
-        return getEpoch(ctx, request as $28.GetEpochRequest);
+        return getEpoch(ctx, request as $30.GetEpochRequest);
+      case 'ListCheckpoints':
+        return listCheckpoints(ctx, request as $30.ListCheckpointsRequest);
+      case 'ListTransactions':
+        return listTransactions(ctx, request as $30.ListTransactionsRequest);
+      case 'ListEvents':
+        return listEvents(ctx, request as $30.ListEventsRequest);
       default:
         throw $core.ArgumentError('Unknown method: $methodName');
     }

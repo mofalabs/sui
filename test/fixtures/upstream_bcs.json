@@ -1,0 +1,297 @@
+{
+  "source": "MystenLabs/ts-sdks@de91ff2f, @mysten/sui 2.37.0",
+  "fixtures": [
+    {
+      "name": "validity",
+      "type": "TransactionExpiration",
+      "input": {
+        "Validity": {
+          "minEpoch": "10",
+          "maxEpoch": "12",
+          "minTimestamp": "1792900000123",
+          "maxTimestamp": "1792900060456",
+          "chain": "11111111111111111111111111111111",
+          "nonce": 1234,
+          "allowedProposers": {
+            "epoch": "11",
+            "proposers": [
+              0,
+              3,
+              4294967295
+            ]
+          }
+        }
+      },
+      "hex": "03010a00000000000000010c00000000000000017be92a71a10100000128d52b71a1010000200000000000000000000000000000000000000000000000000000000000000000d2040000010b00000000000000030000000003000000ffffffff"
+    },
+    {
+      "name": "valid-during",
+      "type": "TransactionExpiration",
+      "input": {
+        "ValidDuring": {
+          "minEpoch": "10",
+          "maxEpoch": "12",
+          "minTimestamp": "1792900000123",
+          "maxTimestamp": "1792900060456",
+          "chain": "11111111111111111111111111111111",
+          "nonce": 1234
+        }
+      },
+      "hex": "02010a00000000000000010c00000000000000017be92a71a10100000128d52b71a1010000200000000000000000000000000000000000000000000000000000000000000000d2040000"
+    },
+    {
+      "name": "allowance",
+      "type": "CallArg",
+      "input": {
+        "FundsWithdrawal": {
+          "reservation": {
+            "MaxAmountU64": "18446744073709551615"
+          },
+          "typeArg": {
+            "Balance": "0x2::sui::SUI"
+          },
+          "withdrawFrom": {
+            "SenderAllowance": {
+              "funder": "0xabc",
+              "allowance": "0x123"
+            }
+          }
+        }
+      },
+      "hex": "0200ffffffffffffffff00070000000000000000000000000000000000000000000000000000000000000002037375690353554900020000000000000000000000000000000000000000000000000000000000000abc0000000000000000000000000000000000000000000000000000000000000123"
+    },
+    {
+      "name": "epoch",
+      "type": "TransactionKind",
+      "input": {
+        "ChangeEpoch": {
+          "epoch": "1",
+          "protocolVersion": "138",
+          "storageCharge": "2",
+          "computationCharge": "3",
+          "storageRebate": "4",
+          "nonRefundableStorageFee": "5",
+          "epochStartTimestampMs": "100",
+          "systemPackages": [
+            [
+              "2",
+              [
+                [
+                  1,
+                  2,
+                  3
+                ]
+              ],
+              [
+                "0x2"
+              ]
+            ]
+          ]
+        }
+      },
+      "hex": "0101000000000000008a00000000000000020000000000000003000000000000000400000000000000050000000000000064000000000000000102000000000000000103010203010000000000000000000000000000000000000000000000000000000000000002"
+    },
+    {
+      "name": "genesis",
+      "type": "TransactionKind",
+      "input": {
+        "Genesis": {
+          "objects": [
+            {
+              "RawObject": {
+                "data": {
+                  "Move": {
+                    "type": {
+                      "GasCoin": true
+                    },
+                    "hasPublicTransfer": true,
+                    "version": "1",
+                    "contents": [
+                      1,
+                      2
+                    ]
+                  }
+                },
+                "owner": {
+                  "AddressOwner": "0xabc"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "hex": "0201000001010100000000000000020102000000000000000000000000000000000000000000000000000000000000000abc"
+    },
+    {
+      "name": "end-of-epoch",
+      "type": "TransactionKind",
+      "input": {
+        "EndOfEpochTransaction": [
+          {
+            "AuthenticatorStateCreate": true
+          },
+          {
+            "BridgeStateCreate": "11111111111111111111111111111111"
+          },
+          {
+            "WriteAccumulatorStorageCost": {
+              "storageCost": "25"
+            }
+          },
+          {
+            "ForwardingAddressRegistryCreate": true
+          }
+        ]
+      },
+      "hex": "050401052000000000000000000000000000000000000000000000000000000000000000000c19000000000000000d"
+    },
+    {
+      "name": "prologue-v4",
+      "type": "TransactionKind",
+      "input": {
+        "ConsensusCommitPrologueV4": {
+          "epoch": "1",
+          "round": "2",
+          "subDagIndex": "3",
+          "commitTimestampMs": "100",
+          "consensusCommitDigest": "11111111111111111111111111111111",
+          "consensusDeterminedVersionAssignments": {
+            "CancelledTransactionsV2": [
+              [
+                "11111111111111111111111111111111",
+                [
+                  [
+                    [
+                      "0x123",
+                      "2"
+                    ],
+                    "3"
+                  ]
+                ]
+              ]
+            ]
+          },
+          "additionalStateDigest": "11111111111111111111111111111111"
+        }
+      },
+      "hex": "09010000000000000002000000000000000103000000000000006400000000000000200000000000000000000000000000000000000000000000000000000000000000010120000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000012302000000000000000300000000000000200000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "name": "programmable-system",
+      "type": "TransactionKind",
+      "input": {
+        "ProgrammableSystemTransaction": {
+          "inputs": [],
+          "commands": []
+        }
+      },
+      "hex": "0a0000"
+    },
+    {
+      "name": "effects-v1",
+      "type": "TransactionEffects",
+      "input": {
+        "V1": {
+          "status": {
+            "Success": true
+          },
+          "executedEpoch": "1",
+          "gasUsed": {
+            "computationCost": "1",
+            "storageCost": "2",
+            "storageRebate": "3",
+            "nonRefundableStorageFee": "4"
+          },
+          "modifiedAtVersions": [],
+          "sharedObjects": [],
+          "transactionDigest": "11111111111111111111111111111111",
+          "created": [
+            [
+              {
+                "objectId": "0x123",
+                "version": "1",
+                "digest": "11111111111111111111111111111111"
+              },
+              {
+                "AddressOwner": "0xabc"
+              }
+            ]
+          ],
+          "mutated": [],
+          "unwrapped": [],
+          "deleted": [],
+          "unwrappedThenDeleted": [],
+          "wrapped": [],
+          "gasObject": [
+            {
+              "objectId": "0x123",
+              "version": "1",
+              "digest": "11111111111111111111111111111111"
+            },
+            {
+              "AddressOwner": "0xabc"
+            }
+          ],
+          "eventsDigest": null,
+          "dependencies": [
+            "11111111111111111111111111111111"
+          ]
+        }
+      },
+      "hex": "00000100000000000000010000000000000002000000000000000300000000000000040000000000000000002000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000001230100000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000abc000000000000000000000000000000000000000000000000000000000000000000000001230100000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000abc0001200000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "name": "effects-v2",
+      "type": "TransactionEffects",
+      "input": {
+        "V2": {
+          "status": {
+            "Success": true
+          },
+          "executedEpoch": "2",
+          "gasUsed": {
+            "computationCost": "1",
+            "storageCost": "2",
+            "storageRebate": "3",
+            "nonRefundableStorageFee": "4"
+          },
+          "transactionDigest": "11111111111111111111111111111111",
+          "gasObjectIndex": null,
+          "eventsDigest": null,
+          "dependencies": [],
+          "lamportVersion": "3",
+          "changedObjects": [
+            [
+              "0x123",
+              {
+                "inputState": {
+                  "NotExist": true
+                },
+                "outputState": {
+                  "AccumulatorWriteV1": {
+                    "address": {
+                      "address": "0xabc",
+                      "ty": "0x2::sui::SUI"
+                    },
+                    "operation": {
+                      "Merge": true
+                    },
+                    "value": {
+                      "Integer": "5"
+                    }
+                  }
+                },
+                "idOperation": {
+                  "Created": true
+                }
+              }
+            ]
+          ],
+          "unchangedConsensusObjects": [],
+          "auxDataDigest": null
+        }
+      },
+      "hex": "010002000000000000000100000000000000020000000000000003000000000000000400000000000000200000000000000000000000000000000000000000000000000000000000000000000000030000000000000001000000000000000000000000000000000000000000000000000000000000012300030000000000000000000000000000000000000000000000000000000000000abc07000000000000000000000000000000000000000000000000000000000000000203737569035355490000000500000000000000010000"
+    }
+  ]
+}

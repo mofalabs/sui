@@ -1,4 +1,6 @@
 import '../grpc/proto/sui/rpc/v2/executed_transaction.pb.dart';
+import '../grpc/proto/sui/rpc/v2/transaction_execution_service.pb.dart';
+import '../utils/proto_int.dart';
 import '../grpc/proto/sui/rpc/v2/object.pb.dart' as pb;
 import '../grpc/proto/sui/rpc/v2/owner.pb.dart';
 import '../grpc/proto/sui/rpc/v2/state_service.pb.dart';
@@ -17,16 +19,21 @@ class SuiOwner {
   final int? initialSharedVersion;
 
   factory SuiOwner.fromProto(Owner o) => switch (o.kind) {
-        Owner_OwnerKind.ADDRESS ||
-        Owner_OwnerKind.CONSENSUS_ADDRESS =>
-          SuiOwner(kind: SuiOwnerKind.address, address: o.address),
-        Owner_OwnerKind.OBJECT =>
-          SuiOwner(kind: SuiOwnerKind.object, address: o.address),
-        Owner_OwnerKind.SHARED => SuiOwner(
-            kind: SuiOwnerKind.shared, initialSharedVersion: o.version.toInt()),
-        Owner_OwnerKind.IMMUTABLE => SuiOwner(kind: SuiOwnerKind.immutable),
-        _ => SuiOwner(kind: SuiOwnerKind.unknown),
-      };
+    Owner_OwnerKind.ADDRESS || Owner_OwnerKind.CONSENSUS_ADDRESS => SuiOwner(
+      kind: SuiOwnerKind.address,
+      address: o.address,
+    ),
+    Owner_OwnerKind.OBJECT => SuiOwner(
+      kind: SuiOwnerKind.object,
+      address: o.address,
+    ),
+    Owner_OwnerKind.SHARED => SuiOwner(
+      kind: SuiOwnerKind.shared,
+      initialSharedVersion: o.version.toInt(),
+    ),
+    Owner_OwnerKind.IMMUTABLE => SuiOwner(kind: SuiOwnerKind.immutable),
+    _ => SuiOwner(kind: SuiOwnerKind.unknown),
+  };
 }
 
 class SuiBalance {
@@ -43,11 +50,11 @@ class SuiBalance {
   final BigInt coinBalance;
 
   factory SuiBalance.fromProto(Balance b) => SuiBalance(
-        coinType: b.coinType,
-        totalBalance: BigInt.from(b.balance.toInt()),
-        addressBalance: BigInt.from(b.addressBalance.toInt()),
-        coinBalance: BigInt.from(b.coinBalance.toInt()),
-      );
+    coinType: b.coinType,
+    totalBalance: uint64ToBigInt(b.balance),
+    addressBalance: uint64ToBigInt(b.addressBalance),
+    coinBalance: uint64ToBigInt(b.coinBalance),
+  );
 }
 
 class SuiObjectInfo {
@@ -66,12 +73,12 @@ class SuiObjectInfo {
   final SuiOwner? owner;
 
   factory SuiObjectInfo.fromProto(pb.Object o) => SuiObjectInfo(
-        objectId: o.objectId,
-        version: BigInt.from(o.version.toInt()),
-        digest: o.digest,
-        type: o.hasObjectType() ? o.objectType : null,
-        owner: o.hasOwner() ? SuiOwner.fromProto(o.owner) : null,
-      );
+    objectId: o.objectId,
+    version: uint64ToBigInt(o.version),
+    digest: o.digest,
+    type: o.hasObjectType() ? o.objectType : null,
+    owner: o.hasOwner() ? SuiOwner.fromProto(o.owner) : null,
+  );
 }
 
 class SignatureVerification {
@@ -132,25 +139,54 @@ class SuiExecutionResult {
     required this.success,
     required this.error,
     required this.gas,
+    this.checkpoint,
+    this.timestamp,
+    this.gasObjectId,
   });
 
   final String digest;
   final bool success;
   final String? error;
   final SuiGasCost gas;
+  final BigInt? checkpoint;
+  final DateTime? timestamp;
+
+  /// Null for transactions that paid gas from address balance or used no gas.
+  final String? gasObjectId;
 
   factory SuiExecutionResult.fromProto(ExecutedTransaction tx) {
     final status = tx.effects.status;
     final g = tx.effects.gasUsed;
     return SuiExecutionResult(
       digest: tx.digest,
+      checkpoint: tx.hasCheckpoint() ? uint64ToBigInt(tx.checkpoint) : null,
+      timestamp: tx.hasTimestamp()
+          ? DateTime.fromMillisecondsSinceEpoch(
+              tx.timestamp.seconds.toInt() * 1000 +
+                  tx.timestamp.nanos ~/ 1000000,
+              isUtc: true,
+            )
+          : null,
+      gasObjectId: tx.effects.hasGasObject()
+          ? tx.effects.gasObject.objectId
+          : null,
       success: status.success,
       error: status.hasError() ? status.error.description : null,
       gas: SuiGasCost(
-        computationCost: BigInt.from(g.computationCost.toInt()),
-        storageCost: BigInt.from(g.storageCost.toInt()),
-        storageRebate: BigInt.from(g.storageRebate.toInt()),
+        computationCost: uint64ToBigInt(g.computationCost),
+        storageCost: uint64ToBigInt(g.storageCost),
+        storageRebate: uint64ToBigInt(g.storageRebate),
       ),
     );
   }
+}
+
+/// Sentinel used when a node simulates with a synthetic gas coin.
+const mockedGasObjectId =
+    '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+
+extension SuiSimulationMetadata on SimulateTransactionResponse {
+  bool get gasPaymentMocked =>
+      transaction.effects.hasGasObject() &&
+      transaction.effects.gasObject.objectId.toLowerCase() == mockedGasObjectId;
 }

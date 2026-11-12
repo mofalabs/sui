@@ -92,15 +92,21 @@ class FundsWithdrawal_Source extends $pb.ProtobufEnum {
   static const FundsWithdrawal_Source SPONSOR =
       FundsWithdrawal_Source._(2, _omitEnumNames ? '' : 'SPONSOR');
 
+  /// Withdraw from `funder`'s balance under the `allowance` object, granted
+  /// to the sender of the transaction.
+  static const FundsWithdrawal_Source SENDER_ALLOWANCE =
+      FundsWithdrawal_Source._(3, _omitEnumNames ? '' : 'SENDER_ALLOWANCE');
+
   static const $core.List<FundsWithdrawal_Source> values =
       <FundsWithdrawal_Source>[
     SOURCE_UNKNOWN,
     SENDER,
     SPONSOR,
+    SENDER_ALLOWANCE,
   ];
 
   static final $core.List<FundsWithdrawal_Source?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 2);
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
   static FundsWithdrawal_Source? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

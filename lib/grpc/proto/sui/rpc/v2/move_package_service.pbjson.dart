@@ -25,20 +25,31 @@ const GetPackageRequest$json = {
       '3': 1,
       '4': 1,
       '5': 9,
-      '9': 0,
+      '9': 1,
       '10': 'packageId',
       '17': true
     },
+    {'1': 'version', '3': 2, '4': 1, '5': 4, '9': 0, '10': 'version'},
+    {
+      '1': 'at_checkpoint',
+      '3': 3,
+      '4': 1,
+      '5': 4,
+      '9': 0,
+      '10': 'atCheckpoint'
+    },
   ],
   '8': [
+    {'1': 'selector'},
     {'1': '_package_id'},
   ],
 };
 
 /// Descriptor for `GetPackageRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getPackageRequestDescriptor = $convert.base64Decode(
-    'ChFHZXRQYWNrYWdlUmVxdWVzdBIiCgpwYWNrYWdlX2lkGAEgASgJSABSCXBhY2thZ2VJZIgBAU'
-    'INCgtfcGFja2FnZV9pZA==');
+    'ChFHZXRQYWNrYWdlUmVxdWVzdBIiCgpwYWNrYWdlX2lkGAEgASgJSAFSCXBhY2thZ2VJZIgBAR'
+    'IaCgd2ZXJzaW9uGAIgASgESABSB3ZlcnNpb24SJQoNYXRfY2hlY2twb2ludBgDIAEoBEgAUgxh'
+    'dENoZWNrcG9pbnRCCgoIc2VsZWN0b3JCDQoLX3BhY2thZ2VfaWQ=');
 
 @$core.Deprecated('Use getPackageResponseDescriptor instead')
 const GetPackageResponse$json = {

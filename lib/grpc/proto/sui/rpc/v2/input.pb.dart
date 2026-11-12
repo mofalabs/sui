@@ -212,11 +212,15 @@ class FundsWithdrawal extends $pb.GeneratedMessage {
     $fixnum.Int64? amount,
     $core.String? coinType,
     FundsWithdrawal_Source? source,
+    $core.String? funder,
+    $core.String? allowance,
   }) {
     final result = create();
     if (amount != null) result.amount = amount;
     if (coinType != null) result.coinType = coinType;
     if (source != null) result.source = source;
+    if (funder != null) result.funder = funder;
+    if (allowance != null) result.allowance = allowance;
     return result;
   }
 
@@ -241,6 +245,8 @@ class FundsWithdrawal extends $pb.GeneratedMessage {
         defaultOrMaker: FundsWithdrawal_Source.SOURCE_UNKNOWN,
         valueOf: FundsWithdrawal_Source.valueOf,
         enumValues: FundsWithdrawal_Source.values)
+    ..aOS(4, _omitFieldNames ? '' : 'funder')
+    ..aOS(5, _omitFieldNames ? '' : 'allowance')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -290,6 +296,27 @@ class FundsWithdrawal extends $pb.GeneratedMessage {
   $core.bool hasSource() => $_has(2);
   @$pb.TagNumber(3)
   void clearSource() => $_clearField(3);
+
+  /// The address whose balance is debited if `source` is `SENDER_ALLOWANCE`.
+  @$pb.TagNumber(4)
+  $core.String get funder => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set funder($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasFunder() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearFunder() => $_clearField(4);
+
+  /// `ObjectId` of the allowance object authorizing the withdrawal if `source`
+  /// is `SENDER_ALLOWANCE`.
+  @$pb.TagNumber(5)
+  $core.String get allowance => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set allowance($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasAllowance() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAllowance() => $_clearField(5);
 }
 
 const $core.bool _omitFieldNames =

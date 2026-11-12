@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:dio/dio.dart';
+import '../cryptography/keypair.dart';
+import '../cryptography/intent.dart';
 
 import '../builder/transaction.dart';
 import '../sui_account.dart';
@@ -17,18 +20,14 @@ extension GrpcTransactionExecutor on GrpcCoreClient {
     Transaction tx, {
     required String sender,
     BigInt? gasBudget,
+    CancelToken? cancelToken,
   }) async {
+    if (cancelToken?.isCancelled ?? false) throw cancelToken!.cancelError!;
     // The adapter lets the builder resolve object references and moveCall
     // signatures over gRPC; offline limits avoid a protocol-config fetch.
     final buildOptions = BuildOptions(
-      client: GrpcBuilderAdapter(this),
+      client: GrpcBuilderAdapter(this, cancelToken: cancelToken),
       limits: <String, dynamic>{},
-    );
-
-    // Resolve any Move Registry (`@org/app`) names in moveCall targets/types.
-    await tx.resolveNames(
-      resolvePackage: resolvePackage,
-      resolveType: resolveType,
     );
 
     tx.setSenderIfNotSet(sender);
@@ -37,7 +36,9 @@ extension GrpcTransactionExecutor on GrpcCoreClient {
     }
 
     // Gas is resolved inside build() (see Transaction._prepare).
-    return tx.build(buildOptions);
+    final bytes = await tx.build(buildOptions);
+    if (cancelToken?.isCancelled ?? false) throw cancelToken!.cancelError!;
+    return bytes;
   }
 
   /// Prepare, sign and execute [tx] in one call.
@@ -45,18 +46,41 @@ extension GrpcTransactionExecutor on GrpcCoreClient {
     SuiAccount signer,
     Transaction tx, {
     BigInt? gasBudget,
+    CancelToken? cancelToken,
     List<String>? readMask,
+  }) => signAndExecuteWithSigner(
+    signer.keyPair,
+    tx,
+    gasBudget: gasBudget,
+    readMask: readMask,
+    cancelToken: cancelToken,
+  );
+
+  /// Supports local keypairs, passkeys and zkLogin proof signers.
+  Future<ExecutedTransaction> signAndExecuteWithSigner(
+    Signer signer,
+    Transaction tx, {
+    BigInt? gasBudget,
+    List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final bytes = await prepareTransaction(
       tx,
-      sender: signer.getAddress(),
+      sender: signer.getPublicKey().toSuiAddress(),
       gasBudget: gasBudget,
+      cancelToken: cancelToken,
     );
-    final signed = signer.keyPair.signTransactionBlock(bytes);
+    if (cancelToken?.isCancelled ?? false) throw cancelToken!.cancelError!;
+    final signed = await signer.signWithIntent(
+      bytes,
+      IntentScope.transactionData,
+    );
+    if (cancelToken?.isCancelled ?? false) throw cancelToken!.cancelError!;
     return executeTransaction(
       bytes,
       [Uint8List.fromList(base64Decode(signed.signature))],
       readMask: readMask,
+      cancelToken: cancelToken,
     );
   }
 }

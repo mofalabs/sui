@@ -1,10 +1,10 @@
 name: sui
 description: A cross-platform SDK for Sui blockchain, supporting Mobile, Web and Desktop.
-version: 0.5.1
+version: 0.6.0
 homepage: https://github.com/mofalabs/sui
 
 environment:
-  sdk: ">=3.0.3 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -14,8 +14,10 @@ dependencies:
   bs58check: ^1.0.2
   ed25519_edwards: ^0.3.1
   pointycastle: ^4.0.0
+  pqcrypto: ^0.4.3
   bcs: ^0.2.0
   dio: ^5.10.0
+  web: ^1.1.1
   hex: ^0.2.0
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0

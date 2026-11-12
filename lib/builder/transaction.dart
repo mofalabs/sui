@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
+import 'allowance.dart';
 
 import 'package:bcs/bcs.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -14,6 +16,7 @@ import 'package:sui/builder/transaction_block_data.dart';
 import 'package:sui/builder/transaction_builder_client.dart';
 import 'package:sui/builder/v1.dart';
 import 'package:sui/cryptography/keypair.dart';
+import 'package:sui/cryptography/intent.dart';
 import 'package:sui/types/common.dart';
 import 'package:sui/types/framework.dart';
 import 'package:sui/types/normalized.dart';
@@ -32,7 +35,7 @@ class TransactionResult {
   Map<String, dynamic> nestedResult(subIndex) {
     final result = {
       "\$kind": 'NestedResult',
-      "NestedResult": [index, subIndex]
+      "NestedResult": [index, subIndex],
     };
     _nestedResult.addAll(result);
     return result;
@@ -100,8 +103,10 @@ List<List<T>> chunk<T>(List<T> arr, int size) {
   int length = (arr.length / size).ceil();
 
   return List<List<T>>.generate(length, (int i) {
-    return arr.sublist(i * size,
-        (i * size + size > arr.length) ? arr.length : i * size + size);
+    return arr.sublist(
+      i * size,
+      (i * size + size > arr.length) ? arr.length : i * size + size,
+    );
   });
 }
 
@@ -109,43 +114,113 @@ class BuildOptions {
   TransactionBuilderClient? client;
   bool onlyTransactionKind;
 
+  /// Build from address balances without checking them against a node.
+  bool assumeSufficientAddressBalances;
+
   /// Define a protocol config to build against, instead of having it fetched from the provider at build time.
   dynamic protocolConfig;
 
   /// Define limits that are used when building the transaction. In general, we recommend using the protocol configuration instead of defining limits.
   Limits? limits;
 
-  BuildOptions(
-      {this.client,
-      this.onlyTransactionKind = false,
-      this.protocolConfig,
-      this.limits});
+  BuildOptions({
+    this.client,
+    this.onlyTransactionKind = false,
+    this.assumeSufficientAddressBalances = false,
+    this.protocolConfig,
+    this.limits,
+  });
 }
 
 class SerializeTransactionOptions extends BuildOptions {
   List<String>? supportedIntents;
 
-  SerializeTransactionOptions(
-      {this.supportedIntents,
-      super.client,
-      super.onlyTransactionKind,
-      super.protocolConfig,
-      super.limits});
+  SerializeTransactionOptions({
+    this.supportedIntents,
+    super.client,
+    super.onlyTransactionKind,
+    super.assumeSufficientAddressBalances,
+    super.protocolConfig,
+    super.limits,
+  });
 }
 
 class SignOptions extends BuildOptions {
-  Keypair signer;
+  Signer signer;
 
-  SignOptions(
-      {required this.signer,
-      super.client,
-      super.onlyTransactionKind,
-      super.protocolConfig,
-      super.limits});
+  SignOptions({
+    required this.signer,
+    super.client,
+    super.onlyTransactionKind,
+    super.assumeSufficientAddressBalances,
+    super.protocolConfig,
+    super.limits,
+  });
+}
+
+typedef IntentResolver =
+    FutureOr<void> Function(
+      TransactionBlockDataBuilder data,
+      IntentResolverOptions options,
+    );
+
+class IntentResolverOptions {
+  IntentResolverOptions(this.buildOptions, Iterable<String> names)
+    : intentNames = List.unmodifiable(names);
+  final BuildOptions buildOptions;
+
+  /// Only intent names assigned to this resolver for this pass.
+  final List<String> intentNames;
 }
 
 class Transaction {
   late TransactionBlockDataBuilder _blockData;
+  final _intentResolvers = <String, IntentResolver>{};
+
+  void addIntentResolver(String name, IntentResolver resolver) {
+    if (const {'CoinWithBalance', 'AllowanceBalance'}.contains(name)) {
+      throw ArgumentError('Cannot replace a built-in intent resolver');
+    }
+    final previous = _intentResolvers[name];
+    if (previous != null && previous != resolver) {
+      throw ArgumentError(
+        'A different resolver is already registered for $name',
+      );
+    }
+    _intentResolvers[name] = resolver;
+  }
+
+  Future<void> _resolveCustomIntents(
+    BuildOptions options, {
+    List<String> supported = const [],
+  }) async {
+    final groups = <IntentResolver, List<String>>{};
+    for (final command in _blockData.commands) {
+      final name = command[r'$Intent']?['name'] as String?;
+      if (name == null ||
+          supported.contains(name) ||
+          const {'CoinWithBalance', 'AllowanceBalance'}.contains(name)) {
+        continue;
+      }
+      final resolver = _intentResolvers[name];
+      if (resolver == null) {
+        throw ArgumentError('No resolver registered for intent $name');
+      }
+      final names = groups.putIfAbsent(resolver, () => []);
+      if (!names.contains(name)) names.add(name);
+    }
+    for (final entry in groups.entries) {
+      await entry.key(_blockData, IntentResolverOptions(options, entry.value));
+    }
+    for (final command in _blockData.commands) {
+      final name = command[r'$Intent']?['name'];
+      if (name != null &&
+          !supported.contains(name) &&
+          !const {'CoinWithBalance', 'AllowanceBalance'}.contains(name)) {
+        throw StateError('Resolver left unresolved intent $name');
+      }
+    }
+  }
 
   /// Converts from a serialize transaction kind (built with `build({ onlyTransactionKind: true })`) to a `Transaction` class.
   /// Supports either a byte array, or base64-encoded bytes.
@@ -163,9 +238,13 @@ class Transaction {
   /// There are two supported serialized formats:
   /// - A string returned from `Transaction_serialize`. The serialized format must be compatible, or it will throw an error.
   /// - A byte array (or base64-encoded bytes) containing BCS transaction data.
-  static Transaction from(String serialized) {
+  static Transaction from(
+    String serialized, {
+    Map<String, IntentResolver> intentResolvers = const {},
+  }) {
     final tx = Transaction();
     tx._blockData = TransactionBlockDataBuilder.restore(jsonDecode(serialized));
+    intentResolvers.forEach(tx.addIntentResolver);
     return tx;
   }
 
@@ -199,18 +278,58 @@ class Transaction {
     required String chain,
     required int nonce,
   }) {
-    _blockData.expiration = TransactionExpiration(validDuring: {
-      'minEpoch': minEpoch,
-      'maxEpoch': maxEpoch,
-      'minTimestamp': minTimestamp,
-      'maxTimestamp': maxTimestamp,
-      'chain': chain,
-      'nonce': nonce,
-    });
+    _blockData.expiration = TransactionExpiration(
+      validDuring: {
+        'minEpoch': minEpoch,
+        'maxEpoch': maxEpoch,
+        'minTimestamp': minTimestamp,
+        'maxTimestamp': maxTimestamp,
+        'chain': chain,
+        'nonce': nonce,
+      },
+    );
   }
 
   void setExpiration(int? epoch) {
     _blockData.expiration = TransactionExpiration(epoch: epoch);
+  }
+
+  /// Restricts validity to a chain, time window and optionally a validator set.
+  /// Timestamp bounds are milliseconds since the Unix epoch.
+  void setValidityExpiration({
+    BigInt? minEpoch,
+    BigInt? maxEpoch,
+    BigInt? minTimestamp,
+    BigInt? maxTimestamp,
+    required String chain,
+    required int nonce,
+    BigInt? proposerEpoch,
+    List<int>? allowedProposers,
+  }) {
+    if ((proposerEpoch == null) != (allowedProposers == null)) {
+      throw ArgumentError(
+        'proposerEpoch and allowedProposers must be provided together',
+      );
+    }
+    if (allowedProposers != null) {
+      SuiBcs.validateAllowedProposers(allowedProposers);
+    }
+    _blockData.expiration = TransactionExpiration(
+      validity: {
+        'minEpoch': minEpoch?.toString(),
+        'maxEpoch': maxEpoch?.toString(),
+        'minTimestamp': minTimestamp?.toString(),
+        'maxTimestamp': maxTimestamp?.toString(),
+        'chain': chain,
+        'nonce': nonce,
+        'allowedProposers': allowedProposers == null
+            ? null
+            : {
+                'epoch': proposerEpoch.toString(),
+                'proposers': List<int>.of(allowedProposers),
+              },
+      },
+    );
   }
 
   void setGasPrice(BigInt price) {
@@ -248,47 +367,56 @@ class Transaction {
     required Future<String> Function(String package) resolvePackage,
     required Future<String> Function(String type) resolveType,
   }) async {
-    final commands = _blockData.commands;
-    final packages = <String>{};
-    final types = <String>{};
-    for (final cmd in commands) {
-      final mc = cmd['MoveCall'];
-      if (mc == null) continue;
-      final pkg = mc['package'];
-      if (pkg is String && pkg.contains('@')) packages.add(pkg);
-      final typeArgs = mc['typeArguments'];
-      if (typeArgs is List) {
-        for (final t in typeArgs) {
-          if (t is String && t.contains('@')) types.add(t);
+    final packageFields = <Map>[];
+    final typeFields = <(Map, String)>[];
+    final typeArguments = <List>[];
+    for (final command in _blockData.commands) {
+      final call = command['MoveCall'];
+      if (call is Map) {
+        packageFields.add(call);
+        typeArguments.add(call['typeArguments'] as List);
+      }
+      final intent = command[r'$Intent'];
+      if (intent is Map &&
+          const {
+            'CoinWithBalance',
+            'AllowanceBalance',
+          }.contains(intent['name'])) {
+        final data = intent['data'] as Map;
+        typeFields.add((data, 'type'));
+        if (data['appType'] != null) typeFields.add((data, 'appType'));
+      }
+    }
+    for (final input in _blockData.inputs) {
+      final type = input['FundsWithdrawal']?['typeArg'];
+      if (type is Map) typeFields.add((type, 'Balance'));
+    }
+    final packages = <String, Future<String>>{};
+    final types = <String, Future<String>>{};
+    for (final call in packageFields) {
+      final value = call['package'] as String;
+      if (value.contains('@')) {
+        call['package'] = await packages.putIfAbsent(
+          value,
+          () => resolvePackage(value),
+        );
+      }
+    }
+    for (final arguments in typeArguments) {
+      for (var i = 0; i < arguments.length; i++) {
+        final value = arguments[i] as String;
+        if (value.contains('@')) {
+          arguments[i] = await types.putIfAbsent(
+            value,
+            () => resolveType(value),
+          );
         }
       }
     }
-    if (packages.isEmpty && types.isEmpty) return;
-
-    final pkgMap = <String, String>{};
-    for (final p in packages) {
-      pkgMap[p] = await resolvePackage(p);
-    }
-    final typeMap = <String, String>{};
-    for (final t in types) {
-      typeMap[t] = await resolveType(t);
-    }
-
-    for (final cmd in commands) {
-      final mc = cmd['MoveCall'];
-      if (mc == null) continue;
-      final pkg = mc['package'];
-      if (pkg is String && pkgMap.containsKey(pkg)) {
-        mc['package'] = pkgMap[pkg];
-      }
-      final typeArgs = mc['typeArguments'];
-      if (typeArgs is List) {
-        for (var i = 0; i < typeArgs.length; i++) {
-          final t = typeArgs[i];
-          if (t is String && typeMap.containsKey(t)) {
-            typeArgs[i] = typeMap[t];
-          }
-        }
+    for (final (map, key) in typeFields) {
+      final value = map[key] as String;
+      if (value.contains('@')) {
+        map[key] = await types.putIfAbsent(value, () => resolveType(value));
       }
     }
   }
@@ -300,9 +428,7 @@ class Transaction {
       if (value is SerializedBcs) {
         return _blockData.addInput('pure', {
           '\$kind': 'Pure',
-          'Pure': {
-            'bytes': value.toBase64(),
-          },
+          'Pure': {'bytes': value.toBase64()},
         });
       }
 
@@ -322,6 +448,9 @@ class Transaction {
 
   Transaction([Transaction? transaction]) {
     _blockData = TransactionBlockDataBuilder(transaction?.getData());
+    if (transaction != null) {
+      _intentResolvers.addAll(transaction._intentResolvers);
+    }
   }
 
   /// Returns an argument for the gas coin, to be used in a transaction.
@@ -357,26 +486,118 @@ class Transaction {
   ///
   /// [type] is the coin type `T` (e.g. `0x…::usdc::USDC`), or `'gas'` for SUI
   /// via the gas coin.
-  TransactionResult coin(String type, BigInt balance, {bool useGasCoin = true}) =>
-      _coinWithBalanceIntent(type, balance, 'coin', useGasCoin);
+  TransactionResult coin(
+    String type,
+    Object balance, {
+    bool? useGasCoin,
+    AllowanceReference? allowance,
+  }) => _balanceIntent(type, balance, 'coin', useGasCoin, allowance);
 
   /// Like [coin] but produces a `Balance<[type]>` value — for Move functions
   /// that take a balance directly, and for gasless address-balance transfers
   /// (e.g. `0x2::balance::send_funds<T>`).
-  TransactionResult balance(String type, BigInt balance,
-          {bool useGasCoin = true}) =>
-      _coinWithBalanceIntent(type, balance, 'balance', useGasCoin);
+  TransactionResult balance(
+    String type,
+    Object balance, {
+    bool? useGasCoin,
+    AllowanceReference? allowance,
+  }) => _balanceIntent(type, balance, 'balance', useGasCoin, allowance);
 
-  static final String _suiTypeStr =
-      normalizeStructTagString('0x2::sui::SUI');
+  TransactionResult _balanceIntent(
+    String type,
+    Object amount,
+    String outputKind,
+    bool? useGasCoin,
+    AllowanceReference? allowance,
+  ) {
+    final balance = parseBalanceAmount(amount);
+    if (allowance == null) {
+      return _coinWithBalanceIntent(
+        type,
+        balance,
+        outputKind,
+        useGasCoin ?? true,
+      );
+    }
+    if (useGasCoin != null) {
+      throw ArgumentError('useGasCoin cannot be combined with allowance');
+    }
+    final objectId = normalizeSuiAddress(allowance.objectId);
+    return add({
+      r'$kind': r'$Intent',
+      r'$Intent': {
+        'name': 'AllowanceBalance',
+        'inputs': {
+          'allowance': object(objectId),
+          'clock': object('0x6'),
+          if (allowance.app != null) 'permit': object(allowance.app!.permit),
+        },
+        'data': {
+          'objectId': objectId,
+          if (allowance.funder != null)
+            'funder': normalizeSuiAddress(allowance.funder!),
+          if (allowance.app != null) 'appType': allowance.app!.type,
+          'type': type.contains('@') ? type : normalizeStructTagString(type),
+          'amount': balance.toString(),
+          'outputKind': outputKind,
+        },
+      },
+    });
+  }
+
+  /// Reserves funds without redeeming them, for Move calls that accept a Withdrawal.
+  Map<String, dynamic> withdrawal({
+    required Object amount,
+    String type = '0x2::sui::SUI',
+    WithdrawalSource from = WithdrawalSource.sender,
+    String? allowance,
+    String? funder,
+  }) {
+    if ((from == WithdrawalSource.allowance) !=
+            (allowance != null && funder != null) ||
+        (from != WithdrawalSource.allowance &&
+            (allowance != null || funder != null))) {
+      throw ArgumentError(
+        'Allowance withdrawals require both allowance and funder',
+      );
+    }
+    return _blockData.addInput('withdrawal', {
+      r'$kind': 'FundsWithdrawal',
+      'FundsWithdrawal': {
+        'reservation': {'MaxAmountU64': parseBalanceAmount(amount).toString()},
+        'typeArg': {
+          'Balance': type.contains('@') ? type : normalizeStructTagString(type),
+        },
+        'withdrawFrom': switch (from) {
+          WithdrawalSource.sender => {'Sender': true},
+          WithdrawalSource.sponsor => {'Sponsor': true},
+          WithdrawalSource.allowance => {
+            'SenderAllowance': {
+              'funder': normalizeSuiAddress(funder!),
+              'allowance': normalizeSuiAddress(allowance!),
+            },
+          },
+        },
+      },
+    });
+  }
+
+  static final String _suiTypeStr = normalizeStructTagString('0x2::sui::SUI');
 
   /// Adds a `CoinWithBalance` `$Intent` (resolved to concrete commands at build
   /// time). SUI with [useGasCoin] resolves through the gas coin (`'gas'`).
   TransactionResult _coinWithBalanceIntent(
-      String type, BigInt balance, String outputKind, bool useGasCoin) {
-    final normalized = type == 'gas' ? 'gas' : normalizeStructTagString(type);
-    final coinType =
-        (normalized == _suiTypeStr && useGasCoin) ? 'gas' : normalized;
+    String type,
+    BigInt balance,
+    String outputKind,
+    bool useGasCoin,
+  ) {
+    final normalized = type == 'gas' || type.contains('@')
+        ? type
+        : normalizeStructTagString(type);
+    final coinType = (normalized == _suiTypeStr && useGasCoin)
+        ? 'gas'
+        : normalized;
     return add({
       '\$kind': '\$Intent',
       '\$Intent': {
@@ -392,6 +613,7 @@ class Transaction {
   }
 
   Map<String, dynamic> object(dynamic value) {
+    if (value is TransactionResult) return value.toJson();
     if (value is Function) {
       return object(value(this));
     }
@@ -409,16 +631,17 @@ class Transaction {
     final id = getIdFromCallArg(value);
 
     final inserted = _blockData.inputs.firstWhere(
-        (i) => id == getIdFromCallArg(i),
-        orElse: () => <String, dynamic>{});
+      (i) => id == getIdFromCallArg(i),
+      orElse: () => <String, dynamic>{},
+    );
 
     // Upgrade shared object inputs to mutable if needed:
     if (inserted.isNotEmpty &&
         inserted['Object']?['SharedObject'] != null &&
         value is Map<String, dynamic> &&
         value['Object']?['SharedObject'] != null) {
-      inserted['Object']['SharedObject']['mutable'] = inserted['Object']
-              ['SharedObject']['mutable'] ||
+      inserted['Object']['SharedObject']['mutable'] =
+          inserted['Object']['SharedObject']['mutable'] ||
           value['Object']['SharedObject']['mutable'];
     }
 
@@ -426,7 +649,7 @@ class Transaction {
       return {
         '\$kind': 'Input',
         'Input': _blockData.inputs.indexOf(inserted),
-        'type': 'object'
+        'type': 'object',
       };
     } else {
       return _blockData.addInput(
@@ -485,7 +708,9 @@ class Transaction {
   // Method shorthands:
 
   TransactionResult splitCoins(
-      Map<String, dynamic> coin, List<dynamic> amounts) {
+    Map<String, dynamic> coin,
+    List<dynamic> amounts,
+  ) {
     final result = amounts
         .map((x) => x is! Map ? pure.u64(BigInt.parse(x.toString())) : x)
         .toList();
@@ -493,7 +718,9 @@ class Transaction {
   }
 
   TransactionResult mergeCoins(
-      Map<String, dynamic> destination, List<Map<String, dynamic>> sources) {
+    Map<String, dynamic> destination,
+    List<Map<String, dynamic>> sources,
+  ) {
     return add(Commands.mergeCoins(destination, sources));
   }
 
@@ -507,20 +734,28 @@ class Transaction {
     required String packageId,
     required dynamic ticket,
   }) {
-    return add(Commands.upgrade(
+    return add(
+      Commands.upgrade(
         modules: modules,
         dependencies: dependencies,
         package: packageId,
-        ticket: ticket));
+        ticket: ticket,
+      ),
+    );
   }
 
-  TransactionResult moveCall(String target,
-      {List? typeArguments, List? arguments}) {
-    return add(Commands.moveCall({
-      "target": target,
-      "typeArguments": typeArguments,
-      "arguments": arguments
-    }));
+  TransactionResult moveCall(
+    String target, {
+    List? typeArguments,
+    List? arguments,
+  }) {
+    return add(
+      Commands.moveCall({
+        "target": target,
+        "typeArguments": typeArguments,
+        "arguments": arguments,
+      }),
+    );
   }
 
   TransactionResult transferObjects(List<dynamic> objects, dynamic address) {
@@ -551,6 +786,17 @@ class Transaction {
     return jsonEncode(_blockData.snapshot());
   }
 
+  /// Resolve registered custom intents before handing the transaction to a
+  /// wallet. Supported intents are retained for that wallet to resolve.
+  Future<String> toJsonAsync([SerializeTransactionOptions? options]) async {
+    options ??= SerializeTransactionOptions();
+    await _resolveCustomIntents(
+      options,
+      supported: options.supportedIntents ?? const [],
+    );
+    return toJson(options);
+  }
+
   String _getConfig(String key, BuildOptions options) {
     // Use the limits definition if that exists:
     if (options.limits != null && options.limits[key] is int) {
@@ -570,7 +816,8 @@ class Transaction {
     final value = attribute["u64"] ?? (attribute["u32"] ?? attribute["f64"]);
     if (value == null) {
       throw ArgumentError(
-          'Unexpected protocol config value found for: "${LIMITS[key]}"');
+        'Unexpected protocol config value found for: "${LIMITS[key]}"',
+      );
     }
 
     // NOTE: Technically this is not a safe conversion, but we know all of the values in protocol config are safe
@@ -580,16 +827,14 @@ class Transaction {
   /// Build the transaction to BCS bytes, and sign it with the provided keypair.
   Future<SignatureWithBytes> sign(SignOptions options) async {
     final bytes = await build(options);
-    return options.signer.signTransactionBlock(bytes);
+    return options.signer.signWithIntent(bytes, IntentScope.transactionData);
   }
 
   /// Build the transaction to BCS bytes.
   Future<Uint8List> build([BuildOptions? options]) async {
     options ??= BuildOptions();
     await _prepare(options);
-    return _blockData.build(
-      onlyTransactionKind: options.onlyTransactionKind,
-    );
+    return _blockData.build(onlyTransactionKind: options.onlyTransactionKind);
   }
 
   /// Derive transaction digest
@@ -599,8 +844,9 @@ class Transaction {
   }
 
   void _validate(BuildOptions options) {
-    final maxPureArgumentSize =
-        int.parse(_getConfig('maxPureArgumentSize', options));
+    final maxPureArgumentSize = int.parse(
+      _getConfig('maxPureArgumentSize', options),
+    );
     // Validate all inputs are the correct size:
     for (var i = 0; i < _blockData.inputs.length; i++) {
       final input = _blockData.inputs[i];
@@ -614,10 +860,7 @@ class Transaction {
     }
   }
 
-  void normalizeRawArgument(
-    dynamic arg,
-    BcsType schema,
-  ) {
+  void normalizeRawArgument(dynamic arg, BcsType schema) {
     if (arg is! Map) {
       return;
     }
@@ -630,8 +873,9 @@ class Transaction {
       return;
     }
 
-    _blockData.inputs[arg["Input"]] =
-        Inputs.pure(schema.serialize(input["UnresolvedPure"]["value"]));
+    _blockData.inputs[arg["Input"]] = Inputs.pure(
+      schema.serialize(input["UnresolvedPure"]["value"]),
+    );
   }
 
   Future<void> resolveObjectReferences(BuildOptions options) async {
@@ -643,17 +887,23 @@ class Transaction {
               input["UnresolvedObject"]["initialSharedVersion"] == null));
     });
 
-    final dedupedIds = Set.from(objectsToResolve.map((input) =>
-        normalizeSuiObjectId(input["UnresolvedObject"]["objectId"]))).toList();
+    final dedupedIds = Set.from(
+      objectsToResolve.map(
+        (input) => normalizeSuiObjectId(input["UnresolvedObject"]["objectId"]),
+      ),
+    ).toList();
 
-    final objectChunks =
-        dedupedIds.isNotEmpty ? chunk(dedupedIds, MAX_OBJECTS_PER_FETCH) : [];
+    final objectChunks = dedupedIds.isNotEmpty
+        ? chunk(dedupedIds, MAX_OBJECTS_PER_FETCH)
+        : [];
 
     final resolved = <SuiObjectResponse>[];
     final objectsResult = (await Future.wait(
       objectChunks.map(
-        (chunk) => expectClient(options).multiGetObjects(chunk.cast<String>(),
-            options: SuiObjectDataOptions(showOwner: true)),
+        (chunk) => expectClient(options).multiGetObjects(
+          chunk.cast<String>(),
+          options: SuiObjectDataOptions(showOwner: true),
+        ),
       ),
     ));
     for (var item in objectsResult) {
@@ -675,7 +925,8 @@ class Transaction {
 
     if (invalidObjects.isNotEmpty) {
       throw ArgumentError(
-          "The following input objects are invalid: ${invalidObjects.join(', ')}");
+        "The following input objects are invalid: ${invalidObjects.join(', ')}",
+      );
     }
 
     final objects = resolved.map((object) {
@@ -689,7 +940,7 @@ class Transaction {
         "objectId": object.data?.objectId,
         "digest": object.data?.digest,
         "version": object.data?.version,
-        "initialSharedVersion": initialSharedVersion
+        "initialSharedVersion": initialSharedVersion,
       };
     }).toList();
 
@@ -716,25 +967,30 @@ class Transaction {
           null) {
         updated = Inputs.sharedObjectRef({
           "objectId": id,
-          "initialSharedVersion": input["UnresolvedObject"]
-                  ["initialSharedVersion"] ??
+          "initialSharedVersion":
+              input["UnresolvedObject"]["initialSharedVersion"] ??
               object?["initialSharedVersion"],
           "mutable": isUsedAsMutable(_blockData, index),
         });
       } else if (isUsedAsReceiving(_blockData, index)) {
-        updated = Inputs.receivingRef(SuiObjectRef(
-          input["UnresolvedObject"]["digest"] ?? object?["digest"],
-          id,
-          input["UnresolvedObject"]["version"] ?? object?["version"],
-        ));
-      }
-
-      _blockData.inputs[_blockData.inputs.indexOf(input)] = updated ??
-          Inputs.objectRef(SuiObjectRef(
+        updated = Inputs.receivingRef(
+          SuiObjectRef(
             input["UnresolvedObject"]["digest"] ?? object?["digest"],
             id,
             input["UnresolvedObject"]["version"] ?? object?["version"],
-          ));
+          ),
+        );
+      }
+
+      _blockData.inputs[_blockData.inputs.indexOf(input)] =
+          updated ??
+          Inputs.objectRef(
+            SuiObjectRef(
+              input["UnresolvedObject"]["digest"] ?? object?["digest"],
+              id,
+              input["UnresolvedObject"]["version"] ?? object?["version"],
+            ),
+          );
     }
   }
 
@@ -755,18 +1011,20 @@ class Transaction {
           continue;
         }
 
-        final inputs =
-            (command["MoveCall"]["arguments"] as Iterable).map((arg) {
+        final inputs = (command["MoveCall"]["arguments"] as Iterable).map((
+          arg,
+        ) {
           if (arg is Map && arg["Input"] != null) {
             return _blockData.inputs[arg["Input"]];
           }
           return null;
         }).toList();
         final needsResolution = inputs.firstWhere(
-            (input) =>
-                input?["UnresolvedPure"] != null ||
-                input?["UnresolvedObject"] != null,
-            orElse: () => null);
+          (input) =>
+              input?["UnresolvedPure"] != null ||
+              input?["UnresolvedObject"] != null,
+          orElse: () => null,
+        );
 
         if (needsResolution != null) {
           final functionName =
@@ -784,7 +1042,9 @@ class Transaction {
         });
       } else if (command["TransferObjects"] != null) {
         normalizeRawArgument(
-            command["TransferObjects"]["address"], SuiBcs.Address);
+          command["TransferObjects"]["address"],
+          SuiBcs.Address,
+        );
       }
     }
 
@@ -809,8 +1069,8 @@ class Transaction {
 
     if (moveCallsToResolve.isNotEmpty) {
       for (var moveCall in moveCallsToResolve) {
-        final parameters = moveFunctionParameters[
-            "${moveCall["package"]}::${moveCall["module"]}::${moveCall["function"]}"];
+        final parameters =
+            moveFunctionParameters["${moveCall["package"]}::${moveCall["module"]}::${moveCall["function"]}"];
         if (parameters != null && parameters.isNotEmpty) {
           // Entry functions can have a mutable reference to an instance of the TxContext
           // struct defined in the TxContext module as the last parameter. The caller of
@@ -856,28 +1116,29 @@ class Transaction {
           continue;
         }
 
-        final inputValue = input["UnresolvedPure"]?["value"] ??
+        final inputValue =
+            input["UnresolvedPure"]?["value"] ??
             input["UnresolvedObject"]?["objectId"];
 
         final schema = getPureBcsSchema(param["body"]);
         if (schema != null) {
           arg["type"] = 'pure';
-          inputs[inputs.indexOf(input)] =
-              Inputs.pure(schema.serialize(inputValue));
+          inputs[inputs.indexOf(input)] = Inputs.pure(
+            schema.serialize(inputValue),
+          );
           continue;
         }
 
         if (inputValue is! String) {
           throw ArgumentError(
-              "Expect the argument to be an object id string, got $inputValue");
+            "Expect the argument to be an object id string, got $inputValue",
+          );
         }
 
         arg["type"] = 'object';
         final unresolvedObject = input["UnresolvedPure"] != null
             ? {
-                "UnresolvedObject": {
-                  "objectId": inputValue,
-                },
+                "UnresolvedObject": {"objectId": inputValue},
               }
             : input;
 
@@ -892,7 +1153,8 @@ class Transaction {
       final maxGasObjects = int.parse(_getConfig('maxGasObjects', options));
       if (_blockData.gasData.payment!.length > maxGasObjects) {
         throw ArgumentError(
-            "Payment objects exceed maximum amount: $maxGasObjects");
+          "Payment objects exceed maximum amount: $maxGasObjects",
+        );
       }
     }
 
@@ -903,31 +1165,36 @@ class Transaction {
 
     final gasOwner = _blockData.gasData.owner ?? _blockData.sender;
 
-    final coins =
-        await expectClient(options).getCoins(gasOwner!, coinType: SUI_TYPE_ARG);
+    final coins = await expectClient(
+      options,
+    ).getCoins(gasOwner!, coinType: SUI_TYPE_ARG);
 
     final paymentCoins = coins.data
         // Filter out coins that are also used as input:
         .where((coin) {
-      final matchingInput = _blockData.inputs.indexWhere((input) {
-        if (input["Object"]?["ImmOrOwnedObject"] != null) {
-          return coin.coinObjectId ==
-              input["Object"]["ImmOrOwnedObject"]["objectId"];
-        }
+          final matchingInput = _blockData.inputs.indexWhere((input) {
+            if (input["Object"]?["ImmOrOwnedObject"] != null) {
+              return coin.coinObjectId ==
+                  input["Object"]["ImmOrOwnedObject"]["objectId"];
+            }
 
-        return false;
-      });
+            return false;
+          });
 
-      return matchingInput == -1;
-    }).toList();
+          return matchingInput == -1;
+        })
+        .toList();
 
-    int end = min(paymentCoins.length,
-        int.parse(_getConfig('maxGasObjects', options)) - 1);
+    int end = min(
+      paymentCoins.length,
+      int.parse(_getConfig('maxGasObjects', options)) - 1,
+    );
 
     final usePaymentCoins = paymentCoins
         .sublist(0, end)
-        .map((coin) =>
-            SuiObjectRef(coin.digest, coin.coinObjectId, coin.version))
+        .map(
+          (coin) => SuiObjectRef(coin.digest, coin.coinObjectId, coin.version),
+        )
         .toList();
 
     if (paymentCoins.isEmpty) {
@@ -964,18 +1231,22 @@ class Transaction {
     for (var input in inputs) {
       if (input['type'] == 'object' && input['value'] is String) {
         // The input is a string that we need to resolve to an object reference:
-        objectsToResolve
-            .add({"id": normalizeSuiAddress(input['value']), "input": input});
+        objectsToResolve.add({
+          "id": normalizeSuiAddress(input['value']),
+          "input": input,
+        });
         continue;
       }
     }
 
     for (var transaction in transactions) {
       if (transaction["kind"] == "MoveCall") {
-        bool needsResolution = (transaction["arguments"] as List).any((arg) =>
-            arg is Map &&
-            arg['kind'] == 'Input' &&
-            !(isBuilderCallArg(inputs[arg['index']]["value"])));
+        bool needsResolution = (transaction["arguments"] as List).any(
+          (arg) =>
+              arg is Map &&
+              arg['kind'] == 'Input' &&
+              !(isBuilderCallArg(inputs[arg['index']]["value"])),
+        );
         if (needsResolution) {
           moveModulesToResolve.add(transaction);
         }
@@ -1005,76 +1276,81 @@ class Transaction {
     }
 
     if (moveModulesToResolve.isNotEmpty) {
-      final resolveResults =
-          await Future.wait(moveModulesToResolve.map((moveCall) async {
-        final target = moveCall["target"].split('::');
-        final packageId = target[0];
-        final moduleName = target[1];
-        final functionName = target[2];
+      final resolveResults = await Future.wait(
+        moveModulesToResolve.map((moveCall) async {
+          final target = moveCall["target"].split('::');
+          final packageId = target[0];
+          final moduleName = target[1];
+          final functionName = target[2];
 
-        final normalized =
-            await expectClient(options).getNormalizedMoveFunction(
-          normalizeSuiObjectId(packageId),
-          moduleName,
-          functionName,
-        );
+          final normalized = await expectClient(options)
+              .getNormalizedMoveFunction(
+                normalizeSuiObjectId(packageId),
+                moduleName,
+                functionName,
+              );
 
-        // Entry functions can have a mutable reference to an instance of the TxContext
-        // struct defined in the TxContext module as the last parameter. The caller of
-        // the function does not need to pass it in as an argument.
-        final hasTxContext = normalized.parameters.isNotEmpty &&
-            isTxContext(normalized.parameters.last);
+          // Entry functions can have a mutable reference to an instance of the TxContext
+          // struct defined in the TxContext module as the last parameter. The caller of
+          // the function does not need to pass it in as an argument.
+          final hasTxContext =
+              normalized.parameters.isNotEmpty &&
+              isTxContext(normalized.parameters.last);
 
-        final params = hasTxContext
-            ? normalized.parameters.sublist(0, normalized.parameters.length - 1)
-            : normalized.parameters;
+          final params = hasTxContext
+              ? normalized.parameters.sublist(
+                  0,
+                  normalized.parameters.length - 1,
+                )
+              : normalized.parameters;
 
-        final callArgs = moveCall["arguments"].toList();
-        if (params.length != callArgs.length) {
-          throw ArgumentError('Incorrect number of arguments.');
-        }
-
-        final localObjectsToResolve = [];
-
-        for (int i = 0; i < params.length; i++) {
-          final param = params[i];
-          final arg = callArgs[i];
-          if (arg["kind"] != 'Input') continue;
-          final input = inputs[arg["index"]];
-          // Skip if the input is already resolved
-          if (isBuilderCallArg(input["value"])) continue;
-
-          final inputValue = input["value"];
-
-          final serType = getPureSerializationType(param, inputValue);
-
-          if (serType != null) {
-            input["value"] = Inputs.pure(inputValue, serType);
-            continue;
+          final callArgs = moveCall["arguments"].toList();
+          if (params.length != callArgs.length) {
+            throw ArgumentError('Incorrect number of arguments.');
           }
 
-          final structVal = extractStructTag(param);
-          if (structVal != null ||
-              (param is Map && param["TypeParameter"] != null)) {
-            if (inputValue is! String) {
+          final localObjectsToResolve = [];
+
+          for (int i = 0; i < params.length; i++) {
+            final param = params[i];
+            final arg = callArgs[i];
+            if (arg["kind"] != 'Input') continue;
+            final input = inputs[arg["index"]];
+            // Skip if the input is already resolved
+            if (isBuilderCallArg(input["value"])) continue;
+
+            final inputValue = input["value"];
+
+            final serType = getPureSerializationType(param, inputValue);
+
+            if (serType != null) {
+              input["value"] = Inputs.pure(inputValue, serType);
+              continue;
+            }
+
+            final structVal = extractStructTag(param);
+            if (structVal != null ||
+                (param is Map && param["TypeParameter"] != null)) {
+              if (inputValue is! String) {
+                throw ArgumentError(
+                  "Expect the argument to be an object id string, got ${jsonEncode(inputValue)}",
+                );
+              }
+              localObjectsToResolve.add({
+                "id": inputValue,
+                "input": input,
+                "normalizedType": param,
+              });
+            } else {
               throw ArgumentError(
-                "Expect the argument to be an object id string, got ${jsonEncode(inputValue)}",
+                "Unknown call arg type ${jsonEncode(param)} for value ${jsonEncode(inputValue)}",
               );
             }
-            localObjectsToResolve.add({
-              "id": inputValue,
-              "input": input,
-              "normalizedType": param,
-            });
-          } else {
-            throw ArgumentError(
-              "Unknown call arg type ${jsonEncode(param)} for value ${jsonEncode(inputValue)}",
-            );
           }
-        }
 
-        return localObjectsToResolve;
-      }));
+          return localObjectsToResolve;
+        }),
+      );
 
       for (var result in resolveResults) {
         objectsToResolve.addAll(result);
@@ -1082,8 +1358,9 @@ class Transaction {
     }
 
     if (objectsToResolve.isNotEmpty) {
-      final dedupedIds =
-          Set<String>.from(objectsToResolve.map((o) => o["id"])).toList();
+      final dedupedIds = Set<String>.from(
+        objectsToResolve.map((o) => o["id"]),
+      ).toList();
       final objectChunks = chunk(dedupedIds, MAX_OBJECTS_PER_FETCH);
       final objects = (await Future.wait(
         objectChunks.map(
@@ -1092,9 +1369,7 @@ class Transaction {
             options: SuiObjectDataOptions(showOwner: true),
           ),
         ),
-      ))
-          .expand((element) => element)
-          .toList();
+      )).expand((element) => element).toList();
 
       final objectsById = <String, SuiObjectResponse>{};
       for (int index = 0; index < dedupedIds.length; index++) {
@@ -1107,7 +1382,8 @@ class Transaction {
           .toList();
       if (invalidObjects.isNotEmpty) {
         throw ArgumentError(
-            "The following input objects are invalid: ${invalidObjects.join(', ')}");
+          "The following input objects are invalid: ${invalidObjects.join(', ')}",
+        );
       }
 
       for (var item in objectsToResolve) {
@@ -1123,10 +1399,12 @@ class Transaction {
           // There could be multiple transactions that reference the same shared object.
           // If one of them is a mutable reference, then we should mark the input
           // as mutable.
-          final isByValue = normalizedType != null &&
+          final isByValue =
+              normalizedType != null &&
               extractMutableReference(normalizedType) == null &&
               extractReference(normalizedType) == null;
-          final mutable = isMutableSharedObjectInput(input["value"]) ||
+          final mutable =
+              isMutableSharedObjectInput(input["value"]) ||
               isByValue ||
               (normalizedType != null &&
                   extractMutableReference(normalizedType) != null);
@@ -1154,18 +1432,52 @@ class Transaction {
 
     final client = options.client;
 
+    await _resolveCustomIntents(options);
+
+    if (client is TransactionNameResolver) {
+      final resolver = client as TransactionNameResolver;
+      await resolveNames(
+        resolvePackage: resolver.resolvePackage,
+        resolveType: resolver.resolveType,
+      );
+    }
+
     if (options.protocolConfig == null &&
         options.limits == null &&
         client != null) {
       options.protocolConfig = await client.getProtocolConfig();
     }
 
-    await resolveCoinBalanceIntents(_blockData, options.client);
+    await resolveAllowanceBalanceIntents(_blockData, options.client);
+    await resolveCoinBalanceIntents(
+      _blockData,
+      options.client,
+      assumeSufficientAddressBalances: options.assumeSufficientAddressBalances,
+    );
     await normalizeInputs(options);
     await resolveObjectReferences(options);
 
-    await Future.wait(
-        [_prepareGasPrice(options), _prepareTransactions(options)]);
+    await Future.wait([
+      _prepareGasPrice(options),
+      _prepareTransactions(options),
+    ]);
+
+    if (options.onlyTransactionKind && client is TransactionKindResolver) {
+      await (client as TransactionKindResolver).resolveTransactionKind(
+        _blockData,
+      );
+    }
+
+    if (!options.onlyTransactionKind &&
+        options.assumeSufficientAddressBalances &&
+        _blockData.gasData.payment == null &&
+        _blockData.gasData.price != null &&
+        _blockData.gasData.budget != null &&
+        (_blockData.expiration?.validDuring != null ||
+            _blockData.expiration?.validity != null) &&
+        !_containsGasCoin(_blockData.commands)) {
+      setGasPayment([]);
+    }
 
     if (options.onlyTransactionKind != true) {
       // When the gas payment and/or budget is unset, let the server resolve
@@ -1173,7 +1485,8 @@ class Transaction {
       // with `doGasSelection`), matching Mysten's TS gRPC client. A locally
       // guessed budget cannot account for SUI the transaction spends from the
       // gas coin (`budget + spend <= coin balance`).
-      final resolved = (_blockData.gasData.budget == null ||
+      final resolved =
+          (_blockData.gasData.budget == null ||
               _blockData.gasData.payment == null)
           ? await expectClient(options).resolveGasData(_blockData)
           : null;
@@ -1182,6 +1495,9 @@ class Transaction {
         setGasPayment(resolved.payment);
         if (resolved.price != null) setGasPrice(resolved.price!);
         setGasBudget(resolved.budget);
+        if (resolved.expiration != null) {
+          _blockData.expiration = resolved.expiration;
+        }
       } else {
         // Fallback (e.g. JSON-RPC): select gas coins locally and estimate the
         // budget from a dry-run.
@@ -1195,9 +1511,10 @@ class Transaction {
 
           final baseComputationCostWithOverhead =
               BigInt.from(dryRunResult.effects.gasUsed.computationCost) +
-                  safeOverhead;
+              safeOverhead;
 
-          final gasBudget = baseComputationCostWithOverhead +
+          final gasBudget =
+              baseComputationCostWithOverhead +
               BigInt.from(dryRunResult.effects.gasUsed.storageCost) -
               BigInt.from(dryRunResult.effects.gasUsed.storageRebate);
 
@@ -1211,6 +1528,9 @@ class Transaction {
       }
     }
 
+    if (!options.onlyTransactionKind && client is TransactionFinalizer) {
+      await (client as TransactionFinalizer).finalizeTransaction(_blockData);
+    }
     // Perform final validation on the transaction:
     _validate(options);
   }
@@ -1221,17 +1541,22 @@ class Transaction {
   /// coin's balance). Only reached when the transport has no server-side gas
   /// resolution (see [TransactionBuilderClient.resolveGasData]).
   Future<DryRunTransactionBlockResponse> _estimateGasDryRun(
-      BuildOptions options) async {
-    final maxGas = BigInt.tryParse(_getConfig('maxTxGas', options)) ??
+    BuildOptions options,
+  ) async {
+    final maxGas =
+        BigInt.tryParse(_getConfig('maxTxGas', options)) ??
         BigInt.from(50000000000);
     final result = await expectClient(options).dryRunTransaction(
-      _blockData.build(gasConfig: GasConfig(budget: maxGas, payment: [])),
+      _blockData.build(
+        gasConfig: GasConfig(budget: maxGas, payment: []),
+      ),
       signerAddress: _blockData.sender,
     );
     if (result.effects.status.status != ExecutionStatusType.success) {
       throw ArgumentError(
-          'Dry run failed, could not automatically determine a budget: '
-          '${result.effects.status.error}');
+        'Dry run failed, could not automatically determine a budget: '
+        '${result.effects.status.error}',
+      );
     }
     return result;
   }
@@ -1243,11 +1568,12 @@ class Transaction {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
         final arguments = tx["MoveCall"]["arguments"].toList();
         final argIndex = arguments.indexWhere(
-            (element) => const DeepCollectionEquality().equals(element, arg));
+          (element) => const DeepCollectionEquality().equals(element, arg),
+        );
         if (argIndex != -1) {
           usedAsMutable =
               tx["MoveCall"]["_argumentTypes"][argIndex]["ref"] != '&' ||
-                  usedAsMutable;
+              usedAsMutable;
         }
       } else if (tx["MakeMoveVec"] != null ||
           tx["MergeCoins"] == null ||
@@ -1260,18 +1586,21 @@ class Transaction {
   }
 
   bool isUsedAsReceiving(
-      TransactionBlockDataBuilder transactionData, int index) {
+    TransactionBlockDataBuilder transactionData,
+    int index,
+  ) {
     var usedAsReceiving = false;
 
     transactionData.getInputUses(index, (arg, tx) {
       if (tx["MoveCall"]?["_argumentTypes"] != null) {
         final arguments = tx["MoveCall"]["arguments"].toList();
         final argIndex = arguments.indexWhere(
-            (element) => const DeepCollectionEquality().equals(element, arg));
+          (element) => const DeepCollectionEquality().equals(element, arg),
+        );
         if (argIndex != -1) {
           usedAsReceiving =
               isReceivingType(tx["MoveCall"]["_argumentTypes"][argIndex]) ||
-                  usedAsReceiving;
+              usedAsReceiving;
         }
       }
     });
@@ -1288,4 +1617,14 @@ class Transaction {
         type["body"]["datatype"]["module"] == 'transfer' &&
         type["body"]["datatype"]["type"] == 'Receiving');
   }
+}
+
+// Inspect argument objects rather than serialized text: a pure string may
+// legitimately contain the word GasCoin without referring to the gas coin.
+bool _containsGasCoin(Object? value) {
+  if (value is Map) {
+    if (value.containsKey('GasCoin')) return true;
+    return value.values.any(_containsGasCoin);
+  }
+  return value is Iterable && value.any(_containsGasCoin);
 }

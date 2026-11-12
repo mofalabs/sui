@@ -1,72 +1,146 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:sui/cryptography/ed25519_publickey.dart';
-import 'package:sui/cryptography/helper.dart';
-import 'package:sui/cryptography/keypair.dart';
-import 'package:sui/cryptography/signature.dart';
-import 'package:sui/types/common.dart';
-import 'package:sui/utils/hex.dart';
-import 'package:sui/utils/sha.dart';
-import 'package:sui/zklogin/utils.dart';
+import '../client/core_client.dart';
+import '../cryptography/intent.dart';
+import '../cryptography/keypair.dart';
+import '../cryptography/signature.dart';
+import '../utils/hex.dart';
+import '../utils/sha.dart';
+import '../types/common.dart';
+import 'jwt_utils.dart';
+import 'types.dart';
+import 'utils.dart';
 
+/// A zkLogin identity. Raw bytes always retain a padded 32-byte address seed;
+/// [legacyAddress] controls only the address derivation.
 class ZkLoginPublicIdentifier with PublicKey {
-  late BigInt _bn;
+  ZkLoginPublicIdentifier._(this._data, this.legacyAddress);
+  final Uint8List _data;
+  final bool legacyAddress;
 
-  ZkLoginPublicIdentifier._(BigInt bn) {
-    _bn = bn;
+  factory ZkLoginPublicIdentifier.fromBytes(
+    Uint8List bytes, {
+    bool? legacyAddress,
+    String? address,
+  }) {
+    if (bytes.isEmpty ||
+        bytes.first == 0 ||
+        bytes.length <= bytes.first + 1 ||
+        bytes.length > bytes.first + 33) {
+      throw const FormatException('Invalid zkLogin public identifier');
+    }
+    final offset = bytes.first + 1;
+    utf8.decode(bytes.sublist(1, offset));
+    final seed = BigInt.parse(Hex.encode(bytes.sublist(offset)), radix: 16);
+    final data = Uint8List.fromList([
+      ...bytes.sublist(0, offset),
+      ...toPaddedBigEndianBytes(seed, 32),
+    ]);
+    var key = ZkLoginPublicIdentifier._(
+      data,
+      legacyAddress ?? bytes.length != offset + 32,
+    );
+    if (address != null &&
+        key.toSuiAddress() != address &&
+        legacyAddress == null) {
+      key = ZkLoginPublicIdentifier._(data, !key.legacyAddress);
+    }
+    if (address != null && key.toSuiAddress() != address) {
+      throw ArgumentError('Public identifier does not match address');
+    }
+    return key;
   }
 
-  factory ZkLoginPublicIdentifier.fromBytes(Uint8List publicKey) {
-    return ZkLoginPublicIdentifier._(decodeBigIntToUnsigned(publicKey));
+  factory ZkLoginPublicIdentifier.fromProof(
+    String address,
+    ZkLoginSignatureInputs proof,
+  ) => ZkLoginPublicIdentifier.fromBytes(
+    toZkLoginPublicIdentifier(
+      BigInt.parse(proof.addressSeed),
+      extractClaimValue<String>(proof.issBase64Details, 'iss'),
+    ).toRawBytes(),
+    address: address,
+  );
+
+  @override
+  bool equals(PublicKey publicKey) =>
+      publicKey is ZkLoginPublicIdentifier &&
+      bytesEqual(_data, publicKey._data);
+  @override
+  Uint8List toRawBytes() => Uint8List.fromList(_data);
+  @override
+  int flag() => SIGNATURE_SCHEME_TO_FLAG.ZkLogin;
+  @override
+  String toBase64() => base64Encode(_data);
+  @override
+  String toString() => toBase64();
+
+  String _address(bool legacy) {
+    final offset = _data.first + 1;
+    final seed = BigInt.parse(Hex.encode(_data.sublist(offset)), radix: 16);
+    final bytes = Uint8List.fromList([
+      flag(),
+      ..._data.sublist(0, offset),
+      ...legacy ? toBigEndianBytes(seed, 32) : toPaddedBigEndianBytes(seed, 32),
+    ]);
+    return normalizeSuiAddress(Hex.encode(blake2b(bytes)));
   }
 
   @override
-  bool equals(PublicKey publicKey) {
-    return _bn == (publicKey as ZkLoginPublicIdentifier)._bn;
-  }
+  String toSuiAddress() => _address(legacyAddress);
+  bool verifyAddress(String address) =>
+      address == _address(false) || address == _address(true);
 
+  /// zkLogin verification needs chain JWKs and epoch state. Use the async
+  /// methods with an explicit client; transport errors propagate to the caller.
   @override
-  Uint8List toRawBytes() {
-    Uint8List buffer = encodeBigIntAsUnsigned(_bn);
-    return buffer;
-  }
+  bool verify(Uint8List data, Uint8List signature) => throw UnsupportedError(
+    'Use async zkLogin verification with a CoreClient',
+  );
 
-  @override
-  int flag() {
-    return SIGNATURE_SCHEME_TO_FLAG.ZkLogin;
-  }
+  Future<bool> verifyPersonalMessageAsync(
+    Uint8List message,
+    String signature, {
+    required CoreClient client,
+  }) async => (await client.verifySignature(
+    message,
+    base64Decode(signature),
+    intentScope: IntentScope.personalMessage,
+    address: toSuiAddress(),
+  )).isValid;
 
-  @override
-  String toBase64() {
-    return base64Encode(toRawBytes());
-  }
-
-  @override
-  String toSuiAddress() {
-    final tmp = Uint8List(PUBLIC_KEY_SIZE + 1);
-    tmp[0] = SIGNATURE_SCHEME_TO_FLAG.ZkLogin;
-    tmp.setAll(1, toRawBytes());
-    final publicKey = Hex.encode(blake2b(tmp));
-    return normalizeSuiAddress(publicKey.substring(0, SUI_ADDRESS_LENGTH * 2));
-  }
-
-  /// Verifies that the signature is valid for for the provided PersonalMessage
-  @override
-  bool verify(Uint8List data, Uint8List signature) {
-    throw Exception('does not support');
-  }
+  Future<bool> verifyTransactionAsync(
+    Uint8List transaction,
+    String signature, {
+    required CoreClient client,
+  }) async => (await client.verifySignature(
+    transaction,
+    base64Decode(signature),
+    intentScope: IntentScope.transactionData,
+    address: toSuiAddress(),
+  )).isValid;
 }
 
 ZkLoginPublicIdentifier toZkLoginPublicIdentifier(
-    BigInt addressSeed, String iss) {
-  // Consists of iss_bytes_len || iss_bytes || padded_32_byte_address_seed.
-  Uint8List addressSeedBytesBigEndian = toPaddedBigEndianBytes(addressSeed, 32);
-  List<int> issBytes = utf8.encode(iss);
-  Uint8List tmp =
-      Uint8List(1 + issBytes.length + addressSeedBytesBigEndian.length);
-  tmp[0] = issBytes.length;
-  tmp.setAll(1, issBytes);
-  tmp.setAll(1 + issBytes.length, addressSeedBytesBigEndian);
-  return ZkLoginPublicIdentifier._(decodeBigIntToUnsigned(tmp));
+  BigInt addressSeed,
+  String iss, {
+  bool legacyAddress = false,
+}) {
+  if (addressSeed.isNegative || addressSeed >= (BigInt.one << 256)) {
+    throw ArgumentError.value(addressSeed, 'addressSeed', 'Expected u256');
+  }
+  if (iss == 'accounts.google.com') iss = 'https://accounts.google.com';
+  final issuer = utf8.encode(iss);
+  if (issuer.isEmpty || issuer.length > 255) {
+    throw ArgumentError.value(iss, 'iss');
+  }
+  return ZkLoginPublicIdentifier._(
+    Uint8List.fromList([
+      issuer.length,
+      ...issuer,
+      ...toPaddedBigEndianBytes(addressSeed, 32),
+    ]),
+    legacyAddress,
+  );
 }

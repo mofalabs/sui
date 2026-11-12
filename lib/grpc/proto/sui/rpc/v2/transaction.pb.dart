@@ -276,6 +276,7 @@ class TransactionExpiration extends $pb.GeneratedMessage {
     $2.Timestamp? maxTimestamp,
     $core.String? chain,
     $core.int? nonce,
+    AllowedProposers? allowedProposers,
   }) {
     final result = create();
     if (kind != null) result.kind = kind;
@@ -285,6 +286,7 @@ class TransactionExpiration extends $pb.GeneratedMessage {
     if (maxTimestamp != null) result.maxTimestamp = maxTimestamp;
     if (chain != null) result.chain = chain;
     if (nonce != null) result.nonce = nonce;
+    if (allowedProposers != null) result.allowedProposers = allowedProposers;
     return result;
   }
 
@@ -318,6 +320,8 @@ class TransactionExpiration extends $pb.GeneratedMessage {
         subBuilder: $2.Timestamp.create)
     ..aOS(6, _omitFieldNames ? '' : 'chain')
     ..a<$core.int>(7, _omitFieldNames ? '' : 'nonce', $pb.PbFieldType.OU3)
+    ..aOM<AllowedProposers>(8, _omitFieldNames ? '' : 'allowedProposers',
+        subBuilder: AllowedProposers.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -422,6 +426,93 @@ class TransactionExpiration extends $pb.GeneratedMessage {
   $core.bool hasNonce() => $_has(6);
   @$pb.TagNumber(7)
   void clearNonce() => $_clearField(7);
+
+  /// The validators allowed to propose this transaction in consensus. Only set when `kind`
+  /// is `VALIDITY`. Leave unset to let any validator propose the transaction.
+  @$pb.TagNumber(8)
+  AllowedProposers get allowedProposers => $_getN(7);
+  @$pb.TagNumber(8)
+  set allowedProposers(AllowedProposers value) => $_setField(8, value);
+  @$pb.TagNumber(8)
+  $core.bool hasAllowedProposers() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearAllowedProposers() => $_clearField(8);
+  @$pb.TagNumber(8)
+  AllowedProposers ensureAllowedProposers() => $_ensure(7);
+}
+
+/// The validators allowed to propose a transaction in consensus.
+///
+/// Proposal by any other validator is byzantine behavior and invalidates the whole block.
+class AllowedProposers extends $pb.GeneratedMessage {
+  factory AllowedProposers({
+    $fixnum.Int64? epoch,
+    $core.Iterable<$core.int>? proposers,
+  }) {
+    final result = create();
+    if (epoch != null) result.epoch = epoch;
+    if (proposers != null) result.proposers.addAll(proposers);
+    return result;
+  }
+
+  AllowedProposers._();
+
+  factory AllowedProposers.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory AllowedProposers.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'AllowedProposers',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
+      createEmptyInstance: create)
+    ..a<$fixnum.Int64>(1, _omitFieldNames ? '' : 'epoch', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'proposers', $pb.PbFieldType.KU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AllowedProposers clone() => AllowedProposers()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  AllowedProposers copyWith(void Function(AllowedProposers) updates) =>
+      super.copyWith((message) => updates(message as AllowedProposers))
+          as AllowedProposers;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AllowedProposers create() => AllowedProposers._();
+  @$core.override
+  AllowedProposers createEmptyInstance() => create();
+  static $pb.PbList<AllowedProposers> createRepeated() =>
+      $pb.PbList<AllowedProposers>();
+  @$core.pragma('dart2js:noInline')
+  static AllowedProposers getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<AllowedProposers>(create);
+  static AllowedProposers? _defaultInstance;
+
+  /// The epoch whose committee `proposers` indexes into.
+  ///
+  /// Committee indices are only meaningful against one committee, so a set recorded for any
+  /// other epoch is ignored and the transaction is treated as naming no proposers.
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get epoch => $_getI64(0);
+  @$pb.TagNumber(1)
+  set epoch($fixnum.Int64 value) => $_setInt64(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEpoch() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEpoch() => $_clearField(1);
+
+  /// Committee indices of the allowed proposers, strictly increasing and non-empty.
+  ///
+  /// An empty list names no validator and is rejected; omit `allowed_proposers` entirely to
+  /// let any validator propose the transaction.
+  @$pb.TagNumber(2)
+  $pb.PbList<$core.int> get proposers => $_getList(1);
 }
 
 enum TransactionKind_Data {

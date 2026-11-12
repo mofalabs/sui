@@ -36,6 +36,7 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
     $4.Timestamp? timestamp,
     $core.Iterable<$5.BalanceChange>? balanceChanges,
     $6.ObjectSet? objects,
+    $fixnum.Int64? transactionIndex,
   }) {
     final result = create();
     if (digest != null) result.digest = digest;
@@ -47,6 +48,7 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
     if (timestamp != null) result.timestamp = timestamp;
     if (balanceChanges != null) result.balanceChanges.addAll(balanceChanges);
     if (objects != null) result.objects = objects;
+    if (transactionIndex != null) result.transactionIndex = transactionIndex;
     return result;
   }
 
@@ -83,6 +85,9 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
         subBuilder: $5.BalanceChange.create)
     ..aOM<$6.ObjectSet>(9, _omitFieldNames ? '' : 'objects',
         subBuilder: $6.ObjectSet.create)
+    ..a<$fixnum.Int64>(
+        10, _omitFieldNames ? '' : 'transactionIndex', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -199,6 +204,17 @@ class ExecutedTransaction extends $pb.GeneratedMessage {
   void clearObjects() => $_clearField(9);
   @$pb.TagNumber(9)
   $6.ObjectSet ensureObjects() => $_ensure(8);
+
+  /// Zero-based position of this transaction within the checkpoint that
+  /// includes it.
+  @$pb.TagNumber(10)
+  $fixnum.Int64 get transactionIndex => $_getI64(9);
+  @$pb.TagNumber(10)
+  set transactionIndex($fixnum.Int64 value) => $_setInt64(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasTransactionIndex() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearTransactionIndex() => $_clearField(10);
 }
 
 const $core.bool _omitFieldNames =

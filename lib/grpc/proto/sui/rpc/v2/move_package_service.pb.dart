@@ -20,12 +20,18 @@ import 'move_package.pb.dart' as $0;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
+enum GetPackageRequest_Selector { version, atCheckpoint, notSet }
+
 class GetPackageRequest extends $pb.GeneratedMessage {
   factory GetPackageRequest({
     $core.String? packageId,
+    $fixnum.Int64? version,
+    $fixnum.Int64? atCheckpoint,
   }) {
     final result = create();
     if (packageId != null) result.packageId = packageId;
+    if (version != null) result.version = version;
+    if (atCheckpoint != null) result.atCheckpoint = atCheckpoint;
     return result;
   }
 
@@ -38,11 +44,23 @@ class GetPackageRequest extends $pb.GeneratedMessage {
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
+  static const $core.Map<$core.int, GetPackageRequest_Selector>
+      _GetPackageRequest_SelectorByTag = {
+    2: GetPackageRequest_Selector.version,
+    3: GetPackageRequest_Selector.atCheckpoint,
+    0: GetPackageRequest_Selector.notSet
+  };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'GetPackageRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'sui.rpc.v2'),
       createEmptyInstance: create)
+    ..oo(0, [2, 3])
     ..aOS(1, _omitFieldNames ? '' : 'packageId')
+    ..a<$fixnum.Int64>(2, _omitFieldNames ? '' : 'version', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(
+        3, _omitFieldNames ? '' : 'atCheckpoint', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -66,7 +84,16 @@ class GetPackageRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<GetPackageRequest>(create);
   static GetPackageRequest? _defaultInstance;
 
-  /// Required. The `storage_id` of the requested package.
+  GetPackageRequest_Selector whichSelector() =>
+      _GetPackageRequest_SelectorByTag[$_whichOneof(0)]!;
+  void clearSelector() => $_clearField($_whichOneof(0));
+
+  /// Required. The `storage_id` of any version of the requested package.
+  ///
+  /// When no `selector` is set, the package stored at exactly this id is
+  /// returned. When a `selector` is set, `package_id` only identifies the
+  /// package's upgrade lineage (via its original id), and the selected
+  /// version within that lineage is returned.
   @$pb.TagNumber(1)
   $core.String get packageId => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -75,6 +102,24 @@ class GetPackageRequest extends $pb.GeneratedMessage {
   $core.bool hasPackageId() => $_has(0);
   @$pb.TagNumber(1)
   void clearPackageId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $fixnum.Int64 get version => $_getI64(1);
+  @$pb.TagNumber(2)
+  set version($fixnum.Int64 value) => $_setInt64(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasVersion() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearVersion() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get atCheckpoint => $_getI64(2);
+  @$pb.TagNumber(3)
+  set atCheckpoint($fixnum.Int64 value) => $_setInt64(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasAtCheckpoint() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAtCheckpoint() => $_clearField(3);
 }
 
 class GetPackageResponse extends $pb.GeneratedMessage {

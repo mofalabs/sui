@@ -385,6 +385,7 @@ const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>>
   '.sui.rpc.v2.GasPayment': $0.GasPayment$json,
   '.sui.rpc.v2.ObjectReference': $14.ObjectReference$json,
   '.sui.rpc.v2.TransactionExpiration': $0.TransactionExpiration$json,
+  '.sui.rpc.v2.AllowedProposers': $0.AllowedProposers$json,
   '.sui.rpc.v2.UserSignature': $1.UserSignature$json,
   '.sui.rpc.v2.SimpleSignature': $1.SimpleSignature$json,
   '.sui.rpc.v2.MultisigAggregatedSignature':

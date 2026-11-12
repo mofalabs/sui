@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../grpc/protocol_version.dart';
 
 /// Minimal GraphQL-over-HTTP transport for Sui GraphQL RPC.
 ///
@@ -9,12 +10,12 @@ import 'package:dio/dio.dart';
 /// indexer.
 ///
 /// This transport complements the gRPC-web transport, which covers the core
-/// read/write path. GraphQL is intended for query patterns full nodes cannot
-/// serve (filtered transaction/event queries, staking, validator APYs).
+/// read/write path. GraphQL supports indexed history, staking and validator
+/// APYs; gRPC also supports filtered scans of a full node's retained ledger.
 class GraphQLTransport {
   GraphQLTransport(this.endpoint, {Dio? dio, this.headers = const {}})
-      : _dio = dio ??
-            (Dio()..options.connectTimeout = const Duration(seconds: 15));
+    : _dio =
+          dio ?? (Dio()..options.connectTimeout = const Duration(seconds: 15));
 
   final String endpoint;
   final Map<String, String> headers;
@@ -25,17 +26,20 @@ class GraphQLTransport {
   Future<Map<String, dynamic>> query(
     String query, {
     Map<String, dynamic>? variables,
+    CancelToken? cancelToken,
   }) async {
     final resp = await _dio.post<Map<String, dynamic>>(
       endpoint,
-      data: {
-        'query': query,
-        if (variables != null) 'variables': variables,
-      },
+      data: {'query': query, if (variables != null) 'variables': variables},
+      cancelToken: cancelToken,
       options: Options(
         contentType: 'application/json',
         responseType: ResponseType.json,
-        headers: {'accept': 'application/json', ...headers},
+        headers: {
+          'accept': 'application/json',
+          clientProtocolVersionHeader: '$maxProtocolVersion',
+          ...headers,
+        },
         validateStatus: (_) => true,
       ),
     );
@@ -50,8 +54,9 @@ class GraphQLTransport {
 
     final errors = body['errors'];
     if (errors is List && errors.isNotEmpty) {
-      final messages =
-          errors.map((e) => (e is Map ? e['message'] : e).toString()).toList();
+      final messages = errors
+          .map((e) => (e is Map ? e['message'] : e).toString())
+          .toList();
       throw GraphQLException(messages.join('; '), messages);
     }
 

@@ -167,12 +167,24 @@ const FundsWithdrawal$json = {
       '10': 'source',
       '17': true
     },
+    {'1': 'funder', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'funder', '17': true},
+    {
+      '1': 'allowance',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'allowance',
+      '17': true
+    },
   ],
   '4': [FundsWithdrawal_Source$json],
   '8': [
     {'1': '_amount'},
     {'1': '_coin_type'},
     {'1': '_source'},
+    {'1': '_funder'},
+    {'1': '_allowance'},
   ],
 };
 
@@ -183,6 +195,7 @@ const FundsWithdrawal_Source$json = {
     {'1': 'SOURCE_UNKNOWN', '2': 0},
     {'1': 'SENDER', '2': 1},
     {'1': 'SPONSOR', '2': 2},
+    {'1': 'SENDER_ALLOWANCE', '2': 3},
   ],
 };
 
@@ -190,6 +203,8 @@ const FundsWithdrawal_Source$json = {
 final $typed_data.Uint8List fundsWithdrawalDescriptor = $convert.base64Decode(
     'Cg9GdW5kc1dpdGhkcmF3YWwSGwoGYW1vdW50GAEgASgESABSBmFtb3VudIgBARIgCgljb2luX3'
     'R5cGUYAiABKAlIAVIIY29pblR5cGWIAQESPwoGc291cmNlGAMgASgOMiIuc3VpLnJwYy52Mi5G'
-    'dW5kc1dpdGhkcmF3YWwuU291cmNlSAJSBnNvdXJjZYgBASI1CgZTb3VyY2USEgoOU09VUkNFX1'
-    'VOS05PV04QABIKCgZTRU5ERVIQARILCgdTUE9OU09SEAJCCQoHX2Ftb3VudEIMCgpfY29pbl90'
-    'eXBlQgkKB19zb3VyY2U=');
+    'dW5kc1dpdGhkcmF3YWwuU291cmNlSAJSBnNvdXJjZYgBARIbCgZmdW5kZXIYBCABKAlIA1IGZn'
+    'VuZGVyiAEBEiEKCWFsbG93YW5jZRgFIAEoCUgEUglhbGxvd2FuY2WIAQEiSwoGU291cmNlEhIK'
+    'DlNPVVJDRV9VTktOT1dOEAASCgoGU0VOREVSEAESCwoHU1BPTlNPUhACEhQKEFNFTkRFUl9BTE'
+    'xPV0FOQ0UQA0IJCgdfYW1vdW50QgwKCl9jb2luX3R5cGVCCQoHX3NvdXJjZUIJCgdfZnVuZGVy'
+    'QgwKCl9hbGxvd2FuY2U=');

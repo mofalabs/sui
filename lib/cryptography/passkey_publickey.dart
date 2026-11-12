@@ -35,7 +35,8 @@ class PasskeyPublicKey with PublicKey {
   PasskeyPublicKey(Uint8List value) : _data = Uint8List.fromList(value) {
     if (_data.length != PASSKEY_PUBLIC_KEY_SIZE) {
       throw ArgumentError(
-          "Invalid public key input. Expected $PASSKEY_PUBLIC_KEY_SIZE bytes, got ${_data.length}");
+        "Invalid public key input. Expected $PASSKEY_PUBLIC_KEY_SIZE bytes, got ${_data.length}",
+      );
     }
   }
 
@@ -138,15 +139,25 @@ class ParsedPasskeySignature {
 
 /// Parses `flag(0x06) || BCS(PasskeyAuthenticator)` into its fields.
 ParsedPasskeySignature parseSerializedPasskeySignature(Uint8List signature) {
-  if (signature[0] != SIGNATURE_SCHEME_TO_FLAG.Passkey) {
+  if (signature.isEmpty || signature[0] != SIGNATURE_SCHEME_TO_FLAG.Passkey) {
     throw ArgumentError('Invalid signature scheme');
   }
   final dec = SuiBcs.PasskeyAuthenticator.parse(
-      Uint8List.fromList(signature.sublist(1)));
+    Uint8List.fromList(signature.sublist(1)),
+  );
+  final userSignature = Uint8List.fromList(
+    List<int>.from(dec['userSignature']),
+  );
+  if (userSignature.length !=
+          1 + PASSKEY_SIGNATURE_SIZE + PASSKEY_PUBLIC_KEY_SIZE ||
+      userSignature.first != SIGNATURE_SCHEME_TO_FLAG.Secp256r1) {
+    throw const FormatException('Invalid passkey user signature');
+  }
   return ParsedPasskeySignature(
-    authenticatorData:
-        Uint8List.fromList(List<int>.from(dec['authenticatorData'])),
+    authenticatorData: Uint8List.fromList(
+      List<int>.from(dec['authenticatorData']),
+    ),
     clientDataJson: dec['clientDataJson'] as String,
-    userSignature: Uint8List.fromList(List<int>.from(dec['userSignature'])),
+    userSignature: userSignature,
   );
 }

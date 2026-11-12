@@ -2,25 +2,163 @@ import 'package:dio/dio.dart';
 
 import '../client/network.dart';
 import 'graphql_transport.dart';
+import 'query_options.dart';
+export 'query_options.dart';
 
 /// GraphQL client for Sui GraphQL RPC (the secondary transport).
 ///
-/// Use for query patterns full nodes cannot serve over gRPC (filtered
-/// transaction/event queries, staking, validator APYs). Mysten operates public
+/// Use for indexed historical queries, staking and validator APYs. Full nodes
+/// also support filtered ledger scans through gRPC. Mysten operates public
 /// endpoints at `graphql.<network>.sui.io`; see [graphqlEndpoint].
 class SuiGraphQLClient {
-  SuiGraphQLClient({required String endpoint, Dio? dio})
-      : transport = GraphQLTransport(endpoint, dio: dio);
+  SuiGraphQLClient({
+    required String endpoint,
+    Dio? dio,
+    Map<String, String> headers = const {},
+    GraphQLTransport? transport,
+  }) : transport =
+           transport ?? GraphQLTransport(endpoint, dio: dio, headers: headers);
 
   /// Construct against the public GraphQL endpoint for [network].
-  SuiGraphQLClient.forNetwork(SuiNetwork network, {Dio? dio})
-      : transport = GraphQLTransport(graphqlEndpoint(network), dio: dio);
+  SuiGraphQLClient.forNetwork(
+    SuiNetwork network, {
+    Dio? dio,
+    Map<String, String> headers = const {},
+  }) : transport = GraphQLTransport(
+         graphqlEndpoint(network),
+         dio: dio,
+         headers: headers,
+       );
 
   final GraphQLTransport transport;
 
+  Future<GraphQLPage<SenderTransaction>> listTransactions({
+    GraphQLTransactionFilter? filter,
+    int limit = 50,
+    String? after,
+    String? before,
+    bool descending = true,
+    CancelToken? cancelToken,
+  }) async {
+    _validatePageSize(limit);
+    final data = await transport.query(
+      r'''
+      query ($filter: TransactionFilter, $first: Int, $last: Int, $after: String, $before: String) {
+        transactions(filter: $filter, first: $first, last: $last, after: $after, before: $before) {
+          pageInfo { hasNextPage hasPreviousPage startCursor endCursor }
+          nodes { digest effects { timestamp status checkpoint { sequenceNumber }
+            balanceChanges { nodes { amount coinType { repr } owner { address } } }
+          } }
+        }
+      }
+    ''',
+      variables: {
+        if (filter != null) 'filter': filter.toJson(),
+        descending ? 'last' : 'first': limit,
+        if (after != null) 'after': after,
+        if (before != null) 'before': before,
+      },
+      cancelToken: cancelToken,
+    );
+    return _connectionPage(
+      data['transactions'] as Map<String, dynamic>,
+      descending,
+      (node) => SenderTransaction._fromNode(node),
+    );
+  }
+
+  /// Events include their contents, transaction identity and checkpoint.
+  Future<GraphQLPage<Map<String, dynamic>>> listEvents({
+    GraphQLEventFilter? filter,
+    int limit = 50,
+    String? after,
+    String? before,
+    bool descending = true,
+    CancelToken? cancelToken,
+  }) async {
+    _validatePageSize(limit);
+    final data = await transport.query(
+      r'''
+      query ($filter: EventFilter, $first: Int, $last: Int, $after: String, $before: String) {
+        events(filter: $filter, first: $first, last: $last, after: $after, before: $before) {
+          pageInfo { hasNextPage hasPreviousPage startCursor endCursor }
+          nodes { sequenceNumber transaction { digest effects { checkpoint { sequenceNumber } } }
+            transactionModule { package { address } name } sender { address }
+            contents { type { repr } bcs json }
+          }
+        }
+      }
+    ''',
+      variables: {
+        if (filter != null) 'filter': filter.toJson(),
+        descending ? 'last' : 'first': limit,
+        if (after != null) 'after': after,
+        if (before != null) 'before': before,
+      },
+      cancelToken: cancelToken,
+    );
+    return _connectionPage(
+      data['events'] as Map<String, dynamic>,
+      descending,
+      (node) => Map<String, dynamic>.unmodifiable(node),
+    );
+  }
+
+  Future<String?> defaultNameServiceName(
+    String address, {
+    CancelToken? cancelToken,
+  }) async {
+    final data = await transport.query(
+      r'''
+      query ($address: SuiAddress!) { address(address: $address) { defaultNameRecord { domain } } }
+    ''',
+      variables: {'address': address},
+      cancelToken: cancelToken,
+    );
+    return (data['address'] as Map?)?['defaultNameRecord']?['domain']
+        as String?;
+  }
+
+  Future<String?> resolveNameServiceAddress(
+    String name, {
+    CancelToken? cancelToken,
+  }) async {
+    final data = await transport.query(
+      r'''
+      query ($name: String!) { address(name: $name) { address } }
+    ''',
+      variables: {'name': name},
+      cancelToken: cancelToken,
+    );
+    return (data['address'] as Map?)?['address'] as String?;
+  }
+
+  static void _validatePageSize(int size) {
+    if (size < 1 || size > 50) {
+      throw ArgumentError.value(size, 'limit', 'Expected 1..50');
+    }
+  }
+
+  GraphQLPage<T> _connectionPage<T>(
+    Map<String, dynamic> connection,
+    bool descending,
+    T Function(Map<String, dynamic>) parse,
+  ) {
+    final nodes = (connection['nodes'] as List).cast<Map<String, dynamic>>();
+    final info = connection['pageInfo'] as Map<String, dynamic>;
+    return GraphQLPage(
+      items: (descending ? nodes.reversed : nodes).map(parse),
+      hasNextPage: info[descending ? 'hasPreviousPage' : 'hasNextPage'] as bool,
+      cursor: info[descending ? 'startCursor' : 'endCursor'] as String?,
+    );
+  }
+
   /// Chain identifier (digest of the genesis checkpoint).
-  Future<String> getChainIdentifier() async {
-    final data = await transport.query('{ chainIdentifier }');
+  Future<String> getChainIdentifier({CancelToken? cancelToken}) async {
+    final data = await transport.query(
+      '{ chainIdentifier }',
+      cancelToken: cancelToken,
+    );
     return data['chainIdentifier'] as String;
   }
 
@@ -37,9 +175,11 @@ class SuiGraphQLClient {
     int first = 20,
     String? after,
     TransactionHistoryOptions options = const TransactionHistoryOptions(),
+    CancelToken? cancelToken,
   }) async {
     final data = await transport.query(
       _historyQuery('affectedAddress', options),
+      cancelToken: cancelToken,
       variables: {
         'addr': address,
         'first': first,
@@ -57,9 +197,11 @@ class SuiGraphQLClient {
     int first = 20,
     String? after,
     TransactionHistoryOptions options = const TransactionHistoryOptions(),
+    CancelToken? cancelToken,
   }) async {
     final data = await transport.query(
       _historyQuery('sentAddress', options),
+      cancelToken: cancelToken,
       variables: {
         'addr': sender,
         'first': first,
@@ -78,9 +220,9 @@ class SuiGraphQLClient {
         : '';
     final objectChanges = options.showObjectChanges
         ? 'objectChanges { nodes { address idCreated idDeleted '
-            'inputState { owner { __typename ... on AddressOwner { address { address } } } } '
-            'outputState { owner { __typename ... on AddressOwner { address { address } } } '
-            'asMoveObject { contents { type { repr } } } } } }'
+              'inputState { owner { __typename ... on AddressOwner { address { address } } } } '
+              'outputState { owner { __typename ... on AddressOwner { address { address } } } '
+              'asMoveObject { contents { type { repr } } } } } }'
         : '';
     // Sui's `transactions` connection is ordered oldest-first, so page from the
     // END (`last`/`before`) to get the most recent transactions — `first` would
@@ -124,6 +266,7 @@ class SuiGraphQLClient {
     String objectId, {
     int first = 20,
     String? after,
+    CancelToken? cancelToken,
   }) async {
     const q = r'''
       query ($obj: SuiAddress!, $first: Int!, $after: String) {
@@ -137,11 +280,15 @@ class SuiGraphQLClient {
         }
       }
     ''';
-    final data = await transport.query(q, variables: {
-      'obj': objectId,
-      'first': first,
-      if (after != null) 'after': after,
-    });
+    final data = await transport.query(
+      q,
+      cancelToken: cancelToken,
+      variables: {
+        'obj': objectId,
+        'first': first,
+        if (after != null) 'after': after,
+      },
+    );
     final tx = data['transactions'] as Map<String, dynamic>;
     final nodes = (tx['nodes'] as List)
         .map((n) => (n as Map<String, dynamic>)['digest'] as String)
@@ -155,7 +302,10 @@ class SuiGraphQLClient {
   }
 
   /// Summary of an epoch (defaults to the current epoch).
-  Future<EpochSummary> getEpochSummary({int? epochId}) async {
+  Future<EpochSummary> getEpochSummary({
+    int? epochId,
+    CancelToken? cancelToken,
+  }) async {
     const q = r'''
       query ($id: UInt53) {
         epoch(epochId: $id) {
@@ -167,9 +317,11 @@ class SuiGraphQLClient {
         }
       }
     ''';
-    final data = await transport.query(q, variables: {
-      if (epochId != null) 'id': epochId,
-    });
+    final data = await transport.query(
+      q,
+      cancelToken: cancelToken,
+      variables: {if (epochId != null) 'id': epochId},
+    );
     final e = data['epoch'] as Map<String, dynamic>;
     return EpochSummary(
       epochId: (e['epochId'] as num).toInt(),
@@ -190,6 +342,7 @@ class SuiGraphQLClient {
     int? epochId,
     int first = 50,
     String? after,
+    CancelToken? cancelToken,
   }) async {
     // The endpoint caps page size at 50; paginate internally to gather all.
     const q = r'''
@@ -208,16 +361,26 @@ class SuiGraphQLClient {
     final out = <ValidatorInfo>[];
     String? cursor = after;
     while (true) {
-      final data = await transport.query(q, variables: {
-        if (epochId != null) 'id': epochId,
-        'first': pageSize,
-        if (cursor != null) 'after': cursor,
-      });
-      final vs = (((data['epoch'] as Map)['validatorSet']
-          as Map)['activeValidators'] as Map);
-      out.addAll((vs['nodes'] as List).map((n) => ValidatorInfo._fromJson(
-          (n as Map<String, dynamic>)['contents']['json']
-              as Map<String, dynamic>)));
+      final data = await transport.query(
+        q,
+        cancelToken: cancelToken,
+        variables: {
+          if (epochId != null) 'id': epochId,
+          'first': pageSize,
+          if (cursor != null) 'after': cursor,
+        },
+      );
+      final vs =
+          (((data['epoch'] as Map)['validatorSet'] as Map)['activeValidators']
+              as Map);
+      out.addAll(
+        (vs['nodes'] as List).map(
+          (n) => ValidatorInfo._fromJson(
+            (n as Map<String, dynamic>)['contents']['json']
+                as Map<String, dynamic>,
+          ),
+        ),
+      );
       final pageInfo = vs['pageInfo'] as Map<String, dynamic>;
       if (pageInfo['hasNextPage'] != true) break;
       cursor = pageInfo['endCursor'] as String?;
@@ -231,6 +394,7 @@ class SuiGraphQLClient {
     String owner, {
     int first = 50,
     String? after,
+    CancelToken? cancelToken,
   }) async {
     const q = r'''
       query ($owner: SuiAddress!, $first: Int!, $after: String) {
@@ -246,11 +410,15 @@ class SuiGraphQLClient {
         }
       }
     ''';
-    final data = await transport.query(q, variables: {
-      'owner': owner,
-      'first': first,
-      if (after != null) 'after': after,
-    });
+    final data = await transport.query(
+      q,
+      cancelToken: cancelToken,
+      variables: {
+        'owner': owner,
+        'first': first,
+        if (after != null) 'after': after,
+      },
+    );
     final address = data['address'];
     if (address == null) return const [];
     final nodes = ((address as Map)['objects'] as Map)['nodes'] as List;
@@ -267,6 +435,7 @@ class SuiGraphQLClient {
     String module, {
     int first = 20,
     String? after,
+    CancelToken? cancelToken,
   }) async {
     const q = r'''
       query ($module: String!, $first: Int!, $after: String) {
@@ -284,11 +453,15 @@ class SuiGraphQLClient {
         }
       }
     ''';
-    final data = await transport.query(q, variables: {
-      'module': '$packageId::$module',
-      'first': first,
-      if (after != null) 'after': after,
-    });
+    final data = await transport.query(
+      q,
+      cancelToken: cancelToken,
+      variables: {
+        'module': '$packageId::$module',
+        'first': first,
+        if (after != null) 'after': after,
+      },
+    );
     final events = data['events'] as Map<String, dynamic>;
     return (events['nodes'] as List).cast<Map<String, dynamic>>();
   }
@@ -342,6 +515,7 @@ class SenderTransaction {
     required this.timestampMs,
     required this.success,
     required this.balanceChanges,
+    this.checkpoint,
     this.objectChanges = const [],
   });
 
@@ -351,6 +525,7 @@ class SenderTransaction {
   final int? timestampMs;
   final bool success;
   final List<TxBalanceChange> balanceChanges;
+  final BigInt? checkpoint;
 
   /// Populated only when the query requested object changes (see
   /// [TransactionHistoryOptions.showObjectChanges]).
@@ -365,8 +540,12 @@ class SenderTransaction {
         ((ef?['objectChanges'] as Map?)?['nodes'] as List?) ?? const [];
     return SenderTransaction(
       digest: n['digest'] as String,
-      timestampMs:
-          ts != null ? DateTime.parse(ts).millisecondsSinceEpoch : null,
+      checkpoint: BigInt.tryParse(
+        (ef?['checkpoint']?['sequenceNumber'] ?? '').toString(),
+      ),
+      timestampMs: ts != null
+          ? DateTime.parse(ts).millisecondsSinceEpoch
+          : null,
       success: (ef?['status'] as String?) == 'SUCCESS',
       balanceChanges: [
         for (final b in bcNodes)
@@ -374,7 +553,7 @@ class SenderTransaction {
             ownerAddress: ((b as Map)['owner'] as Map?)?['address'] as String?,
             amount: b['amount']?.toString() ?? '0',
             coinType: ((b['coinType'] as Map?)?['repr'] as String?) ?? '',
-          )
+          ),
       ],
       objectChanges: [
         for (final o in ocNodes) TxObjectChange._fromNode(o as Map),
@@ -441,12 +620,12 @@ class TxObjectChange {
   }
 
   Map<String, dynamic> toJson() => {
-        'objectId': objectId,
-        'type': type,
-        'kind': kind,
-        'from': fromAddress,
-        'to': toAddress,
-      };
+    'objectId': objectId,
+    'type': type,
+    'kind': kind,
+    'from': fromAddress,
+    'to': toAddress,
+  };
 }
 
 class ValidatorInfo {

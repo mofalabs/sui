@@ -31,3 +31,7 @@ build/
 # AI agent skills — committed for the team but not shipped in the published package.
 .agents/
 skills-lock.json
+
+# Tests and maintenance tools stay in the source repository.
+test/
+tool/

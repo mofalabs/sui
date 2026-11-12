@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'cryptography/mldsa65_keypair.dart';
 
 import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/cryptography/helper.dart';
@@ -33,33 +34,46 @@ class SuiAccount {
     return SuiAccount(Ed25519Keypair());
   }
 
-  factory SuiAccount.fromMnemonics(String mnemonics, SignatureScheme scheme,
-      {int accountIndex = 0, int addressIndex = 0, int changeIndex = 0}) {
+  factory SuiAccount.mldsa65Account() => SuiAccount(Mldsa65Keypair());
+
+  factory SuiAccount.fromMnemonics(
+    String mnemonics,
+    SignatureScheme scheme, {
+    int accountIndex = 0,
+    int addressIndex = 0,
+    int changeIndex = 0,
+  }) {
     SuiAccount account;
     switch (scheme) {
       case SignatureScheme.Secp256k1:
-        account = SuiAccount(Secp256k1Keypair.fromMnemonics(
-          mnemonics,
-          accountIndex: accountIndex,
-          addressIndex: addressIndex,
-          changeIndex: changeIndex,
-        ));
+        account = SuiAccount(
+          Secp256k1Keypair.fromMnemonics(
+            mnemonics,
+            accountIndex: accountIndex,
+            addressIndex: addressIndex,
+            changeIndex: changeIndex,
+          ),
+        );
         break;
       case SignatureScheme.Secp256r1:
-        account = SuiAccount(Secp256r1Keypair.fromMnemonics(
-          mnemonics,
-          accountIndex: accountIndex,
-          addressIndex: addressIndex,
-          changeIndex: changeIndex,
-        ));
+        account = SuiAccount(
+          Secp256r1Keypair.fromMnemonics(
+            mnemonics,
+            accountIndex: accountIndex,
+            addressIndex: addressIndex,
+            changeIndex: changeIndex,
+          ),
+        );
         break;
       case SignatureScheme.Ed25519:
-        account = SuiAccount(Ed25519Keypair.fromMnemonics(
-          mnemonics,
-          accountIndex: accountIndex,
-          addressIndex: addressIndex,
-          changeIndex: changeIndex,
-        ));
+        account = SuiAccount(
+          Ed25519Keypair.fromMnemonics(
+            mnemonics,
+            accountIndex: accountIndex,
+            addressIndex: addressIndex,
+            changeIndex: changeIndex,
+          ),
+        );
         break;
       default:
         throw ArgumentError('Undefined SignatureScheme $scheme');
@@ -67,8 +81,10 @@ class SuiAccount {
     return account;
   }
 
-  factory SuiAccount.fromPrivateKey(String privateKey,
-      [SignatureScheme? scheme]) {
+  factory SuiAccount.fromPrivateKey(
+    String privateKey, [
+    SignatureScheme? scheme,
+  ]) {
     String sk = privateKey;
     SignatureScheme? se = scheme;
     if (privateKey.startsWith('suiprivkey')) {
@@ -83,17 +99,25 @@ class SuiAccount {
     }
     SuiAccount account;
     switch (se) {
+      case SignatureScheme.MLDSA65:
+        account = SuiAccount(
+          Mldsa65Keypair.fromSeed(Hex.decode(privateKeyHex)),
+        );
+        break;
       case SignatureScheme.Secp256k1:
         account = SuiAccount(
-            Secp256k1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
+          Secp256k1Keypair.fromSecretKey(Hex.decode(privateKeyHex)),
+        );
         break;
       case SignatureScheme.Secp256r1:
         account = SuiAccount(
-            Secp256r1Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
+          Secp256r1Keypair.fromSecretKey(Hex.decode(privateKeyHex)),
+        );
         break;
       case SignatureScheme.Ed25519:
-        account =
-            SuiAccount(Ed25519Keypair.fromSecretKey(Hex.decode(privateKeyHex)));
+        account = SuiAccount(
+          Ed25519Keypair.fromSecretKey(Hex.decode(privateKeyHex)),
+        );
         break;
       default:
         throw ArgumentError('Undefined SignatureScheme $se');
@@ -136,7 +160,9 @@ class SuiAccount {
   /// This returns the Bech32 secret key string for this keypair.
   String privateKey() {
     return encodeSuiPrivateKey(
-        _keypair.getSecretKey(), _keypair.getKeyScheme());
+      _keypair.getSecretKey(),
+      _keypair.getKeyScheme(),
+    );
   }
 
   Uint8List getPublicKey() {
@@ -148,13 +174,19 @@ class SuiAccount {
   }
 
   SignaturePubkeyPair signData(Uint8List data) {
-    return SignaturePubkeyPair(_keypair.getKeyScheme(), _keypair.signData(data),
-        pubKey: _keypair.getPublicKey());
+    return SignaturePubkeyPair(
+      _keypair.getKeyScheme(),
+      _keypair.signData(data),
+      pubKey: _keypair.getPublicKey(),
+    );
   }
 
   bool verify(Uint8List data, SignaturePubkeyPair signature) {
     bool success = _keypair.verify(
-        data, signature.signature, signature.pubKey!.toRawBytes());
+      data,
+      signature.signature,
+      signature.pubKey!.toRawBytes(),
+    );
     return success;
   }
 }

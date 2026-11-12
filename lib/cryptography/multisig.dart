@@ -26,7 +26,12 @@ class MultiSig {
       );
     }
     // max length = 1 flag byte + (max pk size + max weight size (u8)) * max signer size + 2 threshold bytes (u16)
-    const maxLength = 1 + (64 + 1) * MAX_SIGNER_IN_MULTISIG + 2;
+    final maxLength =
+        3 +
+        pks.fold<int>(
+          0,
+          (length, member) => length + member.pubKey.toRawBytes().length + 2,
+        );
     final tmp = Uint8List(maxLength);
     tmp.setAll(0, [SIGNATURE_SCHEME_TO_FLAG.MultiSig]);
     tmp.setAll(1, toLittleEndianTwoBytes(threshold));
@@ -38,9 +43,7 @@ class MultiSig {
       tmp.setAll(i + 1 + pk.pubKey.toRawBytes().length, [pk.weight]);
       i += pk.pubKey.toRawBytes().length + 2;
     }
-    return normalizeSuiAddress(
-      Hex.encode(blake2b(tmp.sublist(0, i))),
-    );
+    return normalizeSuiAddress(Hex.encode(blake2b(tmp.sublist(0, i))));
   }
 
   /// Convert u16 to Uint8List of length 2 in little endian.

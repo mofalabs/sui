@@ -168,6 +168,16 @@ const TransactionExpiration$json = {
     },
     {'1': 'chain', '3': 6, '4': 1, '5': 9, '9': 5, '10': 'chain', '17': true},
     {'1': 'nonce', '3': 7, '4': 1, '5': 13, '9': 6, '10': 'nonce', '17': true},
+    {
+      '1': 'allowed_proposers',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.sui.rpc.v2.AllowedProposers',
+      '9': 7,
+      '10': 'allowedProposers',
+      '17': true
+    },
   ],
   '4': [TransactionExpiration_TransactionExpirationKind$json],
   '8': [
@@ -178,6 +188,7 @@ const TransactionExpiration$json = {
     {'1': '_max_timestamp'},
     {'1': '_chain'},
     {'1': '_nonce'},
+    {'1': '_allowed_proposers'},
   ],
 };
 
@@ -189,6 +200,7 @@ const TransactionExpiration_TransactionExpirationKind$json = {
     {'1': 'NONE', '2': 1},
     {'1': 'EPOCH', '2': 2},
     {'1': 'VALID_DURING', '2': 3},
+    {'1': 'VALIDITY', '2': 4},
   ],
 };
 
@@ -200,11 +212,30 @@ final $typed_data.Uint8List transactionExpirationDescriptor = $convert.base64Dec
     'iIAQESRAoNbWluX3RpbWVzdGFtcBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBI'
     'A1IMbWluVGltZXN0YW1wiAEBEkQKDW1heF90aW1lc3RhbXAYBSABKAsyGi5nb29nbGUucHJvdG'
     '9idWYuVGltZXN0YW1wSARSDG1heFRpbWVzdGFtcIgBARIZCgVjaGFpbhgGIAEoCUgFUgVjaGFp'
-    'bogBARIZCgVub25jZRgHIAEoDUgGUgVub25jZYgBASJrChlUcmFuc2FjdGlvbkV4cGlyYXRpb2'
-    '5LaW5kEicKI1RSQU5TQUNUSU9OX0VYUElSQVRJT05fS0lORF9VTktOT1dOEAASCAoETk9ORRAB'
-    'EgkKBUVQT0NIEAISEAoMVkFMSURfRFVSSU5HEANCBwoFX2tpbmRCCAoGX2Vwb2NoQgwKCl9taW'
-    '5fZXBvY2hCEAoOX21pbl90aW1lc3RhbXBCEAoOX21heF90aW1lc3RhbXBCCAoGX2NoYWluQggK'
-    'Bl9ub25jZQ==');
+    'bogBARIZCgVub25jZRgHIAEoDUgGUgVub25jZYgBARJOChFhbGxvd2VkX3Byb3Bvc2VycxgIIA'
+    'EoCzIcLnN1aS5ycGMudjIuQWxsb3dlZFByb3Bvc2Vyc0gHUhBhbGxvd2VkUHJvcG9zZXJziAEB'
+    'InkKGVRyYW5zYWN0aW9uRXhwaXJhdGlvbktpbmQSJwojVFJBTlNBQ1RJT05fRVhQSVJBVElPTl'
+    '9LSU5EX1VOS05PV04QABIICgROT05FEAESCQoFRVBPQ0gQAhIQCgxWQUxJRF9EVVJJTkcQAxIM'
+    'CghWQUxJRElUWRAEQgcKBV9raW5kQggKBl9lcG9jaEIMCgpfbWluX2Vwb2NoQhAKDl9taW5fdG'
+    'ltZXN0YW1wQhAKDl9tYXhfdGltZXN0YW1wQggKBl9jaGFpbkIICgZfbm9uY2VCFAoSX2FsbG93'
+    'ZWRfcHJvcG9zZXJz');
+
+@$core.Deprecated('Use allowedProposersDescriptor instead')
+const AllowedProposers$json = {
+  '1': 'AllowedProposers',
+  '2': [
+    {'1': 'epoch', '3': 1, '4': 1, '5': 4, '9': 0, '10': 'epoch', '17': true},
+    {'1': 'proposers', '3': 2, '4': 3, '5': 13, '10': 'proposers'},
+  ],
+  '8': [
+    {'1': '_epoch'},
+  ],
+};
+
+/// Descriptor for `AllowedProposers`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List allowedProposersDescriptor = $convert.base64Decode(
+    'ChBBbGxvd2VkUHJvcG9zZXJzEhkKBWVwb2NoGAEgASgESABSBWVwb2NoiAEBEhwKCXByb3Bvc2'
+    'VycxgCIAMoDVIJcHJvcG9zZXJzQggKBl9lcG9jaA==');
 
 @$core.Deprecated('Use transactionKindDescriptor instead')
 const TransactionKind$json = {
@@ -1241,6 +1272,7 @@ const EndOfEpochTransactionKind_Kind$json = {
     {'1': 'DISPLAY_REGISTRY_CREATE', '2': 11},
     {'1': 'ADDRESS_ALIAS_STATE_CREATE', '2': 12},
     {'1': 'WRITE_ACCUMULATOR_STORAGE_COST', '2': 13},
+    {'1': 'FORWARDING_ADDRESS_REGISTRY_CREATE', '2': 14},
   ],
 };
 
@@ -1254,15 +1286,16 @@ final $typed_data.Uint8List endOfEpochTransactionKindDescriptor = $convert.base6
     'Vfb2JzZXJ2YXRpb25zGAQgASgLMiUuc3VpLnJwYy52Mi5FeGVjdXRpb25UaW1lT2JzZXJ2YXRp'
     'b25zSABSGWV4ZWN1dGlvblRpbWVPYnNlcnZhdGlvbnMSKAoPYnJpZGdlX2NoYWluX2lkGAUgAS'
     'gJSABSDWJyaWRnZUNoYWluSWQSNAoVYnJpZGdlX29iamVjdF92ZXJzaW9uGAYgASgESABSE2Jy'
-    'aWRnZU9iamVjdFZlcnNpb24SIwoMc3RvcmFnZV9jb3N0GAcgASgESABSC3N0b3JhZ2VDb3N0Ip'
-    'YDCgRLaW5kEhAKDEtJTkRfVU5LTk9XThAAEhAKDENIQU5HRV9FUE9DSBABEh4KGkFVVEhFTlRJ'
+    'aWRnZU9iamVjdFZlcnNpb24SIwoMc3RvcmFnZV9jb3N0GAcgASgESABSC3N0b3JhZ2VDb3N0Ir'
+    '4DCgRLaW5kEhAKDEtJTkRfVU5LTk9XThAAEhAKDENIQU5HRV9FUE9DSBABEh4KGkFVVEhFTlRJ'
     'Q0FUT1JfU1RBVEVfQ1JFQVRFEAISHgoaQVVUSEVOVElDQVRPUl9TVEFURV9FWFBJUkUQAxIbCh'
     'dSQU5ET01ORVNTX1NUQVRFX0NSRUFURRAEEhoKFkRFTllfTElTVF9TVEFURV9DUkVBVEUQBRIX'
     'ChNCUklER0VfU1RBVEVfQ1JFQVRFEAYSGQoVQlJJREdFX0NPTU1JVFRFRV9JTklUEAcSJQohU1'
     'RPUkVfRVhFQ1VUSU9OX1RJTUVfT0JTRVJWQVRJT05TEAgSGwoXQUNDVU1VTEFUT1JfUk9PVF9D'
     'UkVBVEUQCRIYChRDT0lOX1JFR0lTVFJZX0NSRUFURRAKEhsKF0RJU1BMQVlfUkVHSVNUUllfQ1'
     'JFQVRFEAsSHgoaQUREUkVTU19BTElBU19TVEFURV9DUkVBVEUQDBIiCh5XUklURV9BQ0NVTVVM'
-    'QVRPUl9TVE9SQUdFX0NPU1QQDUIGCgRkYXRhQgcKBV9raW5k');
+    'QVRPUl9TVE9SQUdFX0NPU1QQDRImCiJGT1JXQVJESU5HX0FERFJFU1NfUkVHSVNUUllfQ1JFQV'
+    'RFEA5CBgoEZGF0YUIHCgVfa2luZA==');
 
 @$core.Deprecated('Use authenticatorStateExpireDescriptor instead')
 const AuthenticatorStateExpire$json = {

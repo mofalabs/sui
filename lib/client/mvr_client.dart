@@ -10,8 +10,8 @@ import 'network.dart';
 /// Inputs without an `@` are returned unchanged.
 class MvrClient {
   MvrClient({required this.endpoint, Dio? dio})
-      : _dio = dio ??
-            (Dio()..options.connectTimeout = const Duration(seconds: 15));
+    : _dio =
+          dio ?? (Dio()..options.connectTimeout = const Duration(seconds: 15));
 
   /// Construct for a network's public MVR endpoint (null for devnet/localnet).
   static MvrClient? forNetwork(SuiNetwork network, {Dio? dio}) {
@@ -22,16 +22,22 @@ class MvrClient {
   final String endpoint;
   final Dio _dio;
 
-  static final RegExp _mvrTypeRef =
-      RegExp(r'@[a-zA-Z0-9_-]+/[a-zA-Z0-9_.-]+::[a-zA-Z0-9_]+::[a-zA-Z0-9_]+');
+  static final RegExp _mvrTypeRef = RegExp(
+    r'@[a-zA-Z0-9_-]+/[a-zA-Z0-9_.-]+::[a-zA-Z0-9_]+::[a-zA-Z0-9_]+',
+  );
 
   static bool _hasMvrName(String s) => s.contains('@');
 
   /// Resolve an MVR package name (`@org/app`) to its package ID. Returns the
   /// input unchanged if it is not an MVR name.
-  Future<String> resolvePackage(String package) async {
+  Future<String> resolvePackage(
+    String package, {
+    CancelToken? cancelToken,
+  }) async {
     if (!_hasMvrName(package)) return package;
-    final resolution = await _bulk('/v1/resolution/bulk', 'names', [package]);
+    final resolution = await _bulk('/v1/resolution/bulk', 'names', [
+      package,
+    ], cancelToken: cancelToken);
     final id = (resolution[package] as Map?)?['package_id'] as String?;
     if (id == null) {
       throw StateError('MVR could not resolve package "$package"');
@@ -41,14 +47,21 @@ class MvrClient {
 
   /// Resolve MVR-named types inside [type] to their fully qualified type tags.
   /// Returns [type] unchanged if it contains no MVR names.
-  Future<String> resolveType(String type) async {
+  Future<String> resolveType(String type, {CancelToken? cancelToken}) async {
     if (!_hasMvrName(type)) return type;
-    final names =
-        _mvrTypeRef.allMatches(type).map((m) => m.group(0)!).toSet().toList();
+    final names = _mvrTypeRef
+        .allMatches(type)
+        .map((m) => m.group(0)!)
+        .toSet()
+        .toList();
     if (names.isEmpty) return type;
 
-    final resolution =
-        await _bulk('/v1/struct-definition/bulk', 'types', names);
+    final resolution = await _bulk(
+      '/v1/struct-definition/bulk',
+      'types',
+      names,
+      cancelToken: cancelToken,
+    );
     // Replace longest names first so a name that is a prefix of another
     // (e.g. `@a/b::m::T` vs `@a/b::m::T2`) doesn't corrupt the longer one.
     names.sort((a, b) => b.length.compareTo(a.length));
@@ -66,11 +79,13 @@ class MvrClient {
   Future<Map<String, dynamic>> _bulk(
     String path,
     String field,
-    List<String> values,
-  ) async {
+    List<String> values, {
+    CancelToken? cancelToken,
+  }) async {
     final resp = await _dio.post<Map<String, dynamic>>(
       '$endpoint$path',
       data: {field: values},
+      cancelToken: cancelToken,
       options: Options(
         contentType: 'application/json',
         responseType: ResponseType.json,

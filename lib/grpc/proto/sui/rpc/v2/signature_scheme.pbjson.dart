@@ -25,6 +25,7 @@ const SignatureScheme$json = {
     {'1': 'BLS12381', '2': 4},
     {'1': 'ZKLOGIN', '2': 5},
     {'1': 'PASSKEY', '2': 6},
+    {'1': 'MLDSA65', '2': 7},
   ],
 };
 
@@ -32,4 +33,4 @@ const SignatureScheme$json = {
 final $typed_data.Uint8List signatureSchemeDescriptor = $convert.base64Decode(
     'Cg9TaWduYXR1cmVTY2hlbWUSCwoHRUQyNTUxORAAEg0KCVNFQ1AyNTZLMRABEg0KCVNFQ1AyNT'
     'ZSMRACEgwKCE1VTFRJU0lHEAMSDAoIQkxTMTIzODEQBBILCgdaS0xPR0lOEAUSCwoHUEFTU0tF'
-    'WRAG');
+    'WRAGEgsKB01MRFNBNjUQBw==');

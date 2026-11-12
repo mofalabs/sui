@@ -1,3 +1,23 @@
+## 0.6.0 — 2026-11-12
+
+* **Breaking:** requires Dart 3.10 or newer. Custom `CoreClient` subclasses must
+  implement the new ledger query/subscription methods and accept optional
+  cancellation parameters. Existing synchronous Keypair and SuiAccount APIs
+  remain available.
+* Align transaction and signature support with `@mysten/sui` 2.37.0.
+* Add Validity expiration, allowance-funded withdrawals, offline address-balance
+  construction and custom transaction intent resolvers.
+* Preserve expiration and intent resolvers when copying transactions; apply
+  server-resolved inputs, commands and gas data during transaction building.
+* Add filtered gRPC transaction/event queries and subscriptions, GraphQL
+  pagination, package version selectors, transaction metadata and cancellation.
+* Fix browser subscription streaming, timeouts, HTTP error propagation and
+  custom transport/header handling.
+* Preserve unsigned u64 balances and coin amounts.
+* Add ML-DSA-65, asynchronous signers, ZkLoginSigner and signature verification
+  helpers; strengthen Passkey and zkLogin multisig validation.
+* Add PoW faucet V3 with cancellation and timeout support.
+
 ## 0.0.1
 
 * Initial version, created by Mofa Labs.

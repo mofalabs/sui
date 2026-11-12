@@ -26,11 +26,27 @@ class ResolvedGasData {
     required this.budget,
     required this.payment,
     this.price,
+    this.expiration,
   });
 
   final BigInt budget;
   final List<SuiObjectRef> payment;
   final BigInt? price;
+  final TransactionExpiration? expiration;
+}
+
+abstract interface class TransactionNameResolver {
+  Future<String> resolveType(String type);
+  Future<String> resolvePackage(String package);
+}
+
+abstract interface class TransactionFinalizer {
+  Future<void> finalizeTransaction(TransactionBlockDataBuilder data);
+}
+
+/// Optional server resolution for transaction kinds without a sender or gas.
+abstract interface class TransactionKindResolver {
+  Future<void> resolveTransactionKind(TransactionBlockDataBuilder data);
 }
 
 /// Narrow interface of the data-provider capabilities the transaction
@@ -76,8 +92,7 @@ abstract class TransactionBuilderClient {
   /// coin selection + a budget dry-run.
   Future<ResolvedGasData?> resolveGasData(
     TransactionBlockDataBuilder data,
-  ) async =>
-      null;
+  ) async => null;
 
   /// The owner's [coinType] balance split into coin-object vs address-balance
   /// sources — needed to resolve `CoinWithBalance` intents that may draw from
@@ -86,7 +101,7 @@ abstract class TransactionBuilderClient {
   Future<CoinBalanceBreakdown> getBalanceBreakdown(
     String owner,
     String coinType,
-  ) async =>
-      throw UnimplementedError(
-          'getBalanceBreakdown is not supported by this client');
+  ) async => throw UnimplementedError(
+    'getBalanceBreakdown is not supported by this client',
+  );
 }

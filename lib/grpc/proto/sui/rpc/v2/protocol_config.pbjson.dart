@@ -33,7 +33,8 @@ const ProtocolConfig$json = {
       '4': 3,
       '5': 11,
       '6': '.sui.rpc.v2.ProtocolConfig.FeatureFlagsEntry',
-      '10': 'featureFlags'
+      '8': {'3': true},
+      '10': 'featureFlags',
     },
     {
       '1': 'attributes',
@@ -41,12 +42,22 @@ const ProtocolConfig$json = {
       '4': 3,
       '5': 11,
       '6': '.sui.rpc.v2.ProtocolConfig.AttributesEntry',
-      '10': 'attributes'
+      '8': {'3': true},
+      '10': 'attributes',
+    },
+    {
+      '1': 'configs',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.sui.rpc.v2.ProtocolConfig.ConfigsEntry',
+      '10': 'configs'
     },
   ],
   '3': [
     ProtocolConfig_FeatureFlagsEntry$json,
-    ProtocolConfig_AttributesEntry$json
+    ProtocolConfig_AttributesEntry$json,
+    ProtocolConfig_ConfigsEntry$json
   ],
   '8': [
     {'1': '_protocol_version'},
@@ -73,12 +84,32 @@ const ProtocolConfig_AttributesEntry$json = {
   '7': {'7': true},
 };
 
+@$core.Deprecated('Use protocolConfigDescriptor instead')
+const ProtocolConfig_ConfigsEntry$json = {
+  '1': 'ConfigsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Value',
+      '10': 'value'
+    },
+  ],
+  '7': {'7': true},
+};
+
 /// Descriptor for `ProtocolConfig`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List protocolConfigDescriptor = $convert.base64Decode(
     'Cg5Qcm90b2NvbENvbmZpZxIuChBwcm90b2NvbF92ZXJzaW9uGAEgASgESABSD3Byb3RvY29sVm'
-    'Vyc2lvbogBARJRCg1mZWF0dXJlX2ZsYWdzGAIgAygLMiwuc3VpLnJwYy52Mi5Qcm90b2NvbENv'
-    'bmZpZy5GZWF0dXJlRmxhZ3NFbnRyeVIMZmVhdHVyZUZsYWdzEkoKCmF0dHJpYnV0ZXMYAyADKA'
-    'syKi5zdWkucnBjLnYyLlByb3RvY29sQ29uZmlnLkF0dHJpYnV0ZXNFbnRyeVIKYXR0cmlidXRl'
-    'cxo/ChFGZWF0dXJlRmxhZ3NFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCF'
-    'IFdmFsdWU6AjgBGj0KD0F0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1'
-    'ZRgCIAEoCVIFdmFsdWU6AjgBQhMKEV9wcm90b2NvbF92ZXJzaW9u');
+    'Vyc2lvbogBARJVCg1mZWF0dXJlX2ZsYWdzGAIgAygLMiwuc3VpLnJwYy52Mi5Qcm90b2NvbENv'
+    'bmZpZy5GZWF0dXJlRmxhZ3NFbnRyeUICGAFSDGZlYXR1cmVGbGFncxJOCgphdHRyaWJ1dGVzGA'
+    'MgAygLMiouc3VpLnJwYy52Mi5Qcm90b2NvbENvbmZpZy5BdHRyaWJ1dGVzRW50cnlCAhgBUgph'
+    'dHRyaWJ1dGVzEkEKB2NvbmZpZ3MYBCADKAsyJy5zdWkucnBjLnYyLlByb3RvY29sQ29uZmlnLk'
+    'NvbmZpZ3NFbnRyeVIHY29uZmlncxo/ChFGZWF0dXJlRmxhZ3NFbnRyeRIQCgNrZXkYASABKAlS'
+    'A2tleRIUCgV2YWx1ZRgCIAEoCFIFdmFsdWU6AjgBGj0KD0F0dHJpYnV0ZXNFbnRyeRIQCgNrZX'
+    'kYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBGlIKDENvbmZpZ3NFbnRyeRIQ'
+    'CgNrZXkYASABKAlSA2tleRIsCgV2YWx1ZRgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5WYWx1ZV'
+    'IFdmFsdWU6AjgBQhMKEV9wcm90b2NvbF92ZXJzaW9u');

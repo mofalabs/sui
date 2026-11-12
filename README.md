@@ -67,13 +67,13 @@ final client = SuiGrpcClient(network: SuiNetwork.testnet);
 
 ### Faucet (testnet)
 
-> The faucet only serves `/v2/gas` now (v0/v1 are removed) and is rate-limited.
+> Use PoW faucet V3 (`/v3/challenge` and `/v3/gas`) where supported. The older V2 API remains available on compatible endpoints and is rate-limited.
 
 ```dart
-import 'package:dio/dio.dart';
+import 'package:sui/sui.dart';
 
-await Dio().post('https://faucet.testnet.sui.io/v2/gas',
-    data: {'FixedAmountRequest': {'recipient': account.getAddress()}});
+await FaucetClient('https://faucet.testnet.sui.io')
+    .requestSuiFromFaucetV3(account.getAddress());
 ```
 
 ### Reading

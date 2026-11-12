@@ -10,6 +10,12 @@ import '../client/mvr_client.dart';
 import '../cryptography/intent.dart';
 import '../client/network.dart';
 import '../client/sui_models.dart';
+import '../client/ledger_query.dart';
+import '../client/errors.dart';
+import '../utils/proto_int.dart';
+import 'proto/sui/rpc/v2/event.pb.dart' as event_pb;
+import 'proto/sui/rpc/v2/query_options.pb.dart';
+import 'proto/sui/rpc/v2/protocol_config.pb.dart';
 import 'proto/google/protobuf/field_mask.pb.dart';
 import 'proto/sui/rpc/v2/bcs.pb.dart';
 import 'proto/sui/rpc/v2/checkpoint.pb.dart';
@@ -33,23 +39,41 @@ class GrpcCoreClient extends CoreClient {
   /// [endpoint] overrides the gRPC-web base URL (e.g. a self-hosted or
   /// third-party full node); when null the public endpoint for [network] is
   /// used. [network] still selects the MVR endpoint regardless.
-  GrpcCoreClient({required super.network, Dio? dio, String? endpoint})
-      : _t = GrpcWebTransport(endpoint ?? grpcWebEndpoint(network), dio: dio),
-        _mvr = MvrClient.forNetwork(network, dio: dio);
+  GrpcCoreClient({
+    required super.network,
+    Dio? dio,
+    String? endpoint,
+    Map<String, String> headers = const {},
+    GrpcWebTransport? transport,
+  }) : _t =
+           transport ??
+           GrpcWebTransport(
+             endpoint ?? grpcWebEndpoint(network),
+             dio: dio,
+             headers: headers,
+           ),
+       _mvr = MvrClient.forNetwork(network, dio: dio);
 
   final GrpcWebTransport _t;
   final MvrClient? _mvr;
 
   @override
-  Future<String> resolveType(String type) async {
+  Future<String> resolveType(String type, {CancelToken? cancelToken}) async {
     final mvr = _mvr;
-    return mvr == null ? type : await mvr.resolveType(type);
+    return mvr == null
+        ? type
+        : await mvr.resolveType(type, cancelToken: cancelToken);
   }
 
   @override
-  Future<String> resolvePackage(String package) async {
+  Future<String> resolvePackage(
+    String package, {
+    CancelToken? cancelToken,
+  }) async {
     final mvr = _mvr;
-    return mvr == null ? package : await mvr.resolvePackage(package);
+    return mvr == null
+        ? package
+        : await mvr.resolvePackage(package, cancelToken: cancelToken);
   }
 
   static const _ledger = 'sui.rpc.v2.LedgerService';
@@ -60,45 +84,322 @@ class GrpcCoreClient extends CoreClient {
   static const _subscription = 'sui.rpc.v2.SubscriptionService';
   static const _sigVerify = 'sui.rpc.v2.SignatureVerificationService';
 
-  Future<Uint8List> _call(String service, String method, List<int> request) =>
-      _t.unary(service, method, Uint8List.fromList(request));
+  Future<Uint8List> _call(
+    String service,
+    String method,
+    List<int> request, {
+    CancelToken? cancelToken,
+  }) => _t.unary(
+    service,
+    method,
+    Uint8List.fromList(request),
+    cancelToken: cancelToken,
+  );
 
   FieldMask? _mask(List<String>? paths) =>
       paths == null ? null : FieldMask(paths: paths);
 
   @override
-  Future<GetServiceInfoResponse> getServiceInfo() async {
+  Future<GetServiceInfoResponse> getServiceInfo({
+    CancelToken? cancelToken,
+  }) async {
     final bytes = await _call(
-        _ledger, 'GetServiceInfo', GetServiceInfoRequest().writeToBuffer());
+      _ledger,
+      'GetServiceInfo',
+      GetServiceInfoRequest().writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetServiceInfoResponse.fromBuffer(bytes);
   }
+
+  @override
+  Future<ProtocolConfig> getProtocolConfig({CancelToken? cancelToken}) async =>
+      (await getEpoch(
+        readMask: const ['protocol_config'],
+        cancelToken: cancelToken,
+      )).protocolConfig;
+
+  @override
+  Future<String?> defaultNameServiceName(
+    String address, {
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final record = await reverseLookupName(address, cancelToken: cancelToken);
+      return record.name.isEmpty ? null : record.name;
+    } on GrpcWebException catch (error) {
+      if (error.status == GrpcStatus.notFound) return null;
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String?> resolveNameServiceAddress(
+    String name, {
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      return await super.resolveNameServiceAddress(
+        name,
+        cancelToken: cancelToken,
+      );
+    } on GrpcWebException catch (error) {
+      if (error.status == GrpcStatus.notFound) return null;
+      rethrow;
+    }
+  }
+
+  /// Query filtered transactions directly from the full node's retained ledger.
+  @override
+  Future<LedgerPage<ExecutedTransaction>> listTransactions({
+    GrpcTransactionFilter? filter,
+    int limit = 50,
+    String? after,
+    String? before,
+    bool descending = true,
+    BigInt? startCheckpoint,
+    BigInt? endCheckpoint,
+    List<String>? readMask,
+    CancelToken? cancelToken,
+  }) async {
+    _validateLimit(limit);
+    final request = ListTransactionsRequest(
+      filter: filter,
+      options: _queryOptions(limit + 1, after, before, descending),
+      startCheckpoint: startCheckpoint == null
+          ? null
+          : bigIntToUint64(startCheckpoint),
+      endCheckpoint: endCheckpoint == null
+          ? null
+          : bigIntToUint64(endCheckpoint),
+      readMask: _mask(
+        readMask ??
+            const [
+              'digest',
+              'effects',
+              'checkpoint',
+              'timestamp',
+              'balance_changes',
+            ],
+      ),
+    );
+    final items = <ExecutedTransaction>[];
+    Watermark? watermark;
+    Watermark? lastItem;
+    var lookahead = false;
+    QueryEndReason? reason;
+    await for (final bytes in _t.serverStream(
+      _ledger,
+      'ListTransactions',
+      request.writeToBuffer(),
+      cancelToken: cancelToken,
+    )) {
+      final frame = ListTransactionsResponse.fromBuffer(bytes);
+      if (frame.hasWatermark()) watermark = frame.watermark;
+      if (frame.hasTransaction()) {
+        if (items.length < limit) {
+          items.add(frame.transaction);
+          lastItem = watermark;
+        } else {
+          lookahead = true;
+        }
+      }
+      if (frame.hasEnd()) reason = frame.end.reason;
+    }
+    return _ledgerPage(
+      items,
+      lookahead ? lastItem : watermark,
+      reason,
+      lookahead: lookahead,
+    );
+  }
+
+  @override
+  Future<LedgerPage<event_pb.Event>> listEvents({
+    GrpcEventFilter? filter,
+    int limit = 50,
+    String? after,
+    String? before,
+    bool descending = true,
+    BigInt? startCheckpoint,
+    BigInt? endCheckpoint,
+    List<String>? readMask,
+    CancelToken? cancelToken,
+  }) async {
+    _validateLimit(limit);
+    final request = ListEventsRequest(
+      filter: filter,
+      options: _queryOptions(limit + 1, after, before, descending),
+      startCheckpoint: startCheckpoint == null
+          ? null
+          : bigIntToUint64(startCheckpoint),
+      endCheckpoint: endCheckpoint == null
+          ? null
+          : bigIntToUint64(endCheckpoint),
+      readMask: _mask(readMask),
+    );
+    final items = <event_pb.Event>[];
+    Watermark? watermark;
+    Watermark? lastItem;
+    var lookahead = false;
+    QueryEndReason? reason;
+    await for (final bytes in _t.serverStream(
+      _ledger,
+      'ListEvents',
+      request.writeToBuffer(),
+      cancelToken: cancelToken,
+    )) {
+      final frame = ListEventsResponse.fromBuffer(bytes);
+      if (frame.hasWatermark()) watermark = frame.watermark;
+      if (frame.hasEvent()) {
+        if (items.length < limit) {
+          items.add(frame.event);
+          lastItem = watermark;
+        } else {
+          lookahead = true;
+        }
+      }
+      if (frame.hasEnd()) reason = frame.end.reason;
+    }
+    return _ledgerPage(
+      items,
+      lookahead ? lastItem : watermark,
+      reason,
+      lookahead: lookahead,
+    );
+  }
+
+  void _validateLimit(int limit) {
+    if (limit <= 0 || limit >= 0xffffffff) {
+      throw ArgumentError.value(limit, 'limit');
+    }
+  }
+
+  QueryOptions _queryOptions(
+    int limit,
+    String? after,
+    String? before,
+    bool descending,
+  ) {
+    if (limit <= 0) {
+      throw ArgumentError.value(limit, 'limit', 'Must be positive');
+    }
+    return QueryOptions(
+      limit: limit,
+      after: after == null ? null : base64Decode(after),
+      before: before == null ? null : base64Decode(before),
+      ordering: descending
+          ? Ordering.ORDERING_DESCENDING
+          : Ordering.ORDERING_ASCENDING,
+    );
+  }
+
+  LedgerPage<T> _ledgerPage<T>(
+    List<T> items,
+    Watermark? watermark,
+    QueryEndReason? reason, {
+    required bool lookahead,
+  }) {
+    if (reason == null ||
+        reason == QueryEndReason.QUERY_END_REASON_UNKNOWN ||
+        watermark == null) {
+      throw const FormatException(
+        'Ledger scan ended without a terminal watermark',
+      );
+    }
+    return LedgerPage(
+      items: items,
+      cursor: watermark.cursor.isEmpty ? null : base64Encode(watermark.cursor),
+      checkpoint: watermark.hasCheckpoint()
+          ? uint64ToBigInt(watermark.checkpoint)
+          : null,
+      hasNextPage:
+          lookahead ||
+          reason == QueryEndReason.QUERY_END_REASON_ITEM_LIMIT ||
+          reason == QueryEndReason.QUERY_END_REASON_SCAN_LIMIT,
+      endReason: reason,
+    );
+  }
+
+  @override
+  Stream<SubscribeTransactionsResponse> subscribeTransactions({
+    GrpcTransactionFilter? filter,
+    List<String>? readMask,
+    CancelToken? cancelToken,
+  }) => _t
+      .serverStream(
+        _subscription,
+        'SubscribeTransactions',
+        SubscribeTransactionsRequest(
+          filter: filter,
+          readMask: _mask(readMask),
+        ).writeToBuffer(),
+        cancelToken: cancelToken,
+      )
+      .map(SubscribeTransactionsResponse.fromBuffer);
+
+  @override
+  Stream<SubscribeEventsResponse> subscribeEvents({
+    GrpcEventFilter? filter,
+    List<String>? readMask,
+    CancelToken? cancelToken,
+  }) => _t
+      .serverStream(
+        _subscription,
+        'SubscribeEvents',
+        SubscribeEventsRequest(
+          filter: filter,
+          readMask: _mask(readMask),
+        ).writeToBuffer(),
+        cancelToken: cancelToken,
+      )
+      .map(SubscribeEventsResponse.fromBuffer);
 
   @override
   Future<List<GetObjectResult>> getObjects(
     List<String> objectIds, {
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final req = BatchGetObjectsRequest(
       requests: objectIds.map((id) => GetObjectRequest(objectId: id)),
-      readMask: _mask(readMask ??
-          const [
-            'object_id',
-            'version',
-            'digest',
-            'owner',
-            'object_type',
-            'contents'
-          ]),
+      readMask: _mask(
+        readMask ??
+            const [
+              'object_id',
+              'version',
+              'digest',
+              'owner',
+              'object_type',
+              'contents',
+            ],
+      ),
     );
-    final bytes = await _call(_ledger, 'BatchGetObjects', req.writeToBuffer());
+    final bytes = await _call(
+      _ledger,
+      'BatchGetObjects',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return BatchGetObjectsResponse.fromBuffer(bytes).objects;
   }
 
   @override
-  Future<Balance> getBalance(String owner,
-      {String coinType = '0x2::sui::SUI'}) async {
-    final req = GetBalanceRequest(owner: owner, coinType: coinType);
-    final bytes = await _call(_state, 'GetBalance', req.writeToBuffer());
+  Future<Balance> getBalance(
+    String owner, {
+    String coinType = '0x2::sui::SUI',
+    CancelToken? cancelToken,
+  }) async {
+    final req = GetBalanceRequest(
+      owner: owner,
+      coinType: await resolveType(coinType, cancelToken: cancelToken),
+    );
+    final bytes = await _call(
+      _state,
+      'GetBalance',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetBalanceResponse.fromBuffer(bytes).balance;
   }
 
@@ -107,20 +408,36 @@ class GrpcCoreClient extends CoreClient {
     String owner, {
     int? pageSize,
     Uint8List? pageToken,
+    CancelToken? cancelToken,
   }) async {
     final req = ListBalancesRequest(
       owner: owner,
       pageSize: pageSize,
       pageToken: pageToken,
     );
-    final bytes = await _call(_state, 'ListBalances', req.writeToBuffer());
+    final bytes = await _call(
+      _state,
+      'ListBalances',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return ListBalancesResponse.fromBuffer(bytes);
   }
 
   @override
-  Future<GetCoinInfoResponse> getCoinInfo(String coinType) async {
-    final req = GetCoinInfoRequest(coinType: coinType);
-    final bytes = await _call(_state, 'GetCoinInfo', req.writeToBuffer());
+  Future<GetCoinInfoResponse> getCoinInfo(
+    String coinType, {
+    CancelToken? cancelToken,
+  }) async {
+    final req = GetCoinInfoRequest(
+      coinType: await resolveType(coinType, cancelToken: cancelToken),
+    );
+    final bytes = await _call(
+      _state,
+      'GetCoinInfo',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetCoinInfoResponse.fromBuffer(bytes);
   }
 
@@ -131,15 +448,23 @@ class GrpcCoreClient extends CoreClient {
     Uint8List? pageToken,
     String? objectType,
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final req = ListOwnedObjectsRequest(
       owner: owner,
       pageSize: pageSize,
       pageToken: pageToken,
-      objectType: objectType,
+      objectType: objectType == null
+          ? null
+          : await resolveType(objectType, cancelToken: cancelToken),
       readMask: _mask(readMask),
     );
-    final bytes = await _call(_state, 'ListOwnedObjects', req.writeToBuffer());
+    final bytes = await _call(
+      _state,
+      'ListOwnedObjects',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return ListOwnedObjectsResponse.fromBuffer(bytes);
   }
 
@@ -147,29 +472,55 @@ class GrpcCoreClient extends CoreClient {
   Future<ExecutedTransaction> getTransaction(
     String digest, {
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final req = GetTransactionRequest(
       digest: digest,
-      readMask: _mask(readMask ??
-          const [
-            'digest',
-            'transaction',
-            'effects',
-            'events',
-            'balance_changes'
-          ]),
+      readMask: _mask(
+        readMask ??
+            const [
+              'digest',
+              'transaction',
+              'effects',
+              'events',
+              'balance_changes',
+              'checkpoint',
+              'timestamp',
+            ],
+      ),
     );
-    final bytes = await _call(_ledger, 'GetTransaction', req.writeToBuffer());
-    return GetTransactionResponse.fromBuffer(bytes).transaction;
+    try {
+      final bytes = await _call(
+        _ledger,
+        'GetTransaction',
+        req.writeToBuffer(),
+        cancelToken: cancelToken,
+      );
+      return GetTransactionResponse.fromBuffer(bytes).transaction;
+    } on GrpcWebException catch (error) {
+      if (error.status == GrpcStatus.notFound) {
+        throw SuiTransactionException(digest, cause: error);
+      }
+      rethrow;
+    }
   }
 
   @override
-  Future<Epoch> getEpoch({int? epoch, List<String>? readMask}) async {
+  Future<Epoch> getEpoch({
+    int? epoch,
+    List<String>? readMask,
+    CancelToken? cancelToken,
+  }) async {
     final req = GetEpochRequest(
       epoch: epoch == null ? null : Int64(epoch),
       readMask: _mask(readMask),
     );
-    final bytes = await _call(_ledger, 'GetEpoch', req.writeToBuffer());
+    final bytes = await _call(
+      _ledger,
+      'GetEpoch',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetEpochResponse.fromBuffer(bytes).epoch;
   }
 
@@ -179,15 +530,23 @@ class GrpcCoreClient extends CoreClient {
     int? pageSize,
     Uint8List? pageToken,
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final req = ListDynamicFieldsRequest(
       parent: parentId,
       pageSize: pageSize,
       pageToken: pageToken,
-      readMask: _mask(readMask ??
-          const ['kind', 'field_id', 'name', 'value_type', 'child_id']),
+      readMask: _mask(
+        readMask ??
+            const ['kind', 'field_id', 'name', 'value_type', 'child_id'],
+      ),
     );
-    final bytes = await _call(_state, 'ListDynamicFields', req.writeToBuffer());
+    final bytes = await _call(
+      _state,
+      'ListDynamicFields',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return ListDynamicFieldsResponse.fromBuffer(bytes);
   }
 
@@ -196,16 +555,27 @@ class GrpcCoreClient extends CoreClient {
     Uint8List transactionBcs,
     List<Uint8List> signatures, {
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final req = ExecuteTransactionRequest(
-      transaction:
-          Transaction(bcs: Bcs(name: 'TransactionData', value: transactionBcs)),
-      signatures: signatures
-          .map((s) => UserSignature(bcs: Bcs(name: 'UserSignature', value: s))),
+      transaction: Transaction(
+        bcs: Bcs(name: 'TransactionData', value: transactionBcs),
+      ),
+      signatures: signatures.map(
+        (s) => UserSignature(
+          bcs: Bcs(name: 'UserSignature', value: s),
+        ),
+      ),
       readMask: _mask(
-          readMask ?? const ['digest', 'effects', 'events', 'balance_changes']),
+        readMask ?? const ['digest', 'effects', 'events', 'balance_changes'],
+      ),
     );
-    final bytes = await _call(_exec, 'ExecuteTransaction', req.writeToBuffer());
+    final bytes = await _call(
+      _exec,
+      'ExecuteTransaction',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return ExecuteTransactionResponse.fromBuffer(bytes).transaction;
   }
 
@@ -215,18 +585,24 @@ class GrpcCoreClient extends CoreClient {
     List<String>? readMask,
     bool doGasSelection = true,
     bool checksEnabled = true,
+    CancelToken? cancelToken,
   }) async {
     final req = SimulateTransactionRequest(
-      transaction:
-          Transaction(bcs: Bcs(name: 'TransactionData', value: transactionBcs)),
+      transaction: Transaction(
+        bcs: Bcs(name: 'TransactionData', value: transactionBcs),
+      ),
       readMask: _mask(readMask),
       checks: checksEnabled
           ? SimulateTransactionRequest_TransactionChecks.ENABLED
           : SimulateTransactionRequest_TransactionChecks.DISABLED,
       doGasSelection: doGasSelection,
     );
-    final bytes =
-        await _call(_exec, 'SimulateTransaction', req.writeToBuffer());
+    final bytes = await _call(
+      _exec,
+      'SimulateTransaction',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return SimulateTransactionResponse.fromBuffer(bytes);
   }
 
@@ -237,6 +613,7 @@ class GrpcCoreClient extends CoreClient {
     List<String>? readMask,
     bool doGasSelection = true,
     bool checksEnabled = true,
+    CancelToken? cancelToken,
   }) async {
     final req = SimulateTransactionRequest(
       transaction: structuredTx,
@@ -246,15 +623,36 @@ class GrpcCoreClient extends CoreClient {
           : SimulateTransactionRequest_TransactionChecks.DISABLED,
       doGasSelection: doGasSelection,
     );
-    final bytes =
-        await _call(_exec, 'SimulateTransaction', req.writeToBuffer());
+    final bytes = await _call(
+      _exec,
+      'SimulateTransaction',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return SimulateTransactionResponse.fromBuffer(bytes);
   }
 
   @override
-  Future<Package> getPackage(String packageId) async {
-    final req = GetPackageRequest(packageId: packageId);
-    final bytes = await _call(_movePackage, 'GetPackage', req.writeToBuffer());
+  Future<Package> getPackage(
+    String packageId, {
+    BigInt? version,
+    BigInt? atCheckpoint,
+    CancelToken? cancelToken,
+  }) async {
+    if (version != null && atCheckpoint != null) {
+      throw ArgumentError('Specify version or atCheckpoint');
+    }
+    final req = GetPackageRequest(
+      packageId: await resolvePackage(packageId, cancelToken: cancelToken),
+      version: version == null ? null : bigIntToUint64(version),
+      atCheckpoint: atCheckpoint == null ? null : bigIntToUint64(atCheckpoint),
+    );
+    final bytes = await _call(
+      _movePackage,
+      'GetPackage',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetPackageResponse.fromBuffer(bytes).package;
   }
 
@@ -262,14 +660,20 @@ class GrpcCoreClient extends CoreClient {
   Future<FunctionDescriptor> getFunction(
     String packageId,
     String moduleName,
-    String functionName,
-  ) async {
+    String functionName, {
+    CancelToken? cancelToken,
+  }) async {
     final req = GetFunctionRequest(
-      packageId: packageId,
+      packageId: await resolvePackage(packageId, cancelToken: cancelToken),
       moduleName: moduleName,
       name: functionName,
     );
-    final bytes = await _call(_movePackage, 'GetFunction', req.writeToBuffer());
+    final bytes = await _call(
+      _movePackage,
+      'GetFunction',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetFunctionResponse.fromBuffer(bytes).function;
   }
 
@@ -278,6 +682,7 @@ class GrpcCoreClient extends CoreClient {
     int? sequenceNumber,
     String? digest,
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) async {
     final req = GetCheckpointRequest(readMask: _mask(readMask));
     if (sequenceNumber != null) {
@@ -285,7 +690,12 @@ class GrpcCoreClient extends CoreClient {
     } else if (digest != null) {
       req.digest = digest;
     }
-    final bytes = await _call(_ledger, 'GetCheckpoint', req.writeToBuffer());
+    final bytes = await _call(
+      _ledger,
+      'GetCheckpoint',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetCheckpointResponse.fromBuffer(bytes).checkpoint;
   }
 
@@ -295,8 +705,9 @@ class GrpcCoreClient extends CoreClient {
     String coinType = '0x2::sui::SUI',
     Uint8List? cursor,
     int? limit,
+    CancelToken? cancelToken,
   }) async {
-    final resolvedType = await resolveType(coinType);
+    final resolvedType = await resolveType(coinType, cancelToken: cancelToken);
     final req = ListOwnedObjectsRequest(
       owner: owner,
       objectType: '0x2::coin::Coin<$resolvedType>',
@@ -310,17 +721,24 @@ class GrpcCoreClient extends CoreClient {
         'balance',
       ]),
     );
-    final bytes = await _call(_state, 'ListOwnedObjects', req.writeToBuffer());
+    final bytes = await _call(
+      _state,
+      'ListOwnedObjects',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     final resp = ListOwnedObjectsResponse.fromBuffer(bytes);
     return SuiCoinPage(
       coins: resp.objects
-          .map((o) => SuiCoin(
-                coinType: resolvedType,
-                coinObjectId: o.objectId,
-                version: BigInt.from(o.version.toInt()),
-                digest: o.digest,
-                balance: BigInt.from(o.balance.toInt()),
-              ))
+          .map(
+            (o) => SuiCoin(
+              coinType: resolvedType,
+              coinObjectId: o.objectId,
+              version: uint64ToBigInt(o.version),
+              digest: o.digest,
+              balance: uint64ToBigInt(o.balance),
+            ),
+          )
           .toList(),
       hasNextPage: resp.nextPageToken.isNotEmpty,
       cursor: resp.nextPageToken.isNotEmpty
@@ -330,7 +748,7 @@ class GrpcCoreClient extends CoreClient {
   }
 
   @override
-  Future<SystemState> getCurrentSystemState() async {
+  Future<SystemState> getCurrentSystemState({CancelToken? cancelToken}) async {
     final req = GetEpochRequest(
       readMask: _mask(const [
         'system_state.version',
@@ -344,7 +762,12 @@ class GrpcCoreClient extends CoreClient {
         'system_state.validators',
       ]),
     );
-    final bytes = await _call(_ledger, 'GetEpoch', req.writeToBuffer());
+    final bytes = await _call(
+      _ledger,
+      'GetEpoch',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return GetEpochResponse.fromBuffer(bytes).epoch.systemState;
   }
 
@@ -354,20 +777,27 @@ class GrpcCoreClient extends CoreClient {
     Uint8List signature, {
     required IntentScope intentScope,
     String? address,
+    CancelToken? cancelToken,
   }) async {
     // PersonalMessage is verified over BCS vector<u8>; TransactionData is raw.
     final value = intentScope == IntentScope.personalMessage
         ? Uint8List.fromList(
-            SuiBcs.VECTOR(SuiBcs.U8).serialize(message).toBytes())
+            SuiBcs.VECTOR(SuiBcs.U8).serialize(message).toBytes(),
+          )
         : message;
     final req = VerifySignatureRequest(
       message: Bcs(name: _intentName(intentScope), value: value),
-      signature:
-          UserSignature(bcs: Bcs(name: 'UserSignature', value: signature)),
+      signature: UserSignature(
+        bcs: Bcs(name: 'UserSignature', value: signature),
+      ),
       address: address,
     );
-    final bytes =
-        await _call(_sigVerify, 'VerifySignature', req.writeToBuffer());
+    final bytes = await _call(
+      _sigVerify,
+      'VerifySignature',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     final resp = VerifySignatureResponse.fromBuffer(bytes);
     return SignatureVerification(
       isValid: resp.isValid,
@@ -377,23 +807,36 @@ class GrpcCoreClient extends CoreClient {
 
   /// Proto `Bcs.name` label expected for each intent scope.
   static String _intentName(IntentScope scope) => switch (scope) {
-        IntentScope.transactionData => 'TransactionData',
-        IntentScope.transactionEffects => 'TransactionEffects',
-        IntentScope.checkpointSummary => 'CheckpointSummary',
-        IntentScope.personalMessage => 'PersonalMessage',
-      };
+    IntentScope.transactionData => 'TransactionData',
+    IntentScope.transactionEffects => 'TransactionEffects',
+    IntentScope.checkpointSummary => 'CheckpointSummary',
+    IntentScope.personalMessage => 'PersonalMessage',
+  };
 
   @override
-  Future<NameRecord> lookupName(String name) async {
+  Future<NameRecord> lookupName(String name, {CancelToken? cancelToken}) async {
     final req = LookupNameRequest(name: name);
-    final bytes = await _call(_name, 'LookupName', req.writeToBuffer());
+    final bytes = await _call(
+      _name,
+      'LookupName',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return LookupNameResponse.fromBuffer(bytes).record;
   }
 
   @override
-  Future<NameRecord> reverseLookupName(String address) async {
+  Future<NameRecord> reverseLookupName(
+    String address, {
+    CancelToken? cancelToken,
+  }) async {
     final req = ReverseLookupNameRequest(address: address);
-    final bytes = await _call(_name, 'ReverseLookupName', req.writeToBuffer());
+    final bytes = await _call(
+      _name,
+      'ReverseLookupName',
+      req.writeToBuffer(),
+      cancelToken: cancelToken,
+    );
     return ReverseLookupNameResponse.fromBuffer(bytes).record;
   }
 
@@ -401,13 +844,18 @@ class GrpcCoreClient extends CoreClient {
   /// Replaces the deprecated JSON-RPC WebSocket subscriptions.
   Stream<SubscribeCheckpointsResponse> subscribeCheckpoints({
     List<String>? readMask,
+    CancelToken? cancelToken,
   }) {
     final req = SubscribeCheckpointsRequest(
       readMask: _mask(readMask ?? const ['sequence_number', 'digest']),
     );
     return _t
-        .serverStream(_subscription, 'SubscribeCheckpoints',
-            Uint8List.fromList(req.writeToBuffer()))
+        .serverStream(
+          _subscription,
+          'SubscribeCheckpoints',
+          Uint8List.fromList(req.writeToBuffer()),
+          cancelToken: cancelToken,
+        )
         .map(SubscribeCheckpointsResponse.fromBuffer);
   }
 }

@@ -23,6 +23,7 @@ import '../types/normalized.dart';
 import '../types/objects.dart';
 import '../types/transactions.dart';
 import '../types/validator.dart';
+import '../utils/proto_int.dart';
 
 /// Drop-in-ish replacement for the legacy JSON-RPC `SuiClient`, backed by the
 /// new gRPC-web transport (and GraphQL for filtered queries). Exposes the same
@@ -85,7 +86,7 @@ class SuiGrpcCompat {
   }
 
   Future<BigInt> getReferenceGasPrice() async =>
-      BigInt.from((await grpc.getReferenceGasPrice()).toInt());
+      uint64ToBigInt(await grpc.getReferenceGasPrice());
 
   // --- Balances ---
 
@@ -93,7 +94,7 @@ class SuiGrpcCompat {
       {String coinType = '0x2::sui::SUI'}) async {
     final b = await grpc.getBalance(owner, coinType: coinType);
     return CoinBalance(
-        b.coinType, 0, BigInt.from(b.balance.toInt()), BigInt.zero);
+        b.coinType, 0, uint64ToBigInt(b.balance), BigInt.zero);
   }
 
   /// The address-balance component of the owner's [coinType] holdings — the
@@ -103,7 +104,7 @@ class SuiGrpcCompat {
   Future<BigInt> getAddressBalance(String owner,
       {String coinType = '0x2::sui::SUI'}) async {
     final b = await grpc.getBalance(owner, coinType: coinType);
-    return BigInt.parse(b.addressBalance.toString());
+    return uint64ToBigInt(b.addressBalance);
   }
 
   /// Configures [tx] as a gasless (address-balance) transaction: an empty gas
@@ -133,7 +134,7 @@ class SuiGrpcCompat {
     final resp = await grpc.listBalances(owner);
     return resp.balances
         .map((b) => CoinBalance(
-            b.coinType, 0, BigInt.from(b.balance.toInt()), BigInt.zero))
+            b.coinType, 0, uint64ToBigInt(b.balance), BigInt.zero))
         .toList();
   }
 
@@ -242,11 +243,11 @@ class SuiGrpcCompat {
     final sim = await grpc.simulateTransaction(Uint8List.fromList(data));
     final g = sim.transaction.effects.gasUsed;
     final gasPrice = tx.getData().gasData.price ??
-        BigInt.from((await grpc.getReferenceGasPrice()).toInt());
-    final budget = BigInt.from(g.computationCost.toInt()) +
-        BigInt.from(g.storageCost.toInt()) -
-        BigInt.from(g.storageRebate.toInt());
-    final floor = BigInt.from(g.computationCost.toInt()) +
+        uint64ToBigInt(await grpc.getReferenceGasPrice());
+    final budget = uint64ToBigInt(g.computationCost) +
+        uint64ToBigInt(g.storageCost) -
+        uint64ToBigInt(g.storageRebate);
+    final floor = uint64ToBigInt(g.computationCost) +
         BigInt.from(1000) * gasPrice;
     return budget > floor ? budget : floor;
   }
@@ -759,9 +760,9 @@ class SuiGrpcCompat {
         if (!st.success) 'error': st.error.description,
       },
       'gasUsed': {
-        'computationCost': g.computationCost.toInt().toString(),
-        'storageCost': g.storageCost.toInt().toString(),
-        'storageRebate': g.storageRebate.toInt().toString(),
+        'computationCost': uint64ToBigInt(g.computationCost).toString(),
+        'storageCost': uint64ToBigInt(g.storageCost).toString(),
+        'storageRebate': uint64ToBigInt(g.storageRebate).toString(),
         'nonRefundableStorageFee': '0',
       },
       'transactionDigest': executed.digest,

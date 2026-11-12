@@ -44,16 +44,23 @@ class TransactionExpiration_TransactionExpirationKind extends $pb.ProtobufEnum {
       TransactionExpiration_TransactionExpirationKind._(
           3, _omitEnumNames ? '' : 'VALID_DURING');
 
+  /// Everything in VALID_DURING, plus a restriction on which validators may
+  /// propose the transaction in consensus.
+  static const TransactionExpiration_TransactionExpirationKind VALIDITY =
+      TransactionExpiration_TransactionExpirationKind._(
+          4, _omitEnumNames ? '' : 'VALIDITY');
+
   static const $core.List<TransactionExpiration_TransactionExpirationKind>
       values = <TransactionExpiration_TransactionExpirationKind>[
     TRANSACTION_EXPIRATION_KIND_UNKNOWN,
     NONE,
     EPOCH,
     VALID_DURING,
+    VALIDITY,
   ];
 
   static final $core.List<TransactionExpiration_TransactionExpirationKind?>
-      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 3);
+      _byValue = $pb.ProtobufEnum.$_initByValueList(values, 4);
   static TransactionExpiration_TransactionExpirationKind? valueOf(
           $core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
@@ -216,6 +223,11 @@ class EndOfEpochTransactionKind_Kind extends $pb.ProtobufEnum {
       EndOfEpochTransactionKind_Kind._(
           13, _omitEnumNames ? '' : 'WRITE_ACCUMULATOR_STORAGE_COST');
 
+  /// Create and initialize the Forwarding Address Registry object.
+  static const EndOfEpochTransactionKind_Kind
+      FORWARDING_ADDRESS_REGISTRY_CREATE = EndOfEpochTransactionKind_Kind._(
+          14, _omitEnumNames ? '' : 'FORWARDING_ADDRESS_REGISTRY_CREATE');
+
   static const $core.List<EndOfEpochTransactionKind_Kind> values =
       <EndOfEpochTransactionKind_Kind>[
     KIND_UNKNOWN,
@@ -232,10 +244,11 @@ class EndOfEpochTransactionKind_Kind extends $pb.ProtobufEnum {
     DISPLAY_REGISTRY_CREATE,
     ADDRESS_ALIAS_STATE_CREATE,
     WRITE_ACCUMULATOR_STORAGE_COST,
+    FORWARDING_ADDRESS_REGISTRY_CREATE,
   ];
 
   static final $core.List<EndOfEpochTransactionKind_Kind?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 13);
+      $pb.ProtobufEnum.$_initByValueList(values, 14);
   static EndOfEpochTransactionKind_Kind? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

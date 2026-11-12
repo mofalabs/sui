@@ -94,6 +94,15 @@ const ExecutedTransaction$json = {
       '10': 'objects',
       '17': true
     },
+    {
+      '1': 'transaction_index',
+      '3': 10,
+      '4': 1,
+      '5': 4,
+      '9': 7,
+      '10': 'transactionIndex',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_digest'},
@@ -103,6 +112,7 @@ const ExecutedTransaction$json = {
     {'1': '_checkpoint'},
     {'1': '_timestamp'},
     {'1': '_objects'},
+    {'1': '_transaction_index'},
   ],
 };
 
@@ -117,5 +127,7 @@ final $typed_data.Uint8List executedTransactionDescriptor = $convert.base64Decod
     'Ej0KCXRpbWVzdGFtcBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIBVIJdGltZX'
     'N0YW1wiAEBEkIKD2JhbGFuY2VfY2hhbmdlcxgIIAMoCzIZLnN1aS5ycGMudjIuQmFsYW5jZUNo'
     'YW5nZVIOYmFsYW5jZUNoYW5nZXMSNAoHb2JqZWN0cxgJIAEoCzIVLnN1aS5ycGMudjIuT2JqZW'
-    'N0U2V0SAZSB29iamVjdHOIAQFCCQoHX2RpZ2VzdEIOCgxfdHJhbnNhY3Rpb25CCgoIX2VmZmVj'
-    'dHNCCQoHX2V2ZW50c0INCgtfY2hlY2twb2ludEIMCgpfdGltZXN0YW1wQgoKCF9vYmplY3Rz');
+    'N0U2V0SAZSB29iamVjdHOIAQESMAoRdHJhbnNhY3Rpb25faW5kZXgYCiABKARIB1IQdHJhbnNh'
+    'Y3Rpb25JbmRleIgBAUIJCgdfZGlnZXN0Qg4KDF90cmFuc2FjdGlvbkIKCghfZWZmZWN0c0IJCg'
+    'dfZXZlbnRzQg0KC19jaGVja3BvaW50QgwKCl90aW1lc3RhbXBCCgoIX29iamVjdHNCFAoSX3Ry'
+    'YW5zYWN0aW9uX2luZGV4');

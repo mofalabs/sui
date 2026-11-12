@@ -35,6 +35,8 @@ class SignatureScheme extends $pb.ProtobufEnum {
       SignatureScheme._(5, _omitEnumNames ? '' : 'ZKLOGIN');
   static const SignatureScheme PASSKEY =
       SignatureScheme._(6, _omitEnumNames ? '' : 'PASSKEY');
+  static const SignatureScheme MLDSA65 =
+      SignatureScheme._(7, _omitEnumNames ? '' : 'MLDSA65');
 
   static const $core.List<SignatureScheme> values = <SignatureScheme>[
     ED25519,
@@ -44,10 +46,11 @@ class SignatureScheme extends $pb.ProtobufEnum {
     BLS12381,
     ZKLOGIN,
     PASSKEY,
+    MLDSA65,
   ];
 
   static final $core.List<SignatureScheme?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 6);
+      $pb.ProtobufEnum.$_initByValueList(values, 7);
   static SignatureScheme? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

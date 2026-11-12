@@ -13,13 +13,14 @@ class TransactionDataV1 {
   List<Map<String, dynamic>>? inputs;
   List<Map<dynamic, dynamic>>? transactions;
 
-  TransactionDataV1(
-      {required this.gasConfig,
-      required this.inputs,
-      required this.transactions,
-      this.version = 1,
-      this.sender,
-      this.expiration});
+  TransactionDataV1({
+    required this.gasConfig,
+    required this.inputs,
+    required this.transactions,
+    this.version = 1,
+    this.sender,
+    this.expiration,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -28,19 +29,22 @@ class TransactionDataV1 {
       "expiration": expiration?.toJson(),
       "gasConfig": gasConfig.toJson(),
       "inputs": inputs,
-      "transactions": transactions
+      "transactions": transactions,
     };
   }
 
   factory TransactionDataV1.fromJson(Map<String, dynamic> data) {
     return TransactionDataV1(
-        version: data["version"] ?? 1,
-        gasConfig: GasConfig.fromJson(data["gasData"]),
-        inputs: List<Map<String, dynamic>>.from(data["inputs"]),
-        transactions:
-            (data["transactions"] as List).cast<Map<dynamic, dynamic>>(),
-        sender: data["sender"],
-        expiration: TransactionExpiration.fromJson(data["expiration"]));
+      version: data["version"] ?? 1,
+      gasConfig: GasConfig.fromJson(data["gasData"]),
+      inputs: List<Map<String, dynamic>>.from(data["inputs"]),
+      transactions: (data["transactions"] as List)
+          .cast<Map<dynamic, dynamic>>(),
+      sender: data["sender"],
+      expiration: data["expiration"] == null
+          ? null
+          : TransactionExpiration.fromJson(data["expiration"]),
+    );
   }
 }
 
@@ -57,31 +61,29 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
           'Object': input["Object"]["ImmOrOwnedObject"] != null
               ? {"ImmOrOwned": input["Object"]["ImmOrOwnedObject"]}
               : input["Object"]["Receiving"] != null
-                  ? {
-                      "Receiving": {
-                        "digest": input["Object"]["Receiving"]["digest"],
-                        "version": input["Object"]["Receiving"]["version"],
-                        "objectId": input["Object"]["Receiving"]["objectId"]
-                      }
-                    }
-                  : {
-                      "Shared": {
-                        "mutable": input["Object"]["SharedObject"]["mutable"],
-                        "initialSharedVersion": input["Object"]["SharedObject"]
-                            ["initialSharedVersion"],
-                        "objectId": input["Object"]["SharedObject"]["objectId"]
-                      }
-                    }
+              ? {
+                  "Receiving": {
+                    "digest": input["Object"]["Receiving"]["digest"],
+                    "version": input["Object"]["Receiving"]["version"],
+                    "objectId": input["Object"]["Receiving"]["objectId"],
+                  },
+                }
+              : {
+                  "Shared": {
+                    "mutable": input["Object"]["SharedObject"]["mutable"],
+                    "initialSharedVersion":
+                        input["Object"]["SharedObject"]["initialSharedVersion"],
+                    "objectId": input["Object"]["SharedObject"]["objectId"],
+                  },
+                },
         },
-        "type": 'object'
+        "type": 'object',
       });
     } else if (input["Pure"] != null) {
       inputs.add({
         "kind": 'Input',
         "index": index,
-        "value": {
-          "Pure": base64Decode(input["Pure"]["bytes"]),
-        },
+        "value": {"Pure": base64Decode(input["Pure"]["bytes"])},
         "type": 'pure',
       });
     } else if (input["UnresolvedPure"] != null) {
@@ -114,8 +116,9 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
       payment: transactionData.gasData.payment,
     ),
     inputs: inputs,
-    transactions:
-        transactionData.commands?.map<Map<String, dynamic>>((command) {
+    transactions: transactionData.commands?.map<Map<String, dynamic>>((
+      command,
+    ) {
       if (command["MakeMoveVec"] != null) {
         return {
           "kind": 'MakeMoveVec',
@@ -123,7 +126,8 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
               ? {"None": true}
               : {
                   "Some": TypeTagSerializer.parseFromStr(
-                      command["MakeMoveVec"]["type"])
+                    command["MakeMoveVec"]["type"],
+                  ),
                 },
           "objects": command["MakeMoveVec"]["elements"]
               .map((arg) => convertTransactionArgument(arg, inputs))
@@ -133,7 +137,9 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
         return {
           "kind": 'MergeCoins',
           "destination": convertTransactionArgument(
-              command["MergeCoins"]["destination"], inputs),
+            command["MergeCoins"]["destination"],
+            inputs,
+          ),
           "sources": command["MergeCoins"]["sources"]
               .map((arg) => convertTransactionArgument(arg, inputs))
               .toList(),
@@ -159,8 +165,10 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
       } else if (command["SplitCoins"] != null) {
         return {
           "kind": 'SplitCoins',
-          "coin":
-              convertTransactionArgument(command["SplitCoins"]["coin"], inputs),
+          "coin": convertTransactionArgument(
+            command["SplitCoins"]["coin"],
+            inputs,
+          ),
           "amounts": command["SplitCoins"]["amounts"]
               .map((arg) => convertTransactionArgument(arg, inputs))
               .toList(),
@@ -172,17 +180,22 @@ TransactionDataV1 serializeV1TransactionData(TransactionData transactionData) {
               .map((arg) => convertTransactionArgument(arg, inputs))
               .toList(),
           "address": convertTransactionArgument(
-              command["TransferObjects"]["address"], inputs),
+            command["TransferObjects"]["address"],
+            inputs,
+          ),
         };
       } else if (command["Upgrade"] != null) {
         return {
           "kind": 'Upgrade',
-          "modules":
-              command["Upgrade"]["modules"].map((mod) => base64Decode(mod)).toList(),
+          "modules": command["Upgrade"]["modules"]
+              .map((mod) => base64Decode(mod))
+              .toList(),
           "dependencies": command["Upgrade"]["dependencies"],
           "packageId": command["Upgrade"]["package"],
-          "ticket":
-              convertTransactionArgument(command["Upgrade"]["ticket"], inputs),
+          "ticket": convertTransactionArgument(
+            command["Upgrade"]["ticket"],
+            inputs,
+          ),
         };
       } else {
         throw ArgumentError("Unknown transaction $command");
@@ -202,7 +215,7 @@ dynamic convertTransactionArgument(dynamic arg, dynamic inputs) {
     return {
       "kind": 'NestedResult',
       "index": arg["NestedResult"][0],
-      "resultIndex": arg["NestedResult"][1]
+      "resultIndex": arg["NestedResult"][1],
     };
   }
   if (arg["\$kind"] == 'Input' || arg["Input"] != null) {
@@ -215,11 +228,9 @@ dynamic convertTransactionArgument(dynamic arg, dynamic inputs) {
 dynamic transactionDataFromV1(dynamic data) {
   dynamic expiration;
   if (data["expiration"] != null) {
-    if (data["expiration"]["Epoch"] != null) {
-      expiration = {"Epoch": data["expiration"]["Epoch"]};
-    } else {
-      expiration = {"None": true};
-    }
+    expiration = TransactionExpiration.fromJson(
+      Map<String, dynamic>.from(data['expiration'] as Map),
+    ).toJson();
   }
 
   return {
@@ -230,11 +241,15 @@ dynamic transactionDataFromV1(dynamic data) {
       "owner": data["gasConfig"]?["owner"],
       "budget": data["gasConfig"]?["budget"]?.toString(),
       "price": data["gasConfig"]?["price"]?.toString(),
-      "payment": data["gasConfig"]?["payment"]?.map((ref) => ({
-            "digest": ref["digest"],
-            "objectId": ref["objectId"],
-            "version": ref["version"]?.toString(),
-          }))?.toList(),
+      "payment": data["gasConfig"]?["payment"]
+          ?.map(
+            (ref) => ({
+              "digest": ref["digest"],
+              "objectId": ref["objectId"],
+              "version": ref["version"]?.toString(),
+            }),
+          )
+          ?.toList(),
     },
     "inputs": data["inputs"]?.map((input) {
       if (input["kind"] == 'Input') {
@@ -249,8 +264,8 @@ dynamic transactionDataFromV1(dynamic data) {
                 "Object": {
                   "ImmOrOwnedObject": {
                     "objectId": value["Object"]["ImmOrOwned"]["objectId"],
-                    "version":
-                        value["Object"]["ImmOrOwned"]["version"]?.toString(),
+                    "version": value["Object"]["ImmOrOwned"]["version"]
+                        ?.toString(),
                     "digest": value["Object"]["ImmOrOwned"]["digest"],
                   },
                 },
@@ -261,8 +276,8 @@ dynamic transactionDataFromV1(dynamic data) {
                 "Object": {
                   "SharedObject": {
                     "mutable": value["Object"]["Shared"]["mutable"],
-                    "initialSharedVersion": value["Object"]["Shared"]
-                        ["initialSharedVersion"],
+                    "initialSharedVersion":
+                        value["Object"]["Shared"]["initialSharedVersion"],
                     "objectId": value["Object"]["Shared"]["objectId"],
                   },
                 },
@@ -273,8 +288,8 @@ dynamic transactionDataFromV1(dynamic data) {
                 "Object": {
                   "Receiving": {
                     "digest": value["Object"]["Receiving"]["digest"],
-                    "version":
-                        value["Object"]["Receiving"]["version"]?.toString(),
+                    "version": value["Object"]["Receiving"]["version"]
+                        ?.toString(),
                     "objectId": value["Object"]["Receiving"]["objectId"],
                   },
                 },
@@ -286,23 +301,21 @@ dynamic transactionDataFromV1(dynamic data) {
 
           return {
             "Pure": {
-              "bytes": base64Encode(Uint8List.fromList(value["Pure"].cast<int>())),
+              "bytes": base64Encode(
+                Uint8List.fromList(value["Pure"].cast<int>()),
+              ),
             },
           };
         }
 
         if (input["type"] == 'object') {
           return {
-            "UnresolvedObject": {
-              "objectId": input["value"]?.toString(),
-            },
+            "UnresolvedObject": {"objectId": input["value"]?.toString()},
           };
         }
 
         return {
-          "UnresolvedPure": {
-            "value": input["value"],
-          },
+          "UnresolvedPure": {"value": input["value"]},
         };
       }
 
@@ -325,8 +338,9 @@ dynamic transactionDataFromV1(dynamic data) {
           {
             return {
               "MergeCoins": {
-                "destination":
-                    parseV1TransactionArgument(transaction["destination"]),
+                "destination": parseV1TransactionArgument(
+                  transaction["destination"],
+                ),
                 "sources": transaction["sources"]
                     ?.map((arg) => parseV1TransactionArgument(arg))
                     ?.toList(),
@@ -352,7 +366,9 @@ dynamic transactionDataFromV1(dynamic data) {
           {
             return {
               "Publish": {
-                "modules": transaction["modules"]?.map((mod) => base64Encode(mod))?.toList(),
+                "modules": transaction["modules"]
+                    ?.map((mod) => base64Encode(mod))
+                    ?.toList(),
                 "dependencies": transaction["dependencies"],
               },
             };
@@ -383,7 +399,9 @@ dynamic transactionDataFromV1(dynamic data) {
           {
             return {
               "Upgrade": {
-                "modules": transaction["modules"]?.map((mod) => base64Encode(mod))?.toList(),
+                "modules": transaction["modules"]
+                    ?.map((mod) => base64Encode(mod))
+                    ?.toList(),
                 "dependencies": transaction["dependencies"],
                 "package": transaction["packageId"],
                 "ticket": parseV1TransactionArgument(transaction["ticket"]),
@@ -409,7 +427,7 @@ dynamic parseV1TransactionArgument(dynamic arg) {
       {
         return {
           ...arg,
-          "NestedResult": [arg["index"], arg["resultIndex"]]
+          "NestedResult": [arg["index"], arg["resultIndex"]],
         };
       }
     case 'Input':

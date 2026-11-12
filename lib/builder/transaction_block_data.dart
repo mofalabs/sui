@@ -15,22 +15,53 @@ class TransactionExpiration {
   /// `maxTimestamp`/`chain`/`nonce`) — required for transactions with no gas
   /// payment (address-balance / gasless). Takes precedence over [epoch].
   final Map<String, dynamic>? validDuring;
+  final Map<String, dynamic>? validity;
 
-  TransactionExpiration({this.epoch, this.validDuring});
+  TransactionExpiration({this.epoch, this.validDuring, this.validity}) {
+    if ([epoch, validDuring, validity].where((value) => value != null).length >
+        1) {
+      throw ArgumentError('A transaction can have only one expiration kind');
+    }
+  }
 
   Map<String, dynamic> toJson() {
+    if (validity != null) return {"Validity": validity};
     if (validDuring != null) return {"ValidDuring": validDuring};
     if (epoch == null) return {"None": true};
     return {"Epoch": epoch};
   }
 
   factory TransactionExpiration.fromJson(Map<String, dynamic>? json) {
-    final validDuring = json?["ValidDuring"];
+    if (json == null) return TransactionExpiration();
+    final variants = json.keys.where((key) => key != r'$kind').toList();
+    if (variants.length != 1 ||
+        !const {
+          'None',
+          'Epoch',
+          'ValidDuring',
+          'Validity',
+        }.contains(variants.single)) {
+      throw FormatException('Unsupported transaction expiration: $json');
+    }
+    final variant = variants.single;
+    if (variant != 'None' && json[variant] == null) {
+      throw FormatException('Missing $variant expiration restrictions');
+    }
+    if (json['Validity'] != null) {
+      final value = Map<String, dynamic>.from(json['Validity'] as Map);
+      final allowed = value['allowedProposers'];
+      if (allowed != null && (allowed['proposers'] as List).isEmpty) {
+        throw const FormatException('Allowed proposers must not be empty');
+      }
+      return TransactionExpiration(validity: value);
+    }
+    final validDuring = json["ValidDuring"];
     if (validDuring != null) {
       return TransactionExpiration(
-          validDuring: Map<String, dynamic>.from(validDuring));
+        validDuring: Map<String, dynamic>.from(validDuring),
+      );
     }
-    dynamic epoch = json?["Epoch"];
+    dynamic epoch = json["Epoch"];
     if (epoch != null) {
       return TransactionExpiration(epoch: int.parse(epoch.toString()));
     } else {
@@ -52,18 +83,19 @@ class GasConfig {
       "budget": budget?.toString(),
       "price": price?.toString(),
       "payment": payment?.map((e) => e.toJson()).toList(),
-      "owner": owner
+      "owner": owner,
     };
   }
 
   factory GasConfig.fromJson(Map<String, dynamic> json) {
     return GasConfig(
-        budget: BigInt.tryParse(json["budget"]?.toString() ?? ""),
-        price: BigInt.tryParse(json["price"]?.toString() ?? ""),
-        payment: json["payment"]
-            ?.map<SuiObjectRef>((e) => SuiObjectRef.fromJson(e))
-            .toList(),
-        owner: json["owner"]);
+      budget: BigInt.tryParse(json["budget"]?.toString() ?? ""),
+      price: BigInt.tryParse(json["price"]?.toString() ?? ""),
+      payment: json["payment"]
+          ?.map<SuiObjectRef>((e) => SuiObjectRef.fromJson(e))
+          .toList(),
+      owner: json["owner"],
+    );
   }
 }
 
@@ -75,13 +107,14 @@ class TransactionData {
   List<Map<String, dynamic>>? inputs;
   List<Map<dynamic, dynamic>>? commands;
 
-  TransactionData(
-      {required this.gasData,
-      required this.inputs,
-      required this.commands,
-      this.version = 2,
-      this.sender,
-      this.expiration});
+  TransactionData({
+    required this.gasData,
+    required this.inputs,
+    required this.commands,
+    this.version = 2,
+    this.sender,
+    this.expiration,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -90,18 +123,23 @@ class TransactionData {
       "expiration": expiration?.toJson(),
       "gasData": gasData.toJson(),
       "inputs": inputs,
-      "commands": commands
+      "commands": commands,
     };
   }
 
   factory TransactionData.fromJson(Map<String, dynamic> data) {
     return TransactionData(
-        version: data["version"],
-        gasData: GasConfig.fromJson(data["gasData"]),
-        inputs: List<Map<String, dynamic>>.from(data["inputs"]),
-        commands: (data["commands"] as List).cast<Map<dynamic, dynamic>>(),
-        sender: data["sender"],
-        expiration: TransactionExpiration.fromJson(data["expiration"]));
+      version: data["version"],
+      gasData: GasConfig.fromJson(data["gasData"]),
+      inputs: List<Map<String, dynamic>>.from(data["inputs"]),
+      commands: (data["commands"] as List).cast<Map<dynamic, dynamic>>(),
+      sender: data["sender"],
+      // Null means resolution may still choose a validity window. Preserve it
+      // separately from an explicit None, which the caller chose deliberately.
+      expiration: data["expiration"] == null
+          ? null
+          : TransactionExpiration.fromJson(data["expiration"]),
+    );
   }
 }
 
@@ -149,8 +187,10 @@ class TransactionBlockDataBuilder {
 
   static TransactionBlockDataBuilder restore(Map<String, dynamic> data) {
     final transactionData = TransactionBlockDataBuilder(
-        TransactionData.fromJson(
-            data["version"] == 2 ? data : transactionDataFromV1(data)));
+      TransactionData.fromJson(
+        data["version"] == 2 ? data : transactionDataFromV1(data),
+      ),
+    );
 
     return transactionData;
   }
@@ -184,10 +224,7 @@ class TransactionBlockDataBuilder {
     bool onlyTransactionKind = false,
   }) {
     final kind = {
-      "ProgrammableTransaction": {
-        "inputs": inputs,
-        "commands": commands,
-      },
+      "ProgrammableTransaction": {"inputs": inputs, "commands": commands},
     };
 
     if (onlyTransactionKind) {
@@ -233,17 +270,13 @@ class TransactionBlockDataBuilder {
         "budget": BigInt.parse(gasConfigValue["budget"].toString()),
       },
       "kind": {
-        "ProgrammableTransaction": {
-          "inputs": inputs,
-          "commands": commands,
-        },
+        "ProgrammableTransaction": {"inputs": inputs, "commands": commands},
       },
     };
 
-    return SuiBcs.TransactionData.serialize(
-      {"V1": transactionData},
-      options: BcsWriterOptions(maxSize: maxSizeBytes),
-    ).toBytes();
+    return SuiBcs.TransactionData.serialize({
+      "V1": transactionData,
+    }, options: BcsWriterOptions(maxSize: maxSizeBytes)).toBytes();
   }
 
   dynamic addInput<T>(T type, CallArg arg) {
@@ -269,21 +302,27 @@ class TransactionBlockDataBuilder {
             .map((arg) => fn(arg, command))
             .toList();
       } else if (command["TransferObjects"] != null) {
-        command["TransferObjects"]["objects"] = command["TransferObjects"]
-                ["objects"]
-            .map((arg) => fn(arg, command))
-            .toList();
-        command["TransferObjects"]["address"] =
-            fn(command["TransferObjects"]["address"], command);
+        command["TransferObjects"]["objects"] =
+            command["TransferObjects"]["objects"]
+                .map((arg) => fn(arg, command))
+                .toList();
+        command["TransferObjects"]["address"] = fn(
+          command["TransferObjects"]["address"],
+          command,
+        );
       } else if (command["SplitCoins"] != null) {
-        command["SplitCoins"]["coin"] =
-            fn(command["SplitCoins"]["coin"], command);
+        command["SplitCoins"]["coin"] = fn(
+          command["SplitCoins"]["coin"],
+          command,
+        );
         command["SplitCoins"]["amounts"] = command["SplitCoins"]["amounts"]
             .map((arg) => fn(arg, command))
             .toList();
       } else if (command["MergeCoins"] != null) {
-        command["MergeCoins"]["destination"] =
-            fn(command["MergeCoins"]["destination"], command);
+        command["MergeCoins"]["destination"] = fn(
+          command["MergeCoins"]["destination"],
+          command,
+        );
         command["MergeCoins"]["sources"] = command["MergeCoins"]["sources"]
             .map((arg) => fn(arg, command))
             .toList();
@@ -292,8 +331,10 @@ class TransactionBlockDataBuilder {
             .map((arg) => fn(arg, command))
             .toList();
       } else if (command["Upgrade"] != null) {
-        command["Upgrade"]["ticket"] =
-            fn(command["Upgrade"]["ticket"], command);
+        command["Upgrade"]["ticket"] = fn(
+          command["Upgrade"]["ticket"],
+          command,
+        );
       } else if (command["\$Intent"] != null) {
         final inputs = command["\$Intent"]["inputs"];
         command["\$Intent"]["inputs"] = {};
@@ -322,7 +363,7 @@ class TransactionBlockDataBuilder {
       "commands": commands,
       "sender": sender,
       "version": version,
-      "expiration": expiration?.toJson()
+      "expiration": expiration?.toJson(),
     });
   }
 }

@@ -1,0 +1,23 @@
+{
+  "syncedAt": "2026-10-26",
+  "typescriptSdk": {
+    "repository": "https://github.com/MystenLabs/ts-sdks",
+    "package": "@mysten/sui",
+    "version": "2.37.0",
+    "commit": "de91ff2fbb484e09b6e72c4ed5a92789692b2ab8",
+    "previousSyncCommit": "72317198"
+  },
+  "protobuf": {
+    "repository": "https://github.com/MystenLabs/sui-apis",
+    "commit": "aa9ba2c13b2a9348059b38110e64af39849a0377",
+    "dartPluginVersion": "22.4.0",
+    "runtimeMajorVersion": 4
+  },
+  "maxProtocolVersion": 138,
+  "minimumDartVersion": "3.10.0",
+  "conformanceFixtures": [
+    "test/fixtures/upstream_bcs.json",
+    "test/fixtures/mldsa65.json",
+    "test/fixtures/faucet_pow.json"
+  ]
+}

@@ -12,6 +12,7 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../../../google/protobuf/struct.pb.dart' as $1;
@@ -109,6 +110,10 @@ class Event extends $pb.GeneratedMessage {
     $core.String? eventType,
     $0.Bcs? contents,
     $1.Value? json,
+    $fixnum.Int64? checkpoint,
+    $core.String? transactionDigest,
+    $fixnum.Int64? transactionIndex,
+    $core.int? eventIndex,
   }) {
     final result = create();
     if (packageId != null) result.packageId = packageId;
@@ -117,6 +122,10 @@ class Event extends $pb.GeneratedMessage {
     if (eventType != null) result.eventType = eventType;
     if (contents != null) result.contents = contents;
     if (json != null) result.json = json;
+    if (checkpoint != null) result.checkpoint = checkpoint;
+    if (transactionDigest != null) result.transactionDigest = transactionDigest;
+    if (transactionIndex != null) result.transactionIndex = transactionIndex;
+    if (eventIndex != null) result.eventIndex = eventIndex;
     return result;
   }
 
@@ -141,6 +150,14 @@ class Event extends $pb.GeneratedMessage {
         subBuilder: $0.Bcs.create)
     ..aOM<$1.Value>(6, _omitFieldNames ? '' : 'json',
         subBuilder: $1.Value.create)
+    ..a<$fixnum.Int64>(
+        7, _omitFieldNames ? '' : 'checkpoint', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..aOS(8, _omitFieldNames ? '' : 'transactionDigest')
+    ..a<$fixnum.Int64>(
+        9, _omitFieldNames ? '' : 'transactionIndex', $pb.PbFieldType.OU6,
+        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$core.int>(10, _omitFieldNames ? '' : 'eventIndex', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -227,6 +244,53 @@ class Event extends $pb.GeneratedMessage {
   void clearJson() => $_clearField(6);
   @$pb.TagNumber(6)
   $1.Value ensureJson() => $_ensure(5);
+
+  /// The sequence number of the checkpoint that includes the transaction
+  /// that emitted this event. Populated when the event is delivered on its
+  /// own (for example via `LedgerService.ListEvents`); left unset when the
+  /// event is carried inside its transaction's `events` list, where the
+  /// enclosing `ExecutedTransaction` already provides this context.
+  @$pb.TagNumber(7)
+  $fixnum.Int64 get checkpoint => $_getI64(6);
+  @$pb.TagNumber(7)
+  set checkpoint($fixnum.Int64 value) => $_setInt64(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasCheckpoint() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearCheckpoint() => $_clearField(7);
+
+  /// The digest of the transaction that emitted this event.
+  @$pb.TagNumber(8)
+  $core.String get transactionDigest => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set transactionDigest($core.String value) => $_setString(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasTransactionDigest() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearTransactionDigest() => $_clearField(8);
+
+  /// Zero-based position of the emitting transaction within its containing
+  /// checkpoint. For clients verifying authenticated event streams this
+  /// index is part of the BCS-encoded `EventCommitment` leaf used to
+  /// construct the per-checkpoint merkle root.
+  @$pb.TagNumber(9)
+  $fixnum.Int64 get transactionIndex => $_getI64(8);
+  @$pb.TagNumber(9)
+  set transactionIndex($fixnum.Int64 value) => $_setInt64(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasTransactionIndex() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearTransactionIndex() => $_clearField(9);
+
+  /// Zero-based index of this event within its transaction's event list.
+  @$pb.TagNumber(10)
+  $core.int get eventIndex => $_getIZ(9);
+  @$pb.TagNumber(10)
+  set eventIndex($core.int value) => $_setUnsignedInt32(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasEventIndex() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearEventIndex() => $_clearField(10);
 }
 
 const $core.bool _omitFieldNames =
